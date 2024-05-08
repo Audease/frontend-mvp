@@ -26,7 +26,7 @@ export default function SignUp() {
         </div>
         {/* Text 2  */}
         <div className="my-4">
-          <div className="flex flex-row justify-between space-x-10">
+          <div className="flex flex-row space-x-10">
           <div>
             <Image
               src="/icon1.svg"
@@ -50,7 +50,7 @@ export default function SignUp() {
             <p className="font-normal text-h2 text-tblack2 ">Get access instantly, no downloads required</p>
           </div>
           </div>
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-row">
           <div className="">
             <Image
               src="/icon3.png"
@@ -78,7 +78,7 @@ export default function SignUp() {
         {/* Text 3  */}
         <div className="mt-4">
           <p>Do you prefer talking to a representative?</p>
-          <p>Call us at <span>support@audeasse.co.uk</span></p>
+          <p>Call us at <span className="text-h2 text-link1">support@audeasse.co.uk</span></p>
         </div>
       </div>
     </div>

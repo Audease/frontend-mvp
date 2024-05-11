@@ -20,14 +20,17 @@ module.exports = {
         'tgrey1': '#898989',
         'link1': '#775DA6',
         'tgrey2': '#DCDCDC',
+        'deepGrey': '#615F65',
+
       },
 
       fontSize: {
         h1: ['2.25rem', '2.875rem'],
         h3: ['1.5rem', '1.98rem'],
         h2: ['0.875rem', '1.5rem'],
-        h4: ['0.75rem', '1rem'],
-        
+        h4: ['0.75rem', '1.5rem'],
+        h5: ['0.688rem', '0.90rem'],
+        h6: ['0.75rem', '0.875rem'],
       }
     },
   },

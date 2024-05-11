@@ -17,7 +17,7 @@ export default function InputField({ className, type, placeholder }) {
         placeholder={placeholder}
         value={selectedOption}
         onChange={handleChange}
-        className={`${className} border rounded-md p-2 text-h2 text-tgrey1 font-normal`}
+        className={`${className} border rounded-md p-2 text-h2 text-tgrey1 font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1`}
       />
     </div>
   );
@@ -36,7 +36,7 @@ export function InputFieldWithDropdown({ className, placeholder }) {
       <select
         value={selectedOption}
         onChange={handleChange}
-        className={`${className} border rounded-md p-2 bg-white text-h2 text-tgrey1 font-normal`}
+        className={`${className} border rounded-md py-2 px-2 bg-white text-h2 text-tgrey1 font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1`}
       >
         <option value="">{placeholder}</option>
         <option value="option1">Option 1</option>

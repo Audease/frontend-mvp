@@ -1,15 +1,12 @@
 "use client";
 
-export default function Button({ buttonText, className}) {
-  const handleClick = () => {
-    console.log("Button Clicked");
-  };
-
+export default function Button({ buttonText, className }) {
   return (
     <div>
       <button
-        onClick={handleClick}
-        className={`${className} py-2 text-white text-h2 border rounded-md bg-gold1 w-full font-semibold`}
+        className={`${className} py-2 text-white text-h2 border rounded-md bg-gold1 w-full font-semibold focus:ring focus:ring-tgrey1`}
+        type="submit"
+        
       >
         {buttonText}
       </button>
@@ -17,4 +14,16 @@ export default function Button({ buttonText, className}) {
   );
 }
 
-
+export function BackButton({ buttonText, className, onClick }) {
+  return (
+    <div>
+      <button
+        onClick={onClick}
+        className={`${className} py-2 px-6 text-white text-h2 border rounded-md bg-deepGrey w-full font-semibold flex justify-between items-center`}
+      >
+        <span>&larr;</span>
+        <span>{buttonText}</span>
+      </button>
+    </div>
+  );
+}

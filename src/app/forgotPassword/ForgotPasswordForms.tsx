@@ -1,6 +1,6 @@
 "use client";
 
-import InputField from "../components/inputFields";
+import InputField from "../ui/inputFields/InputFields";
 import Button from "../components/button";
 import React, { useState, useEffect } from "react";
 

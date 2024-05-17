@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function SignUp() {
   return (
-    <div className="flex flex-col justify-center">
+    <div className="font-switzer flex flex-col justify-center">
       {/* Logo  */}
       <div className="py-6">
         <Image
@@ -28,7 +28,7 @@ export default function SignUp() {
         {/* Text 2  */}
         <div className="my-4">
           {/* first row  */}
-          <div className="flex flex-row space-x-16">
+          <div className="flex flex-row space-x-20">
             <div>
               <Image
                 src="/icon1.svg"

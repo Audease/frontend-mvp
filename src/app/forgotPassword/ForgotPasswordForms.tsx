@@ -7,21 +7,21 @@ import React, { useState, useEffect } from "react";
 export default function ForgotPasswordFormOne() {
   return (
     <div className="text-tblack bg-white rounded-md w-96">
-      <form className="p-8">
+      <div className="p-8">
         <div className="pb-4">
           <h3 className="font-semibold  text-h3">Forgot passowrd?</h3>
           <p className="font-normal text-h2">
             We’ll send new password link to email
           </p>
         </div>
-        <InputField
+        {/* <InputField
           type={"email"}
           placeholder={"Email address"}
           className={"w-full"}
-        />
+        /> */}
         {/* Button  */}
         <Button buttonText={`Send password link`} className={`my-6`} />
-      </form>
+      </div>
     </div>
   );
 }

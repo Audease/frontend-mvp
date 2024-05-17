@@ -1,5 +1,5 @@
 import FormStep from "../components/FormStep";
-import Form1, { Form2, Form3 } from "../signup/forms";
+
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="w-[27rem]">{children}</div>
         <div className="w-[25rem]">
           <FormStep />
-          {/* <Form2 handleSubmit={''} /> */}
+         
         </div>
       </div>
     </div>

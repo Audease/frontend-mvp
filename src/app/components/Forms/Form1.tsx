@@ -1,0 +1,164 @@
+import { useState, useEffect, createContext } from "react";
+import axios from "axios";
+import Button from "../button";
+
+const SelectedCountryContext = createContext("Select State");
+
+export default function Form1({ formData, setFormData, handleSubmit }) {
+  const {
+    college,
+    bussinessNo,
+    firstName,
+    lastName,
+    email,
+    noOfEmployee,
+    selectedCountry,
+  } = formData;
+
+  const [countries, setCountries] = useState([]);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await axios.get("https://restcountries.com/v3.1/all");
+        const sortedCountries = response.data.sort((a, b) =>
+          a.name.common.localeCompare(b.name.common)
+        );
+        setCountries(sortedCountries);
+      } catch (error) {
+        console.error("Error fetching countries:", error);
+      }
+    };
+    fetchCountries();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  return (
+    <div className="text-tblack bg-white rounded-md">
+      <form className="p-8" onSubmit={handleSubmit}>
+        <div className="pb-4">
+          <h3 className="font-semibold text-h3">Sign Up</h3>
+          <p className="font-normal text-h2">
+            Already have an account?{" "}
+            <span className="text-h2 text-link1">Sign In</span>
+          </p>
+        </div>
+        <div className="mt-4">
+          <input
+            type="text"
+            name="college"
+            className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+              college ? "bg-gray-100" : ""
+            }`}
+            value={college}
+            placeholder="College"
+            onChange={handleChange}
+          />
+          <div className="flex flex-row my-4 space-x-4">
+            <div className="">
+              <select
+                name="noOfEmployee"
+                id="employee"
+                value={noOfEmployee}
+                onChange={handleChange}
+                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] bg-white focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                  noOfEmployee ? "bg-gray-100" : ""
+                }`}
+              >
+                <option value="">No of Employees</option>
+                {["1 - 50", "51 - 100", "101 - 500", "501 - 1000", "Above 1000"].map(
+                  (employeeNo, index) => (
+                    <option key={index} value={employeeNo}>
+                      {employeeNo}
+                    </option>
+                  )
+                )}
+              </select>
+            </div>
+            <div className="">
+              <SelectedCountryContext.Provider value={selectedCountry}>
+                <div className="">
+                  <select
+                    name="selectedCountry"
+                    id="country"
+                    value={selectedCountry}
+                    onChange={handleChange}
+                    className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] bg-white ${
+                      selectedCountry
+                        ? "bg-gray-100 focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1"
+                        : ""
+                    }`}
+                  >
+                    <option value="Country">Country</option>
+                    {countries.map((country) => (
+                      <option key={country.cca2} value={country.name.common}>
+                        {country.name.common}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </SelectedCountryContext.Provider>
+            </div>
+          </div>
+          <input
+            type="text"
+            name="bussinessNo"
+            className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+              bussinessNo ? "bg-gray-100" : ""
+            }`}
+            placeholder="Bussiness No"
+            value={bussinessNo}
+            onChange={handleChange}
+          />
+          <div className="flex flex-row my-4 space-x-4">
+            <input
+              type="text"
+              name="firstName"
+              className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                firstName ? "bg-gray-100" : ""
+              }`}
+              placeholder="First Name"
+              value={firstName}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="lastName"
+              className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                lastName ? "bg-gray-100" : ""
+              }`}
+              placeholder="Last Name"
+              value={lastName}
+              onChange={handleChange}
+            />
+          </div>
+          <input
+            type="text"
+            name="email"
+            className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+              email ? "bg-gray-100" : ""
+            }`}
+            placeholder="Email"
+            value={email}
+            onChange={handleChange}
+          />
+        </div>
+        <Button buttonText={`Continue`} className={`mt-10`} />
+      </form>
+      <hr className="border-2 border-tgrey2" />
+      <div className="py-4 px-6">
+        <p className="font-normal text-xs text-tgrey1">
+          Protected by reCAPTCHA and subject to the Rhombus
+          <span className="text-xs text-link1"> Privacy Policy and Terms of Service.</span>
+        </p>
+      </div>
+    </div>
+  );
+}

@@ -1,8 +1,7 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Button from "../button";
-
-const SelectedCountryContext = createContext("Select State");
+import Link from "next/link";
 
 export default function Form1({ formData, setFormData, handleSubmit }) {
   const {
@@ -47,7 +46,9 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
           <h3 className="font-semibold text-h3">Sign Up</h3>
           <p className="font-normal text-h2">
             Already have an account?{" "}
-            <span className="text-h2 text-link1">Sign In</span>
+            <Link href={"/signIn"}>
+              <span className="text-h2 text-link1"> Sign In</span>
+            </Link>
           </p>
         </div>
         <div className="mt-4">
@@ -73,38 +74,40 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
                 }`}
               >
                 <option value="">No of Employees</option>
-                {["1 - 50", "51 - 100", "101 - 500", "501 - 1000", "Above 1000"].map(
-                  (employeeNo, index) => (
-                    <option key={index} value={employeeNo}>
-                      {employeeNo}
-                    </option>
-                  )
-                )}
+                {[
+                  "1 - 50",
+                  "51 - 100",
+                  "101 - 500",
+                  "501 - 1000",
+                  "Above 1000",
+                ].map((employeeNo, index) => (
+                  <option key={index} value={employeeNo}>
+                    {employeeNo}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="">
-              <SelectedCountryContext.Provider value={selectedCountry}>
-                <div className="">
-                  <select
-                    name="selectedCountry"
-                    id="country"
-                    value={selectedCountry}
-                    onChange={handleChange}
-                    className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] bg-white ${
-                      selectedCountry
-                        ? "bg-gray-100 focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1"
-                        : ""
-                    }`}
-                  >
-                    <option value="Country">Country</option>
-                    {countries.map((country) => (
-                      <option key={country.cca2} value={country.name.common}>
-                        {country.name.common}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </SelectedCountryContext.Provider>
+              <div className="">
+                <select
+                  name="selectedCountry"
+                  id="country"
+                  value={selectedCountry}
+                  onChange={handleChange}
+                  className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] bg-white ${
+                    selectedCountry
+                      ? "bg-gray-100 focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1"
+                      : ""
+                  }`}
+                >
+                  <option value="Country">Country</option>
+                  {countries.map((country) => (
+                    <option key={country.cca2} value={country.name.common}>
+                      {country.name.common}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
           <input
@@ -156,7 +159,10 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
       <div className="py-4 px-6">
         <p className="font-normal text-xs text-tgrey1">
           Protected by reCAPTCHA and subject to the Rhombus
-          <span className="text-xs text-link1"> Privacy Policy and Terms of Service.</span>
+          <span className="text-xs text-link1">
+            {" "}
+            Privacy Policy and Terms of Service.
+          </span>
         </p>
       </div>
     </div>

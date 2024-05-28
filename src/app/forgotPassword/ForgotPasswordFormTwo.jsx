@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 
 export default function ForgotPasswordFormTwo() {
   const [countdown, setCountdown] = useState(30);
-  const [inputData, setInputData] = useState(["", "", "", "", ""]);
+  const [inputData, setInputData] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef([]);
 
   useEffect(() => {

@@ -1,8 +1,15 @@
+"use client"
+
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../components/button";
+import { useState } from "react";
 
 export default function SignIn() {
+
+  const [Email, setEmail] = useState("")
+  const [Password, setPassword] = useState("")
+
   return (
     <div className="font-switzer bg-bgDefault p-6  h-full lg:h-screen lg:w-full lg:m-auto lg:items-center lg:flex lg:justify-center">
       <div className="flex flex-col items-center p-8 lg:flex lg:flex-row lg:space-x-12">
@@ -44,7 +51,9 @@ export default function SignIn() {
             <div className="my-4 text-h5 font-normal">
               <input
                 type="email"
-                className="border-2 border-borderColor border-solid rounded-lg p-2  my-4 w-full"
+                className={`border border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                  Email ? "bg-gray-100" : ""
+                }`}
                 placeholder="Email address"
               />
 
@@ -54,7 +63,9 @@ export default function SignIn() {
               >
                 <input
                   type="password"
-                  className="border-2 border-borderColor border-solid rounded-lg p-2 w-full"
+                  className={`border border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                    Password ? "bg-gray-100" : ""
+                  }`}
                   placeholder="Password"
                 />
                 <span
@@ -98,7 +109,9 @@ export default function SignIn() {
 
             {/* Social links  */}
             <div className="flex flex-row justify-between md:justify-evenly md:space-x-8 ">
-              <button className="border-2 rounded-lg p-2 text-h5 font-semibold flex flex-row items-center justify-center md:px-6 lg:w-full">
+              <button className="border-2 rounded-md p-2 text-h5 font-semibold flex flex-row items-center justify-center md:px-6 lg:w-full">
+               
+
                 <Image
                   src="/google-logo.svg"
                   width={12}
@@ -127,8 +140,8 @@ export default function SignIn() {
             </div>
 
             {/* Footer copywright */}
-            <div>
-              <h6 className="font-inter font-normal text-tgrey1 text-h6">
+            <div className="font-inter important">
+              <h6 className="font-normal text-tgrey1 text-h6">
                 Protected by reCAPTCHA and subject to the Rhombus{" "}
                 <span className="text-link1">Privacy Policy</span> and{" "}
                 <span className="text-link1">Terms of Service.</span>

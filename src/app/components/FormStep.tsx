@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Form1 from "../components/Forms/Form1";
-import Form2 from "../components/Forms/Form2";
-import Form3 from "../components/Forms/Form3";
-import Link from "next/link";
+import Form1 from "../Forms/Form1";
+import Form2 from "../Forms/Form2";
+import Form3 from "../Forms/Form3";
 import { useRouter } from "next/navigation";
 
 export default function FormStep() {
@@ -25,7 +24,7 @@ export default function FormStep() {
     streetAddress2: "",
     city: "",
     postCode: "",
-    selectedStates: "",
+    selectedCounty: "",
     phoneNumber: "",
   });
 
@@ -33,6 +32,7 @@ export default function FormStep() {
     userName: "",
     password: "",
     confirmPassword: "",
+    userCollege: "",
   });
   const router = useRouter();
   const handleSubmit = (e) => {
@@ -86,6 +86,7 @@ export default function FormStep() {
       formComponent = (
         <Form3
           formData={form3Data}
+          userCollege={form1Data.college}
           setFormData={setForm3Data}
           handleSubmit={handleSubmit}
           handleBackClick={handleBackClick}

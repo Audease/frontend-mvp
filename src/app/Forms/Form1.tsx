@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Button from "../button";
+import Button from "../components/button";
 import Link from "next/link";
 
 /**

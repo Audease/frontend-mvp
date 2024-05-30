@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import Form2 from "../src/app/components/Forms/Form2";
+import Form2 from "../src/app/Forms/Form2";
 import '@testing-library/jest-dom'
 import PhoneInput from "react-phone-number-input";
 

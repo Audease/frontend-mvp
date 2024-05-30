@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
-// import '@testing-library/jest-dom/extend-expect';
 import { useRouter } from 'next/router';
 import Home from '../src/app/page';
 
@@ -58,7 +57,7 @@ describe ('Navigation works', () => {
     logInButton.click();
 
     // Check if the push method was called with the correct arguments
-    expect(push).toHaveBeenCalledWith('/signup');
-    expect(push).toHaveBeenCalledWith('signIn');
+    expect(push).toHaveBeenCalledWith('href', '/signup');
+    expect(push).toHaveBeenCalledWith('href', '/signIn');
   });
 });

@@ -1,10 +1,12 @@
 "use client";
 
-import Button from "../button";
-import { BackButton } from "../button";
+import Button from "../components/button";
+import { BackButton } from "../components/button";
 import { useState } from "react";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
+import counties from "../data/counties .json";
+
 
 export default function Form2({
   formData,
@@ -17,7 +19,7 @@ export default function Form2({
     streetAddress2,
     city,
     postCode,
-    selectedStates,
+    selectedCounty,
     phoneNumber,
   } = formData;
 
@@ -36,33 +38,33 @@ export default function Form2({
     }));
   };
 
-  const axios = require("axios");
+  // const axios = require("axios");
 
-  const apiKey = "GN2QkYKGxcZ9Tmrvj5gusxxJ62OR54OI";
+  // const apiKey = "GN2QkYKGxcZ9Tmrvj5gusxxJ62OR54OI";
 
-  async function findCounties() {
-    try {
-      const response = await axios.get('https://api.os.uk/search/names/v1/find', {
-        params: {
-          key: apiKey,
-          query: 'County',
-          maxresults: 100, // Adjust as needed
-          fq: 'LOCAL_TYPE:Postcode'
-        }
-      });
+  // async function findCounties() {
+  //   try {
+  //     const response = await axios.get('https://api.os.uk/search/names/v1/find', {
+  //       params: {
+  //         key: apiKey,
+  //         query: 'County',
+  //         maxresults: 100, // Adjust as needed
+  //         fq: 'LOCAL_TYPE:Postcode'
+  //       }
+  //     });
       
-      // For explanation and debugging purposes we display the full response from the API in the console
-      // console.log(JSON.stringify(response.data, null, 50));
+  //     // For explanation and debugging purposes we display the full response from the API in the console
+  //     // console.log(JSON.stringify(response.data, null, 50));
   
-      // Extract county names from the response
-      const counties = response.data.results.map(result => result.GAZETTEER_ENTRY.NAME1);
-      console.log('Counties:', counties);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  }
+  //     // Extract county names from the response
+  //     const counties = response.data.results.map(result => result.GAZETTEER_ENTRY.NAME1);
+  //     console.log('Counties:', counties);
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   }
+  // }
   
-  findCounties();
+  // findCounties();
 
   return (
     <div>
@@ -113,20 +115,21 @@ export default function Form2({
               required
             />
             <div>
-              <select
-                id="state"
-                name="selectedStates"
-                value={selectedStates}
+            <select
+                id="county"
+                name="selectedCounty"
+                value={selectedCounty}
                 onChange={handleChange}
                 className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full bg-white focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
-                  selectedStates ? "bg-gray-100" : ""
+                  selectedCounty ? "bg-gray-100" : ""
                 }`}
               >
-                <option value="">States</option>
-                {/* Example states, replace with actual state options */}
-                <option value="state1">State 1</option>
-                <option value="state2">State 2</option>
-                <option value="state3">State 3</option>
+                <option value="">County</option>
+                {counties.counties.map((county) => (
+                  <option key={county} value={county}>
+                    {county}
+                  </option>
+                ))}
               </select>
             </div>
             <div>

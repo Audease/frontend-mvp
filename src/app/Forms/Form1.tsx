@@ -1,8 +1,18 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import Button from "../button";
+import Button from "../components/button";
+import Link from "next/link";
 
-const SelectedCountryContext = createContext("Select State");
+
+/**
+ * Form1 Component
+ *
+ * @param {Object} props - Properties passed to the component
+ * @param {Object} props.formData - Data object containing form fields
+ * @param {Function} props.setFormData - Function to update formData state
+ * @param {Function} props.handleSubmit - Function to handle form submission
+ * @returns {JSX.Element} Form component for user registration
+ */
 
 export default function Form1({ formData, setFormData, handleSubmit }) {
   const {
@@ -18,19 +28,45 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
   const [countries, setCountries] = useState([]);
 
   useEffect(() => {
+    /**
+     * Fetches country data
+     */
+    //   const fetchCountries = async () => {
+    //     try {
+    //       const response = await axios.get("https://restcountries.com/v3.1/all");
+    //       const sortedCountries = response.data.sort((a, b) =>
+    //         a.name.common.localeCompare(b.name.common)
+    //       );
+    //       setCountries(sortedCountries);
+    //     } catch (error) {
+    //       console.error("Error fetching countries:", error);
+    //     }
+    //   };
+    //   fetchCountries();
+    // }, []);
+
+    /**
+     * Fetches country data and filters for United Kingdom
+     */
     const fetchCountries = async () => {
       try {
         const response = await axios.get("https://restcountries.com/v3.1/all");
-        const sortedCountries = response.data.sort((a, b) =>
-          a.name.common.localeCompare(b.name.common)
+        const unitedKingdom = response.data.find(
+          (country) => country.name.common === "United Kingdom"
         );
-        setCountries(sortedCountries);
+        setCountries(unitedKingdom ? [unitedKingdom] : []);
       } catch (error) {
         console.error("Error fetching countries:", error);
       }
     };
     fetchCountries();
   }, []);
+
+  /**
+   * Handles input change and updates formData state
+   *
+   * @param {Object} e - Event object
+   */
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,7 +83,9 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
           <h3 className="font-semibold text-h3">Sign Up</h3>
           <p className="font-normal text-h2">
             Already have an account?{" "}
-            <span className="text-h2 text-link1">Sign In</span>
+            <Link href={"/signIn"}>
+              <span className="text-h2 text-link1"> Sign In</span>
+            </Link>
           </p>
         </div>
         <div className="mt-4">
@@ -60,6 +98,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
             value={college}
             placeholder="College"
             onChange={handleChange}
+            required
           />
           <div className="flex flex-row my-4 space-x-4">
             <div className="">
@@ -71,40 +110,41 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
                 className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] bg-white focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
                   noOfEmployee ? "bg-gray-100" : ""
                 }`}
+                required
               >
                 <option value="">No of Employees</option>
-                {["1 - 50", "51 - 100", "101 - 500", "501 - 1000", "Above 1000"].map(
-                  (employeeNo, index) => (
-                    <option key={index} value={employeeNo}>
-                      {employeeNo}
-                    </option>
-                  )
-                )}
+                {[
+                  "1 - 50",
+                  "51 - 100",
+                  "101 - 500",
+                  "501 - 1000",
+                  "Above 1000",
+                ].map((employeeNo, index) => (
+                  <option key={index} value={employeeNo}>
+                    {employeeNo}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="">
-              <SelectedCountryContext.Provider value={selectedCountry}>
-                <div className="">
-                  <select
-                    name="selectedCountry"
-                    id="country"
-                    value={selectedCountry}
-                    onChange={handleChange}
-                    className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] bg-white ${
-                      selectedCountry
-                        ? "bg-gray-100 focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1"
-                        : ""
-                    }`}
-                  >
-                    <option value="Country">Country</option>
-                    {countries.map((country) => (
-                      <option key={country.cca2} value={country.name.common}>
-                        {country.name.common}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </SelectedCountryContext.Provider>
+              <div className="">
+                <select
+                  name="selectedCountry"
+                  id="country"
+                  value={selectedCountry}
+                  onChange={handleChange}
+                  className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] bg-white focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                    selectedCountry ? "bg-gray-100" : ""
+                  }`}
+                >
+                  <option value="Country">Country</option>
+                  {countries.map((country) => (
+                    <option key={country.cca2} value={country.name.common}>
+                      {country.name.common}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
           <input
@@ -116,6 +156,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
             placeholder="Bussiness No"
             value={bussinessNo}
             onChange={handleChange}
+            required
           />
           <div className="flex flex-row my-4 space-x-4">
             <input
@@ -127,6 +168,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
               placeholder="First Name"
               value={firstName}
               onChange={handleChange}
+              required
             />
             <input
               type="text"
@@ -137,6 +179,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
               placeholder="Last Name"
               value={lastName}
               onChange={handleChange}
+              required
             />
           </div>
           <input
@@ -148,6 +191,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
             placeholder="Email"
             value={email}
             onChange={handleChange}
+            required
           />
         </div>
         <Button buttonText={`Continue`} className={`mt-10`} />
@@ -156,9 +200,14 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
       <div className="py-4 px-6">
         <p className="font-normal text-xs text-tgrey1">
           Protected by reCAPTCHA and subject to the Rhombus
-          <span className="text-xs text-link1"> Privacy Policy and Terms of Service.</span>
+          <span className="text-xs text-link1">
+            {" "}
+            Privacy Policy and Terms of Service.
+          </span>
         </p>
       </div>
+
+      
     </div>
   );
 }

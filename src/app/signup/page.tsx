@@ -1,17 +1,20 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function SignUp() {
   return (
     <div className="font-switzer flex flex-col justify-center">
       {/* Logo  */}
       <div className="py-6">
-        <Image
-          src="/audease_logo.png"
-          width={132}
-          height={37}
-          className=""
-          alt="audease logo"
-        ></Image>
+        <Link href={"/"}>
+          <Image
+            src="/audease_logo.png"
+            width={132}
+            height={37}
+            className=""
+            alt="audease logo"
+          ></Image>
+        </Link>
       </div>
       {/* Text part */}
       <div>
@@ -89,7 +92,6 @@ export default function SignUp() {
               </p>
             </div>
           </div>
-          
         </div>
         {/* Text 3  */}
         <div className="mt-8 font-normal text-tblack text-h2">

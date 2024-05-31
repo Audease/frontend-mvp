@@ -6,7 +6,6 @@ export default function Button({ buttonText, className }) {
       <button
         className={`${className} py-2 text-white text-h2 border rounded-md bg-gold1 w-full font-semibold focus:ring focus:ring-tgrey1`}
         type="submit"
-        
       >
         {buttonText}
       </button>

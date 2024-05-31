@@ -5,7 +5,7 @@ export default function Home() {
     <div className="bg-bgDefault font-switzer h-screen w-full flex flex-row justify-center items-center m-auto space-x-10">
       <div>
         <Link href="/signup">
-          <button>Sign up </button>
+          <button>Sign up</button>
         </Link>
       </div>
       <div>

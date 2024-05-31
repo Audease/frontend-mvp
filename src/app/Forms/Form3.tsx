@@ -1,6 +1,7 @@
 import Button from "../components/button";
 import { BackButton } from "../components/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import PasswordStrengthMeter from "../password-meter/PasswordStrengthMeter";
 
 export default function Form3({
   formData,
@@ -21,31 +22,55 @@ export default function Form3({
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
-        
       }));
     }
   };
 
-  // const handleCollegeSubmit = (e) => {
-  //   e.preventDefault();
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     college: filledCollege, // Update formData with the final value of filledCollege
-  //   }));
-  // };
+  const [isStrength, setStrength] = useState(null);
+  const dataHandler = async (childData) => {
+    setStrength(childData);
+  };
+
+  const [isError, setError] = useState(null);
+
+  useEffect(() => {
+    if (password) {
+      setError("Your password is great. Nice work!");
+      let capsCount, smallCount, numberCount, symbolCount;
+      if (password.length < 4) {
+        setError(
+          "Password must be minimum 4 characters include one UPPERCASE, lowercase, number and special character: @$! % * ? &"
+        );
+      } else {
+        capsCount = (password.match(/[A-Z]/g) || []).length;
+        smallCount = (password.match(/[a-z]/g) || []).length;
+        numberCount = (password.match(/[0-9]/g) || []).length;
+        symbolCount = (password.match(/\W/g) || []).length;
+        if (capsCount < 1) {
+          setError("Must contain one UPPERCASE letter");
+        } else if (smallCount < 1) {
+          setError("Must contain one lowercase letter");
+        } else if (numberCount < 1) {
+          setError("Must contain one number");
+        } else if (symbolCount < 1) {
+          setError("Must contain one special character: @$! % * ? &");
+        } 
+      }
+    }
+  }, [password]);
 
   return (
     <div>
-      <div className="font-switzer text-tblack bg-white rounded-md ">
+      <div className="font-switzer text-tblack bg-white rounded-md">
         <form className="p-8" onSubmit={handleSubmit}>
           <div className="pb-4">
-            <h3 className="font-semibold  text-h3">How you&apos;ll sign in</h3>
+            <h3 className="font-semibold text-h3">How you&apos;ll sign in</h3>
             <p className="font-normal text-h2">
               You&apos;ll use your username to sign into your Audease Workspace
-              account and create your employers account.
+              account and create your employer&apos;s account.
             </p>
           </div>
-          {/* Input fields  */}
+          {/* Input fields */}
           <div className="mt-4 space-y-6">
             <div className="flex flex-row space-x-4">
               <input
@@ -70,6 +95,7 @@ export default function Form3({
               />
               <p className="py-2">.admin</p>
             </div>
+            {/* Password */}
             <input
               type="password"
               name="password"
@@ -80,18 +106,26 @@ export default function Form3({
               placeholder="Password"
               onChange={handleChange}
             />
+            <div>
             <input
               type="password"
               name="confirmPassword"
-              className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+              className={`border rounded-md p-2 text-h2 mb-0 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
                 confirmPassword ? "bg-gray-100" : ""
               }`}
               value={confirmPassword}
               placeholder="Confirm Password"
               onChange={handleChange}
             />
+            <PasswordStrengthMeter
+              password={password}
+              actions={dataHandler}
+              errorMessage={isError}
+            />
+            </div>
+            
           </div>
-          {/* agreement  */}
+          {/* Agreement */}
           <div className="font-normal py-4 text-h6 text-tgrey1">
             <label className="flex flex-row space-x-4">
               <input
@@ -101,15 +135,15 @@ export default function Form3({
                 className="bg-red-500"
               />
               <p>
-                By clicking Create account, I agree that I have read and accepted
-                the Terms of Use and Privacy Policy.
+                By clicking Create account, I agree that I have read and
+                accepted the Terms of Use and Privacy Policy.
               </p>
             </label>
           </div>
 
           <Button buttonText={`Agree and Continue`} className={`mt-6`} />
         </form>
-        <hr className="border-2 border-tgrey2 " />
+        <hr className="border-2 border-tgrey2" />
         <div className="py-4 px-6">
           <p className="font-normal text-xs text-tgrey1">
             Protected by reCAPTCHA and subject to the Rhombus
@@ -120,7 +154,11 @@ export default function Form3({
           </p>
         </div>
       </div>
-      <BackButton buttonText={`Go back`} className={`bg-deepGrey mt-4`} onClick={handleBackClick} />
+      <BackButton
+        buttonText={`Go back`}
+        className={`bg-deepGrey mt-4`}
+        onClick={handleBackClick}
+      />
     </div>
   );
 }

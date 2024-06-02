@@ -123,6 +123,7 @@ export default function Form2({
                 className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full bg-white focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
                   selectedCounty ? "bg-gray-100" : ""
                 }`}
+                required
               >
                 <option value="">County</option>
                 {counties.counties.map((county) => (

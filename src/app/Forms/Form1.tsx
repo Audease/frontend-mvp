@@ -3,7 +3,6 @@ import axios from "axios";
 import Button from "../components/button";
 import Link from "next/link";
 
-
 /**
  * Form1 Component
  *
@@ -101,50 +100,36 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
             required
           />
           <div className="flex flex-row my-4 space-x-4">
+          <input
+            type="number"
+            name="noOfEmployee"
+            className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+              noOfEmployee ? "bg-gray-100" : ""
+            }`}
+            value={noOfEmployee}
+            placeholder="No of Employees"
+            onChange={handleChange}
+            required
+          />
+
             <div className="">
               <select
-                name="noOfEmployee"
-                id="employee"
-                value={noOfEmployee}
+                name="selectedCountry"
+                id="selectedCountry"
+                value={selectedCountry}
                 onChange={handleChange}
-                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] bg-white focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
-                  noOfEmployee ? "bg-gray-100" : ""
+                className={`border rounded-md p-[0.6rem] text-h2 text-tgrey1 font-normal w-[10rem] bg-white focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                  selectedCountry ? "bg-gray-100" : ""
                 }`}
                 required
               >
-                <option value="">No of Employees</option>
-                {[
-                  "1 - 50",
-                  "51 - 100",
-                  "101 - 500",
-                  "501 - 1000",
-                  "Above 1000",
-                ].map((employeeNo, index) => (
-                  <option key={index} value={employeeNo}>
-                    {employeeNo}
+                <option value="Country" >Country</option>
+                {countries.map((country) => (
+                  <option key={country.cca2} value={country.name.common}>
+                    {country.name.common}
                   </option>
                 ))}
               </select>
-            </div>
-            <div className="">
-              <div className="">
-                <select
-                  name="selectedCountry"
-                  id="country"
-                  value={selectedCountry}
-                  onChange={handleChange}
-                  className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] bg-white focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
-                    selectedCountry ? "bg-gray-100" : ""
-                  }`}
-                >
-                  <option value="Country">Country</option>
-                  {countries.map((country) => (
-                    <option key={country.cca2} value={country.name.common}>
-                      {country.name.common}
-                    </option>
-                  ))}
-                </select>
-              </div>
             </div>
           </div>
           <input
@@ -183,7 +168,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
             />
           </div>
           <input
-            type="text"
+            type="email"
             name="email"
             className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
               email ? "bg-gray-100" : ""
@@ -206,8 +191,6 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
           </span>
         </p>
       </div>
-
-      
     </div>
   );
 }

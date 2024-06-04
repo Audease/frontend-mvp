@@ -12,7 +12,6 @@ export default function Form3({
   userCollege,
 }) {
   const { userName, password, confirmPassword } = formData;
-
   const [filledCollege, setFilledCollege] = useState(userCollege);
 
   const handleChange = (e) => {

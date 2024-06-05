@@ -2,6 +2,7 @@ import Button from "../components/button";
 import { BackButton } from "../components/button";
 import { useState, useEffect } from "react";
 import PasswordStrengthMeter from "../password-meter/PasswordStrengthMeter";
+import Image from "next/image";
 
 export default function Form3({
   formData,
@@ -11,7 +12,6 @@ export default function Form3({
   userCollege,
 }) {
   const { userName, password, confirmPassword } = formData;
-
   const [filledCollege, setFilledCollege] = useState(userCollege);
 
   const handleChange = (e) => {
@@ -54,10 +54,18 @@ export default function Form3({
           setError("Must contain one number");
         } else if (symbolCount < 1) {
           setError("Must contain one special character: @$! % * ? &");
-        } 
+        }
       }
     }
   }, [password]);
+
+  const [passwordToggle, setPasswordToggle] = useState("password");
+
+  const eyeClick = () => {
+    setPasswordToggle((prevState) =>
+      prevState === "password" ? "text" : "password"
+    );
+  };
 
   return (
     <div>
@@ -96,34 +104,79 @@ export default function Form3({
               <p className="py-2">.admin</p>
             </div>
             {/* Password */}
-            <input
-              type="password"
-              name="password"
-              className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
-                password ? "bg-gray-100" : ""
-              }`}
-              value={password}
-              placeholder="Password"
-              onChange={handleChange}
-            />
-            <div>
-            <input
-              type="password"
-              name="confirmPassword"
-              className={`border rounded-md p-2 text-h2 mb-0 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
-                confirmPassword ? "bg-gray-100" : ""
-              }`}
-              value={confirmPassword}
-              placeholder="Confirm Password"
-              onChange={handleChange}
-            />
-            <PasswordStrengthMeter
-              password={password}
-              actions={dataHandler}
-              errorMessage={isError}
-            />
+            <div
+              style={{ position: "relative", display: "inline-flex" }}
+              className="mt-4 w-full"
+            >
+              <input
+                type={passwordToggle}
+                name="password"
+                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                  password ? "bg-gray-100" : ""
+                }`}
+                value={password}
+                placeholder="Password"
+                onChange={handleChange}
+              />
+              <span
+                style={{
+                  position: "absolute",
+                  right: "15px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                }}
+              >
+                <Image
+                  src="/eye.png"
+                  width={12}
+                  height={12}
+                  className="hover:bg-gray-100"
+                  alt="audease logo"
+                  onClick={eyeClick}
+                ></Image>
+              </span>
             </div>
-            
+            <div>
+              <div
+                style={{ position: "relative", display: "inline-flex" }}
+                className="w-full"
+              >
+                <input
+                  type={passwordToggle}
+                  name="confirmPassword"
+                  className={`border rounded-md p-2 text-h2 mb-0 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                    confirmPassword ? "bg-gray-100" : ""
+                  }`}
+                  value={confirmPassword}
+                  placeholder="Confirm Password"
+                  onChange={handleChange}
+                />
+
+                <span
+                  style={{
+                    position: "absolute",
+                    right: "15px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                  }}
+                >
+                  <Image
+                    src="/eye.png"
+                    width={12}
+                    height={12}
+                    className="hover:bg-gray-100"
+                    alt="audease logo"
+                    onClick={eyeClick}
+                  ></Image>
+                </span>
+              </div>
+
+              <PasswordStrengthMeter
+                password={password}
+                actions={dataHandler}
+                errorMessage={isError}
+              />
+            </div>
           </div>
           {/* Agreement */}
           <div className="font-normal py-4 text-h6 text-tgrey1">

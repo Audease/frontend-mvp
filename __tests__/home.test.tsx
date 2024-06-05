@@ -1,17 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Home from '../src/app/page';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { NextRouter } from 'next/router';
 
 
-// import userEvent from '@testing-library/user-event';
-// import { useRouter } from 'next/router';
-
-
-
-// // Mock the Next.js router
+// Mock the Next.js router
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),
 }));

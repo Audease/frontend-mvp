@@ -55,7 +55,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
         );
         setCountries(unitedKingdom ? [unitedKingdom] : []);
       } catch (error) {
-        console.error("Error fetching countries:", error);
+        // console.error("Error fetching countries:", error);
       }
     };
     fetchCountries();

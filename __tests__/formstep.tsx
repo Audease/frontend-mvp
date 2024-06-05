@@ -1,6 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { useRouter } from 'next/navigation';
-import FormStep from '../src/app/components/FormStep'; // Adjust the path to your FormStep component
+import FormStep from '../src/app/components/FormStep';
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
@@ -50,10 +49,6 @@ jest.mock('../src/app/Forms/Form3', () => jest.fn(({ formData, setFormData, hand
 describe('FormStep Component', () => {
   const push = jest.fn();
 
-  beforeEach(() => {
-    useRouter.mockReturnValue({ push });
-    localStorage.clear();
-  });
 
   test('renders Form1 initially', () => {
     render(<FormStep />);
@@ -89,40 +84,4 @@ describe('FormStep Component', () => {
 
     expect(screen.getByPlaceholderText('Username')).toBeInTheDocument();
   });
-
-//   test('submits form and navigates to /verifyEmail on Form3 submit', () => {
-//     render(<FormStep />);
-
-//     fireEvent.click(screen.getByText('Next')); // Go to Form2
-//     fireEvent.click(screen.getByText('Next')); // Go to Form3
-
-//     fireEvent.change(screen.getByPlaceholderText('College'), { target: { value: 'Harvard' } });
-//     fireEvent.change(screen.getByPlaceholderText('City'), { target: { value: 'Boston' } });
-//     fireEvent.change(screen.getByPlaceholderText('Username'), { target: { value: 'johndoe' } });
-
-//     fireEvent.click(screen.getByText('Submit'));
-
-//     const savedData = JSON.parse(localStorage.getItem('formData'));
-//     expect(savedData).toEqual({
-//       college: 'Harvard',
-//       bussinessNo: '',
-//       firstName: '',
-//       lastName: '',
-//       email: '',
-//       noOfEmployee: '',
-//       selectedCountry: '',
-//       streetAddress: '',
-//       streetAddress2: '',
-//       city: 'Boston',
-//       postCode: '',
-//       selectedCounty: '',
-//       phoneNumber: '',
-//       userName: 'johndoe',
-//       password: '',
-//       confirmPassword: '',
-//       userCollege: 'Harvard',
-//     });
-
-//     expect(push).toHaveBeenCalledWith('/verifyEmail');
-//   });
 });

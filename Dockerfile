@@ -13,6 +13,7 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+<<<<<<< HEAD
 EXPOSE 3000# Base image
 FROM node:20
 
@@ -33,3 +34,6 @@ RUN npm run build
 EXPOSE 3000
 
 CMD ["next", "start"]
+=======
+EXPOSE 3000
+>>>>>>> 6abe268a242e701341a6e5b4dedeeff69636f1e7

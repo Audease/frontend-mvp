@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -6,9 +6,15 @@ import Button from "../components/button";
 import { useState } from "react";
 
 export default function SignIn() {
+  const [Email, setEmail] = useState("");
+  const [Password, setPassword] = useState("");
+  const [passwordToggle, setPasswordToggle] = useState("password");
 
-  const [Email, setEmail] = useState("")
-  const [Password, setPassword] = useState("")
+  const eyeClick = () => {
+    setPasswordToggle((prevState) =>
+      prevState === "password" ? "text" : "password"
+    );
+  };
 
   return (
     <div className="font-switzer bg-bgDefault p-6  h-full lg:h-screen lg:w-full lg:m-auto lg:items-center lg:flex lg:justify-center">
@@ -44,17 +50,18 @@ export default function SignIn() {
             <div>
               <h1 className="text-base font-semibold">Sign in</h1>
               <p className="text-h5 font-normal pt-2 ">
-                Don’t have an account?
+                Don’t have an account?{" "}
                 <span className="font-semibold">Sign Up</span>
               </p>
             </div>
             <div className="my-4 text-h5 font-normal">
               <input
                 type="email"
-                className={`border border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
                   Email ? "bg-gray-100" : ""
                 }`}
                 placeholder="Email address"
+                required
               />
 
               <div
@@ -62,7 +69,7 @@ export default function SignIn() {
                 className="mt-4 w-full"
               >
                 <input
-                  type="password"
+                  type={passwordToggle}
                   className={`border border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
                     Password ? "bg-gray-100" : ""
                   }`}
@@ -71,7 +78,7 @@ export default function SignIn() {
                 <span
                   style={{
                     position: "absolute",
-                    right: "10px",
+                    right: "15px",
                     top: "50%",
                     transform: "translateY(-50%)",
                   }}
@@ -80,22 +87,17 @@ export default function SignIn() {
                     src="/eye.png"
                     width={12}
                     height={12}
-                    className=""
+                    className="hover:bg-gray-100"
                     alt="audease logo"
+                    onClick={eyeClick}
                   ></Image>
                 </span>
               </div>
             </div>
-                
+
             <div className="text-h5 text-link1 font-normal my-4">
-            <Link
-              href={"/forgotPassword"}
-              
-            >
-              Forgot password?
-            </Link>
+              <Link href={"/forgotPassword"}>Forgot password?</Link>
             </div>
-           
 
             {/* Submit button  */}
             <Button buttonText={"Sign In"} className={""} />
@@ -110,8 +112,6 @@ export default function SignIn() {
             {/* Social links  */}
             <div className="flex flex-row justify-between md:justify-evenly md:space-x-8 ">
               <button className="border-2 rounded-md p-2 text-h5 font-semibold flex flex-row items-center justify-center md:px-6 lg:w-full">
-               
-
                 <Image
                   src="/google-logo.svg"
                   width={12}

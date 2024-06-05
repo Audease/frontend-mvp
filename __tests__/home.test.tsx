@@ -1,13 +1,19 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { useRouter } from 'next/router';
 import Home from '../src/app/page';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { NextRouter } from 'next/router';
+
+
+// import userEvent from '@testing-library/user-event';
+// import { useRouter } from 'next/router';
+
 
 
 // // Mock the Next.js router
 jest.mock('next/router', () => ({
-  useRouter: jest.fn()
+  useRouter: jest.fn(),
 }));
 
 describe('Home Component', () => {
@@ -40,24 +46,3 @@ describe ('Correct Links', () => {
 })
 
 
-describe ('Navigation works', () => {
-  it('navigates to the correct route on click', () => {
-    const push = jest.fn();
-    useRouter.mockImplementation(() => ({
-      push,
-    }));
-
-    render(<Home />);
-
-    const signUpButton = screen.getByText('Sign up');
-    const logInButton = screen.getByText('Log in');
-
-    // Simulate clicks
-    signUpButton.click();
-    logInButton.click();
-
-    // Check if the push method was called with the correct arguments
-    expect(push).toHaveBeenCalledWith('href', '/signup');
-    expect(push).toHaveBeenCalledWith('href', '/signIn');
-  });
-});

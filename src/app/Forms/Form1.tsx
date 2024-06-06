@@ -90,7 +90,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
         <div className="mt-4">
           <input
             type="text"
-            name="College"
+            name="college"
             className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
               college ? "bg-gray-100" : ""
             }`}

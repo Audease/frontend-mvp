@@ -8,17 +8,13 @@ export default function Dashboard() {
   const [firstName, setFirstName] = useState("Nyekachi");
   return (
     <div>
-      {/* Navigation */}
-      <div className="border-b-2">
-        <Navbar />
-      </div>
       {/* Body section  */}
-      <div>
+      <div className="flex flex-row space-x-10">
         {/* left side  */}
-        <div className="flex flex-col">
+        <div className="flex flex-col w-3/4">
           {/* Welcome  */}
-          <div className="flex flex-row">
-            <div className="font-inter">
+          <div className="flex flex-row justify-between">
+            <div className="font-inter space-y-2">
               <h3 className="font-medium text-black text-2xl">
                 Welcome back, {firstName}
               </h3>
@@ -26,7 +22,7 @@ export default function Dashboard() {
                 You&apos;re on free trial
               </p>
             </div>
-            <div>
+            <div className="mt-2">
               <Button buttonText={"Upgrade"} className={""} />
             </div>
           </div>
@@ -36,7 +32,9 @@ export default function Dashboard() {
           </div>
         </div>
         {/* right side  */}
-        <div></div>
+        <div className="w-1/5">
+          Here is the right side
+        </div>
       </div>
     </div>
   );

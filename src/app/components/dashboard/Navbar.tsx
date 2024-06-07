@@ -4,7 +4,7 @@ import NavLinks from "./NavLinks";
 
 export default function Navbar() {
   return (
-    <div className="flex flex-row space-x-32 mx-10 py-4">
+    <div className="flex flex-row space-x-24 mx-10 py-4">
       {/* Logo  */}
       <div className="">
         <Link href={"/"}>

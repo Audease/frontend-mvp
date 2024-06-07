@@ -22,7 +22,7 @@ export default function NavLinks() {
           <Link
             key={link.name}
             href={link.href}
-            className={clsx("font-inter font-medium flex flex-row text-h2 text-tgrey3 space-x-10 rounded p-1", {
+            className={clsx("font-inter font-medium flex flex-row text-h2 text-tgrey3 space-x-2 rounded pt-1 pb-1 px-2", {
               "bg-tgrey4": pathname === link.href,
             })}
           >

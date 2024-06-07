@@ -24,6 +24,8 @@ module.exports = {
         'tgrey3': '#5C5F62',
         'tgrey4': '#EDEDED',
         'profilebg': '#EBDDCA',
+        'dashboardButtons': '#F9A22B',
+        'dashboardButtonsBg':'#FDF5E9',
       },
 
       fontSize: {

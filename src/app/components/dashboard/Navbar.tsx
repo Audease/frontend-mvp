@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import NavLinks from "./NavLinks";
 
 export default function Navbar() {
   return (
@@ -19,16 +20,8 @@ export default function Navbar() {
       {/* Others  */}
       <div className="flex flex-row space-x-8">
         {/* Links  */}
-        <div className="font-inter font-medium flex flex-row text-h2 text-tgrey3 space-x-10 py-2">
-          <Link href={"#"}>Apps/Roles</Link>
-          <Link href={"#"}>Resources</Link>
-          <Link href={"#"}>Messenger</Link>
-          <Link href={"#"}>Learners</Link>
-          <Link href={"#"}>Staff</Link>
-          <Link href={"#"}>Workflows</Link>
-        </div>
+        <NavLinks />
         {/* search field */}
-        {/* Search bar */}
         <div className="relative">
           <input
             type="text"

@@ -72,10 +72,11 @@ export default function Form3({
       <div className="font-switzer text-tblack bg-white rounded-md">
         <form className="p-8" onSubmit={handleSubmit}>
           <div className="pb-4">
-            <h3 className="font-semibold text-h3">How you&apos;ll sign in</h3>
+            <h3 className="font-semibold text-h3">Create Your Audease Account</h3>
             <p className="font-normal text-h2">
-              You&apos;ll use your username to sign into your Audease Workspace
-              account and create your employer&apos;s account.
+              {/* You&apos;ll use your username to sign into your Audease Workspace
+              account and create your employer&apos;s account. */}
+              Complete the form to create your Audease account.
             </p>
           </div>
           {/* Input fields */}

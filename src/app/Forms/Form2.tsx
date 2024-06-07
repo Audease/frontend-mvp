@@ -94,7 +94,7 @@ export default function Form2({
             />
             <input
               type="text"
-              name="City"
+              name="city"
               className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
                 city ? "bg-gray-100" : ""
               }`}

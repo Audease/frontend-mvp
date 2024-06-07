@@ -21,7 +21,9 @@ module.exports = {
         'link1': '#775DA6',
         'tgrey2': '#DCDCDC',
         'deepGrey': '#615F65',
-
+        'tgrey3': '#5C5F62',
+        'tgrey4': '#EDEDED',
+        'profilebg': '#EBDDCA',
       },
 
       fontSize: {

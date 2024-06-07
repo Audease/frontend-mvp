@@ -39,8 +39,8 @@ export default function SignIn() {
               Welcome back to Audease
             </h6>
             <p className="font-normal text-h4 text-tblack2 py-2 lg:text-h2 ">
-              We are lorem ipsum team dolor sit amet, cons adipiscing elit, sed
-              do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Welcome back! Access your account to manage students effortlessly
+              and stay organized.
             </p>
           </div>
         </div>

@@ -9,12 +9,58 @@ export default function SignIn() {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [passwordToggle, setPasswordToggle] = useState("password");
+  const [error, setError] = useState(null);
 
   const eyeClick = () => {
     setPasswordToggle((prevState) =>
       prevState === "password" ? "text" : "password"
     );
   };
+
+  const onEmailChange = (e) => {
+    setEmail(e.target.value)
+  }
+
+  const onPasswordChange = (e) => {
+    setPassword(e.target.value)
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      username: Email,
+      password : Password,
+    };
+
+    console.log('Submitting payload:', payload);
+
+    try {
+      const response = await fetch('https://audease-dev.onrender.com/v1/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Handle successful login
+        console.log('Login successful:', data);
+        // For example, you could redirect the user or save the token
+      } else {
+        // Handle login failure
+        console.error('Login failed:', data);
+        setError(data.message || 'Login failed');
+      }
+      } catch (error) {
+        console.error('An error occured:', error)
+        setError('An error occurred. Please try again.');
+      }
+    }
+  
 
   return (
     <div className="font-switzer bg-bgDefault p-6  h-full lg:h-screen lg:w-full lg:m-auto lg:items-center lg:flex lg:justify-center">
@@ -46,7 +92,7 @@ export default function SignIn() {
         </div>
         <div>
           {/* Form  */}
-          <form className="text-tblack bg-white rounded-md mb-2 my-2 mx-10 p-4 md:max-w-72 lg:max-w-72	lg:m-10 xl:max-w-80 lg:px-10">
+          <form className="text-tblack bg-white rounded-md mb-2 my-2 mx-10 p-4 md:max-w-72 lg:max-w-72	lg:m-10 xl:max-w-80 lg:px-10" onSubmit={ handleSubmit }>
             <div>
               <h1 className="text-base font-semibold">Sign in</h1>
               <p className="text-h5 font-normal pt-2 ">
@@ -56,11 +102,12 @@ export default function SignIn() {
             </div>
             <div className="my-4 text-h5 font-normal">
               <input
-                type="email"
+                type="text"
                 className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
                   Email ? "bg-gray-100" : ""
                 }`}
                 placeholder="Email address"
+                onChange={onEmailChange}
                 required
               />
 
@@ -74,6 +121,8 @@ export default function SignIn() {
                     Password ? "bg-gray-100" : ""
                   }`}
                   placeholder="Password"
+                  onChange={onPasswordChange}
+                  required
                 />
                 <span
                   style={{
@@ -101,6 +150,7 @@ export default function SignIn() {
 
             {/* Submit button  */}
             <Button buttonText={"Sign In"} className={""} />
+            {error && <p>{error}</p>}
 
             {/* Separator  */}
             <div className="flex items-center py-4">

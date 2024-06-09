@@ -84,7 +84,7 @@ export default function SignIn() {
               Welcome back to Audease
             </h6>
             <p className="font-normal text-h4 text-tblack2 py-2 lg:text-h2">
-              Welcome back! Access your account to manage students effortlessly
+              Welcome back! Access your account to manage your data effortlessly
               and stay organized.
             </p>
           </div>

@@ -17,7 +17,7 @@ export default function VerifyEmail() {
 
   return (
     <div className="font-switzer flex bg-bgDefault m-auto items-center justify-center space-x-24">
-      <WelcomeBack boldText={"Welcome to Audease"} smallText={"Audease streamlines your college’s admissions and auditing processes, ensuring a secure and efficient management system for all your student data needs."}/>
+      <WelcomeBack boldText={"Welcome to Audease"} smallText={"Audease streamlines your college’s administrative and auditing processes, ensuring a secure and efficient management system for all your  data needs."}/>
 
       <div className="text-tblack bg-white rounded-md w-96">
         <form className="p-8" onSubmit={toVerified}>

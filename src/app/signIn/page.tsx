@@ -13,12 +13,16 @@ export default function SignIn() {
   const [passwordToggle, setPasswordToggle] = useState("password");
   const [error, setError] = useState(null);
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
 
   const handleEyeClick = () => {
     setPasswordToggle((prevState) =>
       prevState === "password" ? "text" : "password"
     );
   };
+
+    
 
   const handleEmailChange = ({ target: { value } }) => {
     setEmail(value);
@@ -30,14 +34,14 @@ export default function SignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const payload = {
       username: email,
       password: password,
     };
 
-    console.log("Submitting payload:", payload);
-
+    // console.log("Submitting payload:", payload);
     try {
       const response = await axios.post(
         "https://audease-dev.onrender.com/v1/auth/login",
@@ -59,6 +63,8 @@ export default function SignIn() {
     } catch (error) {
       console.error("An error occurred:", error);
       setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -151,7 +157,7 @@ export default function SignIn() {
             </div>
 
             {/* Submit button */}
-            <Button buttonText="Sign In" className="" />
+            <Button buttonText={loading ? "Signing In..." : "Sign In"} className="" />
             {error && <p className="text-red-500 mt-2">{error}</p>}
 
             {/* Separator */}

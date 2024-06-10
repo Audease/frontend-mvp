@@ -89,11 +89,12 @@ export default function SignIn() {
             </p>
           </div>
         </div>
-        <div>
+        <div className="">
           {/* Form */}
           <form
-            className="text-tblack bg-white rounded-md mb-2 my-2 mx-10 p-4 md:max-w-72 lg:max-w-72 lg:m-10 xl:max-w-80 lg:px-10"
+            className="text-tblack bg-white rounded-md mb-2 my-2 mx-10 p-4 md:max-w-72 lg:max-w-[22rem]"
             onSubmit={handleSubmit}
+            autoComplete="on"
           >
             <div>
               <h1 className="text-base font-semibold">Sign in</h1>
@@ -107,6 +108,7 @@ export default function SignIn() {
             <div className="my-4 text-h5 font-normal">
               <input
                 type="text"
+                name="username"
                 className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
                   email ? "bg-gray-100" : ""
                 }`}
@@ -119,6 +121,7 @@ export default function SignIn() {
               <div className="relative mt-4 w-full">
                 <input
                   type={passwordToggle}
+                  name="password"
                   className={`border border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
                     password ? "bg-gray-100" : ""
                   }`}

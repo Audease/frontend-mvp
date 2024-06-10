@@ -4,147 +4,217 @@ import Image from "next/image";
 import Link from "next/link";
 import Button from "../components/button";
 import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
-  const [Email, setEmail] = useState("");
-  const [Password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [passwordToggle, setPasswordToggle] = useState("password");
+  const [error, setError] = useState(null);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
-  const eyeClick = () => {
+
+  const handleEyeClick = () => {
     setPasswordToggle((prevState) =>
       prevState === "password" ? "text" : "password"
     );
   };
 
+    
+
+  const handleEmailChange = ({ target: { value } }) => {
+    setEmail(value);
+  };
+
+  const handlePasswordChange = ({ target: { value } }) => {
+    setPassword(value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const payload = {
+      username: email,
+      password: password,
+    };
+
+    // console.log("Submitting payload:", payload);
+    try {
+      const response = await axios.post(
+        "https://audease-dev.onrender.com/v1/auth/login",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Login successful:", response.data);
+        router.push('/dashboard')
+      } else {
+        console.error("Login failed:", response.data);
+        setError(response.data.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false)
+    }
+  };
+
   return (
-    <div className="font-switzer bg-bgDefault p-6  h-full lg:h-screen lg:w-full lg:m-auto lg:items-center lg:flex lg:justify-center">
+    <div className="font-switzer bg-bgDefault p-6 h-full lg:h-screen lg:w-full lg:m-auto lg:items-center lg:flex lg:justify-center">
       <div className="flex flex-col items-center p-8 lg:flex lg:flex-row lg:space-x-12">
         <div className="lg:max-h-80 lg:max-w-80 lg:m-10">
-          {/* audease logo */}
+          {/* Audease logo */}
           <div className="flex flex-row justify-center pt-4 md:py-8 lg:justify-start">
             <Link href="/">
               <Image
                 src="/audease_logo.png"
                 width={132}
                 height={37}
-                className=""
-                alt="audease logo"
-              ></Image>
+                alt="Audease logo"
+              />
             </Link>
           </div>
 
-          {/* Welcome section  */}
+          {/* Welcome section */}
           <div className="flex flex-col items-center text-center p-2 md:max-w-72 lg:text-left lg:p-0">
             <h6 className="text-deepGrey text-h3 font-semibold py-2 lg:text-h1">
               Welcome back to Audease
             </h6>
-            <p className="font-normal text-h4 text-tblack2 py-2 lg:text-h2 ">
-              Welcome back! Access your account to manage students effortlessly
+            <p className="font-normal text-h4 text-tblack2 py-2 lg:text-h2">
+              Welcome back! Access your account to manage your data effortlessly
               and stay organized.
             </p>
           </div>
         </div>
-        <div>
-          {/* Form  */}
-          <form className="text-tblack bg-white rounded-md mb-2 my-2 mx-10 p-4 md:max-w-72 lg:max-w-72	lg:m-10 xl:max-w-80 lg:px-10">
+        <div className="">
+          {/* Form */}
+          <form
+            className="text-tblack bg-white rounded-md mb-2 my-2 mx-10 p-4 md:max-w-72 lg:max-w-[22rem]"
+            onSubmit={handleSubmit}
+            autoComplete="on"
+          >
             <div>
               <h1 className="text-base font-semibold">Sign in</h1>
-              <p className="text-h5 font-normal pt-2 ">
+              <p className="text-h5 font-normal pt-2">
                 Don’t have an account?{" "}
-                <span className="font-semibold">Sign Up</span>
+                <Link href="/signup" className="font-semibold">
+                  Sign Up
+                </Link>
               </p>
             </div>
             <div className="my-4 text-h5 font-normal">
               <input
-                type="email"
+                type="text"
+                name="username"
                 className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
-                  Email ? "bg-gray-100" : ""
+                  email ? "bg-gray-100" : ""
                 }`}
                 placeholder="Email address"
+                onChange={handleEmailChange}
                 required
+                aria-label="Email address"
               />
 
-              <div
-                style={{ position: "relative", display: "inline-flex" }}
-                className="mt-4 w-full"
-              >
+              <div className="relative mt-4 w-full">
                 <input
                   type={passwordToggle}
+                  name="password"
                   className={`border border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
-                    Password ? "bg-gray-100" : ""
+                    password ? "bg-gray-100" : ""
                   }`}
                   placeholder="Password"
+                  onChange={handlePasswordChange}
+                  required
+                  aria-label="Password"
                 />
-                <span
-                  style={{
-                    position: "absolute",
-                    right: "15px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                  }}
+                <button
+                  type="button"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2"
+                  onClick={handleEyeClick}
+                  aria-label="Toggle password visibility"
                 >
                   <Image
                     src="/eye.png"
-                    width={12}
-                    height={12}
-                    className="hover:bg-gray-100"
-                    alt="audease logo"
-                    onClick={eyeClick}
-                  ></Image>
-                </span>
+                    width={16}
+                    height={16}
+                    alt="Toggle visibility"
+                  />
+                </button>
               </div>
             </div>
 
             <div className="text-h5 text-link1 font-normal my-4">
-              <Link href={"/forgotPassword"}>Forgot password?</Link>
+              <Link href="/forgotPassword">Forgot password?</Link>
             </div>
 
-            {/* Submit button  */}
-            <Button buttonText={"Sign In"} className={""} />
+            {/* Submit button */}
+            <Button buttonText={loading ? "Signing In..." : "Sign In"} className="" />
+            {error && <p className="text-red-500 mt-2">{error}</p>}
 
-            {/* Separator  */}
+            {/* Separator */}
             <div className="flex items-center py-4">
               <div className="border-t border-borderColor flex-grow"></div>
               <div className="mx-2 text-base text-tgrey1">or</div>
               <div className="border-t border-borderColor flex-grow"></div>
             </div>
 
-            {/* Social links  */}
-            <div className="flex flex-row justify-between md:justify-evenly md:space-x-8 ">
-              <button className="border-2 rounded-md p-2 text-h5 font-semibold flex flex-row items-center justify-center md:px-6 lg:w-full">
+            {/* Social links */}
+            <div className="flex flex-row justify-between md:justify-evenly md:space-x-8">
+              <button
+                type="button"
+                className="border-2 rounded-md p-2 text-h5 font-semibold flex items-center justify-center md:px-6 lg:w-full"
+                aria-label="Sign in with Google"
+              >
                 <Image
                   src="/google-logo.svg"
-                  width={12}
-                  height={12}
-                  className=""
-                  alt="audease logo"
-                ></Image>
-                <p className="pl-2">Google</p>
+                  width={16}
+                  height={16}
+                  alt="Google logo"
+                />
+                <span className="pl-2">Google</span>
               </button>
 
-              <button className="border-2 rounded-lg p-2 text-h5 font-semibold flex flex-row md:px-6 lg:hidden">
+              <button
+                type="button"
+                className="border-2 rounded-lg p-2 text-h5 font-semibold flex items-center md:px-6 lg:hidden"
+                aria-label="Sign in with Facebook"
+              >
                 <Image
                   src="/fb-logo.svg"
-                  width={12}
-                  height={12}
-                  className=""
-                  alt="audease logo"
-                ></Image>
-                <p className="pl-2">Facebook</p>
+                  width={16}
+                  height={16}
+                  alt="Facebook logo"
+                />
+                <span className="pl-2">Facebook</span>
               </button>
             </div>
 
-            {/* Line break  */}
+            {/* Line break */}
             <div className="py-4">
               <hr className="text-borderColor h-2" />
             </div>
 
-            {/* Footer copywright */}
-            <div className="font-inter important">
+            {/* Footer copyright */}
+            <div className="font-inter">
               <h6 className="font-normal text-tgrey1 text-h6">
                 Protected by reCAPTCHA and subject to the Rhombus{" "}
-                <span className="text-link1">Privacy Policy</span> and{" "}
-                <span className="text-link1">Terms of Service.</span>
+                <Link href="/privacy" className="text-link1">
+                  Privacy Policy
+                </Link>{" "}
+                and{" "}
+                <Link href="/terms" className="text-link1">
+                  Terms of Service
+                </Link>
+                .
               </h6>
             </div>
           </form>

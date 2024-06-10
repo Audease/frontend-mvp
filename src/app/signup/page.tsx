@@ -20,7 +20,7 @@ export default function SignUp() {
       <div>
         {/* Text 1  */}
         <div className="my-4">
-          <h3 className="font-semibold text-h1 text-tblack">Transform Your Admissions Process with Audease </h3>
+          <h3 className="font-semibold text-h1 text-tblack">Transform Your Administrative Process with Audease </h3>
           {/* <h3 className="font-semibold text-h1 text-tblack">
             30-Days Trial Now!
           </h3> */}
@@ -32,8 +32,8 @@ export default function SignUp() {
         {/* Text 2  */}
         <div className="my-4">
           {/* first row  */}
-          <div className="flex flex-row space-x-20">
-            <div>
+          <div className="flex flex-row w-full space-x-10">
+            <div className="w-6/12">
               <Image
                 src="/icon1.svg"
                 width={24}
@@ -43,12 +43,12 @@ export default function SignUp() {
               ></Image>
               <h5 className="font-semibold text-tblack"> Secure & Reliable </h5>
               <p className="font-normal text-h2 text-tblack2">
-              Protect student data with advanced security measures
+              Protect your data with advanced security measures
                 {/* No hidden charges, No credit <br />
                 card required */}
               </p>
             </div>
-            <div>
+            <div className="w-6/12">
               <Image
                 src="/icon2.svg"
                 width={24}
@@ -59,13 +59,13 @@ export default function SignUp() {
               <h5 className="font-semibold text-tblack"> Effortless Management </h5>
               <p className="font-normal text-h2 text-tblack2 ">
                 {/* Get access instantly, no <br /> downloads required */}
-                Streamline student admissions and auditing processes
+                Streamline admissions and auditing processes
               </p>
             </div>
           </div>
           {/* Second row  */}
-          <div className="flex flex-row my-4 space-x-28">
-            <div className="">
+          <div className="flex flex-row my-4 w-full space-x-10">
+            <div className="w-6/12">
               <Image
                 src="/icon3.png"
                 width={24}
@@ -78,7 +78,7 @@ export default function SignUp() {
               Tailor features to meet your college’s unique needs
               </p>
             </div>
-            <div>
+            <div className="w-6/12">
               <Image
                 src="/icon4.svg"
                 width={24}

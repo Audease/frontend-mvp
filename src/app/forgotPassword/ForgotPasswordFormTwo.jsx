@@ -44,9 +44,16 @@ export default function ForgotPasswordFormTwo() {
   };
 
   const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace" && inputData[index] === "") {
-      // Move to the previous input field if Backspace is pressed and the current field is empty
-      if (index > 0) {
+    if (e.key === "Backspace") {
+      if (inputData[index] !== "") {
+        // Clear the current field
+        setInputData((prevInputData) => {
+          const newInputData = [...prevInputData];
+          newInputData[index] = "";
+          return newInputData;
+        });
+      } else if (index > 0) {
+        // Move to the previous input field if the current field is empty
         inputRefs.current[index - 1].focus();
       }
     }

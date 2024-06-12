@@ -2,12 +2,20 @@
 
 import WelcomeBack from "../components/WelcomeBack";
 import Button from "../components/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function VerifyEmail() {
-  const [userEmail, setUserEmail] = useState("nyekachi@audease.co.uk")
+  const [userEmail, setUserEmail] = useState("")
   const router = useRouter();
+
+  useEffect(() => {
+    const registeredEmail = JSON.parse(localStorage.getItem("formData"));
+    console.log(registeredEmail)
+    if (registeredEmail && registeredEmail.email) {
+      setUserEmail(registeredEmail.email);
+    }
+  }, []);
 
   const toVerified = (e) => {
     // Programmatically navigate to verifyEmail

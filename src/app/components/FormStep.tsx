@@ -33,13 +33,16 @@ export default function FormStep() {
     userName: "",
     password: "",
     confirmPassword: "",
-    userCollege: "",
+    userCollege: form1Data.college,
+    filledCollege:"",
   });
 
   const router = useRouter();
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const userLoginName = `${form3Data.userName}@${form3Data.filledCollege}.admin`
     if (currentStep === 3) {
       const newUser = {
         college_name: form1Data.college,
@@ -55,18 +58,18 @@ export default function FormStep() {
         city: form2Data.city,
         post_code: form2Data.postCode,
         state: form2Data.selectedCounty,
+        userName: userLoginName,
+        password: form3Data.password,
       };
 
-      console.log(newUser)
+      console.log(newUser);
 
-      try {
-        const response = await axios.post('https://audease-dev.onrender.com/v1/auth/create-school', newUser);
-        console.log(response.data);
-        // Programmatically navigate to verifyEmail
-        router.push("/verifyEmail");
-      } catch (error) {
-        console.error("Error creating school:", error);
-      }
+      // Saving data to local storage
+      localStorage.setItem("formData", JSON.stringify(newUser));
+      // Retrieving data from local storage
+      const savedData = JSON.parse(localStorage.getItem("formData"));
+      // Programmatically navigate to verifyEmail
+      router.push("/verifyEmail");
     } else {
       setCurrentStep(currentStep + 1);
     }

@@ -115,7 +115,7 @@ export default function SignIn() {
               <input
                 type="text"
                 name="username"
-                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   email ? "bg-gray-100" : ""
                 }`}
                 placeholder="Email address"
@@ -128,7 +128,7 @@ export default function SignIn() {
                 <input
                   type={passwordToggle}
                   name="password"
-                  className={`border border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                  className={`border border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                     password ? "bg-gray-100" : ""
                   }`}
                   placeholder="Password"

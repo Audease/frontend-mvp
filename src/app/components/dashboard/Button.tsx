@@ -1,5 +1,6 @@
 "use client";
 import { FiPlusCircle } from "react-icons/fi";
+import Image from "next/image";
 
 
 export default function Button({ buttonText, className, arrowDirection }) {
@@ -21,10 +22,14 @@ export default function Button({ buttonText, className, arrowDirection }) {
 export function Type2Button ({leftIcon, buttonText}) {
   return (
     <div>
-      <button className="flex flex-row">
-        <span>{leftIcon}</span>
-        <span> {buttonText} </span>
+      <button className="flex flex-row bg-dashboardRolesBtn p-1 rounded-lg text-white font-inter">
+        <span className="px-3 py-1">
+          <Image src={leftIcon} width={16} height={16} alt="icon"/>
+          </span>
+        <span className="text-base"> {buttonText} </span>
+        <span className="pl-8 pt-1 pr-4">
         <FiPlusCircle />
+        </span>
       </button>
     </div>
   )

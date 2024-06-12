@@ -1,66 +1,132 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import NavLinks from "./NavLinks";
+import { useState, useEffect, useRef } from "react";
 
 export default function Navbar() {
+  const [profileOptions, setProfileOptions] = useState(false);
+  const menuRef = useRef(null);
+
+  const toggleVisibility = () => {
+    setProfileOptions((prevState) => !prevState);
+  };
+
+  const handleClickOutside = (event) => {
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
+      setProfileOptions(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="flex flex-row space-x-24 mx-10 py-4">
-      {/* Logo  */}
-      <div className="">
-        <Link href={"/"}>
+      {/* Logo */}
+      <div>
+        <Link href="/">
           <Image
             src="/audease_logo.png"
             width={112}
             height={30}
-            className=""
-            alt="audease logo"
-          ></Image>
+            alt="Audease logo"
+          />
         </Link>
       </div>
-      {/* Others  */}
+      {/* Navigation and Options */}
       <div className="flex flex-row space-x-8">
-        {/* Links  */}
+        {/* Links */}
         <NavLinks />
-        {/* search field */}
+        {/* Search Field */}
         <div className="relative">
           <input
             type="text"
             placeholder="Search..."
-            className="pl-10 pr-4 py-2 border-none rounded-lg w-72  focus:outline-none focus:border-blue-500 text-tgrey3 bg-tgrey4"
+            className="pl-10 pr-4 py-2 border-none rounded-lg w-72 focus:outline-none focus:border-blue-500 text-tgrey3 bg-tgrey4"
+            aria-label="Search"
           />
           <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-            <Image
-              src="/search.svg"
-              width={15}
-              height={15}
-              className=""
-              alt="search icon"
-            ></Image>
+            <Image src="/search.svg" width={15} height={15} alt="Search icon" />
           </span>
         </div>
-        {/* other options */}
-        <div className="flex flex-row space-x-4 py-1">
-          <div>
+        {/* Profile and Notifications */}
+        <div className="relative flex flex-col" ref={menuRef}>
+          <div className="flex flex-row space-x-4 py-1">
             <Image
               src="/createbutton.png"
               width={30}
               height={30}
-              className=""
-              alt="create button"
-            ></Image>
-          </div>
-          <div>
+              alt="Create button"
+            />
             <Image
               src="/notification.png"
               width={32}
               height={32}
-              className=""
-              alt="create button"
-            ></Image>
+              alt="Notification button"
+            />
+            <div
+              className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center p-2 cursor-pointer"
+              onClick={toggleVisibility}
+              aria-expanded={profileOptions}
+              aria-haspopup="true"
+            >
+              <p className="text-tgrey3 text-h5 font-semibold">N</p>
+            </div>
           </div>
-          <div className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center p-2">
-            <p className="text-tgrey3 text-h5 font-semibold">N</p>
-          </div>
+          {profileOptions && (
+            <div className="absolute top-14 bg-white shadow-lg rounded-lg p-4 font-medium w-48 right-[0rem] space-y-4">
+              {/* My profile  */}
+              <div className="flex flex-row">
+                <div className="w-6 h-6 bg-profilebg rounded-full flex items-center justify-center p-2">
+                  <p className="text-tgrey3 text-h5 font-semibold">N</p>
+                </div>
+                <div>
+                  <p className="px-2 hover:bg-gray-100 text-sm cursor-pointer">
+                    My Profile
+                  </p>
+                </div>
+              </div>
+              {/* Help and support  */}
+              <div className="flex flex-row">
+                <div>
+                  <Image src={"/help.png"} width={20} height={20} alt="Help and Support"/>
+                </div>
+              <div>
+                  <p className="px-3 hover:bg-gray-100 text-sm cursor-pointer">
+                  Help and Support
+                  </p>
+                </div>
+              </div>
+              {/* Invite Friends  */}
+              <div className="flex flex-row">
+                <div>
+                  <Image src={"/friends.png"} width={20} height={20} alt="Help and Support"/>
+                </div>
+              <div>
+                  <p className="px-3 hover:bg-gray-100 text-sm cursor-pointer">
+                  Invite Friends
+                  </p>
+                </div>
+              </div>
+              {/* Logout */}
+              <div className="flex flex-row">
+                <div>
+                  <Image src={"/logout.png"} width={20} height={20} alt="Help and Support"/>
+                </div>
+              <div>
+                  <p className="px-3 hover:bg-gray-100 text-sm cursor-pointer">
+                  Logout
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ module.exports = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/flowbite/**/*.js",
   ],
   theme: {
     extend: {
@@ -23,7 +24,14 @@ module.exports = {
         'deepGrey': '#615F65',
         'tgrey3': '#5C5F62',
         'tgrey4': '#EDEDED',
+        'tgrey5': '#DADADA',
+        'tgrey-6': '#F6F6F6',
         'profilebg': '#EBDDCA',
+        'dashboardButtons': '#F9A22B',
+        'dashboardButtonsBg':'#FDF5E9',
+        'dashboardRolesBtn':'#625F65',
+        'tableText':'#363636',
+        'tableText2':'#575757',
       },
 
       fontSize: {
@@ -36,5 +44,7 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')
+  ],
 };

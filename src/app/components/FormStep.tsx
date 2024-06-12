@@ -5,13 +5,14 @@ import Form1 from "../Forms/Form1";
 import Form2 from "../Forms/Form2";
 import Form3 from "../Forms/Form3";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function FormStep() {
   const [currentStep, setCurrentStep] = useState(1);
 
   const [form1Data, setForm1Data] = useState({
     college: "",
-    bussinessNo: "",
+    businessNo: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -34,23 +35,38 @@ export default function FormStep() {
     confirmPassword: "",
     userCollege: "",
   });
+
   const router = useRouter();
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (currentStep === 3) {
       const newUser = {
-        ...form1Data,
-        ...form2Data,
-        ...form3Data,
+        college_name: form1Data.college,
+        first_name: form1Data.firstName,
+        last_name: form1Data.lastName,
+        email: form1Data.email,
+        phone: form2Data.phoneNumber,
+        no_of_employee: parseInt(form1Data.noOfEmployee),
+        country: form1Data.selectedCountry,
+        business_code: form1Data.businessNo,
+        address_line1: form2Data.streetAddress,
+        address_line2: form2Data.streetAddress2,
+        city: form2Data.city,
+        post_code: form2Data.postCode,
+        state: form2Data.selectedCounty,
       };
-      // console.log(newUser);
-      // Saving data to local storage
-      localStorage.setItem("formData", JSON.stringify(newUser));
-      // Retrieving data from local storage
-      const savedData = JSON.parse(localStorage.getItem("formData"));
-      console.log(savedData)
-      // Programmatically navigate to verifyEmail
-      router.push("/verifyEmail");
+
+      console.log(newUser)
+
+      try {
+        const response = await axios.post('https://audease-dev.onrender.com/v1/auth/create-school', newUser);
+        console.log(response.data);
+        // Programmatically navigate to verifyEmail
+        router.push("/verifyEmail");
+      } catch (error) {
+        console.error("Error creating school:", error);
+      }
     } else {
       setCurrentStep(currentStep + 1);
     }

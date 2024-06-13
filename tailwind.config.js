@@ -18,6 +18,8 @@ module.exports = {
         'gold1': '#FAA32C',
         'tblack': '#202020',
         'tblack2': '#5A5A5A',
+        'tblack3': '#050708',
+        'tred1': '#D30303',
         'tgrey1': '#898989',
         'link1': '#775DA6',
         'tgrey2': '#DCDCDC',

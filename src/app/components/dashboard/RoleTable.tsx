@@ -19,7 +19,7 @@ export default function RoleTable({ data, roleIcons }) {
 
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
-      setEditOptions(false);
+      setEditOptions({});
     }
   };
 
@@ -50,7 +50,7 @@ export default function RoleTable({ data, roleIcons }) {
         {data.length === 0 ? (
           <tr className="border-b">
             <td
-              colSpan={3}
+              colSpan={4}
               className="px-6 py-4 text-center text-sm text-tableText2 font-medium"
             >
               Nothing here
@@ -59,36 +59,43 @@ export default function RoleTable({ data, roleIcons }) {
         ) : (
           data.map((row) => (
             <tr key={row.id}>
-              <td className="px-6 py-4 whitespace-nowrap test-sm text-tableText2 font-medium">
-                <span>
+              <td className="px-6 py-4 whitespace-nowrap text-sm  text-tableText2 font-medium flex flex-row">
+              <span className="pr-4">
                   <Image
                     src={getRoleIcon(row.role)}
-                    width={12}
-                    height={12}
+                    width={18}
+                    height={18}
                     alt="role icon"
                   />
                 </span>
                 {row.name}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap test-sm text-tableText2 font-medium">
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
                 {row.updated}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap test-sm text-tableText2 font-medium">
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
                 {row.lastEditor}
               </td>
-              <td
-                className="px-6 py-4 whitespace-nowrap test-sm text-tableText2 font-medium flex flex-col justify-end"
-                onClick={() => toggleVisibility(row.id)}
-                aria-expanded={editOptions[row.id] || false}
-                aria-haspopup="true"
-              >
-                ...
-                {editOptions && (
-                  <div className="bg-white shadow-lg rounded-lg p-4 font-medium w-32">
-                    <p>Edit</p>
-                    <p>Rename</p>
-                    <p>Duplicate</p>
-                    <p>Move to folder</p>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-col justify-end relative">
+                <p
+                  onClick={() => toggleVisibility(row.id)}
+                  aria-expanded={editOptions[row.id] || false}
+                  aria-haspopup="true"
+                  className="cursor-default"
+                >
+                  ...
+                </p>
+                {editOptions[row.id] && (
+                  <div
+                    ref={menuRef}
+                    className="bg-white shadow-lg rounded-lg p-4 font-medium w-32 absolute top-full border-2 right-20 text-tblack3 space-y-4 "
+                  >
+                    <p className="hover:bg-tableText2">Edit</p>
+                    <p className="hover:bg-tableText2">Rename</p>
+                    <p className="hover:bg-tableText2">Duplicate</p>
+                    <p className="hover:bg-tableText2">Move to folder</p>
+                    <hr />
+                    <p className="text-tred1 hover:bg-tableText2">Move to Trash</p>
                   </div>
                 )}
               </td>

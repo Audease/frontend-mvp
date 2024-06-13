@@ -4,14 +4,26 @@ import { useState } from "react";
 import ForgotPasswordFormOne from "./ForgotPasswordFormOne";
 import ForgotPasswordFormTwo from "./ForgotPasswordFormTwo";
 import WelcomeBack from "../components/WelcomeBack";
+import axios from "axios";
 
 export default function PasswordFormStep() {
   const [currentPasswordForm, setCurrentPasswordForm] = useState(1);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('')
 
-  const handleEmailSubmit = (e) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault();
-    setCurrentPasswordForm(currentPasswordForm + 1);
+    if (currentPasswordForm === 1) {
+      try {
+        const response = await axios.post('https://audease-dev.onrender.com/v1/auth/initiate-reset', {email: forgotPasswordEmail})
+        console.log("Response received:", response);
+        setCurrentPasswordForm(2);
+      } catch (error) {
+        console.log("Error reseting password:", error)
+      } 
+    } else {
+      setCurrentPasswordForm(1);
+    };
+    
     // localStorage.setItem("email", JSON.stringify(email));
     console.log(forgotPasswordEmail);
   };

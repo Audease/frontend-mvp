@@ -1,16 +1,32 @@
 "use client";
 
+import { useState } from "react";
 import { Type2Button } from "../../components/dashboard/Button";
 import RoleCard from "../../components/dashboard/RoleCard";
 import DefaultLeft from "./DefaultLeft";
+import SetUpAccount from "./SetUpAccount";
 
 export default function Role() {
+  const [showDefault, setShowDefault] = useState(true);
+
+  const showSetUp = () => {
+    setShowDefault(!showDefault)
+  }
+
+  const onBackClick = () => {
+    setShowDefault(true)
+  }
+
   return (
     <div>
       {/* Body section  */}
       <div className="flex flex-row space-x-16">
         {/* left side  */}
-        <DefaultLeft  />    
+        {showDefault ? (
+            <DefaultLeft onClickSetUpAcct={showSetUp} />
+          ) : (
+            <SetUpAccount onClick={onBackClick}/>
+          )} 
         {/* right side  */}
         <div className="w-1/3 font-inter">
           <div>

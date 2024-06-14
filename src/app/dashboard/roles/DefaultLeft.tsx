@@ -7,7 +7,7 @@ import { SlArrowRight, SlArrowDown } from "react-icons/sl";
 import { VscSettings } from "react-icons/vsc";
 import RoleTable from "../../components/dashboard/RoleTable";
 
-export default function DefaultLeft() {
+export default function DefaultLeft( { onClickSetUpAcct } ) {
   const [firstName, setFirstName] = useState("Nyekachi");
   const [plan, setPlan] = useState("Free trial");
 
@@ -71,6 +71,7 @@ export default function DefaultLeft() {
               buttonText={"Setup Account"}
               className={""}
               arrowDirection={<SlArrowRight />}
+              onClick={ onClickSetUpAcct }
             />
           </div>
         </div>
@@ -83,6 +84,7 @@ export default function DefaultLeft() {
             buttonText={"Create"}
             className={""}
             arrowDirection={<SlArrowDown />}
+            onClick={onClickSetUpAcct}
           />
           <button className=" flex flex-row p-1 rounded-md border-2 ">
             <span className="font-inter font-medium pr-2 py-1">

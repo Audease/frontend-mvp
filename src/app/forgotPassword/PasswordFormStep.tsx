@@ -10,7 +10,7 @@ export default function PasswordFormStep() {
   const [currentPasswordForm, setCurrentPasswordForm] = useState(1);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('')
 
-  const handleEmailSubmit = async (e) => {
+  const handleEmailSubmit = async (e: any) => {
     e.preventDefault();
     if (currentPasswordForm === 1) {
       try {

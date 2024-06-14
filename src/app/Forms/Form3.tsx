@@ -1,5 +1,4 @@
-import Button from "../components/button";
-import { BackButton } from "../components/button";
+import Button, { BackButton } from "../components/button"; // Combined import statement
 import { useState, useEffect } from "react";
 import PasswordStrengthMeter from "../password-meter/PasswordStrengthMeter";
 import Image from "next/image";
@@ -10,56 +9,52 @@ export default function Form3({
   handleSubmit,
   handleBackClick,
   userCollege,
+  loading,
+  error,
 }) {
-  const { userName, password, confirmPassword } = formData;
-  const [filledCollege, setFilledCollege] = useState(userCollege);
+  const { userName, password, confirmPassword, filledCollege } = formData;
+  // const [filledCollege, setFilledCollege] = useState(userCollege);
+  const [isChecked, setChecked] = useState(false);
+  const [isStrength, setStrength] = useState(null);
+  const [isError, setError] = useState(null);
+  const [passwordToggle, setPasswordToggle] = useState("password");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "filledCollege") {
-      setFilledCollege(value); // Update filledCollege state
-    } else {
+    
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
       }));
-    }
-  };
+    };
 
-  const [isStrength, setStrength] = useState(null);
-  const dataHandler = async (childData) => {
+  const dataHandler = (childData) => {
     setStrength(childData);
   };
-
-  const [isError, setError] = useState(null);
 
   useEffect(() => {
     if (password) {
       setError("Your password is great. Nice work!");
-      let capsCount, smallCount, numberCount, symbolCount;
+      let capsCount = (password.match(/[A-Z]/g) || []).length;
+      let smallCount = (password.match(/[a-z]/g) || []).length;
+      let numberCount = (password.match(/[0-9]/g) || []).length;
+      let symbolCount = (password.match(/\W/g) || []).length;
+
       if (password.length < 4) {
         setError(
-          "Password must be minimum 4 characters include one UPPERCASE, lowercase, number and special character: @$! % * ? &"
+          "Password must be a minimum of 4 characters and include one UPPERCASE letter, one lowercase letter, one number, and one special character: @$! % * ? &"
         );
-      } else {
-        capsCount = (password.match(/[A-Z]/g) || []).length;
-        smallCount = (password.match(/[a-z]/g) || []).length;
-        numberCount = (password.match(/[0-9]/g) || []).length;
-        symbolCount = (password.match(/\W/g) || []).length;
-        if (capsCount < 1) {
-          setError("Must contain one UPPERCASE letter");
-        } else if (smallCount < 1) {
-          setError("Must contain one lowercase letter");
-        } else if (numberCount < 1) {
-          setError("Must contain one number");
-        } else if (symbolCount < 1) {
-          setError("Must contain one special character: @$! % * ? &");
-        }
+      } else if (capsCount < 1) {
+        setError("Must contain one UPPERCASE letter");
+      } else if (smallCount < 1) {
+        setError("Must contain one lowercase letter");
+      } else if (numberCount < 1) {
+        setError("Must contain one number");
+      } else if (symbolCount < 1) {
+        setError("Must contain one special character: @$! % * ? &");
       }
     }
   }, [password]);
-
-  const [passwordToggle, setPasswordToggle] = useState("password");
 
   const eyeClick = () => {
     setPasswordToggle((prevState) =>
@@ -67,15 +62,50 @@ export default function Form3({
     );
   };
 
+  const handleCheckboxChange = (e) => {
+    setChecked(e.target.checked);
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    if (!filledCollege) {
+      setFormData((prevData) => ({
+        ...prevData,
+        filledCollege: userCollege,
+      }));
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    if (isStrength < 4) { 
+      setError("Password strength is not sufficient.");
+      return;
+    }
+
+    if (!isChecked) {
+      setError("You must agree to the Terms of Use and Privacy Policy.");
+      return;
+    }
+
+    setError(null); 
+    handleSubmit(e); 
+  };
+
+  // const filledCollegeValue = filledCollege === "" ? userCollege : filledCollege;
+
   return (
     <div>
       <div className="font-switzer text-tblack bg-white rounded-md">
-        <form className="p-8" onSubmit={handleSubmit}>
+        <form className="p-8" onSubmit={handleFormSubmit}>
           <div className="pb-4">
-            <h3 className="font-semibold text-h3">Create Your Audease Account</h3>
+            <h3 className="font-semibold text-h3">
+              Create Your Audease Account
+            </h3>
             <p className="font-normal text-h2">
-              {/* You&apos;ll use your username to sign into your Audease Workspace
-              account and create your employer&apos;s account. */}
               Complete the form to create your Audease account.
             </p>
           </div>
@@ -85,22 +115,24 @@ export default function Form3({
               <input
                 type="text"
                 name="userName"
-                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   userName ? "bg-gray-100" : ""
                 }`}
                 value={userName}
                 placeholder="Username"
                 onChange={handleChange}
+                required
               />
               <input
                 type="text"
                 name="filledCollege"
-                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   filledCollege ? "bg-gray-100" : ""
                 }`}
                 value={filledCollege}
-                placeholder=""
+                placeholder={userCollege}
                 onChange={handleChange}
+                required
               />
               <p className="py-2">.admin</p>
             </div>
@@ -112,12 +144,13 @@ export default function Form3({
               <input
                 type={passwordToggle}
                 name="password"
-                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   password ? "bg-gray-100" : ""
                 }`}
                 value={password}
                 placeholder="Password"
                 onChange={handleChange}
+                required
               />
               <span
                 style={{
@@ -145,12 +178,13 @@ export default function Form3({
                 <input
                   type={passwordToggle}
                   name="confirmPassword"
-                  className={`border rounded-md p-2 text-h2 mb-0 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                  className={`border rounded-md p-2 text-h2 mb-0 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                     confirmPassword ? "bg-gray-100" : ""
                   }`}
                   value={confirmPassword}
                   placeholder="Confirm Password"
                   onChange={handleChange}
+                  required
                 />
 
                 <span
@@ -184,9 +218,9 @@ export default function Form3({
             <label className="flex flex-row space-x-4">
               <input
                 type="checkbox"
-                //   checked={isChecked}
-                //   onChange={handleCheckboxChange}
-                className="bg-red-500"
+                checked={isChecked}
+                onChange={handleCheckboxChange}
+                className="bg-white"
               />
               <p>
                 By clicking Create account, I agree that I have read and
@@ -195,7 +229,8 @@ export default function Form3({
             </label>
           </div>
 
-          <Button buttonText={`Agree and Continue`} className={`mt-6`} />
+          <Button buttonText={loading ? "Submitting..." : "Agree and Continue"} className={`mt-4`}  />
+          {error && <p className="text-red-500 mt-2">{error}</p>}
         </form>
         <hr className="border-2 border-tgrey2" />
         <div className="py-4 px-6">
@@ -213,6 +248,7 @@ export default function Form3({
         className={`bg-deepGrey mt-4`}
         onClick={handleBackClick}
       />
+      
     </div>
   );
 }

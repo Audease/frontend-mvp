@@ -1,17 +1,17 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../components/button";
-import { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordToggle, setPasswordToggle] = useState("password");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -22,14 +22,13 @@ export default function SignIn() {
     );
   };
 
-    
 
-  const handleEmailChange = ({ target: { value } }) => {
-    setEmail(value);
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
   };
 
-  const handlePasswordChange = ({ target: { value } }) => {
-    setPassword(value);
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -41,7 +40,7 @@ export default function SignIn() {
       password: password,
     };
 
-    // console.log("Submitting payload:", payload);
+    console.log("Submitting payload:", payload);
     try {
       const response = await axios.post(
         "https://audease-dev.onrender.com/v1/auth/login",
@@ -62,7 +61,7 @@ export default function SignIn() {
       }
     } catch (error) {
       console.error("An error occurred:", error);
-      setError("An error occurred. Please try again.");
+      setError("Invalid email or password");
     } finally {
       setLoading(false)
     }
@@ -115,7 +114,7 @@ export default function SignIn() {
               <input
                 type="text"
                 name="username"
-                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   email ? "bg-gray-100" : ""
                 }`}
                 placeholder="Email address"
@@ -128,7 +127,7 @@ export default function SignIn() {
                 <input
                   type={passwordToggle}
                   name="password"
-                  className={`border border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                  className={`border border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                     password ? "bg-gray-100" : ""
                   }`}
                   placeholder="Password"

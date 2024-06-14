@@ -7,6 +7,8 @@ export default function ForgotPasswordFormOne({
   handleEmailSubmit,
   forgotPasswordEmail,
   setForgotPasswordEmail,
+  error,
+  loading,
 }) {
   const handleEmailChange = (e) => {
     setForgotPasswordEmail(e.target.value);
@@ -35,7 +37,8 @@ export default function ForgotPasswordFormOne({
           />
 
           {/* Button  */}
-          <Button buttonText={`Send password link`} className={`my-6`} />
+          <Button buttonText={loading ? "Sending link..." : "Send password link"} className={`my-6`} />
+          {error && <p className="text-red-500 mt-2">{error}</p>}
         </form>
       </div>
     </div>

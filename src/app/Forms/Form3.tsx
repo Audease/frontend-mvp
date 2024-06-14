@@ -9,9 +9,11 @@ export default function Form3({
   handleSubmit,
   handleBackClick,
   userCollege,
+  loading,
+  error,
 }) {
-  const { userName, password, confirmPassword } = formData;
-  const [filledCollege, setFilledCollege] = useState(userCollege);
+  const { userName, password, confirmPassword, filledCollege } = formData;
+  // const [filledCollege, setFilledCollege] = useState(userCollege);
   const [isChecked, setChecked] = useState(false);
   const [isStrength, setStrength] = useState(null);
   const [isError, setError] = useState(null);
@@ -19,19 +21,12 @@ export default function Form3({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "filledCollege") {
-      setFilledCollege(value);
-      setFormData((prevData) => ({
-        ...prevData,
-        filledCollege: value,
-      }));
-    } else {
+    
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
       }));
-    }
-  };
+    };
 
   const dataHandler = (childData) => {
     setStrength(childData);
@@ -86,7 +81,7 @@ export default function Form3({
       return;
     }
 
-    if (isStrength < 3) { // Assuming strength criteria is minimum 3
+    if (isStrength < 4) { 
       setError("Password strength is not sufficient.");
       return;
     }
@@ -96,11 +91,11 @@ export default function Form3({
       return;
     }
 
-    setError(null); // Clear any previous errors
-    handleSubmit(e); // Call the original handleSubmit function
+    setError(null); 
+    handleSubmit(e); 
   };
 
-  const filledCollegeValue = filledCollege === "" ? userCollege : filledCollege;
+  // const filledCollegeValue = filledCollege === "" ? userCollege : filledCollege;
 
   return (
     <div>
@@ -126,6 +121,7 @@ export default function Form3({
                 value={userName}
                 placeholder="Username"
                 onChange={handleChange}
+                required
               />
               <input
                 type="text"
@@ -133,9 +129,10 @@ export default function Form3({
                 className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   filledCollege ? "bg-gray-100" : ""
                 }`}
-                value={filledCollegeValue}
-                placeholder=""
+                value={filledCollege}
+                placeholder={userCollege}
                 onChange={handleChange}
+                required
               />
               <p className="py-2">.admin</p>
             </div>
@@ -153,6 +150,7 @@ export default function Form3({
                 value={password}
                 placeholder="Password"
                 onChange={handleChange}
+                required
               />
               <span
                 style={{
@@ -186,6 +184,7 @@ export default function Form3({
                   value={confirmPassword}
                   placeholder="Confirm Password"
                   onChange={handleChange}
+                  required
                 />
 
                 <span
@@ -230,7 +229,8 @@ export default function Form3({
             </label>
           </div>
 
-          <Button buttonText={`Agree and Continue`} className={`mt-6`} />
+          <Button buttonText={loading ? "Submitting..." : "Agree and Continue"} className={`mt-4`}  />
+          {error && <p className="text-red-500 mt-2">{error}</p>}
         </form>
         <hr className="border-2 border-tgrey2" />
         <div className="py-4 px-6">
@@ -248,6 +248,7 @@ export default function Form3({
         className={`bg-deepGrey mt-4`}
         onClick={handleBackClick}
       />
+      
     </div>
   );
 }

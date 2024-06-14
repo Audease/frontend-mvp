@@ -10,10 +10,10 @@ export default function VerifyEmail() {
   const router = useRouter();
 
   useEffect(() => {
-    const registeredEmail = JSON.parse(localStorage.getItem("formData"));
+    const registeredEmail = (localStorage.getItem("userEmail"));
     console.log(registeredEmail)
-    if (registeredEmail && registeredEmail.email) {
-      setUserEmail(registeredEmail.email);
+    if (registeredEmail && registeredEmail) {
+      setUserEmail(registeredEmail);
     }
   }, []);
 

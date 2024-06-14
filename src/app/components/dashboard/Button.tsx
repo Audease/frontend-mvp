@@ -3,12 +3,12 @@ import { FiPlusCircle } from "react-icons/fi";
 import Image from "next/image";
 
 
-export default function Button({ buttonText, className, arrowDirection }) {
+export default function Button({ buttonText, className, arrowDirection, onClick }) {
   return (
     <div>
       <button
         className={`${className} p-2 rounded-md bg-dashboardButtonsBg font-semibold focus:ring focus:ring-tgrey1`}
-        type="submit"
+        type="button" onClick={onClick}
       >
         <div className="flex flex-row">
         <span className="font-inter font-medium text-sm text-dashboardButtons">{buttonText}</span>

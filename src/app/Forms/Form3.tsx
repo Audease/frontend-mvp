@@ -115,7 +115,7 @@ export default function Form3({
               <input
                 type="text"
                 name="userName"
-                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+                className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   userName ? "bg-gray-100" : ""
                 }`}
                 value={userName}
@@ -126,7 +126,7 @@ export default function Form3({
               <input
                 type="text"
                 name="filledCollege"
-                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+                className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   filledCollege ? "bg-gray-100" : ""
                 }`}
                 value={filledCollege}
@@ -144,7 +144,7 @@ export default function Form3({
               <input
                 type={passwordToggle}
                 name="password"
-                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+                className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   password ? "bg-gray-100" : ""
                 }`}
                 value={password}
@@ -178,7 +178,7 @@ export default function Form3({
                 <input
                   type={passwordToggle}
                   name="confirmPassword"
-                  className={`border rounded-md p-2 text-h2 mb-0 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+                  className={`border-tgrey2 rounded-md p-2 text-h2 mb-0 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                     confirmPassword ? "bg-gray-100" : ""
                   }`}
                   value={confirmPassword}
@@ -217,6 +217,7 @@ export default function Form3({
           <div className="font-normal py-4 text-h6 text-tgrey1">
             <label className="flex flex-row space-x-4">
               <input
+                name="checkbox"
                 type="checkbox"
                 checked={isChecked}
                 onChange={handleCheckboxChange}

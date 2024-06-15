@@ -62,7 +62,6 @@ export default function SignIn() {
     } catch (error) {
       console.error("An error occurred:", error);
       setError("Invalid email or password");
-    } finally {
       setLoading(false)
     }
   };
@@ -114,7 +113,7 @@ export default function SignIn() {
               <input
                 type="text"
                 name="username"
-                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+                className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   email ? "bg-gray-100" : ""
                 }`}
                 placeholder="Email address"
@@ -127,7 +126,7 @@ export default function SignIn() {
                 <input
                   type={passwordToggle}
                   name="password"
-                  className={`border border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+                  className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                     password ? "bg-gray-100" : ""
                   }`}
                   placeholder="Password"
@@ -160,14 +159,14 @@ export default function SignIn() {
             {error && <p className="text-red-500 mt-2">{error}</p>}
 
             {/* Separator */}
-            <div className="flex items-center py-4">
+            {/* <div className="flex items-center py-4">
               <div className="border-t border-borderColor flex-grow"></div>
               <div className="mx-2 text-base text-tgrey1">or</div>
               <div className="border-t border-borderColor flex-grow"></div>
-            </div>
+            </div> */}
 
             {/* Social links */}
-            <div className="flex flex-row justify-between md:justify-evenly md:space-x-8">
+            {/* <div className="flex flex-row justify-between md:justify-evenly md:space-x-8">
               <button
                 type="button"
                 className="border-2 rounded-md p-2 text-h5 font-semibold flex items-center justify-center md:px-6 lg:w-full"
@@ -195,7 +194,7 @@ export default function SignIn() {
                 />
                 <span className="pl-2">Facebook</span>
               </button>
-            </div>
+            </div> */}
 
             {/* Line break */}
             <div className="py-4">

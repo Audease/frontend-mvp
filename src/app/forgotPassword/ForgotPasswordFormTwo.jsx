@@ -71,7 +71,7 @@ export default function ForgotPasswordFormTwo() {
             <input
               key={index}
               type="text"
-              className="border-tgrey2 rounded-md w-8 h-8 p-2 text-h2 text-tgrey1 font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 text-center"
+              className="border-tgrey2 rounded-md w-8 h-8 p-2 text-h2 text-tgrey1 font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 text-center"
               value={value}
               onChange={(e) => handleInputChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}

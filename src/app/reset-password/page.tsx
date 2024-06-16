@@ -5,7 +5,7 @@ import WelcomeBack from "../components/WelcomeBack";
 import Button from "../components/button";
 import PasswordStrengthMeter from "../password-meter/PasswordStrengthMeter";
 
-export default function ResetPassword ({loading, error}) {
+export default function ResetPassword ({error}) {
     const [oldPassword, setOldPassword] = useState ("");
     const [newPassword, setNewPassword] = useState ("");
     const [isError, setError] = useState(null);
@@ -110,7 +110,7 @@ export default function ResetPassword ({loading, error}) {
               />
 
           {/* Button  */}
-          <Button buttonText={loading ? "Sending link..." : "Set New Password"} className={`my-6`} />
+          <Button buttonText={"Set New Password"} className={`my-6`} />
           {error && <p className="text-red-500 mt-2">{error}</p>}
         </form>
       </div>

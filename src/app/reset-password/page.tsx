@@ -5,11 +5,12 @@ import WelcomeBack from "../components/WelcomeBack";
 import Button from "../components/button";
 import PasswordStrengthMeter from "../password-meter/PasswordStrengthMeter";
 
-export default function ResetPassword ({error}) {
+export default function ResetPassword () {
     const [oldPassword, setOldPassword] = useState ("");
     const [newPassword, setNewPassword] = useState ("");
-    const [isError, setError] = useState(null);
+    const [error, setError] = useState(null);
     const [isStrength, setStrength] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const handleOldPasswordChange = (e :any) => {
         setOldPassword(e.target.value);
@@ -49,20 +50,24 @@ export default function ResetPassword ({error}) {
 
     const validateNewPassword = (e :any) => {
         e.preventDefault()
+        setLoading(true);
 
         if (isStrength < 4) { 
             setError("Password strength is not sufficient.");
+            setLoading(false);
             return;
           }
 
 
         if (oldPassword !== newPassword) {
             setError("Passwords do not match.");
+            setLoading(false);
             return;
           }
 
         setError(null);
         console.log("New password set")
+        setLoading(false);
     }
 
     return (
@@ -106,12 +111,12 @@ export default function ResetPassword ({error}) {
             <PasswordStrengthMeter
                 password={oldPassword}
                 actions={dataHandler}
-                errorMessage={isError}
+                errorMessage={error}
               />
 
           {/* Button  */}
-          <Button buttonText={"Set New Password"} className={`my-6`} />
-          {error && <p className="text-red-500 mt-2">{error}</p>}
+          <Button buttonText={loading ? "Sending link..." : "Set New Password"} className={`my-6`} />
+          {/* {error && <p className="text-red-500 mt-2">{error}</p>} */}
         </form>
       </div>
     </div>

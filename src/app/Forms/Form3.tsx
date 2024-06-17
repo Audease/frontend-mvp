@@ -40,6 +40,7 @@ export default function Form3({
       let numberCount = (password.match(/[0-9]/g) || []).length;
       let symbolCount = (password.match(/\W/g) || []).length;
 
+      
       if (password.length < 4) {
         setError(
           "Password must be a minimum of 4 characters and include one UPPERCASE letter, one lowercase letter, one number, and one special character: @$! % * ? &"
@@ -84,6 +85,10 @@ export default function Form3({
     if (isStrength < 4) { 
       setError("Password strength is not sufficient.");
       return;
+    }
+
+    if(!password){
+      setError("Password strength is not sufficient.");
     }
 
     if (!isChecked) {

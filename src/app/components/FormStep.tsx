@@ -1,21 +1,17 @@
-"use client";
+"use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Form1 from "../Forms/Form1";
 import Form2 from "../Forms/Form2";
 import Form3 from "../Forms/Form3";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"; // Corrected import
 import axios from "axios";
 
 export default function FormStep() {
-  // Step tracking
   const [currentStep, setCurrentStep] = useState(1);
-
-  // Loading and error states
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Form data states
   const [form1Data, setForm1Data] = useState({
     college: "",
     businessNo: "",
@@ -43,71 +39,82 @@ export default function FormStep() {
     filledCollege: "",
   });
 
-  // Router for navigation
   const router = useRouter();
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(""); // Clear any previous error
+  // Effect to watch currentStep changes and trigger API call on step 3
+  useEffect(() => {
+    if (currentStep === 3) {
+      // Ensure data is filled in before submitting
+      if (
+        form1Data.college &&
+        form1Data.firstName &&
+        form1Data.lastName &&
+        form1Data.email &&
+        form1Data.noOfEmployee &&
+        form1Data.selectedCountry &&
+        form1Data.businessNo &&
+        form2Data.streetAddress &&
+        form2Data.city &&
+        form2Data.postCode &&
+        form2Data.phoneNumber &&
+        form3Data.userName &&
+        form3Data.password &&
+        form3Data.confirmPassword &&
+        form3Data.userCollege &&
+        form3Data.filledCollege
+      ) {
+        handleSubmit();
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStep]);
 
-    // Construct the username
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError("");
+
     const userLoginName = `${form3Data.userName}.${form3Data.filledCollege}.admin`;
 
-    // Check if we are on the final step
-    if (currentStep === 3) {
-      const newUser = {
-        college_name: form1Data.college,
-        first_name: form1Data.firstName,
-        last_name: form1Data.lastName,
-        email: form1Data.email,
-        phone: form2Data.phoneNumber,
-        no_of_employee: parseInt(form1Data.noOfEmployee, 10),
-        country: form1Data.selectedCountry,
-        business_code: form1Data.businessNo,
-        address_line1: form2Data.streetAddress,
-        address_line2: form2Data.streetAddress2,
-        city: form2Data.city,
-        post_code: form2Data.postCode,
-        county: form2Data.selectedCounty,
-        username: userLoginName,
-        password: form3Data.password,
-      };
+    const newUser = {
+      college_name: form1Data.college,
+      first_name: form1Data.firstName,
+      last_name: form1Data.lastName,
+      email: form1Data.email,
+      phone: form2Data.phoneNumber,
+      no_of_employee: parseInt(form1Data.noOfEmployee, 10),
+      country: form1Data.selectedCountry,
+      business_code: form1Data.businessNo,
+      address_line1: form2Data.streetAddress,
+      address_line2: form2Data.streetAddress2,
+      city: form2Data.city,
+      post_code: form2Data.postCode,
+      county: form2Data.selectedCounty,
+      username: userLoginName,
+      password: form3Data.password,
+    };
 
-      try {
-        const startTime = Date.now();
-        const response = await axios.post(
-          "https://audease-dev.onrender.com/v1/auth/create-school",
-          newUser
-        );
-        const endTime = Date.now();
+    try {
+      const response = await axios.post(
+        "https://audease-dev.onrender.com/v1/auth/create-school",
+        newUser
+      );
 
-        console.log(`API call duration: ${endTime - startTime} ms`);
-
-        if (response.status === 201) {
-          localStorage.setItem("userEmail", form1Data.email);
-          console.log(newUser);
-          router.push("/verifyEmail");
-        } else if (response.status === 409) {
-          setError(response.data);
-        } else {
-          setError(response.data.message || "School creation failed");
-        }
-      } catch (error) {
-        setError(error.response?.data?.message || "Error creating school");
-        console.error("Error creating school:", error);
-      } finally {
-        setLoading(false);
+      if (response.status === 201) {
+        localStorage.setItem("userEmail", form1Data.email);
+        router.push("/verifyEmail");
+      } else if (response.status === 409) {
+        setError(response.data);
+      } else {
+        setError(response.data.message || "School creation failed");
       }
-    } else {
-      // Proceed to the next step
-      setCurrentStep(currentStep + 1);
+    } catch (error) {
+      setError(error.response?.data?.message || "Error creating school");
+      console.error("Error creating school:", error);
+    } finally {
       setLoading(false);
     }
   };
 
-  // Handle back button click
   const handleBackClick = (e) => {
     e.preventDefault();
     if (currentStep > 1) {
@@ -115,7 +122,6 @@ export default function FormStep() {
     }
   };
 
-  // Determine which form to render based on the current step
   const renderFormComponent = () => {
     switch (currentStep) {
       case 1:
@@ -123,7 +129,7 @@ export default function FormStep() {
           <Form1
             formData={form1Data}
             setFormData={setForm1Data}
-            handleSubmit={handleSubmit}
+            handleSubmit={() => setCurrentStep(2)}
           />
         );
       case 2:
@@ -131,7 +137,7 @@ export default function FormStep() {
           <Form2
             formData={form2Data}
             setFormData={setForm2Data}
-            handleSubmit={handleSubmit}
+            handleSubmit={() => setCurrentStep(3)}
             handleBackClick={handleBackClick}
           />
         );
@@ -152,7 +158,7 @@ export default function FormStep() {
           <Form1
             formData={form1Data}
             setFormData={setForm1Data}
-            handleSubmit={handleSubmit}
+            handleSubmit={() => setCurrentStep(2)}
           />
         );
     }

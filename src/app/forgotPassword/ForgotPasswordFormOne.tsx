@@ -27,7 +27,7 @@ export default function ForgotPasswordFormOne({
           <input
             type="email"
             name="email"
-            className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+            className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
               forgotPasswordEmail ? "bg-gray-100" : ""
             }`}
             placeholder="Email"

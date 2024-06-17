@@ -91,7 +91,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
           <input
             type="text"
             name="college"
-            className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+            className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
               college ? "bg-gray-100" : ""
             }`}
             value={college}
@@ -103,7 +103,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
             <input
               type="number"
               name="noOfEmployee"
-              className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+              className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                 noOfEmployee ? "bg-gray-100" : ""
               }`}
               value={noOfEmployee}
@@ -118,7 +118,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
                 id="selectedCountry"
                 value={selectedCountry}
                 onChange={handleChange}
-                className={`border rounded-md p-[0.6rem] text-h2 text-tgrey1 font-normal w-[10rem] bg-white focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+                className={`border-tgrey2 rounded-md p-[0.6rem] text-h2 text-tgrey1 font-normal w-[10rem] bg-white focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   selectedCountry ? "bg-gray-100" : ""
                 }`}
                 required
@@ -135,7 +135,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
           <input
             type="text"
             name="businessNo"
-            className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+            className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
               businessNo ? "bg-gray-100" : ""
             }`}
             placeholder="Bussiness No"
@@ -147,7 +147,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
             <input
               type="text"
               name="firstName"
-              className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+              className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                 firstName ? "bg-gray-100" : ""
               }`}
               placeholder="First Name"
@@ -158,7 +158,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
             <input
               type="text"
               name="lastName"
-              className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+              className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                 lastName ? "bg-gray-100" : ""
               }`}
               placeholder="Last Name"
@@ -170,7 +170,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
           <input
             type="email"
             name="email"
-            className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+            className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
               email ? "bg-gray-100" : ""
             }`}
             placeholder="Email"

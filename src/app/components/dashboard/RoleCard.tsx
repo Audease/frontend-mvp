@@ -4,6 +4,10 @@ import Button from "./Button";
 import { SlArrowRight, SlArrowDown } from "react-icons/sl";
 
 export default function RoleCard() {
+  const onClick = () => {
+      console.log("Button clicked")
+  }
+
   return (
     <div className="border-2 w-80 rounded-2xl p-4 space-y-2">
       <div className="flex flex-row justify-between">
@@ -31,6 +35,7 @@ export default function RoleCard() {
         buttonText={"Get started"}
         className={""}
         arrowDirection={<SlArrowRight />}
+        onClick={onClick}
       />
     </div>
   );

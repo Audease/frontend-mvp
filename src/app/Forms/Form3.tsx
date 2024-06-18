@@ -34,16 +34,15 @@ export default function Form3({
 
   useEffect(() => {
     if (password) {
-      setError("Your password is great. Nice work!");
+      // setError("Your password is great. Nice work!");
       let capsCount = (password.match(/[A-Z]/g) || []).length;
       let smallCount = (password.match(/[a-z]/g) || []).length;
       let numberCount = (password.match(/[0-9]/g) || []).length;
       let symbolCount = (password.match(/\W/g) || []).length;
 
-      
-      if (password.length < 4) {
+      if (password.length < 8) {
         setError(
-          "Password must be a minimum of 4 characters and include one UPPERCASE letter, one lowercase letter, one number, and one special character: @$! % * ? &"
+          "Password must be a minimum of 8 characters and include one UPPERCASE letter, one lowercase letter, one number, and one special character: @$! % * ? &"
         );
       } else if (capsCount < 1) {
         setError("Must contain one UPPERCASE letter");
@@ -53,6 +52,8 @@ export default function Form3({
         setError("Must contain one number");
       } else if (symbolCount < 1) {
         setError("Must contain one special character: @$! % * ? &");
+      }  else {
+        setError(null);
       }
     }
   }, [password]);
@@ -67,8 +68,14 @@ export default function Form3({
     setChecked(e.target.checked);
   };
 
+  
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
+
+    if (isError) {
+      return; // Prevent form submission if there are any errors
+    }
 
     if (!filledCollege) {
       setFormData((prevData) => ({
@@ -82,19 +89,15 @@ export default function Form3({
       return;
     }
 
-    if (isStrength < 4) { 
+    if (isStrength < 8) { 
       setError("Password strength is not sufficient.");
       return;
-    }
-
-    if(!password){
-      setError("Password strength is not sufficient.");
     }
 
     if (!isChecked) {
       setError("You must agree to the Terms of Use and Privacy Policy.");
       return;
-    }
+    } 
 
     setError(null); 
     handleSubmit(e); 

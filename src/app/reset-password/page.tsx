@@ -44,6 +44,8 @@ export default function ResetPassword () {
             setError("Must contain one number");
           } else if (symbolCount < 1) {
             setError("Must contain one special character: @$! % * ? &");
+          }  else {
+            setError(null);
           }
         }
       }, [oldPassword]);

@@ -70,6 +70,7 @@ export default function FormStep() {
   }, [currentStep]);
 
   const handleSubmit = async () => {
+    console.log("Clicking")
     setLoading(true);
     setError("");
 
@@ -95,7 +96,7 @@ export default function FormStep() {
 
     try {
       const response = await axios.post(
-        "https://audease-dev.onrender.com/v1/auth/signup",
+        " /api/signup",
         newUser
       );
 

@@ -41,7 +41,7 @@ export default function VerifyEmail() {
           {/* User email  */}
           <p className="font-bold text-h2">{userEmail}</p>
           {/* Button  */}
-          <Button buttonText={`Resend email`} className={`mt-10`} />
+          <Button buttonText={`Sign up Successful`} className={`mt-10`} />
         </form>
 
         <div className="font-inter py-4 text-center">

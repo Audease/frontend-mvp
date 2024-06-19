@@ -27,7 +27,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "jest.config.js", "jest.setup.js", "src/app/dashboard/roles"  ],
+, "jest.config.js", "jest.setup.js", "src/app/dashboard/roles", "src/app/api/signup/route.ts"  ],
   "exclude": [
     "node_modules"
   ]

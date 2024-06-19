@@ -67,7 +67,7 @@ export default function ForgotPassword() {
       sideTextComponent = (
         <WelcomeBack
           boldText={"Forgot your password?"}
-          smallText={"Enter the OTP sent to your email to reset your password."}
+          smallText={""}
         />
       );
       break;

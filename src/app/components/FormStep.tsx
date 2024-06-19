@@ -96,7 +96,7 @@ export default function FormStep() {
 
     try {
       const response = await axios.post(
-        "https://audease-dev.onrender.com/v1/auth/signup",
+        " /api/signup",
         newUser
       );
 

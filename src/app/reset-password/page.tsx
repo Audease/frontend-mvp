@@ -7,6 +7,7 @@ import PasswordStrengthMeter from "../password-meter/PasswordStrengthMeter";
 import Image from "next/image";
 import { useSearchParams } from 'next/navigation';
 import axios from "axios";
+import { Suspense } from 'react'
 
 export default function ResetPassword () {
     const [oldPassword, setOldPassword] = useState("");
@@ -96,6 +97,7 @@ export default function ResetPassword () {
     }
 
     return (
+      <Suspense>
         <div className="flex flex-row space-x-24 mx-auto justify-center items-center">
             <div className="">
                 <WelcomeBack boldText={"Enter your new password"} smallText={""}/>
@@ -191,5 +193,7 @@ export default function ResetPassword () {
                 </div>
             </div>
         </div>
+      </Suspense>
+        
     );
 }

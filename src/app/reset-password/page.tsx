@@ -1,15 +1,14 @@
 'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import WelcomeBack from "../components/WelcomeBack";
 import Button from "../components/button";
 import PasswordStrengthMeter from "../password-meter/PasswordStrengthMeter";
 import Image from "next/image";
 import { useSearchParams } from 'next/navigation';
 import axios from "axios";
-import { Suspense } from 'react'
 
-export default function ResetPassword() {
+function ResetPasswordContent() {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [error, setError] = useState(null);
@@ -96,94 +95,100 @@ export default function ResetPassword() {
     };
 
     return (
-        <Suspense>
-            <div className="flex flex-row space-x-24 mx-auto justify-center items-center">
-                <div className="">
-                    <WelcomeBack boldText={"Enter your new password"} smallText={""} />
-                </div>
-                <div className="text-tblack bg-white rounded-md w-96">
-                    <div className="p-8">
-                        <div className="pb-4">
-                            <h3 className="font-semibold text-h3">Reset your password</h3>
-                            <p className="font-normal text-h2">
-                                Enter your new password
-                            </p>
-                        </div>
-                        <form action="submit" onSubmit={validateNewPassword} className="space-y-4">
-                            <div style={{ position: "relative", display: "inline-flex" }} className="mt-4 w-full">
-                                <input
-                                    type={passwordToggle}
-                                    name="oldPassword"
-                                    className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
-                                        oldPassword ? "bg-gray-100" : ""
-                                    }`}
-                                    placeholder="Enter new password"
-                                    value={oldPassword}
-                                    onChange={handleOldPasswordChange}
-                                    required
-                                />
-                                <span
-                                    style={{
-                                        position: "absolute",
-                                        right: "15px",
-                                        top: "50%",
-                                        transform: "translateY(-50%)",
-                                    }}
-                                >
-                                    <Image
-                                        src="/eye.png"
-                                        width={12}
-                                        height={12}
-                                        className="hover:bg-gray-100 cursor-pointer"
-                                        alt="toggle visibility"
-                                        onClick={eyeClick}
-                                    />
-                                </span>
-                            </div>
-                            
-                            <div style={{ position: "relative", display: "inline-flex" }} className="mt-4 w-full">
-                                <input
-                                    type={passwordToggle}
-                                    name="newPassword"
-                                    className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
-                                        newPassword ? "bg-gray-100" : ""
-                                    }`}
-                                    placeholder="Confirm new password"
-                                    value={newPassword}
-                                    onChange={handleNewPasswordChange}
-                                    required
-                                />
-                                <span
-                                    style={{
-                                        position: "absolute",
-                                        right: "15px",
-                                        top: "50%",
-                                        transform: "translateY(-50%)",
-                                    }}
-                                >
-                                    <Image
-                                        src="/eye.png"
-                                        width={12}
-                                        height={12}
-                                        className="hover:bg-gray-100 cursor-pointer"
-                                        alt="toggle visibility"
-                                        onClick={eyeClick}
-                                    />
-                                </span>
-                            </div>
-                            
-                            <PasswordStrengthMeter
-                                password={oldPassword}
-                                actions={dataHandler}
-                                errorMessage={error}
-                            />
-
-                            <Button buttonText={loading ? "Sending link..." : "Set New Password"} className={`my-6`} />
-                            {error && <p className="text-red-500 mt-2">{error}</p>}
-                        </form>
+        <div className="flex flex-row space-x-24 mx-auto justify-center items-center">
+            <div className="">
+                <WelcomeBack boldText={"Enter your new password"} smallText={""} />
+            </div>
+            <div className="text-tblack bg-white rounded-md w-96">
+                <div className="p-8">
+                    <div className="pb-4">
+                        <h3 className="font-semibold text-h3">Reset your password</h3>
+                        <p className="font-normal text-h2">
+                            Enter your new password
+                        </p>
                     </div>
+                    <form action="submit" onSubmit={validateNewPassword} className="space-y-4">
+                        <div style={{ position: "relative", display: "inline-flex" }} className="mt-4 w-full">
+                            <input
+                                type={passwordToggle}
+                                name="oldPassword"
+                                className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+                                    oldPassword ? "bg-gray-100" : ""
+                                }`}
+                                placeholder="Enter new password"
+                                value={oldPassword}
+                                onChange={handleOldPasswordChange}
+                                required
+                            />
+                            <span
+                                style={{
+                                    position: "absolute",
+                                    right: "15px",
+                                    top: "50%",
+                                    transform: "translateY(-50%)",
+                                }}
+                            >
+                                <Image
+                                    src="/eye.png"
+                                    width={12}
+                                    height={12}
+                                    className="hover:bg-gray-100 cursor-pointer"
+                                    alt="toggle visibility"
+                                    onClick={eyeClick}
+                                />
+                            </span>
+                        </div>
+                        
+                        <div style={{ position: "relative", display: "inline-flex" }} className="mt-4 w-full">
+                            <input
+                                type={passwordToggle}
+                                name="newPassword"
+                                className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+                                    newPassword ? "bg-gray-100" : ""
+                                }`}
+                                placeholder="Confirm new password"
+                                value={newPassword}
+                                onChange={handleNewPasswordChange}
+                                required
+                            />
+                            <span
+                                style={{
+                                    position: "absolute",
+                                    right: "15px",
+                                    top: "50%",
+                                    transform: "translateY(-50%)",
+                                }}
+                            >
+                                <Image
+                                    src="/eye.png"
+                                    width={12}
+                                    height={12}
+                                    className="hover:bg-gray-100 cursor-pointer"
+                                    alt="toggle visibility"
+                                    onClick={eyeClick}
+                                />
+                            </span>
+                        </div>
+                        
+                        <PasswordStrengthMeter
+                            password={oldPassword}
+                            actions={dataHandler}
+                            errorMessage={error}
+                        />
+
+                        <Button buttonText={loading ? "Sending link..." : "Set New Password"} className={`my-6`} />
+                        {error && <p className="text-red-500 mt-2">{error}</p>}
+                    </form>
                 </div>
             </div>
+        </div>
+    );
+}
+
+export default function ResetPassword() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ResetPasswordContent />
         </Suspense>
     );
 }

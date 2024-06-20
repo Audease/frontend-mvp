@@ -15,7 +15,7 @@ export default function ForgotPassword() {
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(""); // Clear any previous error
+    setError(""); 
 
     try {
       const response = await axios.post(

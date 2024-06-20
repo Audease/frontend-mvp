@@ -20,7 +20,7 @@ export default function VerifyEmail() {
   const toVerified = (e) => {
     // Programmatically navigate to verifyEmail
     e.preventDefault()
-    router.push("/verified");
+    router.push("/signIn");
   }
 
   return (
@@ -29,22 +29,23 @@ export default function VerifyEmail() {
 
       <div className="text-tblack bg-white rounded-md w-96">
         <form className="p-8" onSubmit={toVerified}>
-          <div className="pb-4">
+          <div className="pb-2 space-y-2">
             <h3 className="font-semibold  text-h3">
               Verify your email address
             </h3>
             <p className="font-normal text-h2">
-              To start using Audesae, confirm your email addresses with the
-              email we sent to:
+              To verify your email, login credentials has been sent to:
             </p>
-          </div>
-          {/* User email  */}
+             {/* User email  */}
           <p className="font-bold text-h2">{userEmail}</p>
+          
+          </div>
+         
           {/* Button  */}
-          <Button buttonText={`Sign up Successful`} className={`mt-10`} />
+          <Button buttonText={`Click to Login`} className={`mt-4`} />
         </form>
 
-        <div className="font-inter py-4 text-center">
+        <div className="font-inter py-2 text-center">
           <p className="font-normal text-h2">
             Need help?{" "}
             <span className=" text-link1">{" "}Contact customer support</span>

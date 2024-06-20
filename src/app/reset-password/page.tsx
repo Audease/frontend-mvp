@@ -5,7 +5,7 @@ import WelcomeBack from "../components/WelcomeBack";
 import Button from "../components/button";
 import PasswordStrengthMeter from "../password-meter/PasswordStrengthMeter";
 import Image from "next/image";
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import axios from "axios";
 
 function ResetPasswordContent() {
@@ -14,8 +14,10 @@ function ResetPasswordContent() {
     const [error, setError] = useState(null);
     const [isStrength, setStrength] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [token, setToken] = useState("")
     const [passwordToggle, setPasswordToggle] = useState("password");
     const searchParams = useSearchParams();
+    const router = useRouter();
 
     const handleOldPasswordChange = (e) => {
         setOldPassword(e.target.value);
@@ -35,7 +37,20 @@ function ResetPasswordContent() {
         );
     };
 
-    const token = searchParams.get('token');
+   
+    useEffect(() => {
+        const tokenUrl = searchParams.get('token');
+        setToken(tokenUrl)
+        console.log(token)
+    
+
+        if (tokenUrl) {
+            const url = new URL(window.location.href);
+            url.searchParams.delete('token');
+            window.history.replaceState({}, document.title, url.toString());
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         if (oldPassword) {
@@ -76,26 +91,32 @@ function ResetPasswordContent() {
             return;
         }
 
+        const payload  = {
+            token: token, 
+            password: oldPassword
+        }
+
+        console.log(payload)
+
         if (!error && token) {
             try {
-                const response = await axios.post('https://audease-dev.onrender.com/v1/auth/reset-password', {
-                    token: token,
-                    password: oldPassword
-                });
+                const response = await axios.post('https://audease-dev.onrender.com/v1/auth/reset-password', payload);
                 console.log("New password set", response.data);
+                router.push('/reset-password/reset-successful');
+
             } catch (err) {
                 console.error("Error resetting password", err);
                 setError("Failed to reset password. Please try again.");
             }
         } else {
-            setError("Token is missing. Please check the link.");
+            setError("");
         }
 
         setLoading(false);
     };
 
     return (
-        <div className="flex flex-row space-x-24 mx-auto justify-center items-center">
+        <div className="flex flex-col md:flex-row space-x-24 mx-auto justify-center items-center">
             <div className="">
                 <WelcomeBack boldText={"Enter your new password"} smallText={""} />
             </div>
@@ -177,7 +198,7 @@ function ResetPasswordContent() {
                         />
 
                         <Button buttonText={loading ? "Sending link..." : "Set New Password"} className={`my-6`} />
-                        {error && <p className="text-red-500 mt-2">{error}</p>}
+                        {/* {error && <p className="text-red-500 mt-2">{error}</p>} */}
                     </form>
                 </div>
             </div>

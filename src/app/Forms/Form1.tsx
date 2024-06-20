@@ -102,6 +102,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
           <div className="flex flex-row my-4 space-x-4">
             <input
               type="number"
+              min="1"
               name="noOfEmployee"
               className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                 noOfEmployee ? "bg-gray-100" : ""

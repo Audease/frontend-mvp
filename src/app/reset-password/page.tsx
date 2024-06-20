@@ -78,7 +78,7 @@ function ResetPasswordContent() {
 
         if (!error && token) {
             try {
-                const response = await axios.post('/v1/auth/reset-password', {
+                const response = await axios.post('https://audease-dev.onrender.com/v1/auth/reset-password', {
                     token: token,
                     password: oldPassword
                 });

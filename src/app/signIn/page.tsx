@@ -96,7 +96,7 @@ export default function SignIn() {
         <div className="">
           {/* Form */}
           <form
-            className="text-tblack bg-white rounded-md mb-2 my-2 mx-10 p-4 md:max-w-72 lg:max-w-[22rem]"
+            className="text-tblack bg-white rounded-md mb-2 m-2 md:mx-10 p-4 md:max-w-72 lg:max-w-[22rem]"
             onSubmit={handleSubmit}
             autoComplete="on"
           >

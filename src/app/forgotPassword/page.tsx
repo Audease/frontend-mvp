@@ -92,9 +92,9 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="flex flex-row space-x-24">
+    <div className="flex flex-col space-y-4 lg:flex-row lg:space-x-24 lg:space-y-0">
       <div>{sideTextComponent}</div>
-      <div className="flex flex-row justify-center items-center h-screen">
+      <div className="flex flex-row justify-center items-center m-6">
         {passwordFormComponent}
       </div>
     </div>

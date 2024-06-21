@@ -60,7 +60,7 @@ export default function ForgotPasswordFormTwo() {
   // };
 
   return (
-    <div className="text-tblack bg-white rounded-md w-96">
+    <div className="text-tblack bg-white rounded-md lg:w-96">
       <form className="p-8">
         <div className="pb-4">
           <h3 className="font-semibold text-h3 text-center">Check your email</h3>
@@ -82,8 +82,7 @@ export default function ForgotPasswordFormTwo() {
         </div> */}
 
         {/* Button */}
-        <Button buttonText="	
-Password reset initiated check your mail for further instructions" className="mt-6" />
+        <Button buttonText="Password reset initiated check your mail for further instructions" className="mt-6" />
 
         {/* Countdown timer */}
         {/* <p className="font-bold text-red-700 flex justify-end pt-2">{formattedCountdown}</p> */}

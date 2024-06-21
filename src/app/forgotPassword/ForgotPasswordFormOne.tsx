@@ -15,7 +15,7 @@ export default function ForgotPasswordFormOne({
   };
 
   return (
-    <div className="text-tblack bg-white rounded-md w-96">
+    <div className="text-tblack bg-white rounded-md lg:w-96">
       <div className="p-8">
         <div className="pb-4">
           <h3 className="font-semibold  text-h3">Forgot password?</h3>

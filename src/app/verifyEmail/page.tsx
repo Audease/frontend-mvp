@@ -24,10 +24,12 @@ export default function VerifyEmail() {
   }
 
   return (
-    <div className="font-switzer flex bg-bgDefault m-auto items-center justify-center space-x-24">
+    <div className="font-switzer flex flex-col lg:flex-row bg-bgDefault m-auto items-center justify-center lg:space-x-24">
+      <div>
       <WelcomeBack boldText={"Welcome to Audease"} smallText={"Audease streamlines your college’s administrative and auditing processes, ensuring a secure and efficient management system for all your  data needs."}/>
+      </div>
 
-      <div className="text-tblack bg-white rounded-md w-96">
+      <div className="text-tblack bg-white rounded-md m-6 lg:w-96">
         <form className="p-8" onSubmit={toVerified}>
           <div className="pb-2 space-y-2">
             <h3 className="font-semibold  text-h3">

@@ -116,11 +116,11 @@ function ResetPasswordContent() {
     };
 
     return (
-        <div className="flex flex-col md:flex-row space-x-24 mx-auto justify-center items-center">
+        <div className="flex flex-col lg:flex-row lg:space-x-24 mx-auto justify-center items-center">
             <div className="">
                 <WelcomeBack boldText={"Enter your new password"} smallText={""} />
             </div>
-            <div className="text-tblack bg-white rounded-md w-96">
+            <div className="text-tblack bg-white m-8 rounded-md md:w-96">
                 <div className="p-8">
                     <div className="pb-4">
                         <h3 className="font-semibold text-h3">Reset your password</h3>

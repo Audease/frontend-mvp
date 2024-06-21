@@ -99,7 +99,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
             onChange={handleChange}
             required
           />
-          <div className="flex flex-row my-4 space-x-4">
+          <div className="flex flex-col space-y-4 md:flex-row my-4 md:space-x-4 md:space-y-0">
             <input
               type="number"
               min="1"
@@ -119,7 +119,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
                 id="selectedCountry"
                 value={selectedCountry}
                 onChange={handleChange}
-                className={`border-tgrey2 rounded-md p-[0.6rem] text-h2 text-tgrey1 font-normal w-[10rem] bg-white focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+                className={`border-tgrey2 rounded-md p-[0.6rem] text-h2 text-tgrey1 font-normal w-full md:w-[10rem] bg-white focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   selectedCountry ? "bg-gray-100" : ""
                 }`}
                 required
@@ -144,11 +144,11 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
             onChange={handleChange}
             required
           />
-          <div className="flex flex-row my-4 space-x-4">
+          <div className="flex flex-col space-y-4 md:flex-row my-4 md:space-x-4 md:space-y-0">
             <input
               type="text"
               name="firstName"
-              className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+              className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal md:w-[10rem] focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                 firstName ? "bg-gray-100" : ""
               }`}
               placeholder="First Name"
@@ -159,7 +159,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
             <input
               type="text"
               name="lastName"
-              className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+              className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal md:w-[10rem] focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                 lastName ? "bg-gray-100" : ""
               }`}
               placeholder="Last Name"

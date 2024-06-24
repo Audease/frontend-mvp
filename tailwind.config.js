@@ -1,3 +1,5 @@
+const flowbite = require("flowbite-react/tailwind");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -5,6 +7,7 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/flowbite/**/*.js",
+    flowbite.content(),
   ],
   theme: {
     extend: {
@@ -34,6 +37,8 @@ module.exports = {
         'dashboardRolesBtn':'#625F65',
         'tableText':'#363636',
         'tableText2':'#575757',
+        'bgrey1': '#AEAEAE',
+        'completedBg': '#C5FFC7',
       },
 
       fontSize: {
@@ -47,6 +52,7 @@ module.exports = {
     },
   },
   plugins: [
-    require('flowbite/plugin')
+    require('flowbite/plugin'),
+    flowbite.plugin(),
   ],
 };

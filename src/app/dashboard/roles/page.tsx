@@ -42,7 +42,7 @@ export default function Role() {
             <div className="flex flex-row space-x-4 my-2">
               <Type2Button leftIcon={"/role.png"} buttonText={"Role"} />
               <Type2Button
-                leftIcon={"/workflowIcon.png"}
+                leftIcon={"/worflow.png"}
                 buttonText={"Workflow"}
               />
             </div>

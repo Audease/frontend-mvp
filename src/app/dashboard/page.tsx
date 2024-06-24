@@ -2,7 +2,7 @@ import Role from "./roles/page";
 
 export default function Dashboard (){
   return (
-      <div>
+      <div className="bg-white">
           <Role />
       </div>
   )

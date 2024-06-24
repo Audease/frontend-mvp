@@ -41,8 +41,11 @@ export default function Navbar() {
       </div>
       {/* Navigation and Options */}
       <div className="flex flex-row space-x-8">
-        {/* Links */}
+        <div>
+          {/* Links */}
         <NavLinks />
+        </div>
+        
         {/* Search Field */}
         <div className="relative">
           <input

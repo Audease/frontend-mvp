@@ -116,10 +116,10 @@ export default function SignIn() {
                 className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   email ? "bg-gray-100" : ""
                 }`}
-                placeholder="Email address"
+                placeholder="Username"
                 onChange={handleEmailChange}
                 required
-                aria-label="Email address"
+                aria-label="Username"
               />
 
               <div className="relative mt-4 w-full">

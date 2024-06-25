@@ -19,10 +19,10 @@ export default function Button({ buttonText, className, arrowDirection, onClick 
   );
 }
 
-export function Type2Button ({leftIcon, buttonText}) {
+export function Type2Button ({leftIcon, buttonText, onClick}) {
   return (
     <div>
-      <button className="flex flex-row bg-dashboardRolesBtn p-1 rounded-lg text-white font-inter">
+      <button className="flex flex-row bg-dashboardRolesBtn p-1 rounded-lg text-white font-inter" onClick={onClick}>
         <span className="px-3 py-1">
           <Image src={leftIcon} width={16} height={16} alt="icon"/>
           </span>

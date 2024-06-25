@@ -20,6 +20,7 @@ export default function SetUpAccount( { onClick } ) {
 
   return (
     <div className="flex flex-col space-y-4 w-[60rem] font-inter">
+      {/* Back Button  */}
       <div>
         <button className="flex flex-row space-x-2 text-tgrey3" type="button" onClick={onClick}>
           <div className="pt-2">
@@ -28,6 +29,7 @@ export default function SetUpAccount( { onClick } ) {
           <p className="font-medium text-base"> Back </p>
         </button>
       </div>
+      {/* Main Content  */}
       <div className="border-2 rounded-lg p-4 space-y-4">
         <div className="flex flex-col space-y-2">
             <h3 className="text-base font-medium">Finish up your account</h3>

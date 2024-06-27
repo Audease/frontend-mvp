@@ -6,7 +6,7 @@ import Image from "next/image";
 import clsx from 'clsx';
 
 export default function SetUpAccount( { onClick } ) {
-  const [progress, setProgress] = useState(30);
+  const [progress, setProgress] = useState(20);
   const [staffStatus, setStaffStatus] = useState("Completed");
   const [roleStatus, setRoleStatus] = useState("Pending");
   const [workflowStatus, setWorkflowStatus] = useState("Pending");

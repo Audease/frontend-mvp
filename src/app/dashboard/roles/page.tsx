@@ -1,14 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { Modal } from "flowbite-react";
 import { Type2Button } from "../../components/dashboard/Button";
 import RoleCard from "../../components/dashboard/RoleCard";
 import DefaultLeft from "./DefaultLeft";
 import SetUpAccount from "./SetUpAccount";
+import CreateRole from "./CreateRole";
 import Staff from "./Staff";
 
 export default function Role() {
   const [currentComponent, setCurrentComponent] = useState("Default");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showComponent = (componentName) => {
     setCurrentComponent(componentName);
@@ -25,6 +28,19 @@ export default function Role() {
   const onStaffClick = () => {
     showComponent("Staff");
   };
+
+  const onRoleClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const roleCreate = () => {
+    alert("Role created")
+    setIsModalOpen(false);
+  }
 
   const renderComponent = () => {
     switch (currentComponent) {
@@ -43,6 +59,13 @@ export default function Role() {
       <div className="flex flex-row space-x-16">
         {/* left side  */}
         {renderComponent()}
+        {/* Modal */}
+        <CreateRole
+          show={isModalOpen}
+          onClose={closeModal}
+          onClick={roleCreate}
+        />
+
         {/* right side  */}
         <div className="w-1/3 font-inter">
           <div>
@@ -59,7 +82,7 @@ export default function Role() {
               <Type2Button
                 leftIcon={"/role.png"}
                 buttonText={"Role"}
-                onClick={""}
+                onClick={onRoleClick}
               />
               <Type2Button
                 leftIcon={"/worflow.png"}

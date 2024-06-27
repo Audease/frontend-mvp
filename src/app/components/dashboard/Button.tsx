@@ -34,3 +34,11 @@ export function Type2Button ({leftIcon, buttonText, onClick}) {
     </div>
   )
 }
+
+export function PlainButton ( {text, onClick} ) {
+  return (
+    <div>
+      <button className="py-1 px-2 bg-tgrey7 rounded-lg text-tgrey3" onClick={onClick}>{text}</button>
+    </div>
+  )
+}

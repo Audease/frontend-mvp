@@ -16,7 +16,7 @@ import Link from "next/link";
 export default function Form1({ formData, setFormData, handleSubmit }) {
   const {
     college,
-    bussinessNo,
+    businessNo,
     firstName,
     lastName,
     email,
@@ -91,7 +91,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
           <input
             type="text"
             name="college"
-            className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+            className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
               college ? "bg-gray-100" : ""
             }`}
             value={college}
@@ -99,18 +99,19 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
             onChange={handleChange}
             required
           />
-          <div className="flex flex-row my-4 space-x-4">
-          <input
-            type="number"
-            name="noOfEmployee"
-            className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
-              noOfEmployee ? "bg-gray-100" : ""
-            }`}
-            value={noOfEmployee}
-            placeholder="No of Employees"
-            onChange={handleChange}
-            required
-          />
+          <div className="flex flex-col space-y-4 md:flex-row my-4 md:space-x-4 md:space-y-0">
+            <input
+              type="number"
+              min="1"
+              name="noOfEmployee"
+              className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+                noOfEmployee ? "bg-gray-100" : ""
+              }`}
+              value={noOfEmployee}
+              placeholder="No of Employees"
+              onChange={handleChange}
+              required
+            />
 
             <div className="">
               <select
@@ -118,12 +119,12 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
                 id="selectedCountry"
                 value={selectedCountry}
                 onChange={handleChange}
-                className={`border rounded-md p-[0.6rem] text-h2 text-tgrey1 font-normal w-[10rem] bg-white focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                className={`border-tgrey2 rounded-md p-[0.6rem] text-h2 text-tgrey1 font-normal w-full md:w-[10rem] bg-white focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   selectedCountry ? "bg-gray-100" : ""
                 }`}
                 required
               >
-                <option value="Country" >Country</option>
+                <option value="Country">Country</option>
                 {countries.map((country) => (
                   <option key={country.cca2} value={country.name.common}>
                     {country.name.common}
@@ -134,20 +135,20 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
           </div>
           <input
             type="text"
-            name="bussinessNo"
-            className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
-              bussinessNo ? "bg-gray-100" : ""
+            name="businessNo"
+            className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+              businessNo ? "bg-gray-100" : ""
             }`}
             placeholder="Bussiness No"
-            value={bussinessNo}
+            value={businessNo}
             onChange={handleChange}
             required
           />
-          <div className="flex flex-row my-4 space-x-4">
+          <div className="flex flex-col space-y-4 md:flex-row my-4 md:space-x-4 md:space-y-0">
             <input
               type="text"
               name="firstName"
-              className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+              className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal md:w-[10rem] focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                 firstName ? "bg-gray-100" : ""
               }`}
               placeholder="First Name"
@@ -158,7 +159,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
             <input
               type="text"
               name="lastName"
-              className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-[10rem] focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+              className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal md:w-[10rem] focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                 lastName ? "bg-gray-100" : ""
               }`}
               placeholder="Last Name"
@@ -170,7 +171,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
           <input
             type="email"
             name="email"
-            className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+            className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
               email ? "bg-gray-100" : ""
             }`}
             placeholder="Email"

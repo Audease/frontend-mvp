@@ -7,13 +7,15 @@ export default function ForgotPasswordFormOne({
   handleEmailSubmit,
   forgotPasswordEmail,
   setForgotPasswordEmail,
+  error,
+  loading,
 }) {
   const handleEmailChange = (e) => {
     setForgotPasswordEmail(e.target.value);
   };
 
   return (
-    <div className="text-tblack bg-white rounded-md w-96">
+    <div className="text-tblack bg-white rounded-md lg:w-96">
       <div className="p-8">
         <div className="pb-4">
           <h3 className="font-semibold  text-h3">Forgot password?</h3>
@@ -25,7 +27,7 @@ export default function ForgotPasswordFormOne({
           <input
             type="email"
             name="email"
-            className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+            className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
               forgotPasswordEmail ? "bg-gray-100" : ""
             }`}
             placeholder="Email"
@@ -35,7 +37,8 @@ export default function ForgotPasswordFormOne({
           />
 
           {/* Button  */}
-          <Button buttonText={`Send password link`} className={`my-6`} />
+          <Button buttonText={loading ? "Sending link..." : "Send password link"} className={`my-6`} />
+          {error && <p className="text-red-500 mt-2">{error}</p>}
         </form>
       </div>
     </div>

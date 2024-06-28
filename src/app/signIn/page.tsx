@@ -1,17 +1,17 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../components/button";
-import { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordToggle, setPasswordToggle] = useState("password");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -22,14 +22,13 @@ export default function SignIn() {
     );
   };
 
-    
 
-  const handleEmailChange = ({ target: { value } }) => {
-    setEmail(value);
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
   };
 
-  const handlePasswordChange = ({ target: { value } }) => {
-    setPassword(value);
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -41,7 +40,7 @@ export default function SignIn() {
       password: password,
     };
 
-    // console.log("Submitting payload:", payload);
+    console.log("Submitting payload:", payload);
     try {
       const response = await axios.post(
         "https://audease-dev.onrender.com/v1/auth/login",
@@ -62,8 +61,7 @@ export default function SignIn() {
       }
     } catch (error) {
       console.error("An error occurred:", error);
-      setError("An error occurred. Please try again.");
-    } finally {
+      setError("Invalid email or password");
       setLoading(false)
     }
   };
@@ -98,7 +96,7 @@ export default function SignIn() {
         <div className="">
           {/* Form */}
           <form
-            className="text-tblack bg-white rounded-md mb-2 my-2 mx-10 p-4 md:max-w-72 lg:max-w-[22rem]"
+            className="text-tblack bg-white rounded-md mb-2 m-2 md:mx-10 p-4 md:max-w-72 lg:max-w-[22rem]"
             onSubmit={handleSubmit}
             autoComplete="on"
           >
@@ -115,20 +113,20 @@ export default function SignIn() {
               <input
                 type="text"
                 name="username"
-                className={`border rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   email ? "bg-gray-100" : ""
                 }`}
-                placeholder="Email address"
+                placeholder="Username"
                 onChange={handleEmailChange}
                 required
-                aria-label="Email address"
+                aria-label="Username"
               />
 
               <div className="relative mt-4 w-full">
                 <input
                   type={passwordToggle}
                   name="password"
-                  className={`border border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 ${
+                  className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                     password ? "bg-gray-100" : ""
                   }`}
                   placeholder="Password"
@@ -161,14 +159,14 @@ export default function SignIn() {
             {error && <p className="text-red-500 mt-2">{error}</p>}
 
             {/* Separator */}
-            <div className="flex items-center py-4">
+            {/* <div className="flex items-center py-4">
               <div className="border-t border-borderColor flex-grow"></div>
               <div className="mx-2 text-base text-tgrey1">or</div>
               <div className="border-t border-borderColor flex-grow"></div>
-            </div>
+            </div> */}
 
             {/* Social links */}
-            <div className="flex flex-row justify-between md:justify-evenly md:space-x-8">
+            {/* <div className="flex flex-row justify-between md:justify-evenly md:space-x-8">
               <button
                 type="button"
                 className="border-2 rounded-md p-2 text-h5 font-semibold flex items-center justify-center md:px-6 lg:w-full"
@@ -196,7 +194,7 @@ export default function SignIn() {
                 />
                 <span className="pl-2">Facebook</span>
               </button>
-            </div>
+            </div> */}
 
             {/* Line break */}
             <div className="py-4">

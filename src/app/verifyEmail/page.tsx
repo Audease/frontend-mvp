@@ -2,41 +2,52 @@
 
 import WelcomeBack from "../components/WelcomeBack";
 import Button from "../components/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function VerifyEmail() {
-  const [userEmail, setUserEmail] = useState("nyekachi@audease.co.uk")
+  const [userEmail, setUserEmail] = useState("")
   const router = useRouter();
+
+  useEffect(() => {
+    const registeredEmail = (localStorage.getItem("userEmail"));
+    console.log(registeredEmail)
+    if (registeredEmail && registeredEmail) {
+      setUserEmail(registeredEmail);
+    }
+  }, []);
 
   const toVerified = (e) => {
     // Programmatically navigate to verifyEmail
     e.preventDefault()
-    router.push("/verified");
+    router.push("/signIn");
   }
 
   return (
-    <div className="font-switzer flex bg-bgDefault m-auto items-center justify-center space-x-24">
+    <div className="font-switzer flex flex-col lg:flex-row bg-bgDefault m-auto items-center justify-center lg:space-x-24">
+      <div>
       <WelcomeBack boldText={"Welcome to Audease"} smallText={"Audease streamlines your college’s administrative and auditing processes, ensuring a secure and efficient management system for all your  data needs."}/>
+      </div>
 
-      <div className="text-tblack bg-white rounded-md w-96">
+      <div className="text-tblack bg-white rounded-md m-6 lg:w-96">
         <form className="p-8" onSubmit={toVerified}>
-          <div className="pb-4">
+          <div className="pb-2 space-y-2">
             <h3 className="font-semibold  text-h3">
               Verify your email address
             </h3>
             <p className="font-normal text-h2">
-              To start using Audesae, confirm your email addresses with the
-              email we sent to:
+              To verify your email, login credentials has been sent to:
             </p>
-          </div>
-          {/* User email  */}
+             {/* User email  */}
           <p className="font-bold text-h2">{userEmail}</p>
+          
+          </div>
+         
           {/* Button  */}
-          <Button buttonText={`Resend email`} className={`mt-10`} />
+          <Button buttonText={`Click to Login`} className={`mt-4`} />
         </form>
 
-        <div className="font-inter py-4 text-center">
+        <div className="font-inter py-2 text-center">
           <p className="font-normal text-h2">
             Need help?{" "}
             <span className=" text-link1">{" "}Contact customer support</span>

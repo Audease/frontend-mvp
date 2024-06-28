@@ -4,20 +4,42 @@ import { useState } from "react";
 import ForgotPasswordFormOne from "./ForgotPasswordFormOne";
 import ForgotPasswordFormTwo from "./ForgotPasswordFormTwo";
 import WelcomeBack from "../components/WelcomeBack";
+import axios from "axios";
 
 export default function ForgotPassword() {
   const [currentPasswordForm, setCurrentPasswordForm] = useState(1);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleEmailSubmit = (e) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault();
-    setCurrentPasswordForm(currentPasswordForm + 1);
+    setLoading(true);
+    setError(""); 
+
+    try {
+      const response = await axios.post(
+        "https://audease-dev.onrender.com/v1/auth/initiate-reset",
+        { email: forgotPasswordEmail }
+      );
+
+      if (response.status === 200) {
+        setCurrentPasswordForm(currentPasswordForm + 1);
+      } else {
+        setError(response.data?.message || "Failed to initiate reset");
+      }
+    } catch (error) {
+      setError(error.response?.data?.message || "Error initiating reset");
+      console.error("Error initiating reset:", error);
+    } finally {
+      setLoading(false);
+    }
+
     // localStorage.setItem("email", JSON.stringify(email));
     console.log(forgotPasswordEmail);
   };
 
   let passwordFormComponent;
-
   let sideTextComponent;
 
   switch (currentPasswordForm) {
@@ -27,6 +49,8 @@ export default function ForgotPassword() {
           handleEmailSubmit={handleEmailSubmit}
           forgotPasswordEmail={forgotPasswordEmail}
           setForgotPasswordEmail={setForgotPasswordEmail}
+          loading={loading}
+          error={error}
         />
       );
       sideTextComponent = (
@@ -43,9 +67,7 @@ export default function ForgotPassword() {
       sideTextComponent = (
         <WelcomeBack
           boldText={"Forgot your password?"}
-          smallText={
-            "Enter the OTP sent to your email to reset your password"
-          }
+          smallText={""}
         />
       );
       break;
@@ -55,6 +77,8 @@ export default function ForgotPassword() {
           handleEmailSubmit={handleEmailSubmit}
           forgotPasswordEmail={forgotPasswordEmail}
           setForgotPasswordEmail={setForgotPasswordEmail}
+          loading={loading}
+          error={error}
         />
       );
       sideTextComponent = (
@@ -68,9 +92,11 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="flex flex-row space-x-24">
+    <div className="flex flex-col space-y-4 lg:flex-row lg:space-x-24 lg:space-y-0">
       <div>{sideTextComponent}</div>
-      <div className="flex flex-row justify-center items-center h-screen">{passwordFormComponent}</div>
+      <div className="flex flex-row justify-center items-center m-6">
+        {passwordFormComponent}
+      </div>
     </div>
   );
 }

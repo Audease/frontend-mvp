@@ -1,32 +1,71 @@
 "use client";
 
 import { useState } from "react";
+import { Modal } from "flowbite-react";
 import { Type2Button } from "../../components/dashboard/Button";
 import RoleCard from "../../components/dashboard/RoleCard";
 import DefaultLeft from "./DefaultLeft";
 import SetUpAccount from "./SetUpAccount";
+import CreateRole from "./CreateRole";
+import Staff from "./Staff";
 
 export default function Role() {
-  const [showDefault, setShowDefault] = useState(true);
+  const [currentComponent, setCurrentComponent] = useState("Default");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const showSetUp = () => {
-    setShowDefault(!showDefault)
-  }
+  const showComponent = (componentName) => {
+    setCurrentComponent(componentName);
+  };
 
   const onBackClick = () => {
-    setShowDefault(true)
+    setCurrentComponent("Default");
+  };
+
+  const onClickSetUpAcct = () => {
+    showComponent("SetUpAccount");
+  };
+
+  const onStaffClick = () => {
+    showComponent("Staff");
+  };
+
+  const onRoleClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const roleCreate = () => {
+    alert("Role created")
+    setIsModalOpen(false);
   }
+
+  const renderComponent = () => {
+    switch (currentComponent) {
+      case "SetUpAccount":
+        return <SetUpAccount onClick={onBackClick} />;
+      case "Staff":
+        return <Staff onClick={onBackClick} />;
+      default:
+        return <DefaultLeft onClickSetUpAcct={onClickSetUpAcct} />;
+    }
+  };
 
   return (
     <div>
       {/* Body section  */}
       <div className="flex flex-row space-x-16">
         {/* left side  */}
-        {showDefault ? (
-            <DefaultLeft onClickSetUpAcct={showSetUp} />
-          ) : (
-            <SetUpAccount onClick={onBackClick}/>
-          )} 
+        {renderComponent()}
+        {/* Modal */}
+        <CreateRole
+          show={isModalOpen}
+          onClose={closeModal}
+          onClick={roleCreate}
+        />
+
         {/* right side  */}
         <div className="w-1/3 font-inter">
           <div>
@@ -40,25 +79,40 @@ export default function Role() {
           {/* Buttons  */}
           <div>
             <div className="flex flex-row space-x-4 my-2">
-              <Type2Button leftIcon={"/role.png"} buttonText={"Role"} />
               <Type2Button
-                leftIcon={"/workflowIcon.png"}
+                leftIcon={"/role.png"}
+                buttonText={"Role"}
+                onClick={onRoleClick}
+              />
+              <Type2Button
+                leftIcon={"/worflow.png"}
                 buttonText={"Workflow"}
+                onClick={""}
               />
             </div>
             <div className="flex flex-row space-x-4 my-2">
-              <Type2Button leftIcon={"/staffIcon.png"} buttonText={"Staff"} />
+              <Type2Button
+                leftIcon={"/staffIcon.png"}
+                buttonText={"Staff"}
+                onClick={onStaffClick}
+              />
               <Type2Button
                 leftIcon={"/learnerIcon.png"}
                 buttonText={"Learner"}
+                onClick={""}
               />
             </div>
             <div className="flex flex-row space-x-4 my-2">
               <Type2Button
                 leftIcon={"/resourcesIcon.png"}
                 buttonText={"Resources"}
+                onClick={""}
               />
-              <Type2Button leftIcon={"/formIcon.png"} buttonText={"Form"} />
+              <Type2Button
+                leftIcon={"/formIcon.png"}
+                buttonText={"Form"}
+                onClick={""}
+              />
             </div>
           </div>
           {/* Cards Section */}

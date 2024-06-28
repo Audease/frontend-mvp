@@ -1,0 +1,19 @@
+.progressBar {
+    /* background-color: red; */
+    background-color: linear-gradient(to right, #ff7e5f 0%, #feb47b 100%);
+}
+
+.custom-progress-bar {
+    height: .3rem; 
+    border-radius: 0.25rem; 
+  }
+
+  .completedBg {
+    background-color: #4caf50; /* example color for completed background */
+  }
+  
+  .bgrey1 {
+    background-color: #c20808; /* example color for pending background */
+  }
+
+  

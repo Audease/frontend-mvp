@@ -272,9 +272,9 @@ export default function Staff({ onClick }) {
             </div>
           </div>
           {/* Invited emails  */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-4 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-4 mt-6 overflow-y-auto h-[12rem]">
             {invitedStaff.map((email, index) => (
-              <div key={index} className="flex flex-row items-center space-x-2">
+              <div key={index} className="flex flex-row items-center space-x-2 ">
                 <Avatar img="/avatar.png" rounded size={"sm"}/>
                 <div className="py-3">
                   <h2 className="font-medium text-xs text-black">{email}</h2>

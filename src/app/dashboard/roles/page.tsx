@@ -6,12 +6,18 @@ import { Type2Button } from "../../components/dashboard/Button";
 import RoleCard from "../../components/dashboard/RoleCard";
 import DefaultLeft from "./DefaultLeft";
 import SetUpAccount from "./SetUpAccount";
-import CreateRole from "./CreateRole";
+import CreateRole, { RoleCreated } from "./CreateRole";
 import Staff from "./Staff";
 
 export default function Role() {
   const [currentComponent, setCurrentComponent] = useState("Default");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSuccessModal, setIsSuccessModal] = useState(false);
+
+  const [roleFormData, setRoleFormData] = useState({
+    roleName: "",
+    permission: "",
+  });
 
   const showComponent = (componentName) => {
     setCurrentComponent(componentName);
@@ -37,10 +43,24 @@ export default function Role() {
     setIsModalOpen(false);
   };
 
-  const roleCreate = () => {
-    alert("Role created")
-    setIsModalOpen(false);
+  const closeSuccessModal = () => {
+    setIsSuccessModal(false)
+    setRoleFormData({
+      roleName: "",
+    permission: "",
+    })
   }
+
+  const roleCreate = () => {
+    console.log(roleFormData)
+    setIsSuccessModal(true);
+    setIsModalOpen(false);
+    setRoleFormData({
+      roleName: "",
+    permission: "",
+    })
+  }
+
 
   const renderComponent = () => {
     switch (currentComponent) {
@@ -64,7 +84,11 @@ export default function Role() {
           show={isModalOpen}
           onClose={closeModal}
           onClick={roleCreate}
+          formData={roleFormData}
+          setFormData={setRoleFormData}
         />
+
+        <RoleCreated show={isSuccessModal} onClose={closeSuccessModal}/>
 
         {/* right side  */}
         <div className="w-1/3 font-inter">

@@ -83,14 +83,15 @@ export default function Staff({ onClick }) {
     setStaffs(staffs.filter((email) => email !== emailToRemove));
   };
 
-
+  // Invite Now Button
   const inviteNow = () => {
     setInvitedStaff((prevInvitedStaff) => [...prevInvitedStaff, ...staffs]);
     setStaffs([]);
   };
 
+  // Remive invited Button
   const handleRemoveInvite = (staffToRemove) => {
-    setInvitedStaff(invitedStaff.filter(staff => staff !== staffToRemove));
+    setInvitedStaff(invitedStaff.filter((staff) => staff !== staffToRemove));
   };
 
   const getAvatarUrl = (email) => {
@@ -163,6 +164,7 @@ export default function Staff({ onClick }) {
 
           {/* The buttons */}
           <div className="flex flex-row justify-between">
+            {/* Add button  */}
             <button
               className="flex flex-row rounded-md py-2 px-3 bg-dashboardButtonsBg text-dashboardButtons font-medium text-sm"
               onClick={onAddClick}
@@ -240,6 +242,7 @@ export default function Staff({ onClick }) {
                     address added to invite, Click to send invite
                   </h3>
                 </div>
+                {/* Invite now button  */}
                 <div>
                   <button
                     className="flex flex-row rounded-md py-2 px-3 bg-black text-white font-medium text-sm"
@@ -257,50 +260,59 @@ export default function Staff({ onClick }) {
         </div>
 
         {/* Invited  */}
-        <div className="my-8 ml-3">
-          {/* Add staff and the search box  */}
-          <div className="flex flex-row justify-between">
-            <div className="flex flex-col space-y-1">
-              <h3 className="text-base font-medium">Add Staffs</h3>
-              <p className="font-normal text-sm text-tgrey3">
-                You can add multiple staffs at once using their work mail
-              </p>
-            </div>
-            {/* The search box */}
-            <div>
-              <SearchBox />
-            </div>
-          </div>
-          {/* Invited emails  */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-4 mt-6 overflow-y-auto h-[12rem]">
-            {invitedStaff.map((email, index) => (
-              <div key={index} className="flex flex-row items-center space-x-2 ">
-                <Avatar img="/avatar.png" rounded size={"sm"}/>
-                <div className="py-3">
-                  <h2 className="font-medium text-xs text-black">{email}</h2>
-                </div>
-                <div className="my-2">
-                  <button
-                    className="py-1 px-2 rounded-md bg-tgrey4 text-tgrey3 font-medium text-xs"
-                    
-                  >
-                    Pending
-                  </button>
-                </div>
-                <div className="my-2">
-                  <button
-                    className="py-1 px-2 rounded-md bg-dashboardButtonsBg text-dashboardButtons font-medium text-xs"
-                  >
-                    Invite again
-                  </button>
-                </div>
-                <div>
-                <IoCloseOutline onClick={() => handleRemoveInvite(email)} className="text-tgrey1"/>
-                </div>
+        {invitedStaff.length === 0 ? (
+          <div></div>
+        ) : (
+          <div className="my-8 ml-3">
+            {/* Add staff and the search box  */}
+            <div className="flex flex-row justify-between">
+              <div className="flex flex-col space-y-1">
+                <h3 className="text-base font-medium">Add Staffs</h3>
+                <p className="font-normal text-sm text-tgrey3">
+                  You can add multiple staffs at once using their work mail
+                </p>
               </div>
-            ))}
+              {/* The search box */}
+              <div>
+                <SearchBox />
+              </div>
+            </div>
+            {/* Invited emails  */}
+            <div className="overflow-y-auto h-[18rem]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-6 ">
+                {invitedStaff.map((email, index) => (
+                  <div key={index} className="flex flex-row space-x-2 ">
+                    <div>
+                      <Avatar img="/avatar.png" rounded size={"sm"} />
+                    </div>
+
+                    <div className="py-3">
+                      <h2 className="font-medium text-xs text-black">
+                        {email}
+                      </h2>
+                    </div>
+                    <div className="my-2">
+                      <button className="py-1 px-2 rounded-md bg-tgrey4 text-tgrey3 font-medium text-xs">
+                        Pending
+                      </button>
+                    </div>
+                    <div className="my-2">
+                      <button className="py-1 px-2 rounded-md bg-dashboardButtonsBg text-dashboardButtons font-medium text-xs">
+                        Invite again
+                      </button>
+                    </div>
+                    <div className="my-3">
+                      <IoCloseOutline
+                        onClick={() => handleRemoveInvite(email)}
+                        className="text-tgrey1"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

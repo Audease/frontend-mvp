@@ -8,6 +8,7 @@ import DefaultLeft from "./DefaultLeft";
 import SetUpAccount from "./SetUpAccount";
 import CreateRole, { RoleCreated } from "./CreateRole";
 import Staff from "./Staff";
+import Workflow from "./Workflow";
 
 export default function Role() {
   const [currentComponent, setCurrentComponent] = useState("Default");
@@ -61,6 +62,10 @@ export default function Role() {
     })
   }
 
+  const onWorkflowClick = () => {
+    showComponent("Workflow");
+  };
+
 
   const renderComponent = () => {
     switch (currentComponent) {
@@ -68,6 +73,8 @@ export default function Role() {
         return <SetUpAccount onClick={onBackClick} />;
       case "Staff":
         return <Staff onClick={onBackClick} />;
+      case "Workflow":
+        return <Workflow onClick={onBackClick}/>
       default:
         return <DefaultLeft onClickSetUpAcct={onClickSetUpAcct} />;
     }
@@ -76,7 +83,7 @@ export default function Role() {
   return (
     <div>
       {/* Body section  */}
-      <div className="flex flex-row space-x-16">
+      <div className="flex flex-row space-x-4">
         {/* left side  */}
         {renderComponent()}
         {/* Modal */}
@@ -111,7 +118,7 @@ export default function Role() {
               <Type2Button
                 leftIcon={"/worflow.png"}
                 buttonText={"Workflow"}
-                onClick={""}
+                onClick={onWorkflowClick}
               />
             </div>
             <div className="flex flex-row space-x-4 my-2">

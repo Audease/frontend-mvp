@@ -84,7 +84,7 @@ export default function DefaultLeft( { onClickSetUpAcct } ) {
             buttonText={"Create"}
             className={""}
             arrowDirection={<SlArrowDown />}
-            onClick={onClickSetUpAcct}
+            onClick={""}
           />
           <button className=" flex flex-row p-1 rounded-md border-2 ">
             <span className="font-inter font-medium pr-2 py-1">

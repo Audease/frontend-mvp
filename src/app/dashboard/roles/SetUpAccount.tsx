@@ -39,7 +39,7 @@ export default function SetUpAccount( { onClick } ) {
             </div>
         </div>
         <hr />
-        {/* Scetion  */}
+        {/* Section  */}
         <div className="space-y-4">
           {/* Add Staff  */}
         <div className="flex flex-row justify-between">

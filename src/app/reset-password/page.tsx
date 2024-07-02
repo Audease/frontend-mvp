@@ -197,7 +197,7 @@ function ResetPasswordContent() {
                             errorMessage={error}
                         />
 
-                        <Button buttonText={loading ? "Sending link..." : "Set New Password"} className={`my-6`} />
+                        <Button buttonText={loading ? "Resetting Password..." : "Set New Password"} className={`my-6`} />
                         {/* {error && <p className="text-red-500 mt-2">{error}</p>} */}
                     </form>
                 </div>

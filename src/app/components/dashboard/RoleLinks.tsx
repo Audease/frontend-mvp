@@ -50,7 +50,7 @@ export default function RoleLinks () {
                     setActive(link);
                     clickHandlers[link](); // Call the corresponding click handler
                   }}
-                  className={`cursor-pointer pb-4 ${
+                  className={`cursor-pointer pb-0 ${
                     active === link ? "border-b-4 border-dashboardButtons" : ""
                   }`}
                 >

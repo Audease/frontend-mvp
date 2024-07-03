@@ -13,15 +13,6 @@ export default function CreateRole({
 }) {
   const [inputedPermission, setInputedPermission] = useState("");
 
-  const addPermissions = (permission) => (e) => {
-    e.preventDefault();
-    setInputedPermission(permission);
-    setFormData((prevData) => ({
-      ...prevData,
-      permission,
-    }));
-  };
-
   const clearPermission = () => {
     setInputedPermission("");
     setFormData((prevData) => ({
@@ -35,6 +26,23 @@ export default function CreateRole({
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  //   Tag Input field "@Johnsonwils", "Anderson123@gmail.com"
+  const [tags, setTags] = useState([]);
+
+  const removeTag = (indexToRemove) => {
+    setTags(tags.filter((_, index) => index !== indexToRemove));
+  };
+
+  const addPermissions = (permission) => (e) => {
+    e.preventDefault();
+    setTags([permission]);
+    setInputedPermission(permission);
+    setFormData((prevData) => ({
+      ...prevData,
+      permission,
     }));
   };
 
@@ -73,59 +81,56 @@ export default function CreateRole({
 
             {/* Permissions */}
             <div className="mb-4">
-              <div>
-                <label
-                  className="block text-tgrey3 text-sm font-normal mb-2"
-                  htmlFor="permission"
-                >
-                  Permission (You can only select one permission)
-                </label>
-                <div className="relative">
-                  <input
-                    id="permission"
-                    type="text"
-                    className="border-1 rounded-lg border-tgrey2 px-3 py-1 text-h2 text-tgrey3 font-normal focus:border-gold1 focus:outline-none focus:ring-gold1 w-full"
-                    value={inputedPermission}
-                    readOnly
-                  />
-                  {inputedPermission && (
+              <label
+                className="block text-tgrey3 text-sm font-normal mb-2"
+                htmlFor="permission"
+              >
+                Permission (You can only select one permission)
+              </label>
+              {/* Tag Input Field  */}
+              <div className="flex flex-wrap items-center border p-2 border-1 rounded-lg border-tgrey2 py-1 text-h2 h-9">
+                {tags.map((tag, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center bg-gray-200 rounded px-2"
+                  >
+                    <span className="text-gray-700 mr-2">{tag}</span>
                     <button
-                      type="button"
-                      className="absolute right-[10rem] top-2"
-                      onClick={clearPermission}
+                      className="text-gray-500 hover:text-gray-700"
+                      onClick={() => removeTag(index)}
                     >
-                      <IoClose className="text-tgrey3" width={14} height={14} />
+                      &times;
                     </button>
-                  )}
-                </div>
+                  </div>
+                ))}
               </div>
               {/* Options */}
-              <div className="my-4 flex flex-row flex-wrap space-x-4">
-                <div className="flex-none text-sm relative">
+              <div className="my-4 flex flex-row flex-wrap justify-left">
+                <div className="text-sm">
                   <PlainButton
                     text={"Add student"}
                     onClick={addPermissions("Add student")}
                   />
                 </div>
-                <div className="flex-none text-sm">
+                <div className="text-sm ml-3">
                   <PlainButton
                     text={"Add staff"}
                     onClick={addPermissions("Add staff")}
                   />
                 </div>
-                <div className="flex-none text-sm">
+                <div className="text-sm ml-3">
                   <PlainButton
                     text={"Send Invite"}
                     onClick={addPermissions("Send Invite")}
                   />
                 </div>
-                <div className="flex-none mt-4 text-sm">
+                <div className="mt-4 text-sm">
                   <PlainButton
                     text={"Approve/reject application"}
                     onClick={addPermissions("Approve/reject application")}
                   />
                 </div>
-                <div className="flex-none mt-4 text-sm">
+                <div className="mt-4 text-sm ml-3">
                   <PlainButton
                     text={"Send Application"}
                     onClick={addPermissions("Send Application")}

@@ -29,7 +29,7 @@ export default function CreateWorkflow({
     }));
   };
 
-  //   Tag Input field "@Johnsonwils", "Anderson123@gmail.com"
+  // Tag Input field
   const [tags, setTags] = useState([]);
 
   const removeTag = (indexToRemove) => {
@@ -38,7 +38,9 @@ export default function CreateWorkflow({
 
   const addTag = (role) => (e) => {
     e.preventDefault();
-    setTags([role]);
+    if (!tags.includes(role)) {
+      setTags([...tags, role]);
+    }
   };
 
   return (
@@ -79,9 +81,9 @@ export default function CreateWorkflow({
             {/* Roles */}
             {/* Tag Input Field  */}
             <div>
-            <h3 className="text-tgrey3 text-sm font-normal mb-2">Role</h3>
+              <h3 className="text-tgrey3 text-sm font-normal mb-2">Role</h3>
             </div>
-            <div className="flex flex-wrap items-center border p-2 border-1 rounded-lg border-tgrey2 py-1 text-h2 h-9">
+            <div className="flex flex-wrap items-center border p-2 border-1 rounded-lg border-tgrey2 py-1 text-h2 h-16 gap-2">
               {tags.map((tag, index) => (
                 <div
                   key={index}
@@ -90,7 +92,10 @@ export default function CreateWorkflow({
                   <span className="text-gray-700 mr-2">{tag}</span>
                   <button
                     className="text-gray-500 hover:text-gray-700"
-                    onClick={() => removeTag(index)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      removeTag(index);
+                    }}
                   >
                     &times;
                   </button>

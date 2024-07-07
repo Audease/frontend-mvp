@@ -175,9 +175,9 @@ export default function Workflow({ onClick }) {
 
 
 
-      {/* <div className="bg-gray-200 flex items-center justify-center">
+      <div className="bg-gray-200 flex items-center justify-center">
       <DragDropBoard />
-    </div> */}
+    </div>
     </div>
   );
 }

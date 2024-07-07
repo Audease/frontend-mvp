@@ -40,7 +40,7 @@ export default function Staff({ onClick }) {
       setStaffs((prevStaffs) => [...prevStaffs, ...newEmails]);
     }
 
-    if (invalidEmails.length > 0) {
+    if (invalidEmails.length >= 1) {
       setEmailInput([...invalidEmails, ...duplicateEmails].join(", "));
       setError("Invalid or duplicate email(s) not added.");
     } else if (duplicateEmails.length > 0) {

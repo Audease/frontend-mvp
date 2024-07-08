@@ -1,5 +1,4 @@
 import { SlArrowLeft } from "react-icons/sl";
-import { Progress } from "flowbite-react";
 import { useState, useEffect } from "react";
 import "../../../assets/style.css"
 import Image from "next/image";
@@ -19,7 +18,7 @@ export default function SetUpAccount( { onClick } ) {
    };
 
   return (
-    <div className="flex flex-col space-y-4 w-[60rem] font-inter">
+    <div className="flex flex-col space-y-4 font-inter">
       {/* Back Button  */}
       <div>
         <button className="flex flex-row space-x-2 text-tgrey3" type="button" onClick={onClick}>

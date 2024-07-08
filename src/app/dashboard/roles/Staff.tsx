@@ -95,7 +95,7 @@ export default function Staff({ onClick }) {
   }, [invitedStaff]);
 
   return (
-    <div className="flex flex-col space-y-4 w-[60rem] font-inter">
+    <div className="flex flex-col space-y-4 w-[57rem] font-inter">
       {/* Back Button */}
       <div>
         <button

@@ -16,4 +16,9 @@
     background-color: #c20808; /* example color for pending background */
   }
 
+  .box-shadow {
+    /* background-color: red; */
+    box-shadow: 5px 5px 20px #FF8A0029;
+  }
+
   

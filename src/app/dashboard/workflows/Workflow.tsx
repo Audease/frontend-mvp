@@ -7,10 +7,9 @@ import DragDropBoard from "./DragDropBoard";
 
 export default function Workflow({ onClick }) {
   const [activeTab, setActiveTab] = useState("Workflow");
-  const [workflow, setWorkflows] = useState([]);
+  const [workflow, setWorkflows] = useState(["jgksj","djg"]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModal, setIsSuccessModal] = useState(false);
-
 
   const onInviteClick = () => {};
 
@@ -41,7 +40,7 @@ export default function Workflow({ onClick }) {
   };
 
   return (
-    <div className="flex flex-col space-y-4 w-[64rem] space-x-0 font-inter">
+    <div className="flex flex-col space-y-4  space-x-4 font-inter">
       {/* Back Button */}
       <div>
         <button
@@ -155,7 +154,9 @@ export default function Workflow({ onClick }) {
               </div>
             </div>
           ) : (
-            <div>Workflows appears here</div>
+            <div className=" ">
+              <DragDropBoard />
+            </div>
           )}
         </div>
       </div>
@@ -172,12 +173,6 @@ export default function Workflow({ onClick }) {
         {/* Success Modal  */}
         <WorkflowCreated show={isSuccessModal} onClose={closeSuccessModal} />
       </div>
-
-
-
-      <div className="bg-gray-200 flex items-center justify-center">
-      <DragDropBoard />
-    </div>
     </div>
   );
 }

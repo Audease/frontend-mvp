@@ -60,7 +60,7 @@ export default function DefaultLeft({ onClickSetUpAcct }) {
   ];
 
   return (
-    <div className="flex flex-col w-[60rem]">
+    <div className="flex flex-col">
       {/* Welcome  */}
       <div className="flex flex-col">
         {/* User ID  */}

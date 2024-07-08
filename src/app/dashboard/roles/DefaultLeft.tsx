@@ -2,9 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import Button from "../../components/dashboard/Button";
-// import RoleLinks from "../../components/dashboard/RoleLinks";
 import { SlArrowRight, SlArrowDown } from "react-icons/sl";
-// import { VscSettings } from "react-icons/vsc";
 import RoleTable from "../../components/dashboard/RoleTable";
 
 export default function DefaultLeft({ onClickSetUpAcct }) {

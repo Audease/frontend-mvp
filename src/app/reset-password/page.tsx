@@ -59,19 +59,19 @@ function ResetPasswordContent() {
             let numberCount = (oldPassword.match(/[0-9]/g) || []).length;
             let symbolCount = (oldPassword.match(/\W/g) || []).length;
 
-            if (oldPassword.length < 8) {
-                setError("Password must be a minimum of 8 characters and include one UPPERCASE letter, one lowercase letter, one number, and one special character: @$!%*?&");
-            } else if (capsCount < 1) {
+            if (symbolCount < 1) {
+                setError("Must contain one special character: @$! % * ? &");
+              } else if (capsCount < 1) {
                 setError("Must contain one UPPERCASE letter");
-            } else if (smallCount < 1) {
+              } else if (smallCount < 1) {
                 setError("Must contain one lowercase letter");
-            } else if (numberCount < 1) {
+              } else if (numberCount < 1) {
                 setError("Must contain one number");
-            } else if (symbolCount < 1) {
-                setError("Must contain one special character: @$!%*?&");
-            } else {
+              } else if (oldPassword.length < 8) {
+                setError("Must be minimum of 8 characters." );
+              }  else {
                 setError(null);
-            }
+              }
         }
     }, [oldPassword]);
 

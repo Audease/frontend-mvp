@@ -5,6 +5,8 @@ import Button from "../../components/dashboard/Button";
 import { SlArrowRight, SlArrowDown } from "react-icons/sl";
 import SearchBox from "../../components/dashboard/SearchBox";
 import DropdownButton from "../../components/dashboard/DropdownButton";
+import FilterButton from "../../components/dashboard/FilterButton";
+import StaffTable from "../../components/dashboard/StaffTable";
 
 export default function Staff() {
   const [activeTab, setActiveTab] = useState("All");
@@ -20,16 +22,90 @@ export default function Staff() {
     });
   }, [activeTab, tabs, tabs.length]);
 
-
+  // Dropdown button options and its selected option
   const [selectedOption, setSelectedOption] = useState(null);
   const handleSelect = (option) => {
     setSelectedOption(option);
-    console.log('Selected option:', option);
+    console.log("Selected option:", option);
   };
-  const options = ['Option 1', 'Option 2', 'Option 3'];
+  const options = ["Recruiter", "BKSD", "Accessor", "Inductor", "Lazer"];
+
+  // Staff data
+  const staffData = [
+    {
+      id: 1,
+      email: "JohnDoe@gmail.com",
+      role: "Recruiter",
+      status: "pending",
+      username: "johndoe.eden.recruiter",
+    },
+    {
+      id: 2,
+      email: "JaneSmith@gmail.com",
+      role: "Accessor",
+      status: "active",
+      username: "janesmith.eden.accessor",
+    },
+    {
+      id: 3,
+      email: "MikeBrown@gmail.com",
+      role: "Auditor",
+      status: "inactive",
+      username: "mikebrown.eden.auditor",
+    },
+    {
+      id: 4,
+      email: "EmilyClark@gmail.com",
+      role: "Inductor",
+      status: "active",
+      username: "emilyclark.eden.inductor",
+    },
+    {
+      id: 5,
+      email: "ChrisJohnson@gmail.com",
+      role: "Recruiter",
+      status: "pending",
+      username: "chrisjohnson.eden.recruiter",
+    },
+    {
+      id: 6,
+      email: "PatriciaGarcia@gmail.com",
+      role: "Accessor",
+      status: "inactive",
+      username: "patriciagarcia.eden.accessor",
+    },
+    {
+      id: 7,
+      email: "RobertMiller@gmail.com",
+      role: "Auditor",
+      status: "active",
+      username: "robertmiller.eden.auditor",
+    },
+    {
+      id: 8,
+      email: "LindaMartinez@gmail.com",
+      role: "Inductor",
+      status: "inactive",
+      username: "lindamartinez.eden.inductor",
+    },
+    {
+      id: 9,
+      email: "MichaelDavis@gmail.com",
+      role: "Recruiter",
+      status: "pending",
+      username: "michaeldavis.eden.recruiter",
+    },
+    {
+      id: 10,
+      email: "SarahWilson@gmail.com",
+      role: "Accessor",
+      status: "active",
+      username: "sarahwilson.eden.accessor",
+    },
+  ];
 
   return (
-    <div>
+    <div className="flex flex-col space-y-4">
       <div>
         <h3 className="font-medium text-2xl">Staff</h3>
       </div>
@@ -50,28 +126,35 @@ export default function Staff() {
               </h2>
             ))}
           </div>
-          {/* Search Box */}
-          <SearchBox />
 
-          {/* Dropdown Button  */}
-          <div>
-            <DropdownButton
+          {/* The buttons on the right side  */}
+          <div className="flex flex-row space-x-4">
+            {/* Search Box */}
+            <SearchBox />
+
+            {/* Dropdown Button  */}
+            <div>
+              <DropdownButton
+                options={options}
+                onSelect={handleSelect}
+                label="Assign a role"
+                className={"bg-dashboardRolesBtn text-white py-1 px-4 rounded focus:outline-none"}
+              />
+              {/* {selectedOption && (
+                <p className="mt-4">Selected Option: {selectedOption}</p>
+              )} */}
+            </div>
+
+            {/* Filter Button */}
+            <FilterButton
               options={options}
               onSelect={handleSelect}
-              label="Select an option"
+              label="Filter"
             />
-            {selectedOption && (
-              <p className="mt-4">Selected Option: {selectedOption}</p>
-            )}
+            {/* {selectedOption && (
+                <p className="mt-4">Selected Option: {selectedOption}</p>
+              )} */}
           </div>
-
-          {/* Create Button */}
-          <Button
-            buttonText={"Create"}
-            className={""}
-            arrowDirection={<SlArrowDown />}
-            onClick={""}
-          />
         </div>
         {/* The active bar color change */}
         <div className="w-full h-[0.10rem] bg-gray-300 my-2">
@@ -80,6 +163,11 @@ export default function Staff() {
             style={activeBarStyle}
           ></div>
         </div>
+      </div>
+
+      {/* The main body, which is the table list  */}
+      <div>
+        <StaffTable staffData={staffData} />
       </div>
     </div>
   );

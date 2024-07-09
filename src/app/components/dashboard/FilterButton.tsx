@@ -1,7 +1,8 @@
-import  { useState, useRef, useEffect } from 'react';
-import { RiArrowDropUpLine } from "react-icons/ri";
+import { useState, useRef, useEffect } from "react";
+import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { LuSettings2 } from "react-icons/lu";
 
-const DropdownButton = ({ options, onSelect, label, className }) => {
+const FilterButton = ({ options, onSelect, label }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -14,9 +15,9 @@ const DropdownButton = ({ options, onSelect, label, className }) => {
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -29,10 +30,12 @@ const DropdownButton = ({ options, onSelect, label, className }) => {
     <div className="relative inline-block" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className={className}
+        className=" text-black py-1 px-4 rounded focus:outline-none border-grey-300 border-2"
       >
-        <div className='flex flex-row text-sm font-medium'>
-        {label} <span><RiArrowDropUpLine  className='w-8 h-6'/></span>
+        <div className="flex flex-row text-sm font-normal">
+          <LuSettings2 className="h-4 w-8 text-tgrey3"/>
+          {label}{" "}
+         <MdOutlineKeyboardArrowDown className="w-8 h-6 text-tgrey3" />
         </div>
       </button>
       {isOpen && (
@@ -52,4 +55,4 @@ const DropdownButton = ({ options, onSelect, label, className }) => {
   );
 };
 
-export default DropdownButton;
+export default FilterButton;

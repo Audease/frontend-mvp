@@ -3,13 +3,15 @@ import { FaPlus, FaCheck } from "react-icons/fa";
 import { useState } from "react";
 import Image from "next/image";
 import CreateWorkflow, { WorkflowCreated } from "./CreateWorkflow";
+import DragDropBoard from "./DragDropBoard";
 
 export default function Workflow({ onClick }) {
   const [activeTab, setActiveTab] = useState("Workflow");
-  const [workflow, setWorkflows] = useState([]);
-  const onInviteClick = () => {};
+  const [workflow, setWorkflows] = useState(["jgksj","djg"]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModal, setIsSuccessModal] = useState(false);
+
+  const onInviteClick = () => {};
 
   const onCreateWorkflowClick = () => {
     setIsModalOpen(true);
@@ -37,22 +39,8 @@ export default function Workflow({ onClick }) {
     });
   };
 
-//   Tag Input field 
-  const [tags, setTags] = useState(["@Johnsonwils", "Anderson123@gmail.com"]);
-
-  const removeTag = (indexToRemove) => {
-    setTags(tags.filter((_, index) => index !== indexToRemove));
-  };
-
-  const addTag = (event) => {
-    if (event.target.value !== "") {
-      setTags([...tags, event.target.value]);
-      event.target.value = "";
-    }
-  };
-
   return (
-    <div className="flex flex-col space-y-4 w-[64rem] space-x-0 font-inter">
+    <div className="flex flex-col space-y-4  space-x-4 font-inter">
       {/* Back Button */}
       <div>
         <button
@@ -166,7 +154,9 @@ export default function Workflow({ onClick }) {
               </div>
             </div>
           ) : (
-            <div>Workflows appears here</div>
+            <div className=" ">
+              <DragDropBoard />
+            </div>
           )}
         </div>
       </div>
@@ -180,32 +170,9 @@ export default function Workflow({ onClick }) {
           formData={roleFormData}
           setFormData={setRoleFormData}
         />
+        {/* Success Modal  */}
         <WorkflowCreated show={isSuccessModal} onClose={closeSuccessModal} />
       </div>
-        
-        {/* Tag Input Field  */}
-      {/* <div className="flex flex-wrap items-center border rounded p-2">
-        {tags.map((tag, index) => (
-          <div
-            key={index}
-            className="flex items-center bg-gray-200 rounded m-1 p-1"
-          >
-            <span className="text-gray-700 mr-2">{tag}</span>
-            <button
-              className="text-gray-500 hover:text-gray-700"
-              onClick={() => removeTag(index)}
-            >
-              &times;
-            </button>
-          </div>
-        ))}
-        <input
-          type="text"
-          onKeyUp={(e) => (e.key === "Enter" ? addTag(e) : null)}
-          placeholder="Add member"
-          className="flex-grow p-1 border-none focus:outline-none"
-        />
-      </div> */}
     </div>
   );
 }

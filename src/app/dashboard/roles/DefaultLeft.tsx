@@ -1,15 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Button from "../../components/dashboard/Button";
-import RoleLinks from "../../components/dashboard/RoleLinks";
 import { SlArrowRight, SlArrowDown } from "react-icons/sl";
-import { VscSettings } from "react-icons/vsc";
 import RoleTable from "../../components/dashboard/RoleTable";
 
-export default function DefaultLeft( { onClickSetUpAcct } ) {
+export default function DefaultLeft({ onClickSetUpAcct }) {
   const [firstName, setFirstName] = useState("Nyekachi");
   const [plan, setPlan] = useState("Free trial");
+
+  const [activeTab, setActiveTab] = useState("All");
+  const [activeBarStyle, setActiveBarStyle] = useState({});
+
+
+  const tabs = useMemo(() => ["All","Recent", "Starred", "Modules", "Folders", "Thrash"],[]);
+
+  useEffect(() => {
+    const activeIndex = tabs.indexOf(activeTab);
+    const tabWidth = 45 / tabs.length;
+    setActiveBarStyle({
+      width: `${tabWidth}%`,
+      transform: `translateX(${activeIndex * 100}%)`,
+    });
+  }, [activeTab,tabs, tabs.length]);
 
   const data = [
     {
@@ -45,7 +58,7 @@ export default function DefaultLeft( { onClickSetUpAcct } ) {
   ];
 
   return (
-    <div className="flex flex-col w-[60rem]">
+    <div className="flex flex-col">
       {/* Welcome  */}
       <div className="flex flex-col">
         {/* User ID  */}
@@ -59,7 +72,7 @@ export default function DefaultLeft( { onClickSetUpAcct } ) {
             {plan}
           </sup>
         </div>
-        {/* complete your step and button  */}
+        {/* complete your step button  */}
         <div className="flex flex-row justify-between">
           <div className="">
             <p className="font-normal font-inter text-tgrey3 text-base pt-4">
@@ -71,32 +84,43 @@ export default function DefaultLeft( { onClickSetUpAcct } ) {
               buttonText={"Setup Account"}
               className={""}
               arrowDirection={<SlArrowRight />}
-              onClick={ onClickSetUpAcct }
+              onClick={onClickSetUpAcct}
             />
           </div>
         </div>
       </div>
-      {/* Links */}
-      <div className="flex flex-row justify-between mt-4 border-b-2 ">
-        <RoleLinks />
-        <div className="flex flex-row space-x-4 mb-4">
+
+      {/* Selection and active bar */}
+      <div className="flex flex-col mt-3">
+        <div className="flex flex-row justify-between font-medium text-sm text-tgrey3">
+          <div className="flex flex-row space-x-6">
+            {tabs.map((tab) => (
+              <h2
+                key={tab}
+                className={`cursor-pointer pt-4 ${
+                  activeTab === tab ? "text-black" : ""
+                }`}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab}
+              </h2>
+            ))}
+          </div>
+
+          {/* Create Button */}
           <Button
             buttonText={"Create"}
             className={""}
             arrowDirection={<SlArrowDown />}
             onClick={""}
           />
-          <button className=" flex flex-row p-1 rounded-md border-2 ">
-            <span className="font-inter font-medium pr-2 py-1">
-              {<VscSettings />}
-            </span>
-            <span className="font-inter font-normal text-black text-sm">
-              Filters
-            </span>
-            <span className="font-inter font-medium text-sm pl-6 py-1">
-              {<SlArrowDown />}
-            </span>
-          </button>
+        </div>
+        {/* The active bar color change */}
+        <div className="w-full h-[0.10rem] bg-gray-300 my-2">
+          <div
+            className={`h-[0.10rem] bg-dashboardButtons transition-all duration-300`}
+            style={activeBarStyle}
+          ></div>
         </div>
       </div>
       {/* Table  */}

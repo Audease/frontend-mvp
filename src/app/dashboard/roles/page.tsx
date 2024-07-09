@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Modal } from "flowbite-react";
-import { Type2Button } from "../../components/dashboard/Button";
-import RoleCard from "../../components/dashboard/RoleCard";
 import DefaultLeft from "./DefaultLeft";
 import SetUpAccount from "./SetUpAccount";
 import CreateRole, { RoleCreated } from "./CreateRole";
 import Staff from "./Staff";
-import Workflow from "./Workflow";
+import Workflow from "../workflows/Workflow";
+import CreateWorkflow, { WorkflowCreated } from "../workflows/CreateWorkflow";
+import Rightside from "./Rightside";
 
 export default function Role() {
   const [currentComponent, setCurrentComponent] = useState("Default");
@@ -45,27 +44,26 @@ export default function Role() {
   };
 
   const closeSuccessModal = () => {
-    setIsSuccessModal(false)
+    setIsSuccessModal(false);
     setRoleFormData({
       roleName: "",
-    permission: "",
-    })
-  }
+      permission: "",
+    });
+  };
 
   const roleCreate = () => {
-    console.log(roleFormData)
+    console.log(roleFormData);
     setIsSuccessModal(true);
     setIsModalOpen(false);
     setRoleFormData({
       roleName: "",
-    permission: "",
-    })
-  }
-
-  const onWorkflowClick = () => {
-    showComponent("Workflow");
+      permission: "",
+    });
   };
 
+  const onWorkflowClick = () => {
+    setIsModalOpen(true);
+  };
 
   const renderComponent = () => {
     switch (currentComponent) {
@@ -74,7 +72,7 @@ export default function Role() {
       case "Staff":
         return <Staff onClick={onBackClick} />;
       case "Workflow":
-        return <Workflow onClick={onBackClick}/>
+        return <Workflow onClick={onBackClick} />;
       default:
         return <DefaultLeft onClickSetUpAcct={onClickSetUpAcct} />;
     }
@@ -83,84 +81,39 @@ export default function Role() {
   return (
     <div>
       {/* Body section  */}
-      <div className="flex flex-row space-x-4">
+      <div className="flex flex-row space-x-12">
         {/* left side  */}
-        {renderComponent()}
-        {/* Modal */}
-        <CreateRole
-          show={isModalOpen}
-          onClose={closeModal}
-          onClick={roleCreate}
-          formData={roleFormData}
-          setFormData={setRoleFormData}
-        />
+        <div className="w-3/4">
+          {renderComponent()}
+          {/* Modal */}
+          <CreateRole
+            show={isModalOpen}
+            onClose={closeModal}
+            onClick={roleCreate}
+            formData={roleFormData}
+            setFormData={setRoleFormData}
+          />
+          <RoleCreated show={isSuccessModal} onClose={closeSuccessModal} />
 
-        <RoleCreated show={isSuccessModal} onClose={closeSuccessModal}/>
+          {/* Create Workflow Modal  */}
+          <CreateWorkflow
+            show={isModalOpen}
+            onClose={closeModal}
+            onClick={WorkflowCreated}
+            formData={roleFormData}
+            setFormData={setRoleFormData}
+          />
+          {/* Success Modal  */}
+          <WorkflowCreated show={isSuccessModal} onClose={closeSuccessModal} />
+        </div>
 
         {/* right side  */}
-        <div className="w-1/3 font-inter">
-          <div>
-            <h3 className="font-medium text-base text-[#000000]">
-              Get started
-            </h3>
-            <p className="font-normal text-tgrey3 text-sm">
-              You can find all settings here.
-            </p>
-          </div>
-          {/* Buttons  */}
-          <div>
-            <div className="flex flex-row space-x-4 my-2">
-              <Type2Button
-                leftIcon={"/role.png"}
-                buttonText={"Role"}
-                onClick={onRoleClick}
-              />
-              <Type2Button
-                leftIcon={"/worflow.png"}
-                buttonText={"Workflow"}
-                onClick={onWorkflowClick}
-              />
-            </div>
-            <div className="flex flex-row space-x-4 my-2">
-              <Type2Button
-                leftIcon={"/staffIcon.png"}
-                buttonText={"Staff"}
-                onClick={onStaffClick}
-              />
-              <Type2Button
-                leftIcon={"/learnerIcon.png"}
-                buttonText={"Learner"}
-                onClick={""}
-              />
-            </div>
-            <div className="flex flex-row space-x-4 my-2">
-              <Type2Button
-                leftIcon={"/resourcesIcon.png"}
-                buttonText={"Resources"}
-                onClick={""}
-              />
-              <Type2Button
-                leftIcon={"/formIcon.png"}
-                buttonText={"Form"}
-                onClick={""}
-              />
-            </div>
-          </div>
-          {/* Cards Section */}
-          <div className="mt-20">
-            {/* Header */}
-            <div className="font-inter">
-              <h3 className="font-medium text-base">What&apos;s new</h3>
-              <p className="font-normal text-tgrey3 text-sm">
-                You can find all settings here.
-              </p>
-            </div>
-            {/* cards */}
-            <div className="my-2 space-y-4">
-              <RoleCard />
-              <RoleCard />
-            </div>
-          </div>
+        <div className="w-1/4">
+          <Rightside
+            onRoleClick={onRoleClick}
+            onStaffClick={onStaffClick}
+            onWorkflowClick={onWorkflowClick}
+          />
         </div>
       </div>
     </div>

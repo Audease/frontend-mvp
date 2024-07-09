@@ -2,16 +2,12 @@
 
 import { SlArrowLeft } from "react-icons/sl";
 import { FaPlus, FaCheck } from "react-icons/fa";
-import { IoCloseOutline } from "react-icons/io5";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Avatar } from "flowbite-react";
-import md5 from "md5";
 import Image from "next/image";
-import SearchBox from "../../components/dashboard/SearchBox";
 
 export default function Staff({ onClick }) {
   const [emailInput, setEmailInput] = useState("");
-  const [temporaryEmails, setTemporaryEmails] = useState([]);
   const [staffs, setStaffs] = useState([]);
   const [invitedStaff, setInvitedStaff] = useState([]);
   const [error, setError] = useState("");
@@ -26,53 +22,45 @@ export default function Staff({ onClick }) {
   const onAddClick = (e) => {
     e.preventDefault();
     if (emailInput.trim() !== "") {
-      addEmails([emailInput.trim()]);
+      // Split by commas or spaces
+      const emails = emailInput.split(/[\s,]+/).map((email) => email.trim());
+      addEmails(emails);
     }
-    if (temporaryEmails.length > 0) {
-      addEmails(temporaryEmails);
-    }
-    setTemporaryEmails([]);
-    setEmailInput("");
   };
 
   const addEmails = (emails) => {
-    const newEmails = emails.filter(
-      (email) => validateEmail(email) && !staffs.includes(email)
+    const validEmails = emails.filter(validateEmail);
+    const invalidEmails = emails.filter((email) => !validateEmail(email));
+    const duplicateEmails = validEmails.filter((email) =>
+      staffs.includes(email)
     );
+    const newEmails = validEmails.filter((email) => !staffs.includes(email));
 
     if (newEmails.length > 0) {
-      setStaffs([...staffs, ...newEmails]);
-      setEmailInput("");
+      setStaffs((prevStaffs) => [...prevStaffs, ...newEmails]);
+    }
+
+    if (invalidEmails.length >= 1) {
+      setEmailInput([...invalidEmails, ...duplicateEmails].join(", "));
+      setError("Invalid or duplicate email(s) not added.");
+    } else if (duplicateEmails.length > 0) {
+      setEmailInput(duplicateEmails.join(", "));
+      setError("Duplicate email(s) not added.");
     } else {
-      setError("Please enter valid email addresses.");
+      setEmailInput("");
+      setError("");
     }
   };
 
-  // Handles the space and enter button press
+  // Handles the enter button press
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" || e.key === " ") {
+    if (e.key === "Enter") {
       e.preventDefault();
-      const trimmedEmail = emailInput.trim();
-      if (
-        validateEmail(trimmedEmail) &&
-        !temporaryEmails.includes(trimmedEmail)
-      ) {
-        setTemporaryEmails([...temporaryEmails, trimmedEmail]);
-        setEmailInput("");
-      } else {
-        setError("Please enter a valid email address.");
-      }
+      onAddClick(e);
     }
   };
 
-  // Removes temporary email
-  const handleRemoveTemporaryEmail = (emailToRemove) => {
-    setTemporaryEmails(
-      temporaryEmails.filter((email) => email !== emailToRemove)
-    );
-  };
-
-  // Validates emial format
+  // Validates email format
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
@@ -85,22 +73,29 @@ export default function Staff({ onClick }) {
 
   // Invite Now Button
   const inviteNow = () => {
-    setInvitedStaff((prevInvitedStaff) => [...prevInvitedStaff, ...staffs]);
+    setInvitedStaff((prevInvitedStaff) => {
+      const updatedInvitedStaff = [...prevInvitedStaff, ...staffs];
+      localStorage.setItem("invitedStaff", JSON.stringify(updatedInvitedStaff)); // Save to local storage immediately
+      return updatedInvitedStaff;
+    });
     setStaffs([]);
   };
 
-  // Remive invited Button
-  const handleRemoveInvite = (staffToRemove) => {
-    setInvitedStaff(invitedStaff.filter((staff) => staff !== staffToRemove));
-  };
+  // Load invitedStaff from local storage on component mount
+  useEffect(() => {
+    const storedInvitedStaff = localStorage.getItem("invitedStaff");
+    if (storedInvitedStaff) {
+      setInvitedStaff(JSON.parse(storedInvitedStaff));
+    }
+  }, []);
 
-  const getAvatarUrl = (email) => {
-    const hash = md5(email.trim().toLowerCase());
-    return `https://robohash.org/${hash}.png`;
-  };
+  // Save invitedStaff to local storage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("invitedStaff", JSON.stringify(invitedStaff));
+  }, [invitedStaff]);
 
   return (
-    <div className="flex flex-col space-y-4 w-[60rem] font-inter">
+    <div className="flex flex-col space-y-4 w-[57rem] font-inter">
       {/* Back Button */}
       <div>
         <button
@@ -134,20 +129,6 @@ export default function Staff({ onClick }) {
             </label>
             {/* Shows list of temporary emails  */}
             <div className="flex flex-wrap items-center space-x-2 space-y-2">
-              {temporaryEmails.map((email, index) => (
-                <div
-                  key={index}
-                  className="flex items-center bg-blue-100 px-2 py-1 rounded-full space-x-2"
-                >
-                  <span>{email}</span>
-                  <button
-                    className="text-red-500"
-                    onClick={() => handleRemoveTemporaryEmail(email)}
-                  >
-                    x
-                  </button>
-                </div>
-              ))}
               {/* The input field  */}
               <input
                 type="text"
@@ -231,15 +212,14 @@ export default function Staff({ onClick }) {
                   </div>
                 ))}
               </div>
-
-              {/* No to be Invited */}
+              {/* Number of emails to be Added*/}
               <div>
                 <div className="my-4">
                   <h3 className="font-medium text-sm text-tgrey3">
                     <span className="text-dashboardButtons">
                       {staffs.length} email
                     </span>{" "}
-                    address added to invite, Click to send invite
+                    address(es) listed, Click to add
                   </h3>
                 </div>
                 {/* Invite now button  */}
@@ -251,68 +231,13 @@ export default function Staff({ onClick }) {
                     <span>
                       <FaCheck className="text-white my-1 mr-2" />
                     </span>
-                    Invite Now
+                    Add
                   </button>
                 </div>
               </div>
             </div>
           )}
         </div>
-
-        {/* Invited  */}
-        {invitedStaff.length === 0 ? (
-          <div></div>
-        ) : (
-          <div className="my-8 ml-3">
-            {/* Add staff and the search box  */}
-            <div className="flex flex-row justify-between">
-              <div className="flex flex-col space-y-1">
-                <h3 className="text-base font-medium">Add Staffs</h3>
-                <p className="font-normal text-sm text-tgrey3">
-                  You can add multiple staffs at once using their work mail
-                </p>
-              </div>
-              {/* The search box */}
-              <div>
-                <SearchBox />
-              </div>
-            </div>
-            {/* Invited emails  */}
-            <div className="overflow-y-auto h-[18rem]">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-6 ">
-                {invitedStaff.map((email, index) => (
-                  <div key={index} className="flex flex-row space-x-2 ">
-                    <div>
-                      <Avatar img="/avatar.png" rounded size={"sm"} />
-                    </div>
-
-                    <div className="py-3">
-                      <h2 className="font-medium text-xs text-black">
-                        {email}
-                      </h2>
-                    </div>
-                    <div className="my-2">
-                      <button className="py-1 px-2 rounded-md bg-tgrey4 text-tgrey3 font-medium text-xs">
-                        Pending
-                      </button>
-                    </div>
-                    <div className="my-2">
-                      <button className="py-1 px-2 rounded-md bg-dashboardButtonsBg text-dashboardButtons font-medium text-xs">
-                        Invite again
-                      </button>
-                    </div>
-                    <div className="my-3">
-                      <IoCloseOutline
-                        onClick={() => handleRemoveInvite(email)}
-                        className="text-tgrey1"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

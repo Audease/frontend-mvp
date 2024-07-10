@@ -4,18 +4,25 @@ import Image from "next/image";
 import Link from "next/link";
 import NavLinks from "./NavLinks";
 import { useState, useEffect, useRef } from "react";
+import Notifications from "./Notifications";
 
 export default function Navbar() {
   const [profileOptions, setProfileOptions] = useState(false);
+  const [notifications, setNotifications] = useState(false);
   const menuRef = useRef(null);
 
   const toggleVisibility = () => {
     setProfileOptions((prevState) => !prevState);
   };
 
+  const toggleNotifications = () => {
+    setNotifications((prevState) => !prevState);
+  }
+
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       setProfileOptions(false);
+      setNotifications(false);
     }
   };
 
@@ -72,6 +79,8 @@ export default function Navbar() {
               width={32}
               height={32}
               alt="Notification button"
+              onClick={toggleNotifications}
+              aria-expanded={notifications}
             />
             <div
               className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center p-2 cursor-pointer"
@@ -129,6 +138,10 @@ export default function Navbar() {
                 </div>
               </div>
             </div>
+          )}
+
+          {notifications && (
+            <Notifications />
           )}
         </div>
       </div>

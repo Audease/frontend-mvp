@@ -12,6 +12,7 @@ import Rightside from "./Rightside";
 export default function Role() {
   const [currentComponent, setCurrentComponent] = useState("Default");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isWorflowModalOpen, setIsWorkflowModalOpen] = useState(false);
   const [isSuccessModal, setIsSuccessModal] = useState(false);
 
   const [roleFormData, setRoleFormData] = useState({
@@ -62,7 +63,11 @@ export default function Role() {
   };
 
   const onWorkflowClick = () => {
-    setIsModalOpen(true);
+    setIsWorkflowModalOpen(true);
+  };
+
+  const closeWorkflowModal = () => {
+    setIsWorkflowModalOpen(false);
   };
 
   const renderComponent = () => {
@@ -97,8 +102,8 @@ export default function Role() {
 
           {/* Create Workflow Modal  */}
           <CreateWorkflow
-            show={isModalOpen}
-            onClose={closeModal}
+            show={isWorflowModalOpen}
+            onClose={closeWorkflowModal}
             onClick={WorkflowCreated}
             formData={roleFormData}
             setFormData={setRoleFormData}

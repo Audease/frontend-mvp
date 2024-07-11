@@ -99,7 +99,7 @@ export default function Navbar() {
                   <p className="text-tgrey3 text-h5 font-semibold">N</p>
                 </div>
                 <div>
-                  <p className="px-2 hover:bg-gray-100 text-sm cursor-pointer">
+                  <p className="px-2 hover:text-dashboardButtons text-sm cursor-pointer">
                     My Profile
                   </p>
                 </div>
@@ -110,7 +110,7 @@ export default function Navbar() {
                   <Image src={"/help.png"} width={20} height={20} alt="Help and Support"/>
                 </div>
               <div>
-                  <p className="px-3 hover:bg-gray-100 text-sm cursor-pointer">
+                  <p className="px-3 hover:text-dashboardButtons text-sm cursor-pointer">
                   Help and Support
                   </p>
                 </div>
@@ -121,7 +121,7 @@ export default function Navbar() {
                   <Image src={"/friends.png"} width={20} height={20} alt="Help and Support"/>
                 </div>
               <div>
-                  <p className="px-3 hover:bg-gray-100 text-sm cursor-pointer">
+                  <p className="px-3 hover:text-dashboardButtons text-sm cursor-pointer">
                   Invite Friends
                   </p>
                 </div>
@@ -132,7 +132,7 @@ export default function Navbar() {
                   <Image src={"/logout.png"} width={20} height={20} alt="Help and Support"/>
                 </div>
               <div>
-                  <p className="px-3 hover:bg-gray-100 text-sm cursor-pointer">
+                  <p className="px-3 hover:text-dashboardButtons text-sm cursor-pointer">
                   Logout
                   </p>
                 </div>

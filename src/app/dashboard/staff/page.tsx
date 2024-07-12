@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import Button from "../../components/dashboard/Button";
-import { SlArrowRight, SlArrowDown } from "react-icons/sl";
 import SearchBox from "../../components/dashboard/SearchBox";
 import DropdownButton from "../../components/dashboard/DropdownButton";
 import FilterButton from "../../components/dashboard/FilterButton";

@@ -5,10 +5,12 @@ import Link from "next/link";
 import NavLinks from "./NavLinks";
 import { useState, useEffect, useRef } from "react";
 import Notifications from "./Notifications";
+import NavbarPlusButton from "./NavbarPlusButton"
 
 export default function Navbar() {
   const [profileOptions, setProfileOptions] = useState(false);
   const [notifications, setNotifications] = useState(false);
+  const [plusButton, setPlusButton] = useState(false);
   const menuRef = useRef(null);
 
   const toggleVisibility = () => {
@@ -17,12 +19,17 @@ export default function Navbar() {
 
   const toggleNotifications = () => {
     setNotifications((prevState) => !prevState);
-  }
+  };
+
+  const togglePlusButton = () => {
+    setPlusButton((prevState) => !prevState);
+  };
 
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       setProfileOptions(false);
       setNotifications(false);
+      setPlusButton(false);
     }
   };
 
@@ -50,9 +57,9 @@ export default function Navbar() {
       <div className="flex flex-row space-x-8">
         <div>
           {/* Links */}
-        <NavLinks />
+          <NavLinks />
         </div>
-        
+
         {/* Search Field */}
         <div className="relative">
           <input
@@ -73,6 +80,8 @@ export default function Navbar() {
               width={30}
               height={30}
               alt="Create button"
+              onClick={togglePlusButton}
+              aria-expanded={plusButton}
             />
             <Image
               src="/notification.png"
@@ -107,42 +116,57 @@ export default function Navbar() {
               {/* Help and support  */}
               <div className="flex flex-row">
                 <div>
-                  <Image src={"/help.png"} width={20} height={20} alt="Help and Support"/>
+                  <Image
+                    src={"/help.png"}
+                    width={20}
+                    height={20}
+                    alt="Help and Support"
+                  />
                 </div>
-              <div>
+                <div>
                   <p className="px-3 hover:text-dashboardButtons text-sm cursor-pointer">
-                  Help and Support
+                    Help and Support
                   </p>
                 </div>
               </div>
               {/* Invite Friends  */}
               <div className="flex flex-row">
                 <div>
-                  <Image src={"/friends.png"} width={20} height={20} alt="Help and Support"/>
+                  <Image
+                    src={"/friends.png"}
+                    width={20}
+                    height={20}
+                    alt="Help and Support"
+                  />
                 </div>
-              <div>
+                <div>
                   <p className="px-3 hover:text-dashboardButtons text-sm cursor-pointer">
-                  Invite Friends
+                    Invite Friends
                   </p>
                 </div>
               </div>
               {/* Logout */}
               <div className="flex flex-row">
                 <div>
-                  <Image src={"/logout.png"} width={20} height={20} alt="Help and Support"/>
+                  <Image
+                    src={"/logout.png"}
+                    width={20}
+                    height={20}
+                    alt="Help and Support"
+                  />
                 </div>
-              <div>
+                <div>
                   <p className="px-3 hover:text-dashboardButtons text-sm cursor-pointer">
-                  Logout
+                    Logout
                   </p>
                 </div>
               </div>
             </div>
           )}
 
-          {notifications && (
-            <Notifications />
-          )}
+          {notifications && <Notifications />}
+
+          {plusButton && <NavbarPlusButton />}
         </div>
       </div>
     </div>

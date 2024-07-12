@@ -4,18 +4,32 @@ import Image from "next/image";
 import Link from "next/link";
 import NavLinks from "./NavLinks";
 import { useState, useEffect, useRef } from "react";
+import Notifications from "./Notifications";
+import NavbarPlusButton from "./NavbarPlusButton"
 
 export default function Navbar() {
   const [profileOptions, setProfileOptions] = useState(false);
+  const [notifications, setNotifications] = useState(false);
+  const [plusButton, setPlusButton] = useState(false);
   const menuRef = useRef(null);
 
   const toggleVisibility = () => {
     setProfileOptions((prevState) => !prevState);
   };
 
+  const toggleNotifications = () => {
+    setNotifications((prevState) => !prevState);
+  };
+
+  const togglePlusButton = () => {
+    setPlusButton((prevState) => !prevState);
+  };
+
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       setProfileOptions(false);
+      setNotifications(false);
+      setPlusButton(false);
     }
   };
 
@@ -43,9 +57,9 @@ export default function Navbar() {
       <div className="flex flex-row space-x-8">
         <div>
           {/* Links */}
-        <NavLinks />
+          <NavLinks />
         </div>
-        
+
         {/* Search Field */}
         <div className="relative">
           <input
@@ -66,12 +80,16 @@ export default function Navbar() {
               width={30}
               height={30}
               alt="Create button"
+              onClick={togglePlusButton}
+              aria-expanded={plusButton}
             />
             <Image
               src="/notification.png"
               width={32}
               height={32}
               alt="Notification button"
+              onClick={toggleNotifications}
+              aria-expanded={notifications}
             />
             <div
               className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center p-2 cursor-pointer"
@@ -90,7 +108,7 @@ export default function Navbar() {
                   <p className="text-tgrey3 text-h5 font-semibold">N</p>
                 </div>
                 <div>
-                  <p className="px-2 hover:bg-gray-100 text-sm cursor-pointer">
+                  <p className="px-2 hover:text-dashboardButtons text-sm cursor-pointer">
                     My Profile
                   </p>
                 </div>
@@ -98,38 +116,57 @@ export default function Navbar() {
               {/* Help and support  */}
               <div className="flex flex-row">
                 <div>
-                  <Image src={"/help.png"} width={20} height={20} alt="Help and Support"/>
+                  <Image
+                    src={"/help.png"}
+                    width={20}
+                    height={20}
+                    alt="Help and Support"
+                  />
                 </div>
-              <div>
-                  <p className="px-3 hover:bg-gray-100 text-sm cursor-pointer">
-                  Help and Support
+                <div>
+                  <p className="px-3 hover:text-dashboardButtons text-sm cursor-pointer">
+                    Help and Support
                   </p>
                 </div>
               </div>
               {/* Invite Friends  */}
               <div className="flex flex-row">
                 <div>
-                  <Image src={"/friends.png"} width={20} height={20} alt="Help and Support"/>
+                  <Image
+                    src={"/friends.png"}
+                    width={20}
+                    height={20}
+                    alt="Help and Support"
+                  />
                 </div>
-              <div>
-                  <p className="px-3 hover:bg-gray-100 text-sm cursor-pointer">
-                  Invite Friends
+                <div>
+                  <p className="px-3 hover:text-dashboardButtons text-sm cursor-pointer">
+                    Invite Friends
                   </p>
                 </div>
               </div>
               {/* Logout */}
               <div className="flex flex-row">
                 <div>
-                  <Image src={"/logout.png"} width={20} height={20} alt="Help and Support"/>
+                  <Image
+                    src={"/logout.png"}
+                    width={20}
+                    height={20}
+                    alt="Help and Support"
+                  />
                 </div>
-              <div>
-                  <p className="px-3 hover:bg-gray-100 text-sm cursor-pointer">
-                  Logout
+                <div>
+                  <p className="px-3 hover:text-dashboardButtons text-sm cursor-pointer">
+                    Logout
                   </p>
                 </div>
               </div>
             </div>
           )}
+
+          {notifications && <Notifications />}
+
+          {plusButton && <NavbarPlusButton />}
         </div>
       </div>
     </div>

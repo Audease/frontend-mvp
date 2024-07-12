@@ -12,7 +12,9 @@ import Rightside from "./Rightside";
 export default function Role() {
   const [currentComponent, setCurrentComponent] = useState("Default");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSuccessModal, setIsSuccessModal] = useState(false);
+  const [isWorkflowModalOpen, setIsWorkflowModalOpen] = useState(false);
+  const [isRoleSuccessModal, setIsRoleSuccessModal] = useState(false);
+  const [isWorkflowSuccessModal, setIsWorkflowSuccessModal] = useState(false);
 
   const [roleFormData, setRoleFormData] = useState({
     roleName: "",
@@ -43,8 +45,8 @@ export default function Role() {
     setIsModalOpen(false);
   };
 
-  const closeSuccessModal = () => {
-    setIsSuccessModal(false);
+  const closeRoleSuccessModal = () => {
+    setIsRoleSuccessModal(false);
     setRoleFormData({
       roleName: "",
       permission: "",
@@ -53,7 +55,7 @@ export default function Role() {
 
   const roleCreate = () => {
     console.log(roleFormData);
-    setIsSuccessModal(true);
+    setIsRoleSuccessModal(true);
     setIsModalOpen(false);
     setRoleFormData({
       roleName: "",
@@ -62,7 +64,25 @@ export default function Role() {
   };
 
   const onWorkflowClick = () => {
-    setIsModalOpen(true);
+    setIsWorkflowModalOpen(true);
+  };
+
+  const closeWorkflowModal = () => {
+    setIsWorkflowModalOpen(false);
+  };
+
+  const closeWorkflowSuccessModal = () => {
+    setIsWorkflowSuccessModal(false);
+  };
+
+  const workflowCreate = () => {
+    console.log(roleFormData);
+    setIsWorkflowSuccessModal(true);
+    setIsWorkflowModalOpen(false);
+    setRoleFormData({
+      roleName: "",
+      permission: "",
+    });
   };
 
   const renderComponent = () => {
@@ -93,18 +113,18 @@ export default function Role() {
             formData={roleFormData}
             setFormData={setRoleFormData}
           />
-          <RoleCreated show={isSuccessModal} onClose={closeSuccessModal} />
+          <RoleCreated show={isRoleSuccessModal} onClose={closeRoleSuccessModal} />
 
           {/* Create Workflow Modal  */}
           <CreateWorkflow
-            show={isModalOpen}
-            onClose={closeModal}
-            onClick={WorkflowCreated}
+            show={isWorkflowModalOpen}
+            onClose={closeWorkflowModal}
+            onClick={workflowCreate}
             formData={roleFormData}
             setFormData={setRoleFormData}
           />
-          {/* Success Modal  */}
-          <WorkflowCreated show={isSuccessModal} onClose={closeSuccessModal} />
+          {/* Workflow Success Modal */}
+          <WorkflowCreated show={isWorkflowSuccessModal} onClose={closeWorkflowSuccessModal} />
         </div>
 
         {/* right side  */}

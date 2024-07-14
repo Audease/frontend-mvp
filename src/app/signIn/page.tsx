@@ -43,7 +43,7 @@ export default function SignIn() {
     console.log("Submitting payload:", payload);
     try {
       const response = await axios.post(
-        "/api/login/login",
+        "/api/login",
         payload,
         {
           headers: {
@@ -63,6 +63,8 @@ export default function SignIn() {
       console.error("An error occurred:", error);
       setError("Invalid email or password");
       setLoading(false)
+    } finally {
+      setLoading(false);  // Ensure loading state is reset
     }
   };
 

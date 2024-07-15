@@ -96,7 +96,7 @@ export default function FormStep() {
 
     try {
       const response = await axios.post(
-        " /api/signup",
+        "/api/signup",
         newUser
       );
 

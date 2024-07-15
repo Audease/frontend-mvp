@@ -5,13 +5,15 @@ import Link from "next/link";
 import NavLinks from "./NavLinks";
 import { useState, useEffect, useRef } from "react";
 import Notifications from "./Notifications";
-import NavbarPlusButton from "./NavbarPlusButton"
+import NavbarPlusButton from "./NavbarPlusButton";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [profileOptions, setProfileOptions] = useState(false);
   const [notifications, setNotifications] = useState(false);
   const [plusButton, setPlusButton] = useState(false);
   const menuRef = useRef(null);
+  const router = useRouter();
 
   const toggleVisibility = () => {
     setProfileOptions((prevState) => !prevState);
@@ -39,6 +41,17 @@ export default function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const logout = () => {
+    console.log("logout");
+   
+    // Set cookies' max-age to 0 to delete them
+    document.cookie = "currentUser=; path=/; max-age=0;";
+    document.cookie = "refreshToken=; path=/; max-age=0;";
+
+    // Redirect to the login page
+    router.push("/signIn");
+  };
 
   return (
     <div className="flex flex-row space-x-24 mx-10 py-4">
@@ -156,7 +169,10 @@ export default function Navbar() {
                   />
                 </div>
                 <div>
-                  <p className="px-3 hover:text-dashboardButtons text-sm cursor-pointer">
+                  <p
+                    className="px-3 hover:text-dashboardButtons text-sm cursor-pointer"
+                    onClick={logout}
+                  >
                     Logout
                   </p>
                 </div>

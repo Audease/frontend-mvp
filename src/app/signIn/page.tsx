@@ -6,6 +6,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../components/button";
+// import Cookies from 'js-cookie';
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -15,13 +16,11 @@ export default function SignIn() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-
   const handleEyeClick = () => {
     setPasswordToggle((prevState) =>
       prevState === "password" ? "text" : "password"
     );
   };
-
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -43,7 +42,7 @@ export default function SignIn() {
     console.log("Submitting payload:", payload);
     try {
       const response = await axios.post(
-        "/api/login",
+        "https://audease-dev.onrender.com/v1/auth/login",
         payload,
         {
           headers: {
@@ -54,7 +53,17 @@ export default function SignIn() {
 
       if (response.status === 200) {
         console.log("Login successful:", response.data);
-        router.push('/dashboard')
+        
+        // Store the token in a cookie
+        const token = response.data.token.access.token;
+        const refreshToken = response.data.token.refresh.token;
+
+        document.cookie = `currentUser=${token}; path=/; max-age=${
+          7 * 24 * 60 * 60
+        }`;
+        document.cookie = `refreshToken=${refreshToken}; path=/; max-age=${7 * 24 * 60 * 60}`;
+
+        router.push("/dashboard");
       } else {
         console.error("Login failed:", response.data);
         setError(response.data.message || "Login failed");
@@ -62,9 +71,9 @@ export default function SignIn() {
     } catch (error) {
       console.error("An error occurred:", error);
       setError("Invalid email or password");
-      setLoading(false)
+      setLoading(false);
     } finally {
-      setLoading(false);  // Ensure loading state is reset
+      setLoading(false); // Ensure loading state is reset
     }
   };
 
@@ -157,7 +166,10 @@ export default function SignIn() {
             </div>
 
             {/* Submit button */}
-            <Button buttonText={loading ? "Signing In..." : "Sign In"} className="" />
+            <Button
+              buttonText={loading ? "Signing In..." : "Sign In"}
+              className=""
+            />
             {error && <p className="text-red-500 mt-2">{error}</p>}
 
             {/* Separator */}

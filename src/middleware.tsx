@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import axios from 'axios';
-// import { NextResponse } from 'next/server';
 
 const middleware = async (request: NextRequest) => {
   const currentUser = request.cookies.get('currentUser')?.value;
@@ -12,26 +10,29 @@ const middleware = async (request: NextRequest) => {
     return payload.exp * 1000 < Date.now();
   }
 
+  const res = NextResponse.next();
+
   // Check if the access token is expired
   if (currentUser && isTokenExpired(currentUser)) {
     if (refreshToken) {
       try {
-        const response = await axios.post(
+        const response = await fetch(
           'https://audease-dev.onrender.com/v1/auth/refresh-token',
-          { token: refreshToken },
           {
+            method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
+            body: JSON.stringify({ token: refreshToken }),
           }
         );
 
-        if (response.status === 200) {
-          const newAccessToken = response.data.token.access.token;
-          const newRefreshToken = response.data.token.refresh.token;
+        if (response.ok) {
+          const data = await response.json();
+          const newAccessToken = data.token.access.token;
+          const newRefreshToken = data.token.refresh.token;
 
           // Set new tokens in cookies
-          const res = NextResponse.next();
           res.cookies.set('currentUser', newAccessToken, {
             path: '/',
             maxAge: 7 * 24 * 60 * 60,
@@ -41,7 +42,8 @@ const middleware = async (request: NextRequest) => {
             maxAge: 7 * 24 * 60 * 60,
           });
 
-          return res;
+          // Redirect back to the original path after refreshing token
+          return NextResponse.redirect(request.url);
         } else {
           return NextResponse.redirect(new URL('/signIn', request.url));
         }
@@ -54,15 +56,17 @@ const middleware = async (request: NextRequest) => {
     }
   }
 
-  if (currentUser && !pathname.startsWith('/dashboard')) {
+  // Redirect authenticated users away from non-dashboard pages to the dashboard
+  if (currentUser && !pathname.startsWith('/dashboard') && !pathname.startsWith('/_next')) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
-  if (!currentUser && !pathname.startsWith('/signIn') && !pathname.startsWith('/signup') && !pathname.startsWith('/forgotPassword') && !pathname.startsWith('/reset-password') ) {
+  // Redirect unauthenticated users to the sign-in page unless they're accessing public routes
+  if (!currentUser && !pathname.startsWith('/signIn') && !pathname.startsWith('/signup') && !pathname.startsWith('/forgotPassword') && !pathname.startsWith('/reset-password') && !pathname.startsWith('/_next')) {
     return NextResponse.redirect(new URL('/signIn', request.url));
   }
 
-  return NextResponse.next();
+  return res;
 };
 
 export const config = {

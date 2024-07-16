@@ -11,6 +11,7 @@ export default function Staff({ onClick }) {
   const [staffs, setStaffs] = useState([]);
   const [invitedStaff, setInvitedStaff] = useState([]);
   const [error, setError] = useState("");
+  const [addedMessageVisible, setAddedMessageVisible] = useState(false);
 
   // Handles change in input field
   const handleEmailChange = (e) => {
@@ -78,7 +79,8 @@ export default function Staff({ onClick }) {
       localStorage.setItem("invitedStaff", JSON.stringify(updatedInvitedStaff)); // Save to local storage immediately
       return updatedInvitedStaff;
     });
-    setStaffs([]);
+    setAddedMessageVisible(true);
+    // setStaffs([]);
   };
 
   // Load invitedStaff from local storage on component mount
@@ -93,6 +95,17 @@ export default function Staff({ onClick }) {
   useEffect(() => {
     localStorage.setItem("invitedStaff", JSON.stringify(invitedStaff));
   }, [invitedStaff]);
+
+  // Set a timer to hide the "Added!" message after 30 seconds
+  useEffect(() => {
+    if (addedMessageVisible) {
+      const timer = setTimeout(() => {
+        setAddedMessageVisible(false);
+      }, 30000); // 30 seconds
+
+      return () => clearTimeout(timer); // Cleanup the timer on unmount
+    }
+  }, [addedMessageVisible]);
 
   return (
     <div className="flex flex-col space-y-4 w-[57rem] font-inter">
@@ -223,7 +236,7 @@ export default function Staff({ onClick }) {
                   </h3>
                 </div>
                 {/* Invite now button  */}
-                <div>
+                <div className="flex flex-row space-x-4">
                   <button
                     className="flex flex-row rounded-md py-2 px-3 bg-black text-white font-medium text-sm"
                     onClick={inviteNow}
@@ -233,6 +246,7 @@ export default function Staff({ onClick }) {
                     </span>
                     Add
                   </button>
+                   {addedMessageVisible && <h3 className="pt-2">Added!</h3>}
                 </div>
               </div>
             </div>

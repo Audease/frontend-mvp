@@ -78,7 +78,7 @@ export default function Navbar() {
           <input
             type="text"
             placeholder="Search..."
-            className="pl-10 pr-4 py-2 border-none rounded-lg w-72 focus:outline-none focus:border-blue-500 text-tgrey3 bg-tgrey4"
+            className="pl-10 pr-4 py-2 border-none rounded-lg w-72 focus:outline focus:ring-tgrey1 text-tgrey3 bg-tgrey4"
             aria-label="Search"
           />
           <span className="absolute inset-y-0 left-0 flex items-center pl-3">

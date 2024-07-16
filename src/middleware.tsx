@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import axios from 'axios';
-// import { NextResponse } from 'next/server';
 
 const middleware = async (request: NextRequest) => {
   const currentUser = request.cookies.get('currentUser')?.value;
@@ -12,33 +10,37 @@ const middleware = async (request: NextRequest) => {
     return payload.exp * 1000 < Date.now();
   }
 
+  // If the user is already logged in and is trying to access the login page, redirect to dashboard
+  if (currentUser && pathname.startsWith('/signIn')) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
+
   // Check if the access token is expired
   if (currentUser && isTokenExpired(currentUser)) {
     if (refreshToken) {
       try {
-        const response = await axios.post(
-          'https://audease-dev.onrender.com/v1/auth/refresh-token',
-          { token: refreshToken },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        );
+        const response = await fetch('https://audease-dev.onrender.com/v1/auth/refresh-token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token: refreshToken }),
+        });
 
         if (response.status === 200) {
-          const newAccessToken = response.data.token.access.token;
-          const newRefreshToken = response.data.token.refresh.token;
+          const data = await response.json();
+          const newAccessToken = data.token.access.token;
+          const newRefreshToken = data.token.refresh.token;
 
           // Set new tokens in cookies
           const res = NextResponse.next();
           res.cookies.set('currentUser', newAccessToken, {
             path: '/',
-            maxAge: 7 * 24 * 60 * 60,
+            maxAge: 7 * 24 * 60 * 60, // 7 days
           });
           res.cookies.set('refreshToken', newRefreshToken, {
             path: '/',
-            maxAge: 7 * 24 * 60 * 60,
+            maxAge: 7 * 24 * 60 * 60, // 7 days
           });
 
           return res;
@@ -58,7 +60,7 @@ const middleware = async (request: NextRequest) => {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
-  if (!currentUser && !pathname.startsWith('/signIn') && !pathname.startsWith('/signup') && !pathname.startsWith('/forgotPassword') && !pathname.startsWith('/reset-password') ) {
+  if (!currentUser && !pathname.startsWith('/signIn') && !pathname.startsWith('/signup') && !pathname.startsWith('/forgotPassword') && !pathname.startsWith('/reset-password')) {
     return NextResponse.redirect(new URL('/signIn', request.url));
   }
 
@@ -66,7 +68,7 @@ const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+  matcher: ['/dashboard', '/signIn'], // Apply middleware to both dashboard and signIn routes
 };
 
 export default middleware;

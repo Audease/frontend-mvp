@@ -44,10 +44,10 @@ export default function Navbar() {
 
   const logout = () => {
     console.log("logout");
-   
-    // Set cookies' max-age to 0 to delete them
-    document.cookie = "currentUser=; path=/; max-age=0;";
-    document.cookie = "refreshToken=; path=/; max-age=0;";
+
+    // Delete the cookies by setting their max-age to 0 and ensuring the same path
+    document.cookie = "accessToken=; path=/; max-age=0; secure; httponly";
+    document.cookie = "refreshToken=; path=/; max-age=0; secure; httponly";
 
     // Redirect to the login page
     router.push("/signIn");

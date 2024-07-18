@@ -73,14 +73,17 @@ export default function Staff({ onClick }) {
   };
 
   // Invite Now Button
-  const inviteNow = () => {
+  const addToStaffList = () => {
     setInvitedStaff((prevInvitedStaff) => {
       const updatedInvitedStaff = [...prevInvitedStaff, ...staffs];
       localStorage.setItem("invitedStaff", JSON.stringify(updatedInvitedStaff)); // Save to local storage immediately
       return updatedInvitedStaff;
     });
     setAddedMessageVisible(true);
-    // setStaffs([]);
+    // Delay the clearing of the staffs array
+  setTimeout(() => {
+    setStaffs([]);
+  }, 10000); // 10 seconds
   };
 
   // Load invitedStaff from local storage on component mount
@@ -101,7 +104,7 @@ export default function Staff({ onClick }) {
     if (addedMessageVisible) {
       const timer = setTimeout(() => {
         setAddedMessageVisible(false);
-      }, 30000); // 30 seconds
+      }, 10000); // 30 seconds
 
       return () => clearTimeout(timer); // Cleanup the timer on unmount
     }
@@ -239,14 +242,14 @@ export default function Staff({ onClick }) {
                 <div className="flex flex-row space-x-4">
                   <button
                     className="flex flex-row rounded-md py-2 px-3 bg-black text-white font-medium text-sm"
-                    onClick={inviteNow}
+                    onClick={addToStaffList}
                   >
                     <span>
                       <FaCheck className="text-white my-1 mr-2" />
                     </span>
                     Add
                   </button>
-                   {addedMessageVisible && <h3 className="pt-2">Added!</h3>}
+                   {addedMessageVisible && <h3 className="pt-2 font-normal text-sm text-green1">Added!</h3>}
                 </div>
               </div>
             </div>

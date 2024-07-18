@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import SearchBox from "../../components/dashboard/SearchBox";
 import FilterButton from "../../components/dashboard/FilterButton";
 import LearnersTable from "../../components/dashboard/LearnersTable";
+import CreateButton from "../../components/dashboard/CreateButton";
 
 export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
   const [activeTab, setActiveTab] = useState("All");
@@ -63,6 +64,7 @@ export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
           <div className="flex flex-row space-x-4">
             {/* Search Box */}
             {/* <SearchBox /> */}
+            <CreateButton label={"Create"}/>
 
             {/* Filter Button */}
             <FilterButton

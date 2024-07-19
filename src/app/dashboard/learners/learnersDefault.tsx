@@ -1,9 +1,11 @@
 "use client";
+
 import { useState, useEffect, useMemo } from "react";
 import SearchBox from "../../components/dashboard/SearchBox";
 import FilterButton from "../../components/dashboard/FilterButton";
 import LearnersTable from "../../components/dashboard/LearnersTable";
 import CreateButton from "../../components/dashboard/CreateButton";
+import AddLearnerModal, { LearnerCreated } from "./learnerModal";
 
 export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
   const [activeTab, setActiveTab] = useState("All");
@@ -38,6 +40,27 @@ export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
 
   const options = ["Recruiter", "BKSD", "Accessor", "Inductor", "Lazer"];
 
+  const [learnerCreateModalState, setLearnerCreateModalState] = useState(false);
+  const [learnerSuccessModal, setLearnerSuccessModal] = useState(false);
+
+  const showLearnerCreateModal = () => {
+    setLearnerCreateModalState(true);
+  };
+
+  const closeLearnerCreateModal = () => {
+    console.log("closed");
+    setLearnerCreateModalState(false);
+  };
+
+  const onCreateClick = () => {
+    setLearnerCreateModalState(false);
+    setLearnerSuccessModal(true);
+  }
+
+  const closeLearnerSuccessModal = () => {
+    setLearnerSuccessModal(false);
+  };
+
   return (
     <div className="flex flex-col space-y-4">
       <div>
@@ -64,7 +87,7 @@ export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
           <div className="flex flex-row space-x-4">
             {/* Search Box */}
             {/* <SearchBox /> */}
-            <CreateButton label={"Create"}/>
+            <CreateButton label={"Create"} onClick={showLearnerCreateModal} />
 
             {/* Filter Button */}
             <FilterButton
@@ -93,6 +116,14 @@ export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
           learnersData={learnersData}
           showUserDetailsPage={showUserDetailsPage}
         />
+
+        <AddLearnerModal
+          show={learnerCreateModalState}
+          onClose={closeLearnerCreateModal}
+          onCreateClick={onCreateClick}
+        />
+
+        <LearnerCreated show={learnerSuccessModal} onClose={closeLearnerSuccessModal}/>
       </div>
     </div>
   );

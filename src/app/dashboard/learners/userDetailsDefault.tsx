@@ -7,7 +7,7 @@ export default function UserDetailsDefault({ formData, onInputChange, onSaveChan
 
   return (
     <div>
-      <div className="space-y-4 rounded border-2 border-e-0 p-4 mb-8">
+      <div className="space-y-4 rounded border border-tgrey2 border-e-0 p-4 mb-8 shadow-sm">
         <div>
           <h3 className="font-semibold text-base pb-2">Personal Details</h3>
           <hr className="w-1/2" />
@@ -79,7 +79,7 @@ export default function UserDetailsDefault({ formData, onInputChange, onSaveChan
         </div>
       </div>
 
-      <div className="space-y-4 rounded border-2 border-e-0 p-4">
+      <div className="space-y-4 rounded border border-tgrey2 border-e-0 p-4 shadow-sm">
         <div>
           <h3 className="font-semibold text-base pb-2">Email and Phone Details</h3>
           <hr className="w-1/2" />

@@ -8,13 +8,16 @@ import clsx from "clsx";
 import { useState, useEffect } from "react";
 // import PropTypes from 'prop-types';
 import UserDetailsDefault from "./userDetailsDefault";
+import UserDetailsDocuments from "./userDetailsDocuments";
+import UserDetailsPassword from "./userDetailsPassword";
+import UserDetailsDeactivation from "./userDetailsDeactivation";
 
 export default function UserDetails({ userId: initialUserId, onBackClick }) {
-  const [activeSection, setActiveSection] = useState(null);
-  const [userId, setUserId] = useState(initialUserId);
+  const [activeSection, setActiveSection] = useState("userDetails");
+  const [userId, setUserId] = useState(initialUserId);  
 
   const [formData, setFormData] = useState({
-    learnerName: "",
+    learnerName: "",      
     learnerUserName: "",
     email: "",
     phoneNumber: "",
@@ -88,11 +91,11 @@ export default function UserDetails({ userId: initialUserId, onBackClick }) {
       //   </>
       // );
       case "documents":
-        return <p>Documents content goes here</p>;
+        return <UserDetailsDocuments />
       case "password":
-        return <p>Password content goes here</p>;
+        return <UserDetailsPassword />
       case "deactivation":
-        return <p>Deactivation content goes here</p>;
+        return <UserDetailsDeactivation />;
     }
   };
 
@@ -112,7 +115,7 @@ export default function UserDetails({ userId: initialUserId, onBackClick }) {
         </button>
       </div>
 
-      <div className="flex flex-row w-full h-full border-2 rounded p-4 space-x-4">
+      <div className="flex flex-row w-full h-full min-h-[30rem] border border-tgrey2 rounded p-4 space-x-4">
         <div className="text-tgrey3 font-medium text-sm space-y-4">
           {/* User Details */}
           <h2

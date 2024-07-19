@@ -7,8 +7,8 @@ export default function SearchBox() {
         <div className="relative">
           <input
             type="text"
-            placeholder="Search..."
-            className="pl-10 pr-4 py-2 border-none rounded-lg w-60 focus:outline-none focus:border-blue-500 text-tgrey3 bg-tgrey4"
+            placeholder="Search ..."
+            className="pl-10 pr-4 py-2 border-none rounded-lg w-60 focus:outline-none focus:border-gold1 text-tgrey3 bg-tgrey4"
             aria-label="Search"
           />
           <span className="absolute inset-y-0 left-0 flex items-center pl-3">

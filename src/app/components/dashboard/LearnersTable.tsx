@@ -116,8 +116,8 @@ export default function LearnersTable({ learnersData, showUserDetailsPage }) {
                       ref={menuRef}
                       className="bg-white shadow-lg rounded-lg p-4 font-medium w-32 absolute top-full border-2 right-20 text-tblack3 space-y-4 "
                     >
-                      <p className="hover:text-gold1" onClick={(e) => showUserDetailsPage(e, row.id)}>View</p>
-                      <p className="text-tred1 hover:text-gold1">
+                      <p className="hover:text-gold1 cursor-pointer" onClick={(e) => showUserDetailsPage(e, row.id)}>View</p>
+                      <p className="text-tred1 hover:text-gold1 cursor-pointer">
                         Move to Trash
                       </p>
                     </div>

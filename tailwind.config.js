@@ -40,6 +40,7 @@ module.exports = {
         'tableText2':'#575757',
         'bgrey1': '#AEAEAE',
         'completedBg': '#C5FFC7',
+        'green1':'#2DCD5B',
       },
 
       fontSize: {

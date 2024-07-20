@@ -61,6 +61,10 @@ export default function Role() {
     showComponent("Workflow");
   };
 
+  const onLearnerClick = () => {
+    console.log("Clicked")
+  }
+
   const renderComponent = () => {
     switch (currentComponent) {
       case "Staff":
@@ -95,6 +99,7 @@ export default function Role() {
             onRoleClick={onRoleClick}
             onStaffClick={onStaffClick}
             onWorkflowClick={onWorkflowClick}
+            onLearnerClick={onLearnerClick}
           />
         </div>
       </div>

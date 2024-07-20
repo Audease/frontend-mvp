@@ -115,12 +115,12 @@ export default function StaffTable({ staffData }) {
                       ref={menuRef}
                       className="bg-white shadow-lg rounded-lg p-4 font-medium w-32 absolute top-full border-2 right-20 text-tblack3 space-y-4 "
                     >
-                      <p className="hover:bg-tableText2">Edit</p>
-                      <p className="hover:bg-tableText2">Rename</p>
-                      <p className="hover:bg-tableText2">Duplicate</p>
-                      <p className="hover:bg-tableText2">Move to folder</p>
+                      <p className="hover:text-gold1 cursor-pointer">Edit</p>
+                      <p className="hover:text-gold1 cursor-pointer">Rename</p>
+                      <p className="hover:text-gold1 cursor-pointer">Duplicate</p>
+                      <p className="hover:text-gold1 cursor-pointer">Move to folder</p>
                       <hr />
-                      <p className="text-tred1 hover:bg-tableText2">
+                      <p className="text-tred1 hover:text-gold1 cursor-pointer">
                         Move to Trash
                       </p>
                     </div>

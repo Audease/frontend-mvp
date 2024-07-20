@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const middleware = async (request: NextRequest) => {
   const currentUser = request.cookies.get("accessToken")?.value;
-  console.log(currentUser)
+  console.log(currentUser);
   const { pathname } = request.nextUrl;
 
   if (currentUser) {
@@ -22,7 +22,7 @@ const middleware = async (request: NextRequest) => {
     }
   }
 
-  return res;
+  return NextResponse.next();
 };
 
 export const config = {

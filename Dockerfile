@@ -15,13 +15,12 @@ COPY . .
 
 # Build the Next.js app
 RUN npm run build
-RUN npm run export
 
 # Stage 2: Serve with Nginx
 FROM nginx:1.21.1-alpine
 
 # Copy the build output to Nginx HTML directory
-COPY --from=build /usr/src/app/out /usr/share/nginx/html
+COPY --from=build /usr/src/app/.next /usr/share/nginx/html
 
 # Copy the Nginx configuration file
 COPY nginx.conf /etc/nginx/conf.d/default.conf

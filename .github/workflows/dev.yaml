@@ -33,10 +33,10 @@ jobs:
     - name: Run JS test
       run: npm run test
 
-  push_to_github_registry:
-    if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main'
-    needs: ['test']
-    runs-on: ubuntu-latest
+  # push_to_github_registry:
+  #   if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main'
+  #   needs: ['test']
+  #   runs-on: ubuntu-latest
 
     # steps:
     # - name: Checkout repository

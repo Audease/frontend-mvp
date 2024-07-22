@@ -4,18 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
-const links = [
-  { name: "Apps", href: "/dashboard" },
-  { name: "Resources", href: "#" },
-  { name: "Messenger", href: "/dashboard/messenger" },
-  { name: "Learners", href: "/dashboard/learners" },
-  { name: "Staff", href: "/dashboard/staff" },
-  { name: "Worflows", href: "/dashboard/workflows" },
-];
-
-
-
-export default function NavLinks() {
+export default function NavLinks({links}) {
   const pathname = usePathname();
   return (
     <div className="flex flex-row p-0 space-x-8">

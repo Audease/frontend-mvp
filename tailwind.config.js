@@ -23,6 +23,7 @@ module.exports = {
         'tblack2': '#5A5A5A',
         'tblack3': '#050708',
         'tred1': '#D30303',
+        'tred2': '#E41D1D',
         'tgrey1': '#898989',
         'link1': '#775DA6',
         'tgrey2': '#DCDCDC',

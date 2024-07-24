@@ -1,21 +1,20 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useState,  } from "react";
 import Pagination from "./Pagination";
+import DatePicker from "./Datepicker";
 
-export default function RecruiterDashboardTable({ learnersData }) {
-  const [editOptions, setEditOptions] = useState({});
-  const menuRef = useRef(null);
-  const [checkedItems, setCheckedItems] = useState({});
+
+
+export default function RecruiterDashboardTable({ 
+  learnersData,
+  checkedItems,
+  handleCheckboxChange,
+  isEditing,
+  setLearnersData, 
+}) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const totalPages = Math.ceil(learnersData.length / itemsPerPage);
-
-  const handleCheckboxChange = (index) => {
-    setCheckedItems((prev) => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
-  };
 
   const handlePageChange = (page) => {
     if (page < 1 || page > totalPages) return;
@@ -27,8 +26,16 @@ export default function RecruiterDashboardTable({ learnersData }) {
     currentPage * itemsPerPage
   );
 
+  const handleInputChange = (id, field, value) => {
+    setLearnersData((prevData) =>
+      prevData.map((learner) =>
+        learner.id === id ? { ...learner, [field]: value } : learner
+      )
+    );
+  };
+
   return (
-    <div>
+    <div className="flex flex-col justify-between min-h-[35rem]">
       <table className="min-w-full divide-y divide-gray-200 font-inter table-auto rounded-t-lg h-full">
         <thead className="bg-tgrey-6 border border-tgrey6 ">
           <tr>
@@ -80,47 +87,145 @@ export default function RecruiterDashboardTable({ learnersData }) {
           ) : (
             displayedLearners.map((row) => (
               <tr key={row.id}>
-                <td className="px-2 py-4 whitespace-nowrap text-[10px]  text-tableText2 font-medium flex flex-row">
+                <td className="px-2 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium flex flex-row">
                   <span className="pr-4">
-                    {" "}
-                    {/* checkBox  */}
                     <input
                       type="checkbox"
                       className="staff-checkbox h-3 w-3 text-tableText2 rounded-sm focus:ring-tgrey2"
-                      onChange={handleCheckboxChange}
+                      onChange={() => handleCheckboxChange(row.id)}
+                      checked={!!checkedItems[row.id]}
                     />
                   </span>
-                  {row.name}
+                  {isEditing && checkedItems[row.id] ?(
+                    <input
+                      type="text"
+                      value={row.name}
+                      onChange={(e) => handleInputChange(row.id, 'name', e.target.value)}
+                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                    />
+                  ) : (
+                    row.name
+                  )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
-                  {row.dateOfBirth}
+                  {isEditing && checkedItems[row.id] ? (
+                    <input
+                      type="text"
+                      value={row.dateOfBirth}
+                      onChange={(e) => handleInputChange(row.id, 'dateOfBirth', e.target.value)}
+                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                    />
+                  ) : (
+                    row.dateOfBirth
+                  )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
-                  {row.mobileNumber}
+                  {isEditing && checkedItems[row.id] ? (
+                    <input
+                      type="text"
+                      value={row.mobileNumber}
+                      onChange={(e) => handleInputChange(row.id, 'mobileNumber', e.target.value)}
+                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                    />
+                  ) : (
+                    row.mobileNumber
+                  )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
-                  {row.email}
+                  {isEditing && checkedItems[row.id] ? (
+                    <input
+                      type="text"
+                      value={row.email}
+                      onChange={(e) => handleInputChange(row.id, 'email', e.target.value)}
+                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                    />
+                  ) : (
+                    row.email
+                  )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
-                  {row.niNumber}
+                  {isEditing && checkedItems[row.id] ? (
+                    <input
+                      type="text"
+                      value={row.niNumber}
+                      onChange={(e) => handleInputChange(row.id, 'niNumber', e.target.value)}
+                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                    />
+                  ) : (
+                    row.niNumber
+                  )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
-                  {row.passportNumber}
+                  {isEditing && checkedItems[row.id] ? (
+                    <input
+                      type="text"
+                      value={row.passportNumber}
+                      onChange={(e) => handleInputChange(row.id, 'passportNumber', e.target.value)}
+                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                    />
+                  ) : (
+                    row.passportNumber
+                  )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
-                  {row.homeAddress}
+                  {isEditing && checkedItems[row.id] ? (
+                    <input
+                      type="text"
+                      value={row.homeAddress}
+                      onChange={(e) => handleInputChange(row.id, 'homeAddress', e.target.value)}
+                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                    />
+                  ) : (
+                    row.homeAddress
+                  )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
-                  {row.funding}
+                  {isEditing && checkedItems[row.id] ? (
+                    <input
+                      type="text"
+                      value={row.funding}
+                      onChange={(e) => handleInputChange(row.id, 'funding', e.target.value)}
+                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                    />
+                  ) : (
+                    row.funding
+                  )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
-                  {row.level}
+                  {isEditing && checkedItems[row.id] ? (
+                    <input
+                      type="text"
+                      value={row.level}
+                      onChange={(e) => handleInputChange(row.id, 'level', e.target.value)}
+                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                    />
+                  ) : (
+                    row.level
+                  )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
-                  {row.awarding}
+                  {isEditing && checkedItems[row.id] ? (
+                    <input
+                      type="text"
+                      value={row.awarding}
+                      onChange={(e) => handleInputChange(row.id, 'awarding', e.target.value)}
+                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                    />
+                  ) : (
+                    row.awarding
+                  )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
-                  {row.choseCourse}
+                  {isEditing && checkedItems[row.id] ? (
+                    <input
+                      type="text"
+                      value={row.choseCourse}
+                      onChange={(e) => handleInputChange(row.id, 'choseCourse', e.target.value)}
+                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                    />
+                  ) : (
+                    row.choseCourse
+                  )}
                 </td>
               </tr>
             ))
@@ -135,6 +240,9 @@ export default function RecruiterDashboardTable({ learnersData }) {
           totalItems={learnersData.length}
           onPageChange={handlePageChange}
         />
+      </div>
+      <div className="w-60 text-sm">
+      <DatePicker />
       </div>
     </div>
   );

@@ -4,14 +4,21 @@ import { useState, useEffect, useMemo } from "react";
 import SearchBox from "../components/dashboard/SearchBox";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { FaPlus, FaCheck } from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { GoPencil } from "react-icons/go";
+import { FaRegCheckCircle } from "react-icons/fa";
+import { FaRegCircleXmark } from "react-icons/fa6";
+
 import { RecruiterFilterButton } from "../components/dashboard/FilterButton";
 import RecruiterDashboardTable from "../components/dashboard/RecruiterDashboardTable";
 
 export default function RecruiterLearnersScreen() {
   const [roleName, setRoleName] = useState("Onny");
-
   const [activeTab, setActiveTab] = useState("All");
   const [activeBarStyle, setActiveBarStyle] = useState({});
+  const [checkedItems, setCheckedItems] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
+
   const tabs = useMemo(() => ["All", "Recent", "Deleted"], []);
 
   useEffect(() => {
@@ -45,11 +52,37 @@ export default function RecruiterLearnersScreen() {
     console.log("Selected course:", course);
   };
 
-  const onFilterClick = () => {
-    
+  const onFilterClick = () => {};
+
+  const onDeleteClick = () => {
+    // Filter out the checked items
+    const remainingItems = learnersData.filter(
+      (learner) => !checkedItems[learner.id]
+    );
+    setLearnersData(remainingItems);
+    setCheckedItems({});
+  };
+
+  const onEditClick = () => {
+    setIsEditing((prev) => !prev);
+  };
+
+  const handleCheckboxChange = (id) => {
+    setCheckedItems((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const onConfirmEditButtonClick = () => {
+    setIsEditing(false);
   }
 
-  const learnersData = [
+  const onRevertEditButtonClick = () => {
+    setIsEditing(false);
+  }
+
+  const [learnersData, setLearnersData] = useState([
     {
       id: 1,
       name: "Alice Johnson",
@@ -302,10 +335,7 @@ export default function RecruiterLearnersScreen() {
       awarding: "Edexcel",
       choseCourse: "Linguistics",
     },
-  ]
-  
-  
-
+  ]);
 
   return (
     <div>
@@ -332,6 +362,53 @@ export default function RecruiterLearnersScreen() {
 
           {/* The buttons on the right side  */}
           <div className="flex flex-row space-x-4">
+            {/* Delete Button */}
+            {Object.values(checkedItems).some((isChecked) => isChecked) && (
+              <div>
+                <button
+                  className="flex flex-row border border-tred2 rounded-md py-[0.4rem] px-3 text-tred2 font-medium text-sm"
+                  onClick={onDeleteClick}
+                >
+                  <span>
+                    <RiDeleteBin6Line className="text-tred2 my-1 mr-2" />
+                  </span>{" "}
+                  Delete
+                </button>
+              </div>
+            )}
+            {/* Edit Button */}
+            {Object.values(checkedItems).some((isChecked) => isChecked) && (
+              <div>
+                <button
+                  className="flex flex-row rounded-md border py-[0.4rem] px-3 text-dashboardRolesBtn font-medium text-sm"
+                  onClick={onEditClick}
+                >
+                  <span>
+                    <GoPencil className="text-dashboardRolesBtn my-1 mr-2" />
+                  </span>{" "}
+                  Edit
+                </button>
+              </div>
+            )}
+
+            {/* Confirm Edit Button */}
+            {Object.values(checkedItems).some((isChecked) => isChecked) && (
+              <div className="w-10 h-9 flex justify-center items-center rounded-md shadow-sm border"
+              onClick={onConfirmEditButtonClick}>
+              <FaRegCheckCircle className="text-[#08930D] h-5 w-5"/>
+            </div>
+            )}
+            
+
+            {/* Revert Edit Changes Button */}
+            {Object.values(checkedItems).some((isChecked) => isChecked) && (
+              <div className="w-10 h-9 flex justify-center items-center rounded-md shadow-sm border"
+              onClick={onRevertEditButtonClick}>
+              <FaRegCircleXmark className="text-tred2 h-5 w-5"/>
+            </div>
+            )}
+
+
             {/* Create Button  */}
             <div className="relative inline-block">
               <button
@@ -379,10 +456,15 @@ export default function RecruiterLearnersScreen() {
         </div>
       </div>
 
-      <div>
-        <RecruiterDashboardTable learnersData={learnersData} />
+      <div className="min-h-[35rem]">
+        <RecruiterDashboardTable
+          learnersData={learnersData}
+          checkedItems={checkedItems}
+          handleCheckboxChange={handleCheckboxChange}
+          isEditing={isEditing}
+          setLearnersData={setLearnersData}
+        />
       </div>
-      
     </div>
   );
 }

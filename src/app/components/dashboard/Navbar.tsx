@@ -15,6 +15,15 @@ export default function Navbar() {
   const menuRef = useRef(null);
   const router = useRouter();
 
+  const links = [
+    { name: "Apps", href: "/dashboard" },
+    { name: "Resources", href: "#" },
+    { name: "Messenger", href: "/dashboard/messenger" },
+    { name: "Learners", href: "/dashboard/learners" },
+    { name: "Staff", href: "/dashboard/staff" },
+    { name: "Worflows", href: "/dashboard/workflows" },
+  ];
+
   const toggleVisibility = () => {
     setProfileOptions((prevState) => !prevState);
   };
@@ -44,10 +53,10 @@ export default function Navbar() {
 
   const logout = () => {
     console.log("logout");
-   
-    // Set cookies' max-age to 0 to delete them
-    document.cookie = "currentUser=; path=/; max-age=0;";
-    document.cookie = "refreshToken=; path=/; max-age=0;";
+
+    // Delete the cookies by setting their max-age to 0 and ensuring the same path
+    document.cookie = "accessToken=; path=/; max-age=0; secure; httponly";
+    document.cookie = "refreshToken=; path=/; max-age=0; secure; httponly";
 
     // Redirect to the login page
     router.push("/signIn");
@@ -70,7 +79,7 @@ export default function Navbar() {
       <div className="flex flex-row space-x-8">
         <div>
           {/* Links */}
-          <NavLinks />
+          <NavLinks links={links}/>
         </div>
 
         {/* Search Field */}
@@ -78,7 +87,7 @@ export default function Navbar() {
           <input
             type="text"
             placeholder="Search..."
-            className="pl-10 pr-4 py-2 border-none rounded-lg w-72 focus:outline-none focus:border-blue-500 text-tgrey3 bg-tgrey4"
+            className="pl-10 pr-4 py-2 border-none rounded-lg w-72 focus:outline focus:ring-tgrey1 text-tgrey3 bg-tgrey4"
             aria-label="Search"
           />
           <span className="absolute inset-y-0 left-0 flex items-center pl-3">

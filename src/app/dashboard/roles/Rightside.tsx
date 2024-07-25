@@ -5,6 +5,9 @@ export default function Rightside({
   onRoleClick,
   onWorkflowClick,
   onStaffClick,
+  onLearnerClick,
+  onResourcesClick,
+  onFormClick
 }) {
   return (
     <div>
@@ -38,19 +41,19 @@ export default function Rightside({
             <Type2Button
               leftIcon={"/learnerIcon.png"}
               buttonText={"Learner"}
-              onClick={""}
+              onClick={onLearnerClick}
             />
           </div>
           <div className="flex flex-row space-x-4 my-2">
             <Type2Button
               leftIcon={"/resourcesIcon.png"}
               buttonText={"Resources"}
-              onClick={""}
+              onClick={onResourcesClick}
             />
             <Type2Button
               leftIcon={"/formIcon.png"}
               buttonText={"Form"}
-              onClick={""}
+              onClick={onFormClick}
             />
           </div>
         </div>

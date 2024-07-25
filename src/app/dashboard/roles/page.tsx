@@ -8,6 +8,7 @@ import Staff from "./Staff";
 import Workflow from "../workflows/Workflow";
 import CreateWorkflow, { WorkflowCreated } from "../workflows/CreateWorkflow";
 import Rightside from "./Rightside";
+import AddLearnerModal, { LearnerCreated } from "../learners/learnerModal"
 
 export default function Role() {
   const [currentComponent, setCurrentComponent] = useState("Default");
@@ -15,6 +16,23 @@ export default function Role() {
   const [isWorkflowModalOpen, setIsWorkflowModalOpen] = useState(false);
   const [isRoleSuccessModal, setIsRoleSuccessModal] = useState(false);
   const [isWorkflowSuccessModal, setIsWorkflowSuccessModal] = useState(false);
+  const [learnerCreateModalState, setLearnerCreateModalState] = useState(false);
+  const [learnerSuccessModal, setLearnerSuccessModal] = useState(false);
+
+  const closeLearnerCreateModal = () => {
+    console.log("closed");
+    setLearnerCreateModalState(false);
+  };
+
+  const onCreateClick = () => {
+    setLearnerCreateModalState(false);
+    setLearnerSuccessModal(true);
+  }
+
+  const closeLearnerSuccessModal = () => {
+    setLearnerSuccessModal(false);
+  };
+
 
   const [roleFormData, setRoleFormData] = useState({
     roleName: "",
@@ -44,6 +62,10 @@ export default function Role() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  const onLearnerClick = () => {
+    setLearnerCreateModalState(true);
+  }
 
   const closeRoleSuccessModal = () => {
     setIsRoleSuccessModal(false);
@@ -85,6 +107,14 @@ export default function Role() {
     });
   };
 
+  const onResourcesClick = () => {
+    console.log("Resources Clicked")
+  }
+
+  const onFormClick = () => {
+    console.log("Forms Clicked")
+  }
+
   const renderComponent = () => {
     switch (currentComponent) {
       case "SetUpAccount":
@@ -125,6 +155,15 @@ export default function Role() {
           />
           {/* Workflow Success Modal */}
           <WorkflowCreated show={isWorkflowSuccessModal} onClose={closeWorkflowSuccessModal} />
+
+          <AddLearnerModal
+          show={learnerCreateModalState}
+          onClose={closeLearnerCreateModal}
+          onCreateClick={onCreateClick}
+        />
+
+        <LearnerCreated show={learnerSuccessModal} onClose={closeLearnerSuccessModal}/>
+
         </div>
 
         {/* right side  */}
@@ -133,6 +172,9 @@ export default function Role() {
             onRoleClick={onRoleClick}
             onStaffClick={onStaffClick}
             onWorkflowClick={onWorkflowClick}
+            onLearnerClick={onLearnerClick}
+            onResourcesClick={onResourcesClick}
+            onFormClick={onFormClick}
           />
         </div>
       </div>

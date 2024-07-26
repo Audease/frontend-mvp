@@ -65,6 +65,14 @@ export default function Role() {
     console.log("Clicked")
   }
 
+  const onResourcesClick = () => {
+    console.log("Resources Clicked")
+  }
+
+  const onFormClick = () => {
+    console.log("Forms Clicked")
+  }
+
   const renderComponent = () => {
     switch (currentComponent) {
       case "Staff":
@@ -100,6 +108,8 @@ export default function Role() {
             onStaffClick={onStaffClick}
             onWorkflowClick={onWorkflowClick}
             onLearnerClick={onLearnerClick}
+            onResourcesClick={onResourcesClick}
+            onFormClick={onFormClick}
           />
         </div>
       </div>

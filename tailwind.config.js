@@ -22,7 +22,9 @@ module.exports = {
         'tblack': '#202020',
         'tblack2': '#5A5A5A',
         'tblack3': '#050708',
+        'tblack4': '#333333',
         'tred1': '#D30303',
+        'tred2': '#E41D1D',
         'tgrey1': '#898989',
         'link1': '#775DA6',
         'tgrey2': '#DCDCDC',
@@ -41,6 +43,10 @@ module.exports = {
         'bgrey1': '#AEAEAE',
         'completedBg': '#C5FFC7',
         'green1':'#2DCD5B',
+        'green2': '#11AF22',
+        'green3': '#7AC555',
+        'green4': '#E9FDEC',
+        'tgrey8': '#D7D7D7',
       },
 
       fontSize: {

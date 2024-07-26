@@ -1,20 +1,27 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import SearchBox from "../components/dashboard/SearchBox";
+import SearchBox from "../../components/dashboard/SearchBox";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { FaPlus, FaCheck } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { GoPencil } from "react-icons/go";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { FaRegCircleXmark } from "react-icons/fa6";
+import { SlArrowLeft } from "react-icons/sl";
+import { LuPencil } from "react-icons/lu";
 
-import { RecruiterFilterButton } from "../components/dashboard/FilterButton";
-import RecruiterDashboardTable from "../components/dashboard/RecruiterDashboardTable";
-import AddLearnerModal, { LearnerCreated } from "../dashboard/learners/learnerModal";
-import LearnerImportModal, { LearnerImportSuccessModal } from "../components/dashboard/LearnerImportModal";
+import { RecruiterFilterButton } from "../../components/dashboard/FilterButton";
+import RecruiterDashboardTable from "../../components/dashboard/RecruiterDashboardTable";
+import AddLearnerModal, {
+  LearnerCreated,
+} from "../../dashboard/learners/learnerModal";
+import LearnerImportModal, {
+  LearnerImportSuccessModal,
+} from "../../components/dashboard/LearnerImportModal";
+import RecruiterStaffModal from "./recruiterStaffModal";
 
-export default function RecruiterLearnersScreen() {
+export default function AdminRecruiterdashboard() {
   const [roleName, setRoleName] = useState("Onny");
   const [activeTab, setActiveTab] = useState("All");
   const [activeBarStyle, setActiveBarStyle] = useState({});
@@ -80,11 +87,11 @@ export default function RecruiterLearnersScreen() {
 
   const onConfirmEditButtonClick = () => {
     setIsEditing(false);
-  }
+  };
 
   const onRevertEditButtonClick = () => {
     setCheckedItems({});
-  }
+  };
 
   const [learnersData, setLearnersData] = useState([
     {
@@ -356,28 +363,63 @@ export default function RecruiterLearnersScreen() {
   };
 
   const onLearnerCreateClick = () => {
-    setLearnerCreateModalState(false)
+    setLearnerCreateModalState(false);
     setLearnerSuccessModal(true);
-  }
+  };
 
   const closeLearnerImportModal = () => {
     setLearnerImportModalState(false);
-  }
+  };
 
   const onLearnerImportClick = () => {
     setLearnerImportSuccessModal(true);
     setLearnerImportModalState(false);
-  }
+  };
 
   const closeLearnerImportSuccessModal = () => {
     setLearnerImportModalState(false);
     setLearnerImportSuccessModal(false);
+  };
+
+  const [showRecruiterStaffModal, setShowRecruiterStaffModal] = useState(false);
+
+  const onBackClick = () => {};
+
+  const onViewStaffClick = () => {
+    setShowRecruiterStaffModal(true);
   }
+
+  const closeRecruiterStaffModal = () => {
+    setShowRecruiterStaffModal(false);
+  }
+
 
   return (
     <div className="relative">
-      <div>
-        <h3 className="font-medium text-2xl">{roleName} Dashboard</h3>
+      <div className="flex flex-row space-x-3">
+        {/* Back Button */}
+        <div className="pt-1 ">
+          <button
+            className="flex flex-row space-x-2 text-tgrey3"
+            type="button"
+            onClick={onBackClick}
+          >
+            <div className="pt-2">
+              <SlArrowLeft className="text-tgrey3 h-[0.6rem]" />
+            </div>
+            <p className="font-medium text-base">Back</p>
+          </button>
+        </div>
+        {/* Dashboard Title  */}
+        <div>
+          <h3 className="font-medium text-2xl pl-3">{roleName} Dashboard</h3>
+        </div>
+        <div>
+          {/* Pencil  */}
+          <div className="py-1">
+            <LuPencil className="text-dashboardButtons w-10 h-5 " />
+          </div>
+        </div>
       </div>
 
       {/* Selection and active bar */}
@@ -430,21 +472,23 @@ export default function RecruiterLearnersScreen() {
 
             {/* Confirm Edit Button */}
             {Object.values(checkedItems).some((isChecked) => isChecked) && (
-              <div className="w-10 h-9 flex justify-center items-center rounded-md shadow-sm border cursor-pointer"
-              onClick={onConfirmEditButtonClick}>
-              <FaRegCheckCircle className="text-[#08930D] h-5 w-5"/>
-            </div>
+              <div
+                className="w-10 h-9 flex justify-center items-center rounded-md shadow-sm border cursor-pointer"
+                onClick={onConfirmEditButtonClick}
+              >
+                <FaRegCheckCircle className="text-[#08930D] h-5 w-5" />
+              </div>
             )}
-            
 
             {/* Revert Edit Changes Button */}
             {Object.values(checkedItems).some((isChecked) => isChecked) && (
-              <div className="w-10 h-9 flex justify-center items-center rounded-md shadow-sm border cursor-pointer"
-              onClick={onRevertEditButtonClick}>
-              <FaRegCircleXmark className="text-tred2 h-5 w-5"/>
-            </div>
+              <div
+                className="w-10 h-9 flex justify-center items-center rounded-md shadow-sm border cursor-pointer"
+                onClick={onRevertEditButtonClick}
+              >
+                <FaRegCircleXmark className="text-tred2 h-5 w-5" />
+              </div>
             )}
-
 
             {/* Create Button  */}
             <div className="relative inline-block">
@@ -468,6 +512,16 @@ export default function RecruiterLearnersScreen() {
                   <FaPlus className="text-white my-1 mr-2" />
                 </span>{" "}
                 Import
+              </button>
+            </div>
+
+            {/* View Staff Button  */}
+            <div>
+              <button
+                className="flex flex-row rounded-md py-[0.4rem] px-3 bg-black text-white font-medium text-sm"
+                onClick={onViewStaffClick}
+              >
+                View staff
               </button>
             </div>
 
@@ -505,25 +559,34 @@ export default function RecruiterLearnersScreen() {
 
       {/* Learner Create and Successful Modal  */}
       <div>
-      <AddLearnerModal
+        <AddLearnerModal
           show={learnerCreateModalState}
           onClose={closeLearnerCreateModal}
           onCreateClick={onLearnerCreateClick}
         />
 
-        <LearnerCreated show={learnerSuccessModal} onClose={closeLearnerSuccessModal}/>
+        <LearnerCreated
+          show={learnerSuccessModal}
+          onClose={closeLearnerSuccessModal}
+        />
       </div>
 
       {/* Learner Import Modal  */}
       <div>
-        <LearnerImportModal 
-        show={learnerImportModalState}
-        onClose={closeLearnerImportModal}
-        onCreateClick={onLearnerImportClick}        />
+        <LearnerImportModal
+          show={learnerImportModalState}
+          onClose={closeLearnerImportModal}
+          onCreateClick={onLearnerImportClick}
+        />
 
-        <LearnerImportSuccessModal show={learnerImportSuccessModal} onClose={closeLearnerImportSuccessModal}/>
+        <LearnerImportSuccessModal
+          show={learnerImportSuccessModal}
+          onClose={closeLearnerImportSuccessModal}
+        />
       </div>
-      
+
+      {/* Recruiter Staff Modal  */}
+      <RecruiterStaffModal show={showRecruiterStaffModal} onClose={closeRecruiterStaffModal}/>
     </div>
   );
 }

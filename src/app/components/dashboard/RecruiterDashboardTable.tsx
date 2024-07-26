@@ -35,7 +35,7 @@ export default function RecruiterDashboardTable({
   };
 
   return (
-    <div className="flex flex-col justify-between min-h-[35rem]">
+    <div className="flex flex-col justify-between min-h-[35rem] w-full overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200 font-inter table-auto rounded-t-lg h-full">
         <thead className="bg-tgrey-6 border border-tgrey6 ">
           <tr>
@@ -101,7 +101,7 @@ export default function RecruiterDashboardTable({
                       type="text"
                       value={row.name}
                       onChange={(e) => handleInputChange(row.id, 'name', e.target.value)}
-                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
                     row.name
@@ -113,7 +113,7 @@ export default function RecruiterDashboardTable({
                       type="text"
                       value={row.dateOfBirth}
                       onChange={(e) => handleInputChange(row.id, 'dateOfBirth', e.target.value)}
-                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
                     row.dateOfBirth
@@ -125,7 +125,7 @@ export default function RecruiterDashboardTable({
                       type="text"
                       value={row.mobileNumber}
                       onChange={(e) => handleInputChange(row.id, 'mobileNumber', e.target.value)}
-                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
                     row.mobileNumber
@@ -137,7 +137,7 @@ export default function RecruiterDashboardTable({
                       type="text"
                       value={row.email}
                       onChange={(e) => handleInputChange(row.id, 'email', e.target.value)}
-                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
                     row.email
@@ -149,7 +149,7 @@ export default function RecruiterDashboardTable({
                       type="text"
                       value={row.niNumber}
                       onChange={(e) => handleInputChange(row.id, 'niNumber', e.target.value)}
-                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
                     row.niNumber
@@ -161,7 +161,7 @@ export default function RecruiterDashboardTable({
                       type="text"
                       value={row.passportNumber}
                       onChange={(e) => handleInputChange(row.id, 'passportNumber', e.target.value)}
-                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
                     row.passportNumber
@@ -173,7 +173,7 @@ export default function RecruiterDashboardTable({
                       type="text"
                       value={row.homeAddress}
                       onChange={(e) => handleInputChange(row.id, 'homeAddress', e.target.value)}
-                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
                     row.homeAddress
@@ -185,7 +185,7 @@ export default function RecruiterDashboardTable({
                       type="text"
                       value={row.funding}
                       onChange={(e) => handleInputChange(row.id, 'funding', e.target.value)}
-                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
                     row.funding
@@ -197,7 +197,7 @@ export default function RecruiterDashboardTable({
                       type="text"
                       value={row.level}
                       onChange={(e) => handleInputChange(row.id, 'level', e.target.value)}
-                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
                     row.level
@@ -209,7 +209,7 @@ export default function RecruiterDashboardTable({
                       type="text"
                       value={row.awarding}
                       onChange={(e) => handleInputChange(row.id, 'awarding', e.target.value)}
-                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
+                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
                     row.awarding
@@ -217,16 +217,15 @@ export default function RecruiterDashboardTable({
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
                   {isEditing && checkedItems[row.id] ? (
-                    <input
-                      type="text"
-                      value={row.choseCourse}
-                      onChange={(e) => handleInputChange(row.id, 'choseCourse', e.target.value)}
-                      className="p-0 border-none whitespace-nowrap text-[10px] text-tblack3 font-medium"
-                    />
+                    <select name="" id=""
+                    className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 space-y-2">
+                      <option value="" >Adultcare</option>
+                      <option value="">Children Care</option>
+                    </select>
                   ) : (
                     row.choseCourse
                   )}
-                </td>
+                </td> 
               </tr>
             ))
           )}
@@ -242,7 +241,7 @@ export default function RecruiterDashboardTable({
         />
       </div>
       <div className="w-60 text-sm">
-      <DatePicker />
+      {/* <DatePicker /> */}
       </div>
     </div>
   );

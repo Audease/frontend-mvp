@@ -34,6 +34,7 @@ module.exports = {
         'tgrey5': '#DADADA',
         'tgrey-6': '#F6F6F6',
         'tgrey7':'#EFEEEE',
+        'tgrey9': '#625F65',
         'profilebg': '#EBDDCA',
         'dashboardButtons': '#F9A22B',
         'dashboardButtonsBg':'#FDF5E9',

@@ -80,16 +80,6 @@ export default function UserDetails({ userId: initialUserId, onBackClick }) {
             onSaveChanges={handleSaveChanges}
           />
         );
-      // (
-      //   <>
-      //     <h3>{userId.name}</h3>
-      //     <p>{userId.username}</p>
-      //     <p>{userId.email}</p>
-      //     <p>{userId.loginTime}</p>
-      //     <p>{userId.funding}</p>
-      //     <p>{userId.payment}</p>
-      //   </>
-      // );
       case "documents":
         return <UserDetailsDocuments />
       case "password":

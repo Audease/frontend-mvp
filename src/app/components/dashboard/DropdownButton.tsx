@@ -1,7 +1,14 @@
-import  { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from "react";
 import { RiArrowDropUpLine } from "react-icons/ri";
+import { IoIosArrowDown } from "react-icons/io";
 
-const DropdownButton = ({ options, onSelect, label, className }) => {
+
+export default function DropdownButton({
+  options,
+  onSelect,
+  label,
+  className,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -14,9 +21,9 @@ const DropdownButton = ({ options, onSelect, label, className }) => {
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -27,12 +34,12 @@ const DropdownButton = ({ options, onSelect, label, className }) => {
 
   return (
     <div className="relative inline-block" ref={dropdownRef}>
-      <button
-        onClick={toggleDropdown}
-        className={className}
-      >
-        <div className='flex flex-row text-sm font-medium'>
-        {label} <span><RiArrowDropUpLine  className='w-8 h-6'/></span>
+      <button onClick={toggleDropdown} className={className}>
+        <div className="flex flex-row text-sm font-medium">
+          {label}{" "}
+          <span>
+            <RiArrowDropUpLine className="w-8 h-6" />
+          </span>
         </div>
       </button>
       {isOpen && (
@@ -50,6 +57,55 @@ const DropdownButton = ({ options, onSelect, label, className }) => {
       )}
     </div>
   );
-};
+}
 
-export default DropdownButton;
+export function RecruiterFilterDropdown({ label, options, onSelect }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const handleSelect = (option) => {
+    onSelect(option);
+    setIsOpen(false);
+  };
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <div className="relative inline-block" ref={dropdownRef}>
+      <button onClick={toggleDropdown} className="">
+        <div className="flex flex-row justify-between text-sm font-medium border-2 rounded w-40 p-1">
+          {label}{" "}
+          <span className="p-[0.2rem]">
+            <IoIosArrowDown className="w-4 h-4" />
+          </span>
+        </div>
+      </button>
+      {isOpen && (
+        <div className=" right-0 w-36 bg-white border-2 rounded border-gray-200 shadow-lg z-10">
+          {options.map((option, index) => (
+            <div
+              key={index}
+              className="cursor-pointer px-4 py-2 hover:bg-gray-100 text-black font-medium"
+              onClick={() => handleSelect(option)}
+            >
+              {option}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

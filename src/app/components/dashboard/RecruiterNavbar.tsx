@@ -8,21 +8,12 @@ import Notifications from "./Notifications";
 import NavbarPlusButton from "./NavbarPlusButton";
 import { useRouter } from "next/navigation";
 
-export default function Navbar() {
+export default function RecruiterNavbar() {
   const [profileOptions, setProfileOptions] = useState(false);
   const [notifications, setNotifications] = useState(false);
   const [plusButton, setPlusButton] = useState(false);
   const menuRef = useRef(null);
   const router = useRouter();
-
-  const links = [
-    { name: "Apps", href: "/dashboard" },
-    { name: "Resources", href: "#" },
-    { name: "Messenger", href: "/dashboard/messenger" },
-    { name: "Learners", href: "/dashboard/learners" },
-    { name: "Staff", href: "/dashboard/staff" },
-    { name: "Worflows", href: "/dashboard/workflows" },
-  ];
 
   const toggleVisibility = () => {
     setProfileOptions((prevState) => !prevState);
@@ -62,10 +53,15 @@ export default function Navbar() {
     router.push("/signIn");
   };
 
+  const links = [
+    { name: "Learners", href: "/recruiter-dashboard" },
+    { name: "Messenger", href: "#" },
+  ];
+
   return (
-    <div className="flex flex-row space-x-24 mx-10 py-4">
+    <div className="flex flex-row justify-between mx-10 py-4">
       {/* Logo */}
-      <div>
+      <div className="flex flex-row space-x-20">
         <Link href="/">
           <Image
             src="/audease_logo.png"
@@ -74,14 +70,14 @@ export default function Navbar() {
             alt="Audease logo"
           />
         </Link>
+
+        <div>
+        {/* Links */}
+        <NavLinks links={links} />
+      </div>
       </div>
       {/* Navigation and Options */}
       <div className="flex flex-row space-x-8">
-        <div>
-          {/* Links */}
-          <NavLinks links={links}/>
-        </div>
-
         {/* Search Field */}
         <div className="relative">
           <input

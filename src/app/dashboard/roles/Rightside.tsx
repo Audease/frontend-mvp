@@ -6,6 +6,8 @@ export default function Rightside({
   onWorkflowClick,
   onStaffClick,
   onLearnerClick,
+  onResourcesClick,
+  onFormClick
 }) {
   return (
     <div>
@@ -46,12 +48,12 @@ export default function Rightside({
             <Type2Button
               leftIcon={"/resourcesIcon.png"}
               buttonText={"Resources"}
-              onClick={""}
+              onClick={onResourcesClick}
             />
             <Type2Button
               leftIcon={"/formIcon.png"}
               buttonText={"Form"}
-              onClick={""}
+              onClick={onFormClick}
             />
           </div>
         </div>

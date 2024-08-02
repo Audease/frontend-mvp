@@ -3,7 +3,7 @@
 import { useState } from "react";
 import DefaultLeft from "./DefaultLeft";
 import SetUpAccount from "./SetUpAccount";
-import CreateRole, { RoleCreated } from "./CreateRole";
+import CreateRole, { AddAuditLearnerModal, RoleCreated } from "./CreateRole";
 import Staff from "./Staff";
 import Workflow from "../workflows/Workflow";
 import CreateWorkflow, { WorkflowCreated } from "../workflows/CreateWorkflow";
@@ -18,6 +18,7 @@ export default function Role() {
   const [isWorkflowSuccessModal, setIsWorkflowSuccessModal] = useState(false);
   const [learnerCreateModalState, setLearnerCreateModalState] = useState(false);
   const [learnerSuccessModal, setLearnerSuccessModal] = useState(false);
+  const [addAuditLearnerModal, setAddAuditLearnerModal ] = useState(false);
 
   const closeLearnerCreateModal = () => {
     console.log("closed");
@@ -76,13 +77,18 @@ export default function Role() {
   };
 
   const roleCreate = () => {
-    console.log(roleFormData);
-    setIsRoleSuccessModal(true);
-    setIsModalOpen(false);
     setRoleFormData({
       roleName: "",
       permission: "",
     });
+    if (roleFormData.permission === 'Audit' || roleFormData.permission === '') {
+      setAddAuditLearnerModal(true);
+      setIsModalOpen(false);
+    } else {
+      setIsRoleSuccessModal(true);
+      setIsModalOpen(false);
+    }
+    console.log(roleFormData.permission);
   };
 
   const onWorkflowClick = () => {
@@ -113,6 +119,10 @@ export default function Role() {
 
   const onFormClick = () => {
     console.log("Forms Clicked")
+  }
+
+  const closeAuditLearnerModal = () => {
+    setAddAuditLearnerModal(false);
   }
 
   const renderComponent = () => {
@@ -163,6 +173,8 @@ export default function Role() {
         />
 
         <LearnerCreated show={learnerSuccessModal} onClose={closeLearnerSuccessModal}/>
+
+        <AddAuditLearnerModal show={addAuditLearnerModal} onClose={closeAuditLearnerModal} />
 
         </div>
 

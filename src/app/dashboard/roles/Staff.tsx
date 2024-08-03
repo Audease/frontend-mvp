@@ -6,9 +6,11 @@ import { useState, useEffect } from "react";
 import { Avatar } from "flowbite-react";
 import Image from "next/image";
 
+
 export default function Staff({ onClick }) {
   const [emailInput, setEmailInput] = useState("");
   const [staffs, setStaffs] = useState([]);
+  const [avatars, setAvatars] = useState({});
   const [invitedStaff, setInvitedStaff] = useState([]);
   const [error, setError] = useState("");
   const [addedMessageVisible, setAddedMessageVisible] = useState(false);
@@ -29,7 +31,7 @@ export default function Staff({ onClick }) {
     }
   };
 
-  const addEmails = (emails) => {
+  const addEmails = async (emails) => {
     const validEmails = emails.filter(validateEmail);
     const invalidEmails = emails.filter((email) => !validateEmail(email));
     const duplicateEmails = validEmails.filter((email) =>
@@ -38,6 +40,14 @@ export default function Staff({ onClick }) {
     const newEmails = validEmails.filter((email) => !staffs.includes(email));
 
     if (newEmails.length > 0) {
+      // Fetch avatars for new emails
+      const newAvatars = {};
+      for (const email of newEmails) {
+        const avatarUrl = await getAvatarUrl(email);
+        newAvatars[email] = avatarUrl;
+      }
+
+      setAvatars((prevAvatars) => ({ ...prevAvatars, ...newAvatars }));
       setStaffs((prevStaffs) => [...prevStaffs, ...newEmails]);
     }
 
@@ -70,6 +80,11 @@ export default function Staff({ onClick }) {
   // Handles removing emails
   const handleRemoveClick = (emailToRemove) => {
     setStaffs(staffs.filter((email) => email !== emailToRemove));
+    setAvatars((prevAvatars) => {
+      const newAvatars = { ...prevAvatars };
+      delete newAvatars[emailToRemove];
+      return newAvatars;
+    });
   };
 
   // Invite Now Button
@@ -81,9 +96,9 @@ export default function Staff({ onClick }) {
     });
     setAddedMessageVisible(true);
     // Delay the clearing of the staffs array
-  setTimeout(() => {
-    setStaffs([]);
-  }, 10000); // 10 seconds
+    setTimeout(() => {
+      setStaffs([]);
+    }, 10000); // 10 seconds
   };
 
   // Load invitedStaff from local storage on component mount
@@ -110,6 +125,12 @@ export default function Staff({ onClick }) {
     }
   }, [addedMessageVisible]);
 
+  // Get avatars from https://ui-avatars.com/
+  async function getAvatarUrl(email) {
+    const res = await fetch(`https://ui-avatars.com/api/?name=${email}`);
+    return res.url;
+  }
+  
   return (
     <div className="flex flex-col space-y-4 w-[57rem] font-inter">
       {/* Back Button */}
@@ -210,8 +231,7 @@ export default function Staff({ onClick }) {
                     key={index}
                     className="flex flex-row items-center space-x-4"
                   >
-                    {/* <Avatar img={getAvatarUrl(email)} rounded /> */}
-                    <Avatar img="/avatar.png" rounded />
+                    <Avatar img={avatars[email]} rounded />
                     <div className="py-3">
                       <h2 className="font-medium text-sm text-black">
                         {email}
@@ -249,7 +269,11 @@ export default function Staff({ onClick }) {
                     </span>
                     Add
                   </button>
-                   {addedMessageVisible && <h3 className="pt-2 font-normal text-sm text-green1">Added!</h3>}
+                  {addedMessageVisible && (
+                    <h3 className="pt-2 font-normal text-sm text-green1">
+                      Added!
+                    </h3>
+                  )}
                 </div>
               </div>
             </div>

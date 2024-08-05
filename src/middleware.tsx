@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
+import { access } from "fs";
 
 const middleware = async (request: NextRequest) => {
   const accessToken = request.cookies.get("accessToken")?.value;
+  // console.log(accessToken)
   const { pathname } = request.nextUrl;
 
   // if (!accessToken) {

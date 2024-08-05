@@ -5,6 +5,7 @@ import SearchBox from "../../components/dashboard/SearchBox";
 import DropdownButton from "../../components/dashboard/DropdownButton";
 import FilterButton from "../../components/dashboard/FilterButton";
 import StaffTable from "../../components/dashboard/StaffTable";
+import axios from "axios";
 
 export default function Staff() {
   const [activeTab, setActiveTab] = useState("All");
@@ -29,78 +30,24 @@ export default function Staff() {
   const options = ["Recruiter", "BKSD", "Accessor", "Inductor", "Lazer"];
 
   // Staff data
-  const staffData = [
-    {
-      id: 1,
-      email: "JohnDoe@gmail.com",
-      role: "Recruiter",
-      status: "pending",
-      username: "johndoe.eden.recruiter",
-    },
-    {
-      id: 2,
-      email: "JaneSmith@gmail.com",
-      role: "Accessor",
-      status: "active",
-      username: "janesmith.eden.accessor",
-    },
-    {
-      id: 3,
-      email: "MikeBrown@gmail.com",
-      role: "Auditor",
-      status: "inactive",
-      username: "mikebrown.eden.auditor",
-    },
-    {
-      id: 4,
-      email: "EmilyClark@gmail.com",
-      role: "Inductor",
-      status: "active",
-      username: "emilyclark.eden.inductor",
-    },
-    {
-      id: 5,
-      email: "ChrisJohnson@gmail.com",
-      role: "Recruiter",
-      status: "pending",
-      username: "chrisjohnson.eden.recruiter",
-    },
-    {
-      id: 6,
-      email: "PatriciaGarcia@gmail.com",
-      role: "Accessor",
-      status: "inactive",
-      username: "patriciagarcia.eden.accessor",
-    },
-    {
-      id: 7,
-      email: "RobertMiller@gmail.com",
-      role: "Auditor",
-      status: "active",
-      username: "robertmiller.eden.auditor",
-    },
-    {
-      id: 8,
-      email: "LindaMartinez@gmail.com",
-      role: "Inductor",
-      status: "inactive",
-      username: "lindamartinez.eden.inductor",
-    },
-    {
-      id: 9,
-      email: "MichaelDavis@gmail.com",
-      role: "Recruiter",
-      status: "pending",
-      username: "michaeldavis.eden.recruiter",
-    },
-    {
-      id: 10,
-      email: "SarahWilson@gmail.com",
-      role: "Accessor",
-      status: "active",
-      username: "sarahwilson.eden.accessor",
-    },
-  ];
+  const [staffData, setStaffData] = useState([]);
+
+  useEffect(() => {
+    const fetchStaffData = async () => {
+      try {
+        const response = await axios.get('/api/listStaff');
+        if (response.status === 200) {
+          setStaffData(response.data); // Adjust according to the structure of your response data
+        } else {
+          console.error('Failed to fetch staff data:', response.data.message);
+        }
+      } catch (error) {
+        console.error('Error fetching staff data:', error);
+      }
+    };
+
+    fetchStaffData();
+  }, []);
 
   return (
     <div className="flex flex-col space-y-4">

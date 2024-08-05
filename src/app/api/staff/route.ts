@@ -3,10 +3,10 @@ import axios from 'axios';
 import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
-  const { email } = await req.json(); // Adjust this according to your payload structure
+  const { email } = await req.json(); 
   const cookieStore = cookies();
-  const accessToken = cookieStore.get('accessToken');
-  console.log(accessToken);
+  const accessToken = cookieStore.get('accessToken')?.value;
+  // console.log(accessToken);
 
   if (!accessToken) {
     return new NextResponse(
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
   try {
     const response = await axios.post(
       'https://audease-dev.onrender.com/v1/admin/create-staff',
-      { email }, // Adjust this according to your payload structure
+      { email }, 
       {
         headers: {
           'Authorization': `Bearer ${accessToken}`,

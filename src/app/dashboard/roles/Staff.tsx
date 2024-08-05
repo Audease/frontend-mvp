@@ -5,7 +5,7 @@ import { FaPlus, FaCheck } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { Avatar } from "flowbite-react";
 import Image from "next/image";
-import create from "./cookie";
+import axios from "axios";
 
 
 
@@ -90,16 +90,35 @@ export default function Staff({ onClick }) {
   };
 
   // Invite Now Button
-  const addToStaffList = () => {
-    try {
+  const addToStaffList = async () => {
 
-    } catch {
-      
+    try {
+      const responses = await Promise.all(
+        staffs.map((email) =>
+          axios.post(
+            '/api/staff',
+            { email },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              }
+            }
+          )
+        )
+      );
+
+      responses.forEach((response) => {
+        if (response.status === 200) {
+          console.log(response.data.message); // Handle the response as needed
+        }
+      });
+    } catch (error) {
+      console.error('Error:', error.response?.data?.message || 'Failed to create staff');
     }
 
     setInvitedStaff((prevInvitedStaff) => {
       const updatedInvitedStaff = [...prevInvitedStaff, ...staffs];
-      localStorage.setItem("invitedStaff", JSON.stringify(updatedInvitedStaff)); // Save to local storage immediately
+      // localStorage.setItem("invitedStaff", JSON.stringify(updatedInvitedStaff)); // Save to local storage immediately
       return updatedInvitedStaff;
     });
     setAddedMessageVisible(true);
@@ -138,12 +157,6 @@ export default function Staff({ onClick }) {
     const res = await fetch(`https://ui-avatars.com/api/?name=${email}`);
     return res.url;
   }
-  
-
-  useEffect(() => {
-    // Call the server function to set the cookie
-    create()
-  }, [])
 
 
   return (

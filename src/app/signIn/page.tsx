@@ -41,7 +41,7 @@ export default function SignIn() {
       password: password,
     };
 
-    console.log("Submitting payload:", payload);
+    // console.log("Submitting payload:", payload);
     try {
       const response = await axios.post(
         "/api/login",

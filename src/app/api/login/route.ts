@@ -2,6 +2,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
+import { cookies } from 'next/headers'
 
 export async function POST(req: NextRequest) {
   const payload = await req.json();
@@ -15,9 +16,6 @@ export async function POST(req: NextRequest) {
       const {
         token: { access, refresh },
       } = response.data;
-      console.log(
-        `"Access token": ${access.token} ${access.expires}, Refresh Token: ${refresh.token}, ${refresh.expires}`
-      );
 
       const res = new NextResponse(
         JSON.stringify({ message: "Login Successful" }),
@@ -27,19 +25,31 @@ export async function POST(req: NextRequest) {
       );
 
       // Set cookies
-      res.cookies.set("accessToken", access.token, {
-        httpOnly: true, // For security, prevent access from JavaScript
-        secure: process.env.NODE_ENV === "production", // Set secure flag on production
-        maxAge: access.expires, // Set expiration time
-        path: "/",
-      });
+      // res.cookies.set("accessToken", access.token, {
+      //   httpOnly: true, // For security, prevent access from JavaScript
+      //   secure: process.env.NODE_ENV === "production", // Set secure flag on production
+      //   maxAge: access.expires, // Set expiration time
+      //   path: "/",
+      // });
 
-      res.cookies.set("refreshToken", refresh.token, {
-        httpOnly: true,
+      cookies().set({
+        name: 'accessToken',
+        value: access.token,
         secure: process.env.NODE_ENV === "production",
+        httpOnly: true,
+        maxAge: access.expires,
+        path: '/',
+      })
+
+
+      cookies().set({
+        name: 'refreshToken',
+        value: refresh.token,
+        secure: process.env.NODE_ENV === "production",
+        httpOnly: true,
         maxAge: refresh.expires,
-        path: "/",
-      });
+        path: '/',
+      })
 
       return res;
     } else {

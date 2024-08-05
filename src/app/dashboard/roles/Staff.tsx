@@ -5,6 +5,8 @@ import { FaPlus, FaCheck } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { Avatar } from "flowbite-react";
 import Image from "next/image";
+import create from "./cookie";
+
 
 
 export default function Staff({ onClick }) {
@@ -89,6 +91,12 @@ export default function Staff({ onClick }) {
 
   // Invite Now Button
   const addToStaffList = () => {
+    try {
+
+    } catch {
+      
+    }
+
     setInvitedStaff((prevInvitedStaff) => {
       const updatedInvitedStaff = [...prevInvitedStaff, ...staffs];
       localStorage.setItem("invitedStaff", JSON.stringify(updatedInvitedStaff)); // Save to local storage immediately
@@ -131,6 +139,13 @@ export default function Staff({ onClick }) {
     return res.url;
   }
   
+
+  useEffect(() => {
+    // Call the server function to set the cookie
+    create()
+  }, [])
+
+
   return (
     <div className="flex flex-col space-y-4 w-[57rem] font-inter">
       {/* Back Button */}

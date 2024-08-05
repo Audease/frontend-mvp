@@ -1,11 +1,44 @@
 import { NextRequest, NextResponse } from "next/server";
+import axios from "axios";
 
 const middleware = async (request: NextRequest) => {
-  const currentUser = request.cookies.get("accessToken")?.value;
-  console.log(currentUser)
+  const accessToken = request.cookies.get("accessToken")?.value;
   const { pathname } = request.nextUrl;
 
-  if (currentUser) {
+  // if (!accessToken) {
+  //   try {
+  //     const refreshResponse = await axios.post(
+  //       "/api/refresh-token",
+  //       {},
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     );
+
+  //     if (refreshResponse.status === 200) {
+  //       const { token } = refreshResponse.data;
+  //       const response = NextResponse.next();
+  //       response.cookies.set({
+  //         name: "accessToken",
+  //         value: token,
+  //         secure: process.env.NODE_ENV === "production",
+  //         httpOnly: true,
+  //         maxAge: token.expires,
+  //         path: "/",
+  //       });
+
+  //       // If we refresh the token, we should proceed to the requested page, not redirect again
+  //       return response;
+  //     } 
+  //     // else {
+  //     //   return NextResponse.redirect(new URL("/signIn", request.url));
+  //     // }
+  //   } catch (error) {
+  //     return NextResponse.redirect(new URL("/signIn", request.url));
+  //   }
+  // }
+
+  if (accessToken) {
     // If the user is authenticated and trying to access auth-related routes, redirect them to the dashboard
     if (
       pathname.startsWith("/signIn") ||

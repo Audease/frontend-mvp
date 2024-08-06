@@ -1,93 +1,52 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
-import { cookies } from "next/headers";
-import { jwtDecode } from "jwt-decode";
 
 export async function POST(req: NextRequest) {
-  const cookieStore = cookies();
-  const refreshToken = cookieStore.get("refreshToken");
-  const accessToken = req.cookies.get("accessToken")?.value;
-  console.log(`Refreh Token: ${refreshToken} \n Access Token: ${accessToken}`);
-
-
-  if (accessToken) {
-    const decoded = jwtDecode(accessToken);
-    console.log(decoded);
-  
-    const convertUnixTimestampToReadableDate = (timestamp) => {
-      const date = new Date(timestamp * 1000); // Convert from seconds to milliseconds
-      return date.toLocaleString(); // Use toLocaleString to get a human-readable format
-    };
-  
-    const expDate = convertUnixTimestampToReadableDate(decoded.exp);
-    const iatDate = convertUnixTimestampToReadableDate(decoded.iat);
-  
-    // Calculate the current time in Unix timestamp (seconds)
-    const currentTime = Math.floor(Date.now() / 1000);
-  
-    // Calculate the remaining time until the token expires (in seconds)
-    const remainingTimeSeconds = decoded.exp - currentTime;
-  
-    // Convert the remaining time to minutes
-    const remainingTimeMinutes = remainingTimeSeconds / 60;
-
-    if (!accessToken || remainingTimeSeconds < 10) {
-      console.log("Access token cookie is missing.");
-      return NextResponse.redirect(new URL('/signIn', req.url));
-    }
-  
-    console.log("Issued at:", iatDate);
-    console.log("Expires at:", expDate);
-    console.log("Minutes left until token expires:", remainingTimeSeconds);
-  }
-  
-
-  if (!refreshToken) {
-    return new NextResponse(
-      JSON.stringify({ message: "Refresh token missing" }),
-      { status: 401 }
-    );
-  }
+  const payload = await req.json();
 
   try {
-    const response = await axios.post(
+    const axiosResponse = await axios.post(
       "https://audease-dev.onrender.com/v1/auth/refresh-token",
-      {
-        token: refreshToken,
-      }
+      payload
     );
 
-    if (response.status === 200) {
-      const { access } = response.data;
+    if (axiosResponse.status === 200) {
+      const newAccessToken = axiosResponse.data.token;
+      console.log(`This is new: ${newAccessToken}`);
 
-      const res = new NextResponse(
-        JSON.stringify({ message: "Token refreshed" }),
-        { status: 200 }
+      const response = new NextResponse(
+        JSON.stringify({ token: `${newAccessToken}` }),
+        {
+          status: 200,
+        }
       );
 
-      // Set the new access token
-      cookies().set({
-        name: "accessToken",
-        value: access.token,
-        secure: process.env.NODE_ENV === "production",
+      // Set the new access token in cookies
+      response.cookies.set('accessToken', newAccessToken, {
         httpOnly: true,
-        maxAge: access.expires,
-        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        path: '/',
+        maxAge: 12 * 60 * 60, // 12 hours
       });
 
-      return res;
+      return response;
     } else {
       return new NextResponse(
-        JSON.stringify({ message: "Failed to refresh token" }),
-        { status: response.status }
+        JSON.stringify({ message: axiosResponse.data.message || "Attempt failed" }),
+        {
+          status: axiosResponse.status,
+        }
       );
     }
   } catch (error) {
+    // Handle cases where `error.response` might be undefined
     return new NextResponse(
       JSON.stringify({
-        message: error.response?.data?.message || "Failed to refresh token",
+        message: (error as any).response?.data?.message || "Attempt failed",
       }),
-      { status: error.response?.status || 500 }
+      {
+        status: (error as any).response?.status || 500,
+      }
     );
   }
 }

@@ -37,7 +37,8 @@ export default function Staff() {
       try {
         const response = await axios.get('/api/listStaff');
         if (response.status === 200) {
-          setStaffData(response.data); // Adjust according to the structure of your response data
+          setStaffData(response.data);
+          console.log("Here is the table data") // Adjust according to the structure of your response data
         } else {
           console.error('Failed to fetch staff data:', response.data.message);
         }
@@ -48,6 +49,8 @@ export default function Staff() {
 
     fetchStaffData();
   }, []);
+
+  // console.log(staffData)
 
   return (
     <div className="flex flex-col space-y-4">

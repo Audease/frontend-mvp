@@ -1,12 +1,69 @@
 import { NextRequest, NextResponse } from "next/server";
+import { jwtDecode } from "jwt-decode";
 
 const middleware = async (request: NextRequest) => {
-  const currentUser = request.cookies.get("accessToken")?.value;
-  console.log(currentUser)
+  const accessToken = request.cookies.get("accessToken")?.value;
+  console.log("Middleware accessToken:", accessToken);
+
+  if (accessToken) {
+    const decoded = jwtDecode(accessToken);
+    console.log("Decoded token:", decoded);
+
+    const convertUnixTimestampToReadableDate = (timestamp) => {
+      const date = new Date(timestamp * 1000); // Convert from seconds to milliseconds
+      return date.toLocaleString(); // Use toLocaleString to get a human-readable format
+    };
+
+    const expDate = convertUnixTimestampToReadableDate(decoded.exp);
+    const iatDate = convertUnixTimestampToReadableDate(decoded.iat);
+
+    const currentTime = Math.floor(Date.now() / 1000);
+    const remainingTimeSeconds = decoded.exp - currentTime;
+    const remainingTimeMinutes = remainingTimeSeconds / 60;
+
+    console.log("Issued at:", iatDate);
+    console.log("Expires at:", expDate);
+    console.log("Minutes left until token expires:", remainingTimeSeconds);
+
+    if (remainingTimeSeconds < 60) {
+      console.log("Token expires soon");
+      const refreshToken = request.cookies.get("refreshToken")?.value;
+
+      const payload = { refreshToken };
+
+      try {
+        const baseUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}`;
+        const response = await fetch(`${baseUrl}/api/refresh-token`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Token refreshed:", data);
+
+          const newAccessToken = data.token;
+          const res = NextResponse.next();
+          res.cookies.set('accessToken', newAccessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            path: '/',
+            maxAge: 12 * 60 * 60, // 12 hours
+          });
+          return res;
+        } else {
+          console.error("Error refreshing token:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error refreshing token:", error);
+      }
+    }
+  }
+
   const { pathname } = request.nextUrl;
 
-  if (currentUser) {
-    // If the user is authenticated and trying to access auth-related routes, redirect them to the dashboard
+  if (accessToken) {
     if (
       pathname.startsWith("/signIn") ||
       pathname.startsWith("/signup") ||
@@ -16,7 +73,6 @@ const middleware = async (request: NextRequest) => {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
   } else {
-    // If the user is not authenticated and trying to access protected routes, redirect them to signIn
     if (pathname.startsWith("/dashboard")) {
       return NextResponse.redirect(new URL("/signIn", request.url));
     }
@@ -27,13 +83,13 @@ const middleware = async (request: NextRequest) => {
 
 export const config = {
   matcher: [
-    "/dashboard/:path*", // Apply middleware to all paths under /dashboard
+    "/dashboard/:path*",
     "/signIn",
     "/signup",
     "/forgotPassword",
     "/reset-password",
     "/",
-  ], // Apply middleware to relevant routes
+  ],
 };
 
 export default middleware;

@@ -9,6 +9,7 @@ import Workflow from "../workflows/Workflow";
 import CreateWorkflow, { WorkflowCreated } from "../workflows/CreateWorkflow";
 import Rightside from "./Rightside";
 import AddLearnerModal, { LearnerCreated } from "../learners/learnerModal"
+import axios from "axios";
 
 export default function Role() {
   const [currentComponent, setCurrentComponent] = useState("Default");
@@ -138,6 +139,35 @@ export default function Role() {
     }
   };
 
+
+  // const onTesting = async () => {
+  //   console.log("here I am");
+     
+  //   const refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMDBjMGEyZi1lNGMzLTRhNjAtYmUyNS00N2IyMTY5Njk0NWIiLCJyb2xlX2lkIjoiMTljYzRjOTUtNTc2Yi00NzE3LTljNWItNzVmNzNiZDI4MmEzIiwiZXhwIjoxNzIzNTYwMzY3LCJpYXQiOjE3MjI5NTU1NjcsInR5cGUiOiJyZWZyZXNoIn0.T0zspbdBL7fRG9LHv3Xoc4RYsWuHYeZHdwpfF2AmjnU"; // Add your refresh token here
+  
+  //   const payload = {
+  //     refreshToken,
+  //   };
+  
+  //   try {
+  //     const response = await axios.post(
+  //       "/api/refresh-token",
+  //       payload,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     // document.cookie = `accessToken=${response.data.token}; path=/; max-age=${12 * 60 * 60}`;
+  //     console.log("Token refreshed:", response.data);
+  //   } catch (error) {
+  //     console.error("Error refreshing token:", error);
+  //   }
+  // };
+  
+  
+
   return (
     <div>
       {/* Body section  */}
@@ -188,6 +218,8 @@ export default function Role() {
             onResourcesClick={onResourcesClick}
             onFormClick={onFormClick}
           />
+
+          {/* <h3 onClick={onTesting}>Here</h3> */}
         </div>
       </div>
     </div>

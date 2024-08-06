@@ -42,6 +42,8 @@ export default function StaffTable({ staffData }) {
     console.log("Selected option:", option);
   };
 
+  console.log(staffData)
+
   return (
     <div>
       <table className="min-w-full divide-y divide-gray-200 font-inter table-auto rounded-t-lg">
@@ -73,7 +75,7 @@ export default function StaffTable({ staffData }) {
               </td>
             </tr>
           ) : (
-            staffData.map((row) => (
+            staffData.data.map((row) => (
               <tr key={row.id}>
                 <td className="px-2 py-4 whitespace-nowrap text-sm  text-tableText2 font-medium flex flex-row">
                   <span className="pr-4">

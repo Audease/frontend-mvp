@@ -1,9 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
-import { access } from "fs";
+import { jwtDecode } from "jwt-decode";
 
 const middleware = async (request: NextRequest) => {
   const accessToken = request.cookies.get("accessToken")?.value;
+
+  const decoded = jwtDecode(accessToken);
+  console.log(decoded);
+
+  const convertUnixTimestampToReadableDate = (timestamp) => {
+    const date = new Date(timestamp * 1000); // Convert from seconds to milliseconds
+    return date.toLocaleString(); // Use toLocaleString to get a human-readable format
+  };
+
+  const expDate = convertUnixTimestampToReadableDate(decoded.exp);
+  const iatDate = convertUnixTimestampToReadableDate(decoded.iat);
+
+  console.log("Issued at:", iatDate);
+  console.log("Expires at:", expDate);
+
   // console.log(accessToken)
   const { pathname } = request.nextUrl;
 
@@ -31,7 +46,7 @@ const middleware = async (request: NextRequest) => {
 
   //       // If we refresh the token, we should proceed to the requested page, not redirect again
   //       return response;
-  //     } 
+  //     }
   //     // else {
   //     //   return NextResponse.redirect(new URL("/signIn", request.url));
   //     // }

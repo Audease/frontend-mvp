@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DefaultLeft from "./DefaultLeft";
 import SetUpAccount from "./SetUpAccount";
 import CreateRole, { AddAuditLearnerModal, RoleCreated } from "./CreateRole";
@@ -8,7 +8,7 @@ import Staff from "./Staff";
 import Workflow from "../workflows/Workflow";
 import CreateWorkflow, { WorkflowCreated } from "../workflows/CreateWorkflow";
 import Rightside from "./Rightside";
-import AddLearnerModal, { LearnerCreated } from "../learners/learnerModal"
+import AddLearnerModal, { LearnerCreated } from "../learners/learnerModal";
 import axios from "axios";
 
 export default function Role() {
@@ -19,7 +19,8 @@ export default function Role() {
   const [isWorkflowSuccessModal, setIsWorkflowSuccessModal] = useState(false);
   const [learnerCreateModalState, setLearnerCreateModalState] = useState(false);
   const [learnerSuccessModal, setLearnerSuccessModal] = useState(false);
-  const [addAuditLearnerModal, setAddAuditLearnerModal ] = useState(false);
+  const [addAuditLearnerModal, setAddAuditLearnerModal] = useState(false);
+  const [availablePermissions, setAvailablePermissions] = useState([]);
 
   const closeLearnerCreateModal = () => {
     console.log("closed");
@@ -29,12 +30,11 @@ export default function Role() {
   const onCreateClick = () => {
     setLearnerCreateModalState(false);
     setLearnerSuccessModal(true);
-  }
+  };
 
   const closeLearnerSuccessModal = () => {
     setLearnerSuccessModal(false);
   };
-
 
   const [roleFormData, setRoleFormData] = useState({
     roleName: "",
@@ -67,7 +67,7 @@ export default function Role() {
 
   const onLearnerClick = () => {
     setLearnerCreateModalState(true);
-  }
+  };
 
   const closeRoleSuccessModal = () => {
     setIsRoleSuccessModal(false);
@@ -82,13 +82,32 @@ export default function Role() {
       roleName: "",
       permission: "",
     });
-    if (roleFormData.permission === 'Audit' || roleFormData.permission === '') {
+    if (roleFormData.permission === "Audit" || roleFormData.permission === "") {
       setAddAuditLearnerModal(true);
       setIsModalOpen(false);
     } else {
       setIsRoleSuccessModal(true);
       setIsModalOpen(false);
     }
+
+    
+      const fetchStaffData = async () => {
+        try {
+          const response = await axios.get('/api/getPermissions');
+          if (response.status === 200) {
+            setAvailablePermissions(response.data);
+            console.log(response.data) 
+          } else {
+            console.error('Failed to fetch staff data:', response.data.message);
+          }
+        } catch (error) {
+          console.error('Error fetching staff data:', error);
+        }
+      };
+  
+      fetchStaffData();
+      console.log(availablePermissions)
+
     console.log(roleFormData.permission);
   };
 
@@ -115,16 +134,16 @@ export default function Role() {
   };
 
   const onResourcesClick = () => {
-    console.log("Resources Clicked")
-  }
+    console.log("Resources Clicked");
+  };
 
   const onFormClick = () => {
-    console.log("Forms Clicked")
-  }
+    console.log("Forms Clicked");
+  };
 
   const closeAuditLearnerModal = () => {
     setAddAuditLearnerModal(false);
-  }
+  };
 
   const renderComponent = () => {
     switch (currentComponent) {
@@ -139,16 +158,15 @@ export default function Role() {
     }
   };
 
-
   // const onTesting = async () => {
   //   console.log("here I am");
-     
+
   //   const refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMDBjMGEyZi1lNGMzLTRhNjAtYmUyNS00N2IyMTY5Njk0NWIiLCJyb2xlX2lkIjoiMTljYzRjOTUtNTc2Yi00NzE3LTljNWItNzVmNzNiZDI4MmEzIiwiZXhwIjoxNzIzNTYwMzY3LCJpYXQiOjE3MjI5NTU1NjcsInR5cGUiOiJyZWZyZXNoIn0.T0zspbdBL7fRG9LHv3Xoc4RYsWuHYeZHdwpfF2AmjnU"; // Add your refresh token here
-  
+
   //   const payload = {
   //     refreshToken,
   //   };
-  
+
   //   try {
   //     const response = await axios.post(
   //       "/api/refresh-token",
@@ -165,8 +183,6 @@ export default function Role() {
   //     console.error("Error refreshing token:", error);
   //   }
   // };
-  
-  
 
   return (
     <div>
@@ -183,7 +199,10 @@ export default function Role() {
             formData={roleFormData}
             setFormData={setRoleFormData}
           />
-          <RoleCreated show={isRoleSuccessModal} onClose={closeRoleSuccessModal} />
+          <RoleCreated
+            show={isRoleSuccessModal}
+            onClose={closeRoleSuccessModal}
+          />
 
           {/* Create Workflow Modal  */}
           <CreateWorkflow
@@ -194,18 +213,26 @@ export default function Role() {
             setFormData={setRoleFormData}
           />
           {/* Workflow Success Modal */}
-          <WorkflowCreated show={isWorkflowSuccessModal} onClose={closeWorkflowSuccessModal} />
+          <WorkflowCreated
+            show={isWorkflowSuccessModal}
+            onClose={closeWorkflowSuccessModal}
+          />
 
           <AddLearnerModal
-          show={learnerCreateModalState}
-          onClose={closeLearnerCreateModal}
-          onCreateClick={onCreateClick}
-        />
+            show={learnerCreateModalState}
+            onClose={closeLearnerCreateModal}
+            onCreateClick={onCreateClick}
+          />
 
-        <LearnerCreated show={learnerSuccessModal} onClose={closeLearnerSuccessModal}/>
+          <LearnerCreated
+            show={learnerSuccessModal}
+            onClose={closeLearnerSuccessModal}
+          />
 
-        <AddAuditLearnerModal show={addAuditLearnerModal} onClose={closeAuditLearnerModal} />
-
+          <AddAuditLearnerModal
+            show={addAuditLearnerModal}
+            onClose={closeAuditLearnerModal}
+          />
         </div>
 
         {/* right side  */}

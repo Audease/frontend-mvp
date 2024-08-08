@@ -7,6 +7,8 @@ import FilterButton from "../../components/dashboard/FilterButton";
 import StaffTable from "../../components/dashboard/StaffTable";
 import axios from "axios";
 
+
+
 export default function Staff() {
   const [activeTab, setActiveTab] = useState("All");
   const [activeBarStyle, setActiveBarStyle] = useState({});
@@ -38,7 +40,7 @@ export default function Staff() {
         const response = await axios.get('/api/listStaff');
         if (response.status === 200) {
           setStaffData(response.data);
-          console.log("Here is the table data") // Adjust according to the structure of your response data
+          // console.log(response.data[0]) 
         } else {
           console.error('Failed to fetch staff data:', response.data.message);
         }
@@ -86,7 +88,7 @@ export default function Staff() {
                 options={options}
                 onSelect={handleSelect}
                 label="Assign a role"
-                className={"bg-dashboardRolesBtn text-white py-1 px-4 rounded focus:outline-none"}
+                className={"bg-dashboardRolesBtn text-white py-2 px-4 rounded focus:outline-none"}
               />
               {/* {selectedOption && (
                 <p className="mt-4">Selected Option: {selectedOption}</p>

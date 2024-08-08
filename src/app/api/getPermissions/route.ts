@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const response = await axios.get(
-      'https://audease-dev.onrender.com/v1/admin/staffs?page=1&limit=50',
+      'https://audease-dev.onrender.com/v1/admin/permissions',
       {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -25,9 +25,9 @@ export async function GET(req: NextRequest) {
       // console.log(response.data) 
       return NextResponse.json(response.data, { status: 200 });
     } else {
-      return NextResponse.json({ message: response.data.message || 'Failed to list staff' }, { status: response.status });
+      return NextResponse.json({ message: response.data.message || 'Failed to get permissions' }, { status: response.status });
     }
   } catch (error: any) {
-    return NextResponse.json({ message: error.response?.data?.message || 'Failed to list staff' }, { status: error.response?.status || 500 });
+    return NextResponse.json({ message: error.response?.data?.message || 'Failed to get permissions' }, { status: error.response?.status || 500 });
   }
 }

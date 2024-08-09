@@ -14,7 +14,10 @@ export default function Staff() {
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [staffData, setStaffData] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [checkedItems, setCheckedItems] = useState({});
+  const [selectedRole, setSelectedRole] = useState({});
 
+  // The active tab
   useEffect(() => {
     const activeIndex = tabs.indexOf(activeTab);
     const tabWidth = 7 / tabs.length;
@@ -24,6 +27,7 @@ export default function Staff() {
     });
   }, [activeTab, tabs]);
 
+  // Fetching the data - staff list and dropdownoptions
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -33,8 +37,8 @@ export default function Staff() {
         ]);
 
         if (staffResponse.status === 200) {
-          setStaffData(staffResponse.data);
-          // console.log(staffResponse.data);
+          setStaffData(staffResponse.data.data);
+          // console.log("Emails:", staffResponse.data.data.map(item => item.email));
         } else {
           console.error(
             "Failed to fetch staff data:",
@@ -60,36 +64,69 @@ export default function Staff() {
     fetchData();
   }, []);
 
-  const handleSelect = (option) => {
-    setSelectedOption(option);
-    console.log("Selected option:", option);
+  const handleRoleSelect = (index, role) => {
+    setSelectedRole((prev) => ({
+      ...prev,
+      [index]: role,
+    }));
   };
 
-  const assignRole = async () => {
-    
-    console.log("Assigning role");
+  // console.log(staffData)
+  // console.log("Selected role option:", selectedRole);
 
-    const payload = {
-      userID: "", 
-      role: selectedOption, 
-    };
+  const assignRole = async () => {
+    console.log("Clicked");
+    const selectedStaff = Object.entries(checkedItems)
+      .filter(([index, isChecked]) => isChecked)
+      .map(([index]) => {
+        const staffItem = staffData[index];
+        const role = selectedRole[index]; // Get the selected role for this staff member
+
+        return {
+          ...staffItem,
+          role, // Attach the selected role
+        };
+      });
+
+    selectedStaff.forEach((staffItem) => {
+      const payload = {
+        userID: staffItem.id,
+        role: staffItem.role,
+      };
+
+      console.log(`Prepared payload for ${staffItem.email}:`, payload);
+    });
 
     try {
-      const response = await axios.post(
-        "https://audease-dev.onrender.com/v1/admin/staffs/assign-role",
-        payload,
-        {
+      for (const staffItem of selectedStaff) {
+        const payload = {
+          userID: staffItem.id, // Assuming `id` is the identifier you need
+          role: selectedRole[Object.keys(selectedRole)[0]],
+        };
+
+        console.log(`Assigning role to ${staffItem.email}`);
+
+        const response = await axios.post("/api/assignRole", payload, {
           headers: {
             "Content-Type": "application/json",
           },
-        }
-      );
-      alert("Role assigned succesfully");
-      console.log("Role assigned successfully:", response.data);
+        });
+
+        console.log("Role assigned successfully:", response.data);
+      }
+
+      alert("Role(s) assigned successfully");
     } catch (error) {
       console.error("Error assigning role:", error);
     }
   };
+
+  const handleCheckedChange = (newCheckedItems) => {
+    // console.log("Received checkedItems in Staff component:", newCheckedItems);
+    setCheckedItems(newCheckedItems);
+  };
+
+  const handleFilterSelect = () => {};
 
   return (
     <div className="flex flex-col space-y-4">
@@ -127,7 +164,10 @@ export default function Staff() {
                 label="Assign a role"
                 className={"bg-dashboardRolesBtn text-white py-2 px-4 rounded focus:outline-none"}
               /> */}
-              <button className="bg-dashboardRolesBtn text-white py-2 px-4 rounded focus:outline-none" onClick={assignRole}>
+              <button
+                className="bg-dashboardRolesBtn text-white py-2 px-4 rounded focus:outline-none"
+                onClick={assignRole}
+              >
                 Assign a role
               </button>
             </div>
@@ -135,7 +175,7 @@ export default function Staff() {
             {/* Filter Button */}
             <FilterButton
               options={dropdownOptions}
-              onSelect={handleSelect}
+              onSelect={handleFilterSelect}
               label="Filter"
             />
           </div>
@@ -152,7 +192,11 @@ export default function Staff() {
 
       {/* The main body, which is the table list */}
       <div>
-        <StaffTable staffData={staffData} />
+        <StaffTable
+          staffData={staffData}
+          onCheckedChange={handleCheckedChange}
+          onRoleSelect={handleRoleSelect}
+        />
       </div>
     </div>
   );

@@ -3,7 +3,11 @@ import { useEffect, useState, useRef } from "react";
 import DropdownButton from "./DropdownButton";
 import axios from "axios";
 
-export default function StaffTable({ staffData }) {
+export default function StaffTable({
+  staffData,
+  onCheckedChange,
+  onRoleSelect,
+}) {
   const [editOptions, setEditOptions] = useState({});
   const menuRef = useRef(null);
   const [checkedItems, setCheckedItems] = useState({});
@@ -32,17 +36,38 @@ export default function StaffTable({ staffData }) {
     };
   }, []);
 
+  // Handle the check box change
   const handleCheckboxChange = (index) => {
-    setCheckedItems((prev) => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
+    if (staffData && staffData.length > index) {
+      const staffItem = staffData[index]; // Get the staff object at the given index
+
+      setCheckedItems((prev) => {
+        const isCurrentlyChecked = prev[index]; // Check if the item is currently checked
+        const newCheckedItems = {
+          ...prev,
+          [index]: !isCurrentlyChecked,
+        };
+
+        // Only log if the item is being checked (not unchecked)
+        if (!isCurrentlyChecked && staffItem && staffItem.email) {
+          // console.log("Checked email:", staffItem.email);
+          // console.log("Checked ID:", staffItem.id);
+        }
+
+        onCheckedChange(newCheckedItems); // Notify parent of changes
+        return newCheckedItems;
+      });
+    } else {
+      console.error("Invalid index or staffData is not populated yet");
+    }
   };
 
+  // Handle email click
   const handleEmailClick = (index) => {
     handleCheckboxChange(index);
   };
 
+  // Fetch dropdown options
   useEffect(() => {
     const fetchDropdownOptions = async () => {
       try {
@@ -64,11 +89,13 @@ export default function StaffTable({ staffData }) {
     fetchDropdownOptions();
   }, []);
 
+  // Handle selected options
   const handleSelect = (index, option) => {
     setSelectedRole((prev) => ({
       ...prev,
       [index]: option,
     }));
+    onRoleSelect(index, option); // Notify parent component
   };
 
   return (
@@ -102,7 +129,7 @@ export default function StaffTable({ staffData }) {
               </td>
             </tr>
           ) : (
-            staffData.data.map((row, index) => (
+            staffData.map((row, index) => (
               <tr key={row.id}>
                 <td
                   className="px-2 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-row cursor-pointer"
@@ -124,13 +151,11 @@ export default function StaffTable({ staffData }) {
                   <DropdownButton
                     options={options}
                     onSelect={(option) => handleSelect(index, option)}
-                    label={
-                      selectedRole[index] || "Assign"
-                    } // Update label based on selection
+                    label={selectedRole[index] || "Assign"} // Update label based on selection
                     disabled={!checkedItems[index]} // Disable dropdown if not checked
                     className={`py-1 px-4 rounded focus:outline-none ${
                       selectedRole[index]
-                        ? "bg-green-500 text-white"
+                        ? "bg-dashboardButtons text-white"
                         : "bg-tgrey5 text-[#625F65]"
                     }`}
                   />

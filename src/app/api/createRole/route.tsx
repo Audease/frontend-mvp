@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const response = await axios.post(
-      'https://audease-dev.onrender.com/v1/admin/staffs/assign-role',
+      'https://audease-dev.onrender.com/v1/admin/create-role',
       payload, 
       {
         headers: {
@@ -27,9 +27,9 @@ export async function POST(req: NextRequest) {
     if (response.status === 200) {
       return NextResponse.json(response.data, { status: 200 });
     } else {
-      return NextResponse.json({ message: response.data.message || 'Failed to assign role' }, { status: response.status });
+      return NextResponse.json({ message: response.data.message || 'Failed to create role' }, { status: response.status });
     }
   } catch (error: any) {
-    return NextResponse.json({ message: error.response?.data?.message || 'Failed to assign role' }, { status: error.response?.status || 500 });
+    return NextResponse.json({ message: error.response?.data?.message || 'Failed to create role' }, { status: error.response?.status || 500 });
   }
 }

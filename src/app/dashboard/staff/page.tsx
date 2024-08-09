@@ -7,12 +7,13 @@ import FilterButton from "../../components/dashboard/FilterButton";
 import StaffTable from "../../components/dashboard/StaffTable";
 import axios from "axios";
 
-
-
 export default function Staff() {
   const [activeTab, setActiveTab] = useState("All");
   const [activeBarStyle, setActiveBarStyle] = useState({});
   const tabs = useMemo(() => ["All", "Recent", "Deleted"], []);
+  const [dropdownOptions, setDropdownOptions] = useState([]);
+  const [staffData, setStaffData] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() => {
     const activeIndex = tabs.indexOf(activeTab);
@@ -21,38 +22,74 @@ export default function Staff() {
       width: `${tabWidth}%`,
       transform: `translateX(${activeIndex * 180}%)`,
     });
-  }, [activeTab, tabs, tabs.length]);
+  }, [activeTab, tabs]);
 
-  // Dropdown button options and its selected option
-  const [selectedOption, setSelectedOption] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [staffResponse, dropdownResponse] = await Promise.all([
+          axios.get("/api/listStaff"),
+          axios.get("/api/roleDropdownOptions"),
+        ]);
+
+        if (staffResponse.status === 200) {
+          setStaffData(staffResponse.data);
+          // console.log(staffResponse.data);
+        } else {
+          console.error(
+            "Failed to fetch staff data:",
+            staffResponse.data.message
+          );
+        }
+
+        if (dropdownResponse.status === 200) {
+          const roles = dropdownResponse.data.map((item) => item.role); // Extracting the role
+          setDropdownOptions(roles);
+          // console.log(roles);
+        } else {
+          console.error(
+            "Failed to fetch dropdown options:",
+            dropdownResponse.data.message
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const handleSelect = (option) => {
     setSelectedOption(option);
     console.log("Selected option:", option);
   };
-  const options = ["Recruiter", "BKSD", "Accessor", "Inductor", "Lazer"];
 
-  // Staff data
-  const [staffData, setStaffData] = useState([]);
+  const assignRole = async () => {
+    
+    console.log("Assigning role");
 
-  useEffect(() => {
-    const fetchStaffData = async () => {
-      try {
-        const response = await axios.get('/api/listStaff');
-        if (response.status === 200) {
-          setStaffData(response.data);
-          // console.log(response.data[0]) 
-        } else {
-          console.error('Failed to fetch staff data:', response.data.message);
-        }
-      } catch (error) {
-        console.error('Error fetching staff data:', error);
-      }
+    const payload = {
+      userID: "", 
+      role: selectedOption, 
     };
 
-    fetchStaffData();
-  }, []);
-
-  // console.log(staffData)
+    try {
+      const response = await axios.post(
+        "https://audease-dev.onrender.com/v1/admin/staffs/assign-role",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      alert("Role assigned succesfully");
+      console.log("Role assigned successfully:", response.data);
+    } catch (error) {
+      console.error("Error assigning role:", error);
+    }
+  };
 
   return (
     <div className="flex flex-col space-y-4">
@@ -77,35 +114,33 @@ export default function Staff() {
             ))}
           </div>
 
-          {/* The buttons on the right side  */}
+          {/* The buttons on the right side */}
           <div className="flex flex-row space-x-4">
             {/* Search Box */}
             <SearchBox />
 
-            {/* Dropdown Button  */}
+            {/* Dropdown Button */}
             <div>
-              <DropdownButton
-                options={options}
+              {/* <DropdownButton
+                options={dropdownOptions}
                 onSelect={handleSelect}
                 label="Assign a role"
                 className={"bg-dashboardRolesBtn text-white py-2 px-4 rounded focus:outline-none"}
-              />
-              {/* {selectedOption && (
-                <p className="mt-4">Selected Option: {selectedOption}</p>
-              )} */}
+              /> */}
+              <button className="bg-dashboardRolesBtn text-white py-2 px-4 rounded focus:outline-none" onClick={assignRole}>
+                Assign a role
+              </button>
             </div>
 
             {/* Filter Button */}
             <FilterButton
-              options={options}
+              options={dropdownOptions}
               onSelect={handleSelect}
               label="Filter"
             />
-            {/* {selectedOption && (
-                <p className="mt-4">Selected Option: {selectedOption}</p>
-              )} */}
           </div>
         </div>
+
         {/* The active bar color change */}
         <div className="w-full h-[0.10rem] bg-gray-300 my-2">
           <div
@@ -115,7 +150,7 @@ export default function Staff() {
         </div>
       </div>
 
-      {/* The main body, which is the table list  */}
+      {/* The main body, which is the table list */}
       <div>
         <StaffTable staffData={staffData} />
       </div>

@@ -104,7 +104,7 @@ export default function Role() {
       };
 
       // console.log(payload);
-      const assignResponse = await axios.post("/api/assignRole", payload, {
+      const assignResponse = await axios.post("/api/createRole", payload, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -194,6 +194,7 @@ export default function Role() {
   //     console.error("Error refreshing token:", error);
   //   }
   // };
+
 
   return (
     <div>

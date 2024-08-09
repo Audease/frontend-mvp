@@ -1,13 +1,15 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import DropdownButton from "./DropdownButton";
+import axios from "axios";
 
 export default function StaffTable({ staffData }) {
   const [editOptions, setEditOptions] = useState({});
   const menuRef = useRef(null);
   const [checkedItems, setCheckedItems] = useState({});
-  const [selectedRole, setSelectedRole] = useState("");
-  const options = ["Recruiter", "BKSD", "Accessor", "Inductor", "Lazer"];
+  const [selectedRole, setSelectedRole] = useState({});
+  const [dropdownOptions, setDropdownOptions] = useState([]);
+  const options = dropdownOptions;
 
   // Row edit button toggle
   const toggleVisibility = (rowId) => {
@@ -37,12 +39,37 @@ export default function StaffTable({ staffData }) {
     }));
   };
 
-  const handleSelect = (option) => {
-    setSelectedRole(option);
-    console.log("Selected option:", option);
+  const handleEmailClick = (index) => {
+    handleCheckboxChange(index);
   };
 
-  console.log(staffData)
+  useEffect(() => {
+    const fetchDropdownOptions = async () => {
+      try {
+        const response = await axios.get("/api/roleDropdownOptions");
+        if (response.status === 200) {
+          const roles = response.data.map((item) => item.role); // Extracting the role
+          setDropdownOptions(roles);
+        } else {
+          console.error(
+            "Failed to fetch dropdown options:",
+            response.data.message
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching dropdown options:", error);
+      }
+    };
+
+    fetchDropdownOptions();
+  }, []);
+
+  const handleSelect = (index, option) => {
+    setSelectedRole((prev) => ({
+      ...prev,
+      [index]: option,
+    }));
+  };
 
   return (
     <div>
@@ -75,16 +102,20 @@ export default function StaffTable({ staffData }) {
               </td>
             </tr>
           ) : (
-            staffData.data.map((row) => (
+            staffData.data.map((row, index) => (
               <tr key={row.id}>
-                <td className="px-2 py-4 whitespace-nowrap text-sm  text-tableText2 font-medium flex flex-row">
+                <td
+                  className="px-2 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-row cursor-pointer"
+                  onClick={() => handleEmailClick(index)}
+                >
                   <span className="pr-4">
                     {" "}
                     {/* checkBox  */}
                     <input
                       type="checkbox"
                       className="staff-checkbox h-4 w-4 text-tableText2 rounded-md focus:ring-tgrey2"
-                      onChange={handleCheckboxChange}
+                      checked={checkedItems[index] || false}
+                      onChange={() => handleCheckboxChange(index)}
                     />
                   </span>
                   {row.email}
@@ -92,9 +123,16 @@ export default function StaffTable({ staffData }) {
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
                   <DropdownButton
                     options={options}
-                    onSelect={handleSelect}
-                    label="Assign"
-                    className={"bg-tgrey5 text-[#625F65] py-1 px-4 rounded focus:outline-none"}
+                    onSelect={(option) => handleSelect(index, option)}
+                    label={
+                      selectedRole[index] || "Assign"
+                    } // Update label based on selection
+                    disabled={!checkedItems[index]} // Disable dropdown if not checked
+                    className={`py-1 px-4 rounded focus:outline-none ${
+                      selectedRole[index]
+                        ? "bg-green-500 text-white"
+                        : "bg-tgrey5 text-[#625F65]"
+                    }`}
                   />
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
@@ -119,8 +157,12 @@ export default function StaffTable({ staffData }) {
                     >
                       <p className="hover:text-gold1 cursor-pointer">Edit</p>
                       <p className="hover:text-gold1 cursor-pointer">Rename</p>
-                      <p className="hover:text-gold1 cursor-pointer">Duplicate</p>
-                      <p className="hover:text-gold1 cursor-pointer">Move to folder</p>
+                      <p className="hover:text-gold1 cursor-pointer">
+                        Duplicate
+                      </p>
+                      <p className="hover:text-gold1 cursor-pointer">
+                        Move to folder
+                      </p>
                       <hr />
                       <p className="text-tred1 hover:text-gold1 cursor-pointer">
                         Move to Trash

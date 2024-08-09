@@ -2,17 +2,20 @@ import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 import { cookies } from 'next/headers';
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
+  const payload = await req.json();
 
+  console.log(payload)
   if (!accessToken) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
   try {
-    const response = await axios.get(
-      'https://audease-dev.onrender.com/v1/admin/staffs?page=1&limit=50',
+    const response = await axios.post(
+      'https://audease-dev.onrender.com/v1/admin/staffs/assign-role',
+      payload, 
       {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -22,12 +25,11 @@ export async function GET(req: NextRequest) {
     );
 
     if (response.status === 200) {
-      // console.log(response.data) 
       return NextResponse.json(response.data, { status: 200 });
     } else {
-      return NextResponse.json({ message: response.data.message || 'Failed to list staff' }, { status: response.status });
+      return NextResponse.json({ message: response.data.message || 'Failed to assign role' }, { status: response.status });
     }
   } catch (error: any) {
-    return NextResponse.json({ message: error.response?.data?.message || 'Failed to list staff' }, { status: error.response?.status || 500 });
+    return NextResponse.json({ message: error.response?.data?.message || 'Failed to assign role' }, { status: error.response?.status || 500 });
   }
 }

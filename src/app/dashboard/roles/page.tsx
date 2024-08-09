@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DefaultLeft from "./DefaultLeft";
 import SetUpAccount from "./SetUpAccount";
 import CreateRole, { AddAuditLearnerModal, RoleCreated } from "./CreateRole";
@@ -8,8 +8,9 @@ import Staff from "./Staff";
 import Workflow from "../workflows/Workflow";
 import CreateWorkflow, { WorkflowCreated } from "../workflows/CreateWorkflow";
 import Rightside from "./Rightside";
-import AddLearnerModal, { LearnerCreated } from "../learners/learnerModal"
+import AddLearnerModal, { LearnerCreated } from "../learners/learnerModal";
 import axios from "axios";
+import { permission } from "process";
 
 export default function Role() {
   const [currentComponent, setCurrentComponent] = useState("Default");
@@ -19,7 +20,9 @@ export default function Role() {
   const [isWorkflowSuccessModal, setIsWorkflowSuccessModal] = useState(false);
   const [learnerCreateModalState, setLearnerCreateModalState] = useState(false);
   const [learnerSuccessModal, setLearnerSuccessModal] = useState(false);
-  const [addAuditLearnerModal, setAddAuditLearnerModal ] = useState(false);
+  const [addAuditLearnerModal, setAddAuditLearnerModal] = useState(false);
+  const [availablePermissions, setAvailablePermissions] = useState([]);
+  const [permissionsID, setPermissionsID] = useState("");
 
   const closeLearnerCreateModal = () => {
     console.log("closed");
@@ -29,12 +32,11 @@ export default function Role() {
   const onCreateClick = () => {
     setLearnerCreateModalState(false);
     setLearnerSuccessModal(true);
-  }
+  };
 
   const closeLearnerSuccessModal = () => {
     setLearnerSuccessModal(false);
   };
-
 
   const [roleFormData, setRoleFormData] = useState({
     roleName: "",
@@ -67,7 +69,7 @@ export default function Role() {
 
   const onLearnerClick = () => {
     setLearnerCreateModalState(true);
-  }
+  };
 
   const closeRoleSuccessModal = () => {
     setIsRoleSuccessModal(false);
@@ -77,19 +79,47 @@ export default function Role() {
     });
   };
 
-  const roleCreate = () => {
-    setRoleFormData({
-      roleName: "",
-      permission: "",
-    });
-    if (roleFormData.permission === 'Audit' || roleFormData.permission === '') {
-      setAddAuditLearnerModal(true);
-      setIsModalOpen(false);
-    } else {
-      setIsRoleSuccessModal(true);
-      setIsModalOpen(false);
+  const roleCreate = async () => {
+    try {
+      const response = await axios.get("/api/getPermissions");
+      if (response.status === 200) {
+        setAvailablePermissions(response.data);
+      } else {
+        console.error("Failed to fetch permissions:", response.data.message);
+        return;
+      }
+
+      const selectedPermission = availablePermissions.find(
+        (perm) => perm.name === roleFormData.permission
+      );
+
+      if (!selectedPermission) {
+        console.error("Permission not found");
+        return;
+      }
+
+      const payload = {
+        role: roleFormData.roleName,
+        permission_id: selectedPermission.id,
+      };
+
+      // console.log(payload);
+      const assignResponse = await axios.post("/api/createRole", payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (assignResponse.status === 201) {
+        console.log("Role assigned successfully", assignResponse.data);
+        setIsRoleSuccessModal(true);
+        setIsModalOpen(false);
+      } else {
+        console.error("Failed to assign role:", assignResponse.data.message);
+      }
+    } catch (error) {
+      console.error("Error during role creation:", error);
     }
-    console.log(roleFormData.permission);
   };
 
   const onWorkflowClick = () => {
@@ -115,16 +145,16 @@ export default function Role() {
   };
 
   const onResourcesClick = () => {
-    console.log("Resources Clicked")
-  }
+    console.log("Resources Clicked");
+  };
 
   const onFormClick = () => {
-    console.log("Forms Clicked")
-  }
+    console.log("Forms Clicked");
+  };
 
   const closeAuditLearnerModal = () => {
     setAddAuditLearnerModal(false);
-  }
+  };
 
   const renderComponent = () => {
     switch (currentComponent) {
@@ -139,16 +169,15 @@ export default function Role() {
     }
   };
 
-
   // const onTesting = async () => {
   //   console.log("here I am");
-     
+
   //   const refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMDBjMGEyZi1lNGMzLTRhNjAtYmUyNS00N2IyMTY5Njk0NWIiLCJyb2xlX2lkIjoiMTljYzRjOTUtNTc2Yi00NzE3LTljNWItNzVmNzNiZDI4MmEzIiwiZXhwIjoxNzIzNTYwMzY3LCJpYXQiOjE3MjI5NTU1NjcsInR5cGUiOiJyZWZyZXNoIn0.T0zspbdBL7fRG9LHv3Xoc4RYsWuHYeZHdwpfF2AmjnU"; // Add your refresh token here
-  
+
   //   const payload = {
   //     refreshToken,
   //   };
-  
+
   //   try {
   //     const response = await axios.post(
   //       "/api/refresh-token",
@@ -165,8 +194,7 @@ export default function Role() {
   //     console.error("Error refreshing token:", error);
   //   }
   // };
-  
-  
+
 
   return (
     <div>
@@ -183,7 +211,10 @@ export default function Role() {
             formData={roleFormData}
             setFormData={setRoleFormData}
           />
-          <RoleCreated show={isRoleSuccessModal} onClose={closeRoleSuccessModal} />
+          <RoleCreated
+            show={isRoleSuccessModal}
+            onClose={closeRoleSuccessModal}
+          />
 
           {/* Create Workflow Modal  */}
           <CreateWorkflow
@@ -194,18 +225,26 @@ export default function Role() {
             setFormData={setRoleFormData}
           />
           {/* Workflow Success Modal */}
-          <WorkflowCreated show={isWorkflowSuccessModal} onClose={closeWorkflowSuccessModal} />
+          <WorkflowCreated
+            show={isWorkflowSuccessModal}
+            onClose={closeWorkflowSuccessModal}
+          />
 
           <AddLearnerModal
-          show={learnerCreateModalState}
-          onClose={closeLearnerCreateModal}
-          onCreateClick={onCreateClick}
-        />
+            show={learnerCreateModalState}
+            onClose={closeLearnerCreateModal}
+            onCreateClick={onCreateClick}
+          />
 
-        <LearnerCreated show={learnerSuccessModal} onClose={closeLearnerSuccessModal}/>
+          <LearnerCreated
+            show={learnerSuccessModal}
+            onClose={closeLearnerSuccessModal}
+          />
 
-        <AddAuditLearnerModal show={addAuditLearnerModal} onClose={closeAuditLearnerModal} />
-
+          <AddAuditLearnerModal
+            show={addAuditLearnerModal}
+            onClose={closeAuditLearnerModal}
+          />
         </div>
 
         {/* right side  */}

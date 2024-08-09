@@ -104,7 +104,7 @@ export default function Role() {
       };
 
       // console.log(payload);
-      const assignResponse = await axios.post("/api/createRole", payload, {
+      const assignResponse = await axios.post("/api/assignRole", payload, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -169,33 +169,31 @@ export default function Role() {
     }
   };
 
-  const onTesting = async () => {
-    console.log("here I am");
+  // const onTesting = async () => {
+  //   console.log("here I am");
 
-    // const refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMDBjMGEyZi1lNGMzLTRhNjAtYmUyNS00N2IyMTY5Njk0NWIiLCJyb2xlX2lkIjoiMTljYzRjOTUtNTc2Yi00NzE3LTljNWItNzVmNzNiZDI4MmEzIiwiZXhwIjoxNzIzNTYwMzY3LCJpYXQiOjE3MjI5NTU1NjcsInR5cGUiOiJyZWZyZXNoIn0.T0zspbdBL7fRG9LHv3Xoc4RYsWuHYeZHdwpfF2AmjnU"; // Add your refresh token here
+  //   const refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMDBjMGEyZi1lNGMzLTRhNjAtYmUyNS00N2IyMTY5Njk0NWIiLCJyb2xlX2lkIjoiMTljYzRjOTUtNTc2Yi00NzE3LTljNWItNzVmNzNiZDI4MmEzIiwiZXhwIjoxNzIzNTYwMzY3LCJpYXQiOjE3MjI5NTU1NjcsInR5cGUiOiJyZWZyZXNoIn0.T0zspbdBL7fRG9LHv3Xoc4RYsWuHYeZHdwpfF2AmjnU"; // Add your refresh token here
 
-    const payload = {
-      userID: "8d586e3c-42dd-4dba-be5f-fead2a29ddac",
-      role: "Testing Zilly"
-    };
+  //   const payload = {
+  //     refreshToken,
+  //   };
 
-    try {
-      const response = await axios.post(
-        "/api/assignRole",
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      // document.cookie = `accessToken=${response.data.token}; path=/; max-age=${12 * 60 * 60}`;
-      console.log("Token refreshed:", response.data);
-    } catch (error) {
-      console.error("Error refreshing token:", error);
-    }
-  };
-
+  //   try {
+  //     const response = await axios.post(
+  //       "/api/refresh-token",
+  //       payload,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     // document.cookie = `accessToken=${response.data.token}; path=/; max-age=${12 * 60 * 60}`;
+  //     console.log("Token refreshed:", response.data);
+  //   } catch (error) {
+  //     console.error("Error refreshing token:", error);
+  //   }
+  // };
 
   return (
     <div>
@@ -259,7 +257,7 @@ export default function Role() {
             onFormClick={onFormClick}
           />
 
-          <h3 onClick={onTesting}>Here</h3>
+          {/* <h3 onClick={onTesting}>Here</h3> */}
         </div>
       </div>
     </div>

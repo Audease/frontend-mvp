@@ -90,7 +90,7 @@ export default function Staff() {
 
     selectedStaff.forEach((staffItem) => {
       const payload = {
-        userID: staffItem.id,
+        userId: staffItem.id,
         role: staffItem.role,
       };
 
@@ -100,7 +100,7 @@ export default function Staff() {
     try {
       for (const staffItem of selectedStaff) {
         const payload = {
-          userID: staffItem.id, // Assuming `id` is the identifier you need
+          userId: staffItem.id, // Assuming `id` is the identifier you need
           role: selectedRole[Object.keys(selectedRole)[0]],
         };
 

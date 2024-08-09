@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const response = await axios.get(
-      'https://audease-dev.onrender.com/v1/admin/staffs?page=1&limit=50',
+      'https://audease-dev.onrender.com/v1/admin/staffs?page=1&limit=100',
       {
         headers: {
           'Authorization': `Bearer ${accessToken}`,

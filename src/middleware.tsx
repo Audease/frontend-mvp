@@ -3,9 +3,10 @@ import { jwtDecode } from "jwt-decode";
 
 const middleware = async (request: NextRequest) => {
   const accessToken = request.cookies.get("accessToken")?.value;
-  console.log("Middleware accessToken:", accessToken);
+  const refreshToken = request.cookies.get("refreshToken")?.value;
+  console.log("Middleware accessToken:", accessToken, "/n", "Middleware RefreshToken:", refreshToken);
 
-  if (accessToken) {
+  if (accessToken && refreshToken) {
     const decoded = jwtDecode(accessToken);
     console.log("Decoded token:", decoded);
 

@@ -8,6 +8,8 @@ export async function POST(req: NextRequest) {
   const payload = await req.json();
 
   console.log(payload)
+
+  
   if (!accessToken) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }

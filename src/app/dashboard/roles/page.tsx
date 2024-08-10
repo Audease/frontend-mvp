@@ -10,7 +10,7 @@ import CreateWorkflow, { WorkflowCreated } from "../workflows/CreateWorkflow";
 import Rightside from "./Rightside";
 import AddLearnerModal, { LearnerCreated } from "../learners/learnerModal";
 import axios from "axios";
-import { permission } from "process";
+
 
 export default function Role() {
   const [currentComponent, setCurrentComponent] = useState("Default");
@@ -83,45 +83,47 @@ export default function Role() {
     try {
       const response = await axios.get("/api/getPermissions");
       if (response.status === 200) {
-        setAvailablePermissions(response.data);
+        const fetchedPermissions = response.data;
+        setAvailablePermissions(fetchedPermissions); // Updated state with fetched permissions
+  
+        // Check and find the selected permission from the newly fetched permissions
+        const selectedPermission = fetchedPermissions.find(
+          (perm) => perm.name === roleFormData.permission
+        );
+  
+        if (!selectedPermission) {
+          console.error("Permission not found for the selected role.");
+          return;
+        }
+  
+        const payload = {
+          permission_id: selectedPermission.id,
+          role: roleFormData.roleName,
+        };
+  
+        console.log("Payload for assigning role:", payload);
+  
+        const assignResponse = await axios.post("/api/createRole", payload, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (assignResponse.status === 201) {
+          console.log("Role assigned successfully", assignResponse.data);
+          setIsRoleSuccessModal(true);
+          setIsModalOpen(false);
+        } else {
+          console.error("Failed to assign role:", assignResponse.data.message);
+        }
       } else {
         console.error("Failed to fetch permissions:", response.data.message);
-        return;
-      }
-
-      const selectedPermission = availablePermissions.find(
-        (perm) => perm.name === roleFormData.permission
-      );
-
-      if (!selectedPermission) {
-        console.error("Permission not found");
-        return;
-      }
-
-      const payload = {
-        role: roleFormData.roleName,
-        permission_id: selectedPermission.id,
-      };
-
-      // console.log(payload);
-      const assignResponse = await axios.post("/api/assignRole", payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (assignResponse.status === 201) {
-        console.log("Role assigned successfully", assignResponse.data);
-        setIsRoleSuccessModal(true);
-        setIsModalOpen(false);
-      } else {
-        console.error("Failed to assign role:", assignResponse.data.message);
       }
     } catch (error) {
       console.error("Error during role creation:", error);
     }
   };
-
+  
   const onWorkflowClick = () => {
     setIsWorkflowModalOpen(true);
   };

@@ -154,7 +154,7 @@ export default function CreateRole({
 
                 <div className="mt-4 text-sm ml-1">
                   <PlainButton
-                    text={"Send Application"}
+                    text={"assign_role"}
                     onClick={addPermissions("assign_role")}
                   />
                 </div>

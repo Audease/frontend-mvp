@@ -28,7 +28,7 @@ export default function FilterButton({ options, onSelect, label }) {
   };
 
   return (
-    <div className="relative inline-block" ref={dropdownRef}>
+    <div className=" inline-block" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
         className="text-black py-1 px-4 rounded focus:outline-none border-grey-300 border-2"

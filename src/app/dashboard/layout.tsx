@@ -1,6 +1,6 @@
 import Navbar from "../components/dashboard/Navbar";
 import NextTopLoader from "nextjs-toploader";
-import { Suspense } from "react";
+
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,7 +10,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Navbar />
       </div>
       <div className="bg-white m-10">
-        <Suspense fallback={<p>Loading feed...</p>}>{children} </Suspense>
+        {children} 
       </div>
     </div>
   );

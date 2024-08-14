@@ -7,8 +7,6 @@ import { Avatar } from "flowbite-react";
 import Image from "next/image";
 import axios from "axios";
 
-
-
 export default function Staff({ onClick }) {
   const [emailInput, setEmailInput] = useState("");
   const [staffs, setStaffs] = useState([]);
@@ -91,17 +89,16 @@ export default function Staff({ onClick }) {
 
   // Invite Now Button
   const addToStaffList = async () => {
-
     try {
       const responses = await Promise.all(
         staffs.map((email) =>
           axios.post(
-            '/api/staff',
-            { email },
+            "/api/staff",
+            { email: [email] },
             {
               headers: {
-                'Content-Type': 'application/json',
-              }
+                "Content-Type": "application/json",
+              },
             }
           )
         )
@@ -113,7 +110,10 @@ export default function Staff({ onClick }) {
         }
       });
     } catch (error) {
-      console.error('Error:', error.response?.data?.message || 'Failed to create staff');
+      console.error(
+        "Error:",
+        error.response?.data?.message || "Failed to create staff"
+      );
     }
 
     setInvitedStaff((prevInvitedStaff) => {
@@ -157,7 +157,6 @@ export default function Staff({ onClick }) {
     const res = await fetch(`https://ui-avatars.com/api/?name=${email}`);
     return res.url;
   }
-
 
   return (
     <div className="flex flex-col space-y-4 w-[57rem] font-inter">

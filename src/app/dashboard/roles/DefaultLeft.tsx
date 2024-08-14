@@ -5,6 +5,7 @@ import Button from "../../components/dashboard/Button";
 import { SlArrowRight, SlArrowDown } from "react-icons/sl";
 import RoleTable from "../../components/dashboard/RoleTable";
 
+
 export default function DefaultLeft({ onClickSetUpAcct }) {
   const [firstName, setFirstName] = useState("Nyekachi");
   const [plan, setPlan] = useState("Free trial");

@@ -37,8 +37,8 @@ export default function Staff() {
         ]);
 
         if (staffResponse.status === 200) {
-          setStaffData(staffResponse.data.data);
-          // console.log("Emails:", staffResponse.data.data.map(item => item.email));
+          setStaffData(staffResponse.data);
+          console.log("Emails:", staffResponse.data.map(item => item.email));
         } else {
           console.error(
             "Failed to fetch staff data:",
@@ -90,8 +90,8 @@ export default function Staff() {
 
     selectedStaff.forEach((staffItem) => {
       const payload = {
-        userId: staffItem.id,
         role: staffItem.role,
+        userId: staffItem.id,
       };
 
       console.log(`Prepared payload for ${staffItem.email}:`, payload);

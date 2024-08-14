@@ -6,7 +6,7 @@ const middleware = async (request: NextRequest) => {
   const refreshToken = request.cookies.get("refreshToken")?.value;
   console.log("Middleware accessToken:", accessToken, "/n", "Middleware RefreshToken:", refreshToken);
 
-  if (accessToken && refreshToken) {
+  if (accessToken) {
     const decoded = jwtDecode(accessToken);
     console.log("Decoded token:", decoded);
 
@@ -50,7 +50,7 @@ const middleware = async (request: NextRequest) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             path: '/',
-            maxAge: 12 * 60 * 60, // 12 hours
+            maxAge: newAccessToken.expires, // 12 minutes
           });
           return res;
         } else {

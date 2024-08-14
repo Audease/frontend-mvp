@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const response = await axios.get(
-      'https://audease-dev.onrender.com/v1/admin/staffs?page=1&limit=100',
+      'https://audease-dev.onrender.com/v1/admin/new-staff?page=1&limit=10',
       {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
     );
 
     if (response.status === 200) {
-      // console.log(response.data) 
+      console.log(response.data) 
       return NextResponse.json(response.data, { status: 200 });
     } else {
       return NextResponse.json({ message: response.data.message || 'Failed to list staff' }, { status: response.status });

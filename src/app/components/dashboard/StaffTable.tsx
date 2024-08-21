@@ -24,7 +24,7 @@ export default function StaffTable({
     }));
   };
 
-  console.log(fullDropdownResponseData);
+  // console.log(fullDropdownResponseData);
 
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {

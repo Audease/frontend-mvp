@@ -28,39 +28,38 @@ export default function Staff() {
   }, [activeTab, tabs]);
 
   // Fetching the data - staff list and dropdownoptions
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [staffResponse, dropdownResponse] = await Promise.all([
-          axios.get("/api/listStaff"),
-          axios.get("/api/roleDropdownOptions"),
-        ]);
+  const fetchData = async () => {
+    try {
+      const [staffResponse, dropdownResponse] = await Promise.all([
+        axios.get("/api/listStaff"),
+        axios.get("/api/roleDropdownOptions"),
+      ]);
 
-        if (staffResponse.status === 200) {
-          setStaffData(staffResponse.data.data);
-          // console.log("Emails:", staffResponse.data.data.map(item => item.email));
-        } else {
-          console.error(
-            "Failed to fetch staff data:",
-            staffResponse.data.message
-          );
-        }
-
-        if (dropdownResponse.status === 200) {
-          const roles = dropdownResponse.data.map((item) => item.role); // Extracting the role
-          setDropdownOptions(roles);
-          // console.log(roles);
-        } else {
-          console.error(
-            "Failed to fetch dropdown options:",
-            dropdownResponse.data.message
-          );
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      if (staffResponse.status === 200) {
+        setStaffData(staffResponse.data);
+        // console.log("Emails:", staffResponse.data.map(item => item.email));
+      } else {
+        console.error(
+          "Failed to fetch staff data:",
+          staffResponse.data.message
+        );
       }
-    };
 
+      if (dropdownResponse.status === 200) {
+        const roles = dropdownResponse.data.map((item) => item.role); // Extracting the role
+        setDropdownOptions(roles);
+        // console.log(roles);
+      } else {
+        console.error(
+          "Failed to fetch dropdown options:",
+          dropdownResponse.data.message
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -90,8 +89,8 @@ export default function Staff() {
 
     selectedStaff.forEach((staffItem) => {
       const payload = {
-        userId: staffItem.id,
         role: staffItem.role,
+        userId: staffItem.id,
       };
 
       console.log(`Prepared payload for ${staffItem.email}:`, payload);
@@ -116,6 +115,9 @@ export default function Staff() {
       }
 
       alert("Role(s) assigned successfully");
+      // Refresh the table data after role assignment
+      fetchData();
+      setCheckedItems({});
     } catch (error) {
       console.error("Error assigning role:", error);
     }

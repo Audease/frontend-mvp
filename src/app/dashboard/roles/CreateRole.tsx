@@ -119,15 +119,15 @@ export default function CreateRole({
               <div className="my-4 flex flex-row flex-wrap justify-left">
                 <div className="text-sm">
                   <PlainButton
-                    text={"Create Student"}
-                    onClick={addPermissions("Create Student")}
+                    text={"Add student"}
+                    onClick={addPermissions("Add student")}
                   />
                 </div>
 
                 <div className="text-sm ml-3">
                   <PlainButton
                     text={"Induction"}
-                    onClick={addPermissions("create_user")}
+                    onClick={addPermissions("Add staff")}
                   />
                 </div>
 
@@ -156,6 +156,13 @@ export default function CreateRole({
                   <PlainButton
                     text={"Send Application"}
                     onClick={addPermissions("assign_role")}
+                  />
+                </div>
+
+                <div className="mt-4 text-sm ml-1">
+                  <PlainButton
+                    text={"Certificate"}
+                    onClick={addPermissions("Certificate")}
                   />
                 </div>
               </div>

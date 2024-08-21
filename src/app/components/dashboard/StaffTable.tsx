@@ -12,8 +12,9 @@ export default function StaffTable({
   const menuRef = useRef(null);
   const [checkedItems, setCheckedItems] = useState({});
   const [selectedRole, setSelectedRole] = useState({});
+  const [fullDropdownResponseData, setFullDropdownResponseData] = useState([]);
   const [dropdownOptions, setDropdownOptions] = useState([]);
-  const options = dropdownOptions;
+  const options = fullDropdownResponseData.map((item) => item.role);
 
   // Row edit button toggle
   const toggleVisibility = (rowId) => {
@@ -22,6 +23,8 @@ export default function StaffTable({
       [rowId]: !prevState[rowId],
     }));
   };
+
+  // console.log(fullDropdownResponseData);
 
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -73,8 +76,12 @@ export default function StaffTable({
       try {
         const response = await axios.get("/api/roleDropdownOptions");
         if (response.status === 200) {
-          const roles = response.data.map((item) => item.role); // Extracting the role
-          setDropdownOptions(roles);
+          // console.log(response.data)
+          setFullDropdownResponseData(response.data);
+          // const roles = response.data.map((item) => item.role); // Extracting the role
+          // setDropdownOptions(roles);
+          // const roleId = response.data.map((itemId) => itemId.id);
+          // console.log(roleId)
         } else {
           console.error(
             "Failed to fetch dropdown options:",
@@ -90,12 +97,22 @@ export default function StaffTable({
   }, []);
 
   // Handle selected options
-  const handleSelect = (index, option) => {
-    setSelectedRole((prev) => ({
-      ...prev,
-      [index]: option,
-    }));
-    onRoleSelect(index, option); // Notify parent component
+  const handleSelect = (index, selectedRole) => {
+    // Find the corresponding ID for the selected role
+    const selectedRoleData = fullDropdownResponseData.find(
+      (item) => item.role === selectedRole
+    );
+
+    if (selectedRoleData) {
+      const selectedRoleId = selectedRoleData.id; // Get the ID
+      setSelectedRole((prev) => ({
+        ...prev,
+        [index]: selectedRole,
+      }));
+      onRoleSelect(index, selectedRoleId); // Pass the ID to the parent component
+    } else {
+      console.error("Selected role not found in the dropdown data");
+    }
   };
 
   return (

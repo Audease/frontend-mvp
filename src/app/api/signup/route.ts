@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const response = await axios.post(
-      "https://audease-dev.onrender.com/v1/auth/signup",
+      "https://backend-mvp-dev-4alpwwhpra-uc.a.run.app/v1/auth/signup",
       newUser
     );
 

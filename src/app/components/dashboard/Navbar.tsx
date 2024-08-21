@@ -69,7 +69,7 @@ export default function Navbar() {
   
 
   return (
-    <div className="flex flex-row space-x-24 mx-10 py-4">
+    <div className="flex flex-row space-x-24 mx-auto py-4  justify-center">
       {/* Logo */}
       <div>
         <Link href="/">

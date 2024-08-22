@@ -15,6 +15,7 @@ export default function SignIn() {
   const [error, setError] = useState("");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  
 
   const handleEyeClick = () => {
     setPasswordToggle((prevState) =>
@@ -54,8 +55,42 @@ export default function SignIn() {
       );
 
       if (response.status === 200) {
-        console.log("Login successful:", response.data);
-        router.push("/dashboard");
+        const userPermissions = JSON.stringify(response.data)
+        console.log(userPermissions);
+        // All 8 personas 
+        const adminPermissions = ["Add student", "Audit", "Induction", "Certificate", "Learning Platform", "Approve/reject application", "Send Application"]
+
+        const recruiterPermissions = ["Add student"]
+
+        const BKSDPermissions = ["Send Application"]
+
+        const accessorPermisions = ["Approve/reject application"]
+
+        const inductorPermissions = ["Induction"]
+
+        const lazerPermissions = ["Learning Platform"]
+
+        const auditorPermissions = ["Audit"]
+
+        const certificatePermissions = ["Certificate"]
+
+        if (adminPermissions.every(perm => userPermissions.includes(perm))) {
+          router.push("/dashboard");
+        } else if (recruiterPermissions.every(perm => userPermissions.includes(perm))) {
+          router.push("/recruiter-dashboard");
+        } else if (BKSDPermissions.every(perm => userPermissions.includes(perm))) {
+          router.push("/bksd-dashboard");
+        } else if (accessorPermisions.every(perm => userPermissions.includes(perm))) {
+          router.push("/accessor-dashboard");
+        } else if (inductorPermissions.every(perm => userPermissions.includes(perm))) {
+          router.push("/induction-dashboard");
+        } else if (lazerPermissions.every(perm => userPermissions.includes(perm))) {
+          router.push("/lazer-dashboard");
+        } else if (auditorPermissions.every(perm => userPermissions.includes(perm))) {
+          router.push("/auditor-dashboard");
+        } else if (certificatePermissions.every(perm => userPermissions.includes(perm))){
+          router.push("/certificate-dashboard");
+        }
       } else {
         console.error("Login failed:", response.data);
         setError(response.data.message || "Login failed");

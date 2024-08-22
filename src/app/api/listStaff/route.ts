@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const response = await axios.get(
-      'https://backend-mvp-dev-4alpwwhpra-uc.a.run.app/v1/admin/new-staff?page=1&limit=10',
+      'https://backend-mvp-dev-4alpwwhpra-uc.a.run.app/v1/admin/new-staff?page=1&limit=100',
       {
         headers: {
           'Authorization': `Bearer ${accessToken}`,

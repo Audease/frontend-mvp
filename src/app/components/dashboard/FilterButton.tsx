@@ -84,7 +84,7 @@ export function RecruiterFilterButton({
   }, []);
 
   return (
-    <div className="relative inline-block" ref={dropdownRef}>
+    <div className=" inline-block" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
         className="text-black p-1 rounded focus:outline-none border-grey-300 border-2"
@@ -154,7 +154,7 @@ export function BKSDFilterButton({
   }, []);
 
   return (
-    <div className="relative inline-block" ref={dropdownRef}>
+    <div className="inline-block" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
         className="text-black p-1 rounded focus:outline-none border-grey-300 border-2"

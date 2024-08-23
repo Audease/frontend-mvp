@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
       } = response.data;
       // console.log(response.data.permissions)
       const res = new NextResponse(
-        JSON.stringify({ message: "Login Successful" }),
+        JSON.stringify({ permissions }),
         {
           status: 200,
         }
@@ -48,14 +48,6 @@ export async function POST(req: NextRequest) {
         secure: process.env.NODE_ENV === "production",
         httpOnly: true,
         maxAge: refresh.expires,
-        path: '/',
-      })
-
-      cookies().set({
-        name: 'permissions',
-        value: JSON.stringify(permissions),
-        secure: process.env.NODE_ENV === "production",
-        httpOnly: false,
         path: '/',
       })
 

@@ -127,35 +127,35 @@ export default function CreateRole({
                 <div className="text-sm ml-3">
                   <PlainButton
                     text={"Induction"}
-                    onClick={addPermissions("Add staff")}
+                    onClick={addPermissions("Induction")}
                   />
                 </div>
 
                 <div className="text-sm mx-2">
                   <PlainButton
                     text={"Learning Platform"}
-                    onClick={addPermissions("update_user")}
+                    onClick={addPermissions("Learning Platform")}
                   />
                 </div>
 
                 <div className="text-sm mt-4 mr-1">
                   <PlainButton
                     text={"Audit"}
-                    onClick={addPermissions("update_user")}
+                    onClick={addPermissions("Audit")}
                   />
                 </div>
 
                 <div className="mt-4 text-sm">
                   <PlainButton
                     text={"Approve/reject application"}
-                    onClick={addPermissions("read_roles")}
+                    onClick={addPermissions("Approve/reject application")}
                   />
                 </div>
 
                 <div className="mt-4 text-sm ml-1">
                   <PlainButton
                     text={"Send Application"}
-                    onClick={addPermissions("assign_role")}
+                    onClick={addPermissions("Send Application")}
                   />
                 </div>
 

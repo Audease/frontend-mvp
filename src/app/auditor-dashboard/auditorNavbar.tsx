@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import NavLinks from "./NavLinks";
+import NavLinks from "../components/dashboard/NavLinks";
 import { useState, useEffect, useRef } from "react";
-import Notifications from "./Notifications";
-import NavbarPlusButton from "./NavbarPlusButton";
+import Notifications from "../components/dashboard/Notifications";
+import NavbarPlusButton from "../components/dashboard/NavbarPlusButton";
 import { useRouter } from "next/navigation";
 
-export default function RecruiterNavbar() {
+export default function AuditorNavbar() {
   const [profileOptions, setProfileOptions] = useState(false);
   const [notifications, setNotifications] = useState(false);
   const [plusButton, setPlusButton] = useState(false);
@@ -59,8 +59,9 @@ export default function RecruiterNavbar() {
   };
 
   const links = [
-    { name: "Learners", href: "/recruiter-dashboard" },
+    { name: "Learners", href: "/auditor-dashboard" },
     { name: "Messenger", href: "#" },
+    { name: "Analytics", href: "/auditor-dashboard/analytics"},
   ];
 
   return (

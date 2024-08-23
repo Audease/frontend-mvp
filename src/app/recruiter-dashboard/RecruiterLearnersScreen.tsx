@@ -375,7 +375,7 @@ export default function RecruiterLearnersScreen() {
   }
 
   return (
-    <div className="relative">
+    <div className="">
       <div>
         <h3 className="font-medium text-2xl">{roleName} Dashboard</h3>
       </div>
@@ -447,7 +447,7 @@ export default function RecruiterLearnersScreen() {
 
 
             {/* Create Button  */}
-            <div className="relative inline-block">
+            <div className=" inline-block">
               <button
                 className="bg-dashboardButtonsBg rounded-md px-3"
                 onClick={onCreateClick}
@@ -472,6 +472,7 @@ export default function RecruiterLearnersScreen() {
             </div>
 
             {/* Filter Button  */}
+            <div>
             <RecruiterFilterButton
               label={"Filters"}
               options={filterOptions}
@@ -482,6 +483,8 @@ export default function RecruiterLearnersScreen() {
               onCourseSelect={handleCourseSelect}
               onFilterClick={onFilterClick}
             />
+            </div>
+            
           </div>
         </div>
         {/* The active bar color change */}

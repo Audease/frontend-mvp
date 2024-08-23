@@ -4,6 +4,7 @@ import { useState } from "react";
 import { BKSDFilterButton } from "../components/dashboard/FilterButton";
 import AuditorDashboardTable from "../components/dashboard/AuditorDashboardTable";
 import learnersData from "../data/learnersData.json";
+import { PiBookmarkSimple } from "react-icons/pi";
 
 export default function Auditor() {
   const [auditorName, setAuditorName] = useState("Audit");
@@ -24,11 +25,42 @@ export default function Auditor() {
     }));
   };
 
+  const stats = [
+    {
+      icon: <PiBookmarkSimple className="w-6 h-6 text-dashboardButtons" />,
+      title: "Registered learners",
+      value: "10.2k",
+    },
+    {
+      icon: <PiBookmarkSimple className="w-6 h-6 text-dashboardButtons" />, 
+      title: "Completed learners",
+      value: "3.4k",
+    },
+    {
+      icon: <PiBookmarkSimple className="w-6 h-6 text-dashboardButtons" />, 
+      title: "Registered learners",
+      value: "450",
+    },
+  ];
+
   return (
     <div className="h-screen overflow-y-auto">
       {/* BKSD Title and Filter Button */}
       <div className="flex flex-row justify-between">
         <h3 className="font-medium text-2xl">{auditorName} Dashboard</h3>
+        <div className="flex flex-row space-x-6">
+          {stats.map((stat, index) => (
+            <div className="flex flex-row" key={index}>
+              <div className="h-9 w-9 mt-2 rounded-full border mx-2 border-dashboardButtons bg-dashboardButtonsBg flex justify-center items-center">
+                {stat.icon}
+              </div>
+              <div className="font-medium">
+                <p className="text-sm text-tgrey3">{stat.title}</p>
+                <h3 className="text-black text-2xl">{stat.value}</h3>
+              </div>
+            </div>
+          ))}
+        </div>
         <div className="space-x-4">
           {/* Download CSV Button  */}
           {learnersData.learners && learnersData.learners.length > 1 && (
@@ -36,6 +68,7 @@ export default function Auditor() {
               Download CSV
             </button>
           )}
+
           {/* Filter Button */}
           <BKSDFilterButton
             label={"Filters"}

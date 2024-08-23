@@ -1,3 +1,4 @@
+import Certificate from "./certificateScreen";
 
 
 export default function CertificateDashboard() {
@@ -5,7 +6,7 @@ export default function CertificateDashboard() {
 
   return (
     <div className="">
-      <h3>This is the Certificate dashboard</h3>
+       <Certificate onViewChange={""}/>
     </div>
   );
 }

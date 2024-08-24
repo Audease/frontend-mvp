@@ -26,7 +26,7 @@ const middleware = async (request: NextRequest) => {
     console.log("Expires at:", expDate);
     console.log("Minutes left until token expires:", remainingTimeSeconds);
 
-    if (remainingTimeSeconds < 60) {
+    if (remainingTimeSeconds < 300) {
       console.log("Token expires soon");
       const refreshToken = request.cookies.get("refreshToken")?.value;
 
@@ -55,6 +55,7 @@ const middleware = async (request: NextRequest) => {
           return res;
         } else {
           console.error("Error refreshing token:", response.statusText);
+          NextResponse.redirect(new URL("/signIn", request.url));
         }
       } catch (error) {
         console.error("Error refreshing token:", error);
@@ -69,7 +70,7 @@ const middleware = async (request: NextRequest) => {
       pathname.startsWith("/signIn") ||
       pathname.startsWith("/signup") ||
       pathname.startsWith("/forgotPassword") ||
-      pathname.startsWith("/reset-password")
+      pathname.startsWith("/reset-password") 
     ) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }

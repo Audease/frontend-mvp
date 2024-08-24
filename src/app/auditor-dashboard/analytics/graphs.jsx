@@ -34,6 +34,7 @@ export default function DoughnutChart() {
         data: [50, 100],
         backgroundColor: ["#F9A22B", '#DCDCDC'],
         hoverBackgroundColor: ['#FDF5E9', '#EDEDED'],
+        borderWidth: 0,
       },
     ],
   };

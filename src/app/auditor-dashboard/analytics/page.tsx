@@ -4,7 +4,7 @@ import { RiDraggable } from "react-icons/ri";
 
 export default function AuditorAnalytics() {
   return (
-    <div className=" ">
+    <div className="">
       {/* Auditor Dahsboard */}
       <AuditorDashboardHead />
 

@@ -155,12 +155,17 @@ export function LineGraph() {
 
 // STP Graph 
 export function STPGraph() {
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
   const data = {
-    labels: [19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
+    labels: months,
     datasets: [
       {
         // label: 'Sales 2023',
-        data: [0, 1.5, 2, 3, 1, 6, 2, 1, 5, 5, 3, 8],
+        data: [2, 8, 5, 10, 12, 18, 15, 22, 27, 28, 28, 28],
         fill: 'start',
         backgroundColor: (context) => {
           const ctx = context.chart.ctx;
@@ -193,6 +198,7 @@ export function STPGraph() {
     scales: {
       y: {
         beginAtZero: true,
+        display: false,
         title: {
           display: true,
           // text: 'Sales ($)',
@@ -220,12 +226,17 @@ export function STPGraph() {
 
 // FTS Graph 
 export function FTSGraph() {
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
   const data = {
-    labels: [19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
+    labels: months,
     datasets: [
       {
         // label: 'Sales 2023',
-        data: [0, 1.5, 2, 3, 1, 6, 2, 1, 5, 5, 3, 8],
+        data: [2, 8, 5, 10, 12, 18, 15, 22, 27, 28, 28, 28],
         fill: 'start',
         backgroundColor: (context) => {
           const ctx = context.chart.ctx;
@@ -258,6 +269,7 @@ export function FTSGraph() {
     scales: {
       y: {
         beginAtZero: true,
+        display: false,
         title: {
           display: true,
           // text: 'Sales ($)',
@@ -285,12 +297,17 @@ export function FTSGraph() {
 
 // PAE Graph 
 export function PAEGraph() {
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
   const data = {
-    labels: [19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
+    labels: months,
     datasets: [
       {
         // label: 'Sales 2023',
-        data: [0, 1.5, 2, 3, 1, 6, 2, 1, 5, 5, 3, 8],
+        data: [2, 8, 5, 10, 12, 18, 15, 22, 27, 28, 28, 28],
         fill: 'start',
         backgroundColor: (context) => {
           const ctx = context.chart.ctx;
@@ -323,6 +340,7 @@ export function PAEGraph() {
     scales: {
       y: {
         beginAtZero: true,
+        display: false,
         title: {
           display: true,
           // text: 'Sales ($)',
@@ -350,12 +368,17 @@ export function PAEGraph() {
 
 // GRE Graph 
 export function GREGraph() {
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
   const data = {
-    labels: [19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
+    labels: months,
     datasets: [
       {
         // label: 'Sales 2023',
-        data: [0, 1.5, 2, 3, 1, 6, 2, 1, 5, 5, 3, 8],
+        data: [2, 8, 5, 10, 12, 18, 15, 22, 27, 28, 28, 28],
         fill: 'start',
         backgroundColor: (context) => {
           const ctx = context.chart.ctx;
@@ -388,6 +411,7 @@ export function GREGraph() {
     scales: {
       y: {
         beginAtZero: true,
+        display: false,
         title: {
           display: true,
           // text: 'Sales ($)',
@@ -452,7 +476,7 @@ export function FundingGraphs() {
 
   return (
     <div className="flex flex-row p-4 space-x-4">
-      <div className="text-tgrey3 font-medium text-sm space-y-4 w-[15%]">
+      <div className="text-tgrey3 font-medium text-sm space-y-4 w-[15%] ">
         {/* STP Funding body */}
         <h2
           className={clsx(
@@ -506,7 +530,8 @@ export function FundingGraphs() {
           GRE Funding body
         </h2>
       </div>
-      <div className="flex flex-col pl-4 mr-0 w-[85%]">
+      <div className="border border-r-0 h-[12rem]"></div>
+      <div className="flex flex-col mr-0 w-[85%]">
         {renderActiveSection()}
       </div>
     </div>

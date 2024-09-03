@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const response = await fetch(
-      'https://backend-mvp-dev-4alpwwhpra-uc.a.run.app/v1/admin/roles',
+      'https://backend-mvp-dev-535547563935.europe-west4.run.app/v1/admin/roles',
       {
         headers: {
           'Authorization': `Bearer ${accessToken}`,

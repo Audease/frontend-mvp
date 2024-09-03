@@ -1,47 +1,37 @@
-// app/api/signup/route.ts
-
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
-import { cookies } from 'next/headers'
+import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
   const payload = await req.json();
 
   try {
     const response = await axios.post(
-      "https://backend-mvp-dev-4alpwwhpra-uc.a.run.app/v1/auth/login",
+      "https://backend-mvp-dev-535547563935.europe-west4.run.app/v1/auth/login",
       payload
     );
+
     if (response.status === 200) {
       const {
-        token: { access, refresh }, permissions
+        token: { access, refresh },
+        permissions,
       } = response.data;
-      // console.log(response.data.permissions)
-      const res = new NextResponse(
-        JSON.stringify({ permissions }),
-        {
-          status: 200,
-        }
-      );
 
-      // Set cookies
-      // res.cookies.set("accessToken", access.token, {
-      //   httpOnly: true, // For security, prevent access from JavaScript
-      //   secure: process.env.NODE_ENV === "production", // Set secure flag on production
-      //   maxAge: access.expires, // Set expiration time
-      //   path: "/",
-      // });
+      const res = new NextResponse(JSON.stringify({ permissions }), {
+        status: 200,
+      });
 
+      // Set accessToken cookie
       cookies().set({
         name: 'accessToken',
         value: access.token,
         secure: process.env.NODE_ENV === "production",
         httpOnly: true,
-        maxAge: 15 * 60,
+        maxAge: access.expires,
         path: '/',
-      })
+      });
 
-
+      // Set refreshToken cookie
       cookies().set({
         name: 'refreshToken',
         value: refresh.token,
@@ -49,7 +39,17 @@ export async function POST(req: NextRequest) {
         httpOnly: true,
         maxAge: refresh.expires,
         path: '/',
-      })
+      });
+
+      // Set permissions cookie
+      cookies().set({
+        name: 'permissions',
+        value: JSON.stringify(permissions),
+        secure: process.env.NODE_ENV === "production",
+        httpOnly: true,
+        maxAge: 60 * 60 * 24, // 1 day expiration
+        path: '/',
+      });
 
       return res;
     } else {

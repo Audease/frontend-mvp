@@ -8,10 +8,11 @@ export async function GET(req: NextRequest) {
   if (!accessToken) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
+  
 
   try {
     const response = await fetch(
-      'https://backend-mvp-dev-4alpwwhpra-uc.a.run.app/v1/admin/new-staff?page=1&limit=100',
+      'https://backend-mvp-dev-535547563935.europe-west4.run.app/v1/admin/new-staff?page=1&limit=1000',
       {
         headers: {
           'Authorization': `Bearer ${accessToken}`,

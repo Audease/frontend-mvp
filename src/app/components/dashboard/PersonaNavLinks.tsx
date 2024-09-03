@@ -3,18 +3,35 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
+import { useEffect, useState } from "react";
 
 export default function PersonaNavLinks() {
   const pathname = usePathname();
-  const permissions = [
-    "Add student",
-    "Audit",
-    "Induction",
-    "Certificate",
-    "Learning Platform",
-    "Approve/reject application",
-    "Send Application",
-  ];
+  const [permissions, setPermissions] = useState([]); 
+
+  // const permissions = [
+  //   "Add student",
+  //   "Audit",
+  //   "Induction",
+  //   "Certificate",
+  //   "Learning Platform",
+  //   "Approve/reject application",
+  //   "Send Application",
+  // ];
+
+  useEffect (() => {
+    const fetchPermissions = async () => {
+      try {
+        const response = await fetch('/api/getCookiesPermission');
+        const data = await response.json();
+        setPermissions(data.permissions)
+      } catch (error) {
+        console.error("Failed to fetch permissions:", error);
+      }
+    };
+
+    fetchPermissions();
+  }, []);
 
   const availableLinks = {
     "Add student": { name: "Recruiter", href: "/recruiter-dashboard" },

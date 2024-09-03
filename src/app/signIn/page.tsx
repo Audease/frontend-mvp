@@ -55,8 +55,9 @@ export default function SignIn() {
       );
 
       if (response.status === 200) {
-        const userPermissions = JSON.stringify(response.data)
-        // console.log(userPermissions);
+        const userPermissions = JSON.stringify(response.data);
+        // console.log(userPermissions)
+
         // All 8 personas 
         const adminPermissions = ["Add student", "Audit", "Induction", "Certificate", "Learning Platform", "Approve/reject application", "Send Application"]
 

@@ -33,36 +33,41 @@ export default function Staff() {
   const fetchData = async () => {
     setStaffData([]);
     setDropdownOptions([]);
+  
     try {
       const [staffResponse, dropdownResponse] = await Promise.all([
-        axios.get("/api/listStaff"),
-        axios.get("/api/roleDropdownOptions"),
+        fetch("/api/listStaff"),
+        fetch("/api/roleDropdownOptions"),
       ]);
-
-      if (staffResponse.status === 200) {
-        setStaffData(staffResponse.data);
-        // console.log("Emails:", staffResponse.data.map(item => item.email));
+  
+      if (staffResponse.ok) {
+        const staffData = await staffResponse.json();
+        setStaffData(staffData);
+        // console.log("Emails:", staffData.map(item => item.email));
       } else {
         console.error(
           "Failed to fetch staff data:",
-          staffResponse.data.message
+          staffResponse.statusText
         );
       }
-
-      if (dropdownResponse.status === 200) {
-        const roles = dropdownResponse.data.map((item) => item.role); // Extracting the role
+  
+      if (dropdownResponse.ok) {
+        const dropdownData = await dropdownResponse.json();
+        const roles = dropdownData.map((item) => item.role); // Extracting the role
         setDropdownOptions(roles);
         // console.log(roles);
       } else {
         console.error(
           "Failed to fetch dropdown options:",
-          dropdownResponse.data.message
+          dropdownResponse.statusText
         );
       }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+  
+
   useEffect(() => {
     fetchData();
   }, [reloadTable]);

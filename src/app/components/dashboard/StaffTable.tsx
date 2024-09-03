@@ -118,11 +118,12 @@ export default function StaffTable({
 
   // Pagination 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
-  const [totalItems, setTotalItems] = useState(0);
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(staffData.length / itemsPerPage);
 
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+  const handlePageChange = (page) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
   };
 
 
@@ -230,11 +231,11 @@ export default function StaffTable({
       </table>
       <div>
       <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(totalItems / itemsPerPage )}
-          itemsPerPage={itemsPerPage}
-          totalItems={staffData.length}
-          onPageChange={handlePageChange}
+           currentPage={currentPage}
+           totalPages={totalPages}
+           itemsPerPage={itemsPerPage}
+           totalItems={staffData.length}
+           onPageChange={handlePageChange}
         />
       </div>
     </div>

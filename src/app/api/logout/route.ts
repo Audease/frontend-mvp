@@ -23,5 +23,12 @@ export async function POST(req: NextRequest) {
     path: "/",
   });
 
+  res.cookies.set("permissions", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    expires: new Date(0), // Set expiration date to past
+    path: "/",
+  });
+
   return res;
 }

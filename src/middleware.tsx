@@ -8,7 +8,7 @@ const middleware = async (request: NextRequest) => {
 
   if (accessToken) {
     const decoded = jwtDecode(accessToken);
-    console.log("Decoded token:", decoded);
+    // console.log("Decoded token:", decoded);
 
     const convertUnixTimestampToReadableDate = (timestamp) => {
       const date = new Date(timestamp * 1000); // Convert from seconds to milliseconds
@@ -22,9 +22,9 @@ const middleware = async (request: NextRequest) => {
     const remainingTimeSeconds = decoded.exp - currentTime;
     const remainingTimeMinutes = remainingTimeSeconds / 60;
 
-    console.log("Issued at:", iatDate);
-    console.log("Expires at:", expDate);
-    console.log("Minutes left until token expires:", remainingTimeSeconds);
+    // console.log("Issued at:", iatDate);
+    // console.log("Expires at:", expDate);
+    // console.log("Minutes left until token expires:", remainingTimeSeconds);
 
     if (remainingTimeSeconds < 300) {
       console.log("Token expires soon");

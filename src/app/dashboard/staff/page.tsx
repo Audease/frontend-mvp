@@ -6,6 +6,7 @@ import DropdownButton from "../../components/dashboard/DropdownButton";
 import FilterButton from "../../components/dashboard/FilterButton";
 import StaffTable from "../../components/dashboard/StaffTable";
 import axios from "axios";
+import { rolesRevalidation, staffRevalidation } from "../../action";
 
 export default function Staff() {
   const [activeTab, setActiveTab] = useState("All");
@@ -16,6 +17,7 @@ export default function Staff() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [checkedItems, setCheckedItems] = useState({});
   const [selectedRole, setSelectedRole] = useState({});
+  const [reloadTable, setReloadTable] = useState(false);
 
   // The active tab
   useEffect(() => {
@@ -29,39 +31,46 @@ export default function Staff() {
 
   // Fetching the data - staff list and dropdownoptions
   const fetchData = async () => {
+    setStaffData([]);
+    setDropdownOptions([]);
+  
     try {
       const [staffResponse, dropdownResponse] = await Promise.all([
-        axios.get("/api/listStaff"),
-        axios.get("/api/roleDropdownOptions"),
+        fetch("/api/listStaff"),
+        fetch("/api/roleDropdownOptions"),
       ]);
-
-      if (staffResponse.status === 200) {
-        setStaffData(staffResponse.data);
-        // console.log("Emails:", staffResponse.data.map(item => item.email));
+  
+      if (staffResponse.ok) {
+        const staffData = await staffResponse.json();
+        setStaffData(staffData);
+        // console.log("Emails:", staffData.map(item => item.email));
       } else {
         console.error(
           "Failed to fetch staff data:",
-          staffResponse.data.message
+          staffResponse.statusText
         );
       }
-
-      if (dropdownResponse.status === 200) {
-        const roles = dropdownResponse.data.map((item) => item.role); // Extracting the role
+  
+      if (dropdownResponse.ok) {
+        const dropdownData = await dropdownResponse.json();
+        const roles = dropdownData.map((item) => item.role); // Extracting the role
         setDropdownOptions(roles);
         // console.log(roles);
       } else {
         console.error(
           "Failed to fetch dropdown options:",
-          dropdownResponse.data.message
+          dropdownResponse.statusText
         );
       }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+  
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [reloadTable]);
 
   const handleRoleSelect = (index, role) => {
     setSelectedRole((prev) => ({
@@ -74,8 +83,7 @@ export default function Staff() {
   // console.log("Selected role option:", selectedRole);
 
   const assignRole = async () => {
-    console.log("Clicked");
-    const selectedStaff = Object.entries(checkedItems)
+    let selectedStaff = Object.entries(checkedItems)
       .filter(([index, isChecked]) => isChecked)
       .map(([index]) => {
         const staffItem = staffData[index];
@@ -115,9 +123,15 @@ export default function Staff() {
       }
 
       alert("Role(s) assigned successfully");
-      // Refresh the table data after role assignment
-      fetchData();
+      // Refresh the table data after role and staff assignment
+      await staffRevalidation();
+      await rolesRevalidation();
+      // Toggle reloadTable state to force a re-render
+      setReloadTable((prev) => !prev);
+      // Clear selection state
+      selectedStaff = [];
       setCheckedItems({});
+      setSelectedRole({});
     } catch (error) {
       console.error("Error assigning role:", error);
     }
@@ -130,10 +144,17 @@ export default function Staff() {
 
   const handleFilterSelect = () => {};
 
+  const clearSelect = () => {
+    setCheckedItems({});
+    setSelectedRole({});
+    console.log("clicked")
+  }
+
   return (
     <div className="flex flex-col space-y-4">
       <div>
         <h3 className="font-medium text-2xl">Staff</h3>
+        <h3 onClick={clearSelect}>here</h3>
       </div>
 
       {/* Selection and active bar */}

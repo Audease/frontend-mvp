@@ -4,11 +4,11 @@ import { jwtDecode } from "jwt-decode";
 const middleware = async (request: NextRequest) => {
   const accessToken = request.cookies.get("accessToken")?.value;
   const refreshToken = request.cookies.get("refreshToken")?.value;
-  // console.log("Middleware accessToken:", accessToken, "/n", "Middleware RefreshToken:", refreshToken);
+  console.log("Middleware accessToken:", accessToken, "/n", "Middleware RefreshToken:", refreshToken);
 
   if (accessToken) {
     const decoded = jwtDecode(accessToken);
-    console.log("Decoded token:", decoded);
+    // console.log("Decoded token:", decoded);
 
     const convertUnixTimestampToReadableDate = (timestamp) => {
       const date = new Date(timestamp * 1000); // Convert from seconds to milliseconds
@@ -22,9 +22,9 @@ const middleware = async (request: NextRequest) => {
     const remainingTimeSeconds = decoded.exp - currentTime;
     const remainingTimeMinutes = remainingTimeSeconds / 60;
 
-    console.log("Issued at:", iatDate);
-    console.log("Expires at:", expDate);
-    console.log("Minutes left until token expires:", remainingTimeSeconds);
+    // console.log("Issued at:", iatDate);
+    // console.log("Expires at:", expDate);
+    // console.log("Minutes left until token expires:", remainingTimeSeconds);
 
     if (remainingTimeSeconds < 300) {
       console.log("Token expires soon");
@@ -50,7 +50,7 @@ const middleware = async (request: NextRequest) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             path: '/',
-            maxAge: newAccessToken.expires, // 12 minutes
+            maxAge: 15 * 60, //newAccessToken.expires
           });
           return res;
         } else {

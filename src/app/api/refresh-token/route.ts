@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const axiosResponse = await axios.post(
-      "https://backend-mvp-dev-4alpwwhpra-uc.a.run.app/v1/auth/refresh-token",
+      "https://backend-mvp-dev-535547563935.europe-west4.run.app/v1/auth/refresh-token",
       payload
     );
 

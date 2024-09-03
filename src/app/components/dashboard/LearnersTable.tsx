@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import DropdownButton from "./DropdownButton";
+import Pagination from "./Pagination";
 
 export default function LearnersTable({ learnersData, showUserDetailsPage }) {
   const [editOptions, setEditOptions] = useState({});
@@ -34,6 +35,16 @@ export default function LearnersTable({ learnersData, showUserDetailsPage }) {
       ...prev,
       [index]: !prev[index],
     }));
+  };
+
+  // Pagination 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
+  const totalPages = Math.ceil(learnersData.length / itemsPerPage);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
 
   return (
@@ -128,6 +139,16 @@ export default function LearnersTable({ learnersData, showUserDetailsPage }) {
           )}
         </tbody>
       </table>
+
+      <div className="mt-7">
+      <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          itemsPerPage={itemsPerPage}
+          totalItems={learnersData.length}
+          onPageChange={handlePageChange}
+        />
+      </div>
     </div>
   );
 }

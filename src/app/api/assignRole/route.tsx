@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const response = await axios.post(
-      'https://backend-mvp-dev-4alpwwhpra-uc.a.run.app/v1/admin/staffs/assign-role',
+      'https://backend-mvp-dev-535547563935.europe-west4.run.app/v1/admin/staffs/assign-role',
       payload, 
       {
         headers: {

@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import DropdownButton from "./DropdownButton";
 import axios from "axios";
+import Pagination from "./Pagination";
 
 export default function StaffTable({
   staffData,
@@ -115,9 +116,20 @@ export default function StaffTable({
     }
   };
 
+  // Pagination 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(staffData.length / itemsPerPage);
+
+  const handlePageChange = (page) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+  };
+
+
   return (
     <div>
-      <table className="min-w-full divide-y divide-gray-200 font-inter table-auto rounded-t-lg">
+      <table className="min-w-full divide-y divide-gray-200 font-inter table-auto rounded-t-lg min-h-[22rem]">
         <thead className="bg-tgrey-6 border border-tgrey6 ">
           <tr>
             <th className="px-4 py-3 text-left text-sm font-normal text-tableText tracking-wider">
@@ -217,6 +229,15 @@ export default function StaffTable({
           )}
         </tbody>
       </table>
+      <div>
+      <Pagination
+           currentPage={currentPage}
+           totalPages={totalPages}
+           itemsPerPage={itemsPerPage}
+           totalItems={staffData.length}
+           onPageChange={handlePageChange}
+        />
+      </div>
     </div>
   );
 }

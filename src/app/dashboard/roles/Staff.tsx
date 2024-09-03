@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { Avatar } from "flowbite-react";
 import Image from "next/image";
 import axios from "axios";
+import { staffRevalidation } from "../../action";
 
 export default function Staff({ onClick }) {
   const [emailInput, setEmailInput] = useState("");
@@ -105,7 +106,8 @@ export default function Staff({ onClick }) {
       );
 
       responses.forEach((response) => {
-        if (response.status === 200) {
+        if (response.status === 201) {
+          staffRevalidation();
           console.log(response.data.message); // Handle the response as needed
         }
       });
@@ -125,7 +127,7 @@ export default function Staff({ onClick }) {
     // Delay the clearing of the staffs array
     setTimeout(() => {
       setStaffs([]);
-    }, 10000); // 10 seconds
+    }, 5000); // 5 seconds
   };
 
   // Load invitedStaff from local storage on component mount

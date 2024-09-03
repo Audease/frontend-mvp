@@ -144,17 +144,10 @@ export default function Staff() {
 
   const handleFilterSelect = () => {};
 
-  const clearSelect = () => {
-    setCheckedItems({});
-    setSelectedRole({});
-    console.log("clicked")
-  }
-
   return (
     <div className="flex flex-col space-y-4">
       <div>
         <h3 className="font-medium text-2xl">Staff</h3>
-        <h3 onClick={clearSelect}>here</h3>
       </div>
 
       {/* Selection and active bar */}

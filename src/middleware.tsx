@@ -33,7 +33,7 @@ const middleware = async (request: NextRequest) => {
       const payload = { refreshToken };
 
       try {
-        const baseUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}`;
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${request.nextUrl.protocol}//${request.nextUrl.host}`;
         const response = await fetch(`${baseUrl}/api/refresh-token`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },

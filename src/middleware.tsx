@@ -50,7 +50,7 @@ const middleware = async (request: NextRequest) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             path: '/',
-            maxAge: 15 * 60, //newAccessToken.expires
+            maxAge: newAccessToken.expires, //newAccessToken.expires
           });
           return res;
         } else {

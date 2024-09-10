@@ -7,11 +7,13 @@ import { useState, useEffect, useRef } from "react";
 import Notifications from "./Notifications";
 import NavbarPlusButton from "./NavbarPlusButton";
 import { useRouter } from "next/navigation";
+import { useAppSelector } from "../../../redux/store";
 
 export default function Navbar() {
   const [profileOptions, setProfileOptions] = useState(false);
   const [notifications, setNotifications] = useState(false);
   const [plusButton, setPlusButton] = useState(false);
+  const [userEmailFirstLetter, setuserEmailFirstLetter] = useState("");
   const menuRef = useRef(null);
   const router = useRouter();
 
@@ -53,20 +55,29 @@ export default function Navbar() {
 
   const logout = async () => {
     console.log("logout");
-  
+
     // Call the server-side logout route to clear cookies on the server side
-    const response = await fetch('/api/logout', {
-      method: 'POST',
+    const response = await fetch("/api/logout", {
+      method: "POST",
     });
-  
+
     if (response.ok) {
       // Redirect to the login page
       router.push("/signIn");
     } else {
-      console.error('Failed to log out');
+      console.error("Failed to log out");
     }
   };
-  
+
+  const userEmail = useAppSelector(
+    (state) => state.authReducer.value.userEmail
+  );
+  useEffect(() => {
+    if (userEmail) {
+      const firstLetter = userEmail.charAt(0).toUpperCase();
+      setuserEmailFirstLetter(firstLetter);
+    }
+  }, [userEmail]);
 
   return (
     <div className="flex flex-row space-x-24 mx-auto py-4  justify-center">
@@ -85,7 +96,7 @@ export default function Navbar() {
       <div className="flex flex-row space-x-8">
         <div>
           {/* Links */}
-          <NavLinks links={links}/>
+          <NavLinks links={links} />
         </div>
 
         {/* Search Field */}
@@ -125,7 +136,9 @@ export default function Navbar() {
               aria-expanded={profileOptions}
               aria-haspopup="true"
             >
-              <p className="text-tgrey3 text-h5 font-semibold">N</p>
+              <p className="text-tgrey3 text-lg">
+                {userEmailFirstLetter}
+              </p>
             </div>
           </div>
           {profileOptions && (

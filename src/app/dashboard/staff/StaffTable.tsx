@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import DropdownButton from "./DropdownButton";
+
 import axios from "axios";
-import Pagination from "./Pagination";
+import Pagination from "../../components/dashboard/Pagination";
+import DropdownButton from "../../components/dashboard/DropdownButton";
+
 
 export default function StaffTable({
   staffData,

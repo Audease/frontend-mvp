@@ -8,20 +8,21 @@ import { Avatar } from "flowbite-react";
 import FilterButton, {
   RecruiterFilterButton,
 } from "../../components/dashboard/FilterButton";
+  import { useCreateRole } from "./hooks/useRoleCreate";
 
-export default function CreateRole({
-  show,
-  onClose,
-  onClick,
-  formData,
-  setFormData,
-}) {
+export default function CreateRole({ isModalOpen, closeModal }) {
   const [inputedPermission, setInputedPermission] = useState("");
   const [tags, setTags] = useState([]);
+  
+  const {
+    roleFormData,
+    setRoleFormData,
+    roleCreate,
+  } = useCreateRole();
 
   const clearPermission = () => {
     setInputedPermission("");
-    setFormData((prevData) => ({
+    setRoleFormData((prevData) => ({
       ...prevData,
       permission: "",
     }));
@@ -29,7 +30,7 @@ export default function CreateRole({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setRoleFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -44,9 +45,12 @@ export default function CreateRole({
 
   const addPermissions = (permission) => (e) => {
     e.preventDefault();
-    setTags([permission]);
+
+    setTags((prevData) => [...prevData, permission]);
+
+
     setInputedPermission(permission);
-    setFormData((prevData) => ({
+    setRoleFormData((prevData) => ({
       ...prevData,
       permission,
     }));
@@ -54,12 +58,12 @@ export default function CreateRole({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onClick();
+    roleCreate();
   };
 
   return (
     <div>
-      <Modal show={show} onClose={onClose} className="modal" size={"md"}>
+      <Modal show={isModalOpen} onClose={closeModal} className="modal" size={"md"}>
         <div className="flex flex-col p-4">
           <div className="flex flex-row justify-between items-center">
             <h2 className="font-medium text-lg text-tblack3">Create Role</h2>
@@ -67,7 +71,7 @@ export default function CreateRole({
               className="text-tgrey3 cursor-pointer"
               width={14}
               height={14}
-              onClick={onClose}
+              onClick={closeModal}
             />
           </div>
           <hr className="my-4" />
@@ -85,7 +89,7 @@ export default function CreateRole({
                 name="roleName"
                 type="text"
                 className="border-1 rounded-lg border-tgrey2 px-3 py-1 text-h2 text-black font-normal focus:border-gold1 focus:outline-none focus:ring-gold1 w-full"
-                value={formData.roleName || ""}
+                value={roleFormData.roleName || ""}
                 onChange={handleChange}
               />
             </div>
@@ -99,7 +103,7 @@ export default function CreateRole({
                 Permission (You can only select one permission)
               </label>
               {/* Tag Input Field */}
-              <div className="flex flex-wrap items-center border p-2 border-1 rounded-lg border-tgrey2 py-1 text-h2 h-9">
+              <div className="flex flex-wrap items-center border p-2 border-1 rounded-lg border-tgrey2 py-1 text-h2 h-16 gap-2">
                 {tags.map((tag, index) => (
                   <div
                     key={index}
@@ -138,13 +142,6 @@ export default function CreateRole({
                   />
                 </div>
 
-                <div className="text-sm mt-4 mr-1">
-                  <PlainButton
-                    text={"Audit"}
-                    onClick={addPermissions("Audit")}
-                  />
-                </div>
-
                 <div className="mt-4 text-sm">
                   <PlainButton
                     text={"Approve/reject application"}
@@ -163,6 +160,13 @@ export default function CreateRole({
                   <PlainButton
                     text={"Certificate"}
                     onClick={addPermissions("Certificate")}
+                  />
+                </div>
+
+                <div className="text-sm mt-4 ml-3">
+                  <PlainButton
+                    text={"Audit"}
+                    onClick={addPermissions("Audit")}
                   />
                 </div>
               </div>
@@ -185,7 +189,7 @@ export default function CreateRole({
 export function RoleCreated({ show, onClose }) {
   return (
     <div>
-      <Modal show={show} onClose={onClose} className="modal p-10" size={"md"}>
+      <Modal {...{show, onClose}} className="modal p-10" size={"md"}>
         <div className="flex flex-row justify-end p-4">
           <IoClose
             className="text-tgrey3 cursor-pointer"
@@ -232,7 +236,7 @@ export function AddAuditLearnerModal({ show, onClose }) {
   const handleLearnerAdd = () => {};
   return (
     <div>
-      <Modal show={show} onClose={onClose} className="modal p-12" size={"xl"}>
+      <Modal {...{show, onClose}} className="modal p-12" size={"xl"}>
         <div className="flex flex-row justify-between items-center p-4">
           <div className="flex flex-col">
             <h2 className="font-medium text-lg text-tblack3">Learners</h2>

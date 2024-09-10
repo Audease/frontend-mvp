@@ -91,13 +91,7 @@ export default function Role() {
         <div className="w-3/4">
           {renderComponent()}
           {/* Modal */}
-          <CreateRole
-            show={isModalOpen}
-            onClose={closeModal}
-            onClick={roleCreate}
-            formData={roleFormData}
-            setFormData={setRoleFormData}
-          />
+          <CreateRole {...{ isModalOpen, closeModal }} />
           <RoleCreated show={isSuccessModal} onClose={closeSuccessModal} />
         </div>
 

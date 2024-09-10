@@ -4,11 +4,12 @@ import { useState, useEffect, useMemo } from "react";
 import Button from "../../components/dashboard/Button";
 import { SlArrowRight, SlArrowDown } from "react-icons/sl";
 import RoleTable from "../../components/dashboard/RoleTable";
+import { useAppSelector } from "../../../redux/store";
 
 
 export default function DefaultLeft({ onClickSetUpAcct }) {
-  const [firstName, setFirstName] = useState("Nyekachi");
-  const [plan, setPlan] = useState("Free trial");
+  const [firstName, setFirstName] = useState("");
+  const [plan, setPlan] = useState("");
 
   const [activeTab, setActiveTab] = useState("All");
   const [activeBarStyle, setActiveBarStyle] = useState({});
@@ -16,14 +17,7 @@ export default function DefaultLeft({ onClickSetUpAcct }) {
 
   const tabs = useMemo(() => ["All","Recent", "Starred", "Modules", "Folders", "Thrash"],[]);
 
-  useEffect(() => {
-    const activeIndex = tabs.indexOf(activeTab);
-    const tabWidth = 45 / tabs.length;
-    setActiveBarStyle({
-      width: `${tabWidth}%`,
-      transform: `translateX(${activeIndex * 100}%)`,
-    });
-  }, [activeTab,tabs, tabs.length]);
+
 
   const data = [
     {
@@ -57,6 +51,21 @@ export default function DefaultLeft({ onClickSetUpAcct }) {
     { role: "resource", roleIcon: "/resourcesIcon.png" },
     { role: "form", roleIcon: "/formIcon.png" },
   ];
+
+
+  const userPermissions = useAppSelector(
+    (state) => state.authReducer.value.userPermission
+  );
+  const userPackage = useAppSelector(
+    (state) => state.authReducer.value.userPackage
+  );
+
+  useEffect(() =>{
+    if (userPermissions || userPackage) {
+      setPlan(userPackage)
+      setFirstName(userPermissions)
+    }
+  }, [userPackage, userPermissions])
 
   return (
     <div className="flex flex-col">
@@ -99,7 +108,7 @@ export default function DefaultLeft({ onClickSetUpAcct }) {
               <h2
                 key={tab}
                 className={`cursor-pointer pt-4 ${
-                  activeTab === tab ? "text-black" : ""
+                  activeTab === tab ? "text-gold1" : ""
                 }`}
                 onClick={() => setActiveTab(tab)}
               >
@@ -109,18 +118,17 @@ export default function DefaultLeft({ onClickSetUpAcct }) {
           </div>
 
           {/* Create Button */}
-          <Button
+          {/* <Button
             buttonText={"Create"}
             className={""}
             arrowDirection={<SlArrowDown />}
             onClick={""}
-          />
+          /> */}
         </div>
         {/* The active bar color change */}
         <div className="w-full h-[0.10rem] bg-gray-300 my-2">
           <div
-            className={`h-[0.10rem] bg-dashboardButtons transition-all duration-300`}
-            style={activeBarStyle}
+            className={`h-[0.10rem]`}
           ></div>
         </div>
       </div>

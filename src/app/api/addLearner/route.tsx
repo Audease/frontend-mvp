@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
   const accessToken = cookieStore.get('accessToken')?.value;
   const payload = await req.json();
 
-  // console.log(payload)
+//   console.log(payload)
 
   
   if (!accessToken) {
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const response = await axios.post(
-      'https://backend-mvp-dev-535547563935.europe-west4.run.app/v1/admin/create-role',
+      'https://backend-mvp-dev-535547563935.europe-west4.run.app/v1/recruitment/create',
       payload, 
       {
         headers: {
@@ -27,11 +27,11 @@ export async function POST(req: NextRequest) {
     );
 
     if (response.status === 200) {
-      return NextResponse.json(response.data, { status: 200 });
+      return NextResponse.json(response.data, { status: 201 });
     } else {
-      return NextResponse.json({ message: response.data.message || 'Failed to create role' }, { status: response.status });
+      return NextResponse.json({ message: response.data.message || 'Failed to create learner' }, { status: response.status });
     }
   } catch (error: any) {
-    return NextResponse.json({ message: error.response?.data?.message || 'Failed to create role' }, { status: error.response?.status || 500 });
+    return NextResponse.json({ message: error.response?.data?.message || 'Failed to create learner' }, { status: error.response?.status || 500 });
   }
 }

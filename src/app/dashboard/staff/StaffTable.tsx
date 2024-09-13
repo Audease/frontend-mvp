@@ -2,12 +2,13 @@
 import { useEffect, useState, useRef } from "react";
 
 import axios from "axios";
-import Pagination from "../../components/dashboard/Pagination";
 import DropdownButton from "../../components/dashboard/DropdownButton";
+import { useStaff } from "./hooks/useStaff";
 
 
 export default function StaffTable({
   staffData,
+  setStaffData,
   onCheckedChange,
   onRoleSelect,
 }) {
@@ -16,7 +17,6 @@ export default function StaffTable({
   const [checkedItems, setCheckedItems] = useState({});
   const [selectedRole, setSelectedRole] = useState({});
   const [fullDropdownResponseData, setFullDropdownResponseData] = useState([]);
-  const [dropdownOptions, setDropdownOptions] = useState([]);
   const options = fullDropdownResponseData.map((item) => item.role);
 
   // Row edit button toggle
@@ -26,8 +26,6 @@ export default function StaffTable({
       [rowId]: !prevState[rowId],
     }));
   };
-
-  // console.log(fullDropdownResponseData);
 
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -45,10 +43,10 @@ export default function StaffTable({
   // Handle the check box change
   const handleCheckboxChange = (index) => {
     if (staffData && staffData.length > index) {
-      const staffItem = staffData[index]; // Get the staff object at the given index
+      const staffItem = staffData[index]; 
 
       setCheckedItems((prev) => {
-        const isCurrentlyChecked = prev[index]; // Check if the item is currently checked
+        const isCurrentlyChecked = prev[index]; 
         const newCheckedItems = {
           ...prev,
           [index]: !isCurrentlyChecked,
@@ -79,12 +77,7 @@ export default function StaffTable({
       try {
         const response = await axios.get("/api/roleDropdownOptions");
         if (response.status === 200) {
-          // console.log(response.data)
           setFullDropdownResponseData(response.data);
-          // const roles = response.data.map((item) => item.role); // Extracting the role
-          // setDropdownOptions(roles);
-          // const roleId = response.data.map((itemId) => itemId.id);
-          // console.log(roleId)
         } else {
           console.error(
             "Failed to fetch dropdown options:",
@@ -107,27 +100,36 @@ export default function StaffTable({
     );
 
     if (selectedRoleData) {
-      const selectedRoleId = selectedRoleData.id; // Get the ID
+      const selectedRoleId = selectedRoleData.id; 
       setSelectedRole((prev) => ({
         ...prev,
         [index]: selectedRole,
       }));
-      onRoleSelect(index, selectedRoleId); // Pass the ID to the parent component
+      onRoleSelect(index, selectedRoleId); 
     } else {
       console.error("Selected role not found in the dropdown data");
     }
   };
 
-  // Pagination 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(staffData.length / itemsPerPage);
+  const {
+    currentPage,
+    fetchData,
+    setCurrentPage,
+    totalPages,
+  } = useStaff();
 
-  const handlePageChange = (page) => {
-    if (page < 1 || page > totalPages) return;
-    setCurrentPage(page);
+  const handleFetchData = async (page) => {
+    const newStaffData = await fetchData(page);
+    setStaffData(newStaffData)
   };
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page + 1);
+  };
+
+  useEffect (() => {
+    handleFetchData(currentPage)
+  }, [])
 
   return (
     <div>
@@ -182,8 +184,8 @@ export default function StaffTable({
                   <DropdownButton
                     options={options}
                     onSelect={(option) => handleSelect(index, option)}
-                    label={selectedRole[index] || "Assign"} // Update label based on selection
-                    disabled={!checkedItems[index]} // Disable dropdown if not checked
+                    label={selectedRole[index] || "Assign"} 
+                    disabled={!checkedItems[index]} 
                     className={`py-1 px-4 rounded focus:outline-none ${
                       selectedRole[index]
                         ? "bg-dashboardButtons text-white"
@@ -212,13 +214,13 @@ export default function StaffTable({
                       className="bg-white shadow-lg rounded-lg p-4 font-medium w-32 absolute top-full border-2 right-20 text-tblack3 space-y-4 "
                     >
                       <p className="hover:text-gold1 cursor-pointer">Edit</p>
-                      <p className="hover:text-gold1 cursor-pointer">Rename</p>
+                      {/* <p className="hover:text-gold1 cursor-pointer">Rename</p>
                       <p className="hover:text-gold1 cursor-pointer">
                         Duplicate
-                      </p>
-                      <p className="hover:text-gold1 cursor-pointer">
+                      </p> */}
+                      {/* <p className="hover:text-gold1 cursor-pointer">
                         Move to folder
-                      </p>
+                      </p> */}
                       <hr />
                       <p className="text-tred1 hover:text-gold1 cursor-pointer">
                         Move to Trash
@@ -232,13 +234,6 @@ export default function StaffTable({
         </tbody>
       </table>
       <div>
-      <Pagination
-           currentPage={currentPage}
-           totalPages={totalPages}
-           itemsPerPage={itemsPerPage}
-           totalItems={staffData.length}
-           onPageChange={handlePageChange}
-        />
       </div>
     </div>
   );

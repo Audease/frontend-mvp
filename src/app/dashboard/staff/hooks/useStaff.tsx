@@ -1,42 +1,40 @@
 import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
-import { rolesRevalidation, staffRevalidation } from "../../../action"
+import { rolesRevalidation, staffRevalidation } from "../../../action";
 
 export const useStaff = () => {
-  const [activeTab, setActiveTab] = useState("All");
-  const [dropdownOptions, setDropdownOptions] = useState([]);
   const [staffData, setStaffData] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [checkedItems, setCheckedItems] = useState({});
-  const [selectedRole, setSelectedRole] = useState({});
-  const [reloadTable, setReloadTable] = useState(false);
-
-  const tabs = useMemo(() => ["All", "Recent", "Deleted"], []);
-
-  // Fetch staff data and dropdown options
-  const fetchData = async () => {
-    setStaffData([]);
-    setDropdownOptions([]);
+   
   
+  // Pagination
+   const [currentPage, setCurrentPage] = useState(1);
+   const [totalPages, setTotalpages] = useState(1);
+   const [totalItems, setTotalItems] = useState(1);
+   
+   
+   const handlePageChange = (page) => {
+    setCurrentPage (currentPage + 1)
+   };
+
+   const onPageIncrease = (page) => {
+    setCurrentPage (currentPage + 1)
+   };
+
+   const onPageDecrease = (page) => {
+    setCurrentPage (currentPage - 1)
+   };
+ 
+
+  const fetchData = async (page = currentPage) => {
     try {
-      const [staffResponse, dropdownResponse] = await Promise.all([
-        fetch("/api/listStaff"),
-        fetch("/api/roleDropdownOptions"),
-      ]);
-  
-      if (staffResponse.ok) {
-        const staffData = await staffResponse.json();
-        setStaffData(staffData);
+      const response = await fetch(`/api/listStaff?page=${page}&limit=${10}`);
+      const data = await response.json();
+      if (response.ok) {
+        setTotalpages(data.totalPages);
+        setTotalItems(data.total);
+        return data.result;
       } else {
-        console.error("Failed to fetch staff data:", staffResponse.statusText);
-      }
-  
-      if (dropdownResponse.ok) {
-        const dropdownData = await dropdownResponse.json();
-        const roles = dropdownData.map((item) => item.role); // Extracting the role
-        setDropdownOptions(roles);
-      } else {
-        console.error("Failed to fetch dropdown options:", dropdownResponse.statusText);
+        console.error("Failed to fetch staff data:", data);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -44,31 +42,22 @@ export const useStaff = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [reloadTable]);
+    fetchData(currentPage);
+  }, [currentPage]);
 
-  const handleRoleSelect = (index, role) => {
-    setSelectedRole((prev) => ({
-      ...prev,
-      [index]: role,
-    }));
-  };
-
-  
-
-  const assignRole = async () => {
+  const assignRole = async (checkedItems, staffData, selectedRole) => {
     let selectedStaff = Object.entries(checkedItems)
       .filter(([index, isChecked]) => isChecked)
       .map(([index]) => {
         const staffItem = staffData[index];
-        const role = selectedRole[index]; // Get the selected role for this staff member
-        return { ...staffItem, role }; // Attach the selected role
+        const role = selectedRole[index];
+        return { ...staffItem, role };
       });
 
     try {
       for (const staffItem of selectedStaff) {
         const payload = {
-          userId: staffItem.id,
+          staffIds: [staffItem.id],
           role: selectedRole[Object.keys(selectedRole)[0]],
         };
 
@@ -82,25 +71,20 @@ export const useStaff = () => {
       alert("Role(s) assigned successfully");
       await staffRevalidation();
       await rolesRevalidation();
-      setReloadTable((prev) => !prev);
-      setCheckedItems({});
-      setSelectedRole({});
     } catch (error) {
       console.error("Error assigning role:", error);
     }
   };
 
   return {
-    activeTab,
-    setActiveTab,
-    tabs,
-    dropdownOptions,
-    staffData,
-    checkedItems,
-    setCheckedItems,
-    selectedRole,
-    handleRoleSelect,
+    fetchData,
     assignRole,
-    reloadTable,
+    currentPage,
+    setCurrentPage,
+    handlePageChange,
+    totalPages,
+    totalItems,
+    onPageDecrease,
+    onPageIncrease
   };
 };

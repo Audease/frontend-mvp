@@ -1,23 +1,45 @@
 "use client";
+import { useState, useMemo } from "react";
 import { useStaff } from "./hooks/useStaff";
 import SearchBox from "../../components/dashboard/SearchBox";
 import FilterButton from "../../components/dashboard/FilterButton";
 import StaffTable from "./StaffTable";
+import Pagination from "../../components/dashboard/Pagination";
 
 export default function Staff() {
+  const [activeTab, setActiveTab] = useState("All");
+  const [dropdownOptions, setDropdownOptions] = useState([]);
+
+  const [staffData, setStaffData] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [checkedItems, setCheckedItems] = useState({});
+  const [selectedRole, setSelectedRole] = useState({});
+
+  const tabs = useMemo(() => ["All", "Recent", "Deleted"], []);
+
+  const handleRoleSelect = (index, role) => {
+    setSelectedRole((prev) => ({
+      ...prev,
+      [index]: role,
+    }));
+  };
+
+  const handleAssignRole = async () => {
+    const newStaffData = await assignRole(checkedItems, staffData, selectedRole)
+    // setStaffData(newStaffData)
+  }
+
   const {
-    activeTab,
-    setActiveTab,
-    tabs,
-    dropdownOptions,
-    staffData,
-    checkedItems,
-    setCheckedItems,
-    selectedRole,
-    handleRoleSelect,
     assignRole,
+    handlePageChange,
+    currentPage,
+    totalPages,
+    totalItems,
+    onPageDecrease,
+    onPageIncrease
   } = useStaff();
 
+ 
   return (
     <div className="flex flex-col space-y-4">
       <div>
@@ -47,7 +69,7 @@ export default function Staff() {
             <div>
               <button
                 className="bg-dashboardRolesBtn text-white py-2 px-4 rounded focus:outline-none"
-                onClick={assignRole}
+                onClick={() => handleAssignRole()}
               >
                 Assign a role
               </button>
@@ -61,20 +83,29 @@ export default function Staff() {
         </div>
       </div>
 
-       {/* The active bar color change */}
-       <div className="w-full h-[0.10rem] bg-gray-300 my-2">
-          <div
-            className="h-[0.10rem]"
-          ></div>
-        </div>
-      
+      {/* The active bar color change */}
+      <div className="w-full h-[0.10rem] bg-gray-300 my-2">
+        <div className="h-[0.10rem]"></div>
+      </div>
+
       {/* The main body, which is the table list */}
       <div>
         <StaffTable
-          staffData={staffData}
+          {...{staffData, setStaffData}}
           onCheckedChange={setCheckedItems}
           onRoleSelect={handleRoleSelect}
         />
+        <div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            itemsPerPage={10}
+            totalItems={totalItems}
+            onPageChange={handlePageChange}
+            onPageDecrease={onPageDecrease}
+            onPageIncrease={onPageIncrease}
+          />
+        </div>
       </div>
     </div>
   );

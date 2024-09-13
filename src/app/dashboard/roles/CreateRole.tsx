@@ -11,7 +11,7 @@ import FilterButton, {
   import { useCreateRole } from "./hooks/useRoleCreate";
 
 export default function CreateRole({ isModalOpen, closeModal }) {
-  const [inputedPermission, setInputedPermission] = useState("");
+  const [inputedPermission, setInputedPermission] = useState([]);
   const [tags, setTags] = useState([]);
   
   const {
@@ -21,11 +21,7 @@ export default function CreateRole({ isModalOpen, closeModal }) {
   } = useCreateRole();
 
   const clearPermission = () => {
-    setInputedPermission("");
-    setRoleFormData((prevData) => ({
-      ...prevData,
-      permission: "",
-    }));
+    setInputedPermission([]);
   };
 
   const handleChange = (e) => {
@@ -43,20 +39,18 @@ export default function CreateRole({ isModalOpen, closeModal }) {
     }
   };
 
-  const addPermissions = (permission) => (e) => {
+  const addPermissions = (permission: string) => (e) => {
     e.preventDefault();
-
-    setTags((prevData) => [...prevData, permission]);
-
-
-    setInputedPermission(permission);
-    setRoleFormData((prevData) => ({
-      ...prevData,
-      permission,
-    }));
+    if (!tags.includes(permission)) {
+      setTags((prevData) => [...prevData, permission]);
+      setRoleFormData((prevData) => ({
+        ...prevData,
+        permission: [...prevData.permission || [], permission], 
+      }));
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     roleCreate();
   };
@@ -71,7 +65,10 @@ export default function CreateRole({ isModalOpen, closeModal }) {
               className="text-tgrey3 cursor-pointer"
               width={14}
               height={14}
-              onClick={closeModal}
+              onClick={ () => {
+                closeModal();
+                setRoleFormData({ roleName: "", permission: []});
+              }}
             />
           </div>
           <hr className="my-4" />

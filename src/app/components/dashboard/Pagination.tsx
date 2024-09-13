@@ -1,10 +1,15 @@
+'use client'
+
 import React from "react";
+import { useState, useEffect } from "react";
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 
 export default function Pagination({
   currentPage,
   totalPages,
   onPageChange,
+  onPageIncrease,
+  onPageDecrease,
   itemsPerPage,
   totalItems,
 }) {
@@ -22,7 +27,7 @@ export default function Pagination({
         </div>
         {/* Previous Button  */}
         <button
-          onClick={() => onPageChange(currentPage - 1)}
+          onClick={onPageDecrease}
           disabled={currentPage === 1}
             className="cursor-pointer"
         >
@@ -30,7 +35,7 @@ export default function Pagination({
         </button>
         {/* Next Button  */}
         <button
-          onClick={() => onPageChange(currentPage + 1)}
+          onClick={onPageIncrease}
           disabled={currentPage === totalPages}
             className="cursor-pointer"
         >

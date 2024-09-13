@@ -12,7 +12,9 @@ import { FaRegCircleXmark } from "react-icons/fa6";
 import { RecruiterFilterButton } from "../components/dashboard/FilterButton";
 import RecruiterDashboardTable from "../components/dashboard/RecruiterDashboardTable";
 import AddLearnerModal, { LearnerCreated } from "../dashboard/learners/learnerModal";
-import LearnerImportModal, { LearnerImportSuccessModal } from "../components/dashboard/LearnerImportModal";
+import LearnerImportModal, { LearnerImportSuccessModal } from "../dashboard/learners/LearnerImportModal";
+import { AddAuditLearnerModal } from "../dashboard/roles/CreateRole";
+
 
 export default function RecruiterLearnersScreen() {
   const [roleName, setRoleName] = useState("Onny");
@@ -508,10 +510,9 @@ export default function RecruiterLearnersScreen() {
 
       {/* Learner Create and Successful Modal  */}
       <div>
-      <AddLearnerModal
+      <AddAuditLearnerModal
           show={learnerCreateModalState}
           onClose={closeLearnerCreateModal}
-          onCreateClick={onLearnerCreateClick}
         />
 
         <LearnerCreated show={learnerSuccessModal} onClose={closeLearnerSuccessModal}/>

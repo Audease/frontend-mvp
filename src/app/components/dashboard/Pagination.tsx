@@ -8,8 +8,6 @@ export default function Pagination({
   currentPage,
   totalPages,
   onPageChange,
-  onPageIncrease,
-  onPageDecrease,
   itemsPerPage,
   totalItems,
 }) {
@@ -27,7 +25,7 @@ export default function Pagination({
         </div>
         {/* Previous Button  */}
         <button
-          onClick={onPageDecrease}
+          onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
             className="cursor-pointer"
         >
@@ -35,7 +33,7 @@ export default function Pagination({
         </button>
         {/* Next Button  */}
         <button
-          onClick={onPageIncrease}
+          onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
             className="cursor-pointer"
         >

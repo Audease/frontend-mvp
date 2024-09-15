@@ -3,36 +3,16 @@ import axios from "axios";
 import { rolesRevalidation, staffRevalidation } from "../../../action";
 
 export const useStaff = () => {
-  const [staffData, setStaffData] = useState([]);
-   
-  
-  // Pagination
-   const [currentPage, setCurrentPage] = useState(1);
-   const [totalPages, setTotalpages] = useState(1);
-   const [totalItems, setTotalItems] = useState(1);
-   
-   
-   const handlePageChange = (page) => {
-    setCurrentPage (currentPage + 1)
-   };
-
-   const onPageIncrease = (page) => {
-    setCurrentPage (currentPage + 1)
-   };
-
-   const onPageDecrease = (page) => {
-    setCurrentPage (currentPage - 1)
-   };
- 
-
-  const fetchData = async (page = currentPage) => {
+  const fetchStaffData = async (page: number) => {
     try {
       const response = await fetch(`/api/listStaff?page=${page}&limit=${10}`);
       const data = await response.json();
       if (response.ok) {
-        setTotalpages(data.totalPages);
-        setTotalItems(data.total);
-        return data.result;
+        const totalPages = data.totalPages;
+        const totalItems = data.total;
+        const result = data.result;
+
+        return { totalPages, totalItems, result };
       } else {
         console.error("Failed to fetch staff data:", data);
       }
@@ -41,32 +21,25 @@ export const useStaff = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData(currentPage);
-  }, [currentPage]);
-
-  const assignRole = async (checkedItems, staffData, selectedRole) => {
-    let selectedStaff = Object.entries(checkedItems)
-      .filter(([index, isChecked]) => isChecked)
-      .map(([index]) => {
-        const staffItem = staffData[index];
-        const role = selectedRole[index];
-        return { ...staffItem, role };
-      });
-
+  const assignStaffRole = async (checkedItems, selectedRoles) => {
+    const staffArray = [...Object.values(checkedItems)];
+    const formattedStaffArray = staffArray.map((staff: any) => {
+      return {
+        staffId: staff.id,
+        roleId: selectedRoles[staff.id],
+      };
+    });
+    
     try {
-      for (const staffItem of selectedStaff) {
-        const payload = {
-          staffIds: [staffItem.id],
-          role: selectedRole[Object.keys(selectedRole)[0]],
-        };
-
-        const response = await axios.post("/api/assignRole", payload, {
+      const response = await axios.post(
+        "/api/assignRole",
+        {
+          assignments: formattedStaffArray,
+        },
+        {
           headers: { "Content-Type": "application/json" },
-        });
-
-        console.log("Role assigned successfully:", response.data);
-      }
+        }
+      );
 
       alert("Role(s) assigned successfully");
       await staffRevalidation();
@@ -77,14 +50,7 @@ export const useStaff = () => {
   };
 
   return {
-    fetchData,
-    assignRole,
-    currentPage,
-    setCurrentPage,
-    handlePageChange,
-    totalPages,
-    totalItems,
-    onPageDecrease,
-    onPageIncrease
+    fetchStaffData,
+    assignStaffRole,
   };
 };

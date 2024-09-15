@@ -1,10 +1,14 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useStaff } from "./hooks/useStaff";
 import SearchBox from "../../components/dashboard/SearchBox";
 import FilterButton from "../../components/dashboard/FilterButton";
 import StaffTable from "./StaffTable";
 import Pagination from "../../components/dashboard/Pagination";
+
+type CheckedItems = {
+  [key:number]: any
+}
 
 export default function Staff() {
   const [activeTab, setActiveTab] = useState("All");
@@ -12,8 +16,16 @@ export default function Staff() {
 
   const [staffData, setStaffData] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [checkedItems, setCheckedItems] = useState({});
+  const [checkedItems, setCheckedItems] = useState<CheckedItems>({});
   const [selectedRole, setSelectedRole] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalpages] = useState(1);
+  const [totalItems, setTotalItems] = useState(1);
+
+  const {
+    assignStaffRole,
+    fetchStaffData
+  } = useStaff();
 
   const tabs = useMemo(() => ["All", "Recent", "Deleted"], []);
 
@@ -25,20 +37,26 @@ export default function Staff() {
   };
 
   const handleAssignRole = async () => {
-    const newStaffData = await assignRole(checkedItems, staffData, selectedRole)
+    console.log(checkedItems)
+    const newStaffData = await assignStaffRole(checkedItems, selectedRole)
     // setStaffData(newStaffData)
   }
 
-  const {
-    assignRole,
-    handlePageChange,
-    currentPage,
-    totalPages,
-    totalItems,
-    onPageDecrease,
-    onPageIncrease
-  } = useStaff();
+  const handleFetchStaffData = async(page) => {
+    const { totalPages, totalItems, result } = await fetchStaffData(page)
+    setTotalpages(totalPages)
+    setTotalItems(totalItems)
+    setStaffData(result)
+  }
 
+  const handlePageChange = async (page) => {
+    setCurrentPage(page)
+    handleFetchStaffData(page)
+  };
+
+  useEffect(() => {
+    handleFetchStaffData(currentPage)
+  }, [])
  
   return (
     <div className="flex flex-col space-y-4">
@@ -91,8 +109,7 @@ export default function Staff() {
       {/* The main body, which is the table list */}
       <div>
         <StaffTable
-          {...{staffData, setStaffData}}
-          onCheckedChange={setCheckedItems}
+          {...{staffData, setStaffData, currentPage, setCurrentPage, checkedItems, setCheckedItems}}
           onRoleSelect={handleRoleSelect}
         />
         <div>
@@ -102,8 +119,6 @@ export default function Staff() {
             itemsPerPage={10}
             totalItems={totalItems}
             onPageChange={handlePageChange}
-            onPageDecrease={onPageDecrease}
-            onPageIncrease={onPageIncrease}
           />
         </div>
       </div>

@@ -16,10 +16,10 @@ import RecruiterDashboardTable from "../../components/dashboard/RecruiterDashboa
 import AddLearnerModal, {
   LearnerCreated,
 } from "../../dashboard/learners/learnerModal";
-import LearnerImportModal, {
-  LearnerImportSuccessModal,
-} from "../../components/dashboard/LearnerImportModal";
+
 import RecruiterStaffModal from "./recruiterStaffModal";
+import { AddAuditLearnerModal } from "../../dashboard/roles/CreateRole";
+import LearnerImportModal, { LearnerImportSuccessModal } from "../../dashboard/learners/LearnerImportModal";
 
 export default function AdminRecruiterdashboard() {
   const [roleName, setRoleName] = useState("Onny");
@@ -559,10 +559,10 @@ export default function AdminRecruiterdashboard() {
 
       {/* Learner Create and Successful Modal  */}
       <div>
-        <AddLearnerModal
+        <AddAuditLearnerModal
           show={learnerCreateModalState}
           onClose={closeLearnerCreateModal}
-          onCreateClick={onLearnerCreateClick}
+          // onCreateClick={onLearnerCreateClick}
         />
 
         <LearnerCreated

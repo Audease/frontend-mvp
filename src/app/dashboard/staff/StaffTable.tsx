@@ -5,16 +5,14 @@ import axios from "axios";
 import DropdownButton from "../../components/dashboard/DropdownButton";
 import { useStaff } from "./hooks/useStaff";
 
-
 export default function StaffTable({
   staffData,
-  setStaffData,
-  onCheckedChange,
+  checkedItems,
+  setCheckedItems,
   onRoleSelect,
 }) {
   const [editOptions, setEditOptions] = useState({});
   const menuRef = useRef(null);
-  const [checkedItems, setCheckedItems] = useState({});
   const [selectedRole, setSelectedRole] = useState({});
   const [fullDropdownResponseData, setFullDropdownResponseData] = useState([]);
   const options = fullDropdownResponseData.map((item) => item.role);
@@ -41,34 +39,26 @@ export default function StaffTable({
   }, []);
 
   // Handle the check box change
-  const handleCheckboxChange = (index) => {
-    if (staffData && staffData.length > index) {
-      const staffItem = staffData[index]; 
+  const handleCheckboxChange = (staffId: string) => {
+    if (staffData) {
+      const staffItem = staffData.find((staff) => staff.id === staffId);
 
       setCheckedItems((prev) => {
-        const isCurrentlyChecked = prev[index]; 
-        const newCheckedItems = {
-          ...prev,
-          [index]: !isCurrentlyChecked,
-        };
-
-        // Only log if the item is being checked (not unchecked)
-        if (!isCurrentlyChecked && staffItem && staffItem.email) {
-          // console.log("Checked email:", staffItem.email);
-          // console.log("Checked ID:", staffItem.id);
+        const isCurrentlyChecked = prev[staffId];
+        if (isCurrentlyChecked) {
+          const { [staffId]: removedItem, ...rest } = prev
+          return rest
+        } else {
+          return {
+            ...prev,
+            [staffId]: staffItem,
+          };
         }
-
-        onCheckedChange(newCheckedItems); // Notify parent of changes
-        return newCheckedItems;
       });
+
     } else {
       console.error("Invalid index or staffData is not populated yet");
     }
-  };
-
-  // Handle email click
-  const handleEmailClick = (index) => {
-    handleCheckboxChange(index);
   };
 
   // Fetch dropdown options
@@ -100,7 +90,8 @@ export default function StaffTable({
     );
 
     if (selectedRoleData) {
-      const selectedRoleId = selectedRoleData.id; 
+      const selectedRoleId = selectedRoleData.id;
+
       setSelectedRole((prev) => ({
         ...prev,
         [index]: selectedRole,
@@ -110,26 +101,6 @@ export default function StaffTable({
       console.error("Selected role not found in the dropdown data");
     }
   };
-
-  const {
-    currentPage,
-    fetchData,
-    setCurrentPage,
-    totalPages,
-  } = useStaff();
-
-  const handleFetchData = async (page) => {
-    const newStaffData = await fetchData(page);
-    setStaffData(newStaffData)
-  };
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page + 1);
-  };
-
-  useEffect (() => {
-    handleFetchData(currentPage)
-  }, [])
 
   return (
     <div>
@@ -162,11 +133,11 @@ export default function StaffTable({
               </td>
             </tr>
           ) : (
-            staffData.map((row, index) => (
-              <tr key={row.id}>
+            staffData.map((staff, index) => (
+              <tr key={staff.id}>
                 <td
                   className="px-2 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-row cursor-pointer"
-                  onClick={() => handleEmailClick(index)}
+                  onClick={() => handleCheckboxChange(staff.id)}
                 >
                   <span className="pr-4">
                     {" "}
@@ -174,41 +145,41 @@ export default function StaffTable({
                     <input
                       type="checkbox"
                       className="staff-checkbox h-4 w-4 text-tableText2 rounded-md focus:ring-tgrey2"
-                      checked={checkedItems[index] || false}
-                      onChange={() => handleCheckboxChange(index)}
+                      checked={checkedItems[staff.id] || false}
+                      onChange={() => handleCheckboxChange(staff.id)}
                     />
                   </span>
-                  {row.email}
+                  {staff.email}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
                   <DropdownButton
                     options={options}
-                    onSelect={(option) => handleSelect(index, option)}
-                    label={selectedRole[index] || "Assign"} 
-                    disabled={!checkedItems[index]} 
+                    onSelect={(option) => handleSelect(staff.id, option)}
+                    label={selectedRole[staff.id] || "Assign"} 
+                    disabled={!checkedItems[staff.id]}
                     className={`py-1 px-4 rounded focus:outline-none ${
-                      selectedRole[index]
+                      selectedRole[staff.id]
                         ? "bg-dashboardButtons text-white"
                         : "bg-tgrey5 text-[#625F65]"
                     }`}
                   />
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
-                  {row.status}
+                  {staff.status}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
-                  {row.username}
+                  {staff.username}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-col justify-end relative">
                   <p
-                    onClick={() => toggleVisibility(row.id)}
-                    aria-expanded={editOptions[row.id] || false}
+                    onClick={() => toggleVisibility(staff.id)}
+                    aria-expanded={editOptions[staff.id] || false}
                     aria-haspopup="true"
                     className="cursor-default font-bold"
                   >
                     ...
                   </p>
-                  {editOptions[row.id] && (
+                  {editOptions[staff.id] && (
                     <div
                       ref={menuRef}
                       className="bg-white shadow-lg rounded-lg p-4 font-medium w-32 absolute top-full border-2 right-20 text-tblack3 space-y-4 "

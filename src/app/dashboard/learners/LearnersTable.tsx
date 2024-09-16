@@ -145,8 +145,6 @@ export default function LearnersTable({ learnersData, showUserDetailsPage }) {
           itemsPerPage={10}
           totalItems={10}
           onPageChange={2}
-          onPageDecrease={onPageDecrease}
-          onPageIncrease={onPageIncrease}
         />
       </div>
     </div>

@@ -1,13 +1,13 @@
 'use client';
 
 import { useRole } from './hooks/useRole';
-import DefaultLeft from './DefaultLeft';
-import SetUpAccount from './SetUpAccount';
-import CreateRole, { AddAuditLearnerModal, RoleCreated } from './CreateRole';
-import Staff from './Staff';
+import DefaultLeft from './components/DefaultLeft';
+import Staff from './components/Staff';
+import SetUpAccount from './components/SetUpAccount';
+import { AddAuditLearnerModal } from './components/Rightside/components/CreateRole/CreateRoleModal';
 import Workflow from '../workflows/Workflow';
 import CreateWorkflow, { WorkflowCreated } from '../workflows/CreateWorkflow';
-import Rightside from './Rightside';
+import Rightside from './components/Rightside/Rightside';
 import AddLearnerModal, { LearnerCreated } from '../learners/learnerModal';
 
 
@@ -71,8 +71,6 @@ export default function Role() {
         <div className="w-3/4">
           {renderComponent()}
           {/* Role Modal */}
-          <CreateRole {...{ isModalOpen, closeModal }} />
-          <RoleCreated show={isRoleSuccessModal} onClose={closeRoleSuccessModal} />
 
           {/* Workflow Modal */}
           <CreateWorkflow

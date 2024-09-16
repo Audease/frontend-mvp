@@ -13,7 +13,7 @@ import { RecruiterFilterButton } from "../components/dashboard/FilterButton";
 import RecruiterDashboardTable from "../components/dashboard/RecruiterDashboardTable";
 import AddLearnerModal, { LearnerCreated } from "../dashboard/learners/learnerModal";
 import LearnerImportModal, { LearnerImportSuccessModal } from "../dashboard/learners/LearnerImportModal";
-import { AddAuditLearnerModal } from "../dashboard/roles/CreateRole";
+import { AddAuditLearnerModal } from "../dashboard/roles/components/Rightside/components/CreateRole/CreateRoleModal";
 
 
 export default function RecruiterLearnersScreen() {

@@ -1,8 +1,8 @@
 import { SlArrowLeft } from "react-icons/sl";
-import "../../../assets/style.css";
+import "../../../../assets/style.css";
 import Image from "next/image";
 import clsx from "clsx";
-import { useAccountStatus } from "./hooks/useAccountStatus";
+import { useAccountStatus } from "../hooks/useAccountStatus";
 
 export default function SetUpAccount({ onClick }) {
   const {

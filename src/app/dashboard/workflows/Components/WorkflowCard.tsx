@@ -4,7 +4,7 @@ import { Avatar } from "flowbite-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-export default function WorkflowCard({ card }) {
+export default function WorkflowCard({ card, index }) {
   const { id, roleName, rolePermission, profilePics } = card;
 
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -22,10 +22,13 @@ export default function WorkflowCard({ card }) {
       {...listeners}
       key={id}
       style={style}
-      className="p-4 m-4 border rounded-lg w-[14rem] h-[13rem] box-shadow"
+      className="p-4 border rounded-lg w-full h-[13rem] box-shadow"
     >
       <div className="flex flex-row justify-between pb-3">
-        <h3 className="text-black font-bold text-base pt-2">{roleName}</h3>
+        <h3 className="flex items-center text-black font-bold text-base pt-2">
+          <span className="flex justify-center items-center rounded-full w-7 h-7 bg-gold1 text-white mr-3" >{index}</span>
+          {roleName}
+        </h3>
         <p className="text-[#5A5B80] text-2xl">...</p>
       </div>
       <div className="">

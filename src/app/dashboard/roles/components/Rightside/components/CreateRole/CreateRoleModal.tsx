@@ -1,16 +1,18 @@
+'use client';
+
 import { Modal } from "flowbite-react";
 import { IoClose } from "react-icons/io5";
-import { PlainButton } from "../../components/dashboard/Button";
+import { PlainButton } from "../../../../../../components/dashboard/Button";
 import { useState } from "react";
 import Image from "next/image";
-import learnersData from "../../data/learnersData.json";
+import learnersData from "../../../../../../data/learnersData.json";
 import { Avatar } from "flowbite-react";
 import FilterButton, {
   RecruiterFilterButton,
-} from "../../components/dashboard/FilterButton";
-  import { useCreateRole } from "./hooks/useRoleCreate";
+} from "../../../../../../components/dashboard/FilterButton";
+  import { useCreateRole } from "../../../../hooks/useRoleCreate";
 
-export default function CreateRole({ isModalOpen, closeModal }) {
+export default function CreateRoleModal({ isRoleModalOpen, closeRoleModal, setSuccess }) {
   const [inputedPermission, setInputedPermission] = useState([]);
   const [tags, setTags] = useState([]);
   
@@ -52,12 +54,17 @@ export default function CreateRole({ isModalOpen, closeModal }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    roleCreate();
+    const roleCreated = await roleCreate();
+    if (roleCreated) {
+      setSuccess(true);
+    }
   };
+
+
 
   return (
     <div>
-      <Modal show={isModalOpen} onClose={closeModal} className="modal" size={"md"}>
+      <Modal show={isRoleModalOpen} onClose={closeRoleModal} className="modal" size={"md"}>
         <div className="flex flex-col p-4">
           <div className="flex flex-row justify-between items-center">
             <h2 className="font-medium text-lg text-tblack3">Create Role</h2>
@@ -66,7 +73,7 @@ export default function CreateRole({ isModalOpen, closeModal }) {
               width={14}
               height={14}
               onClick={ () => {
-                closeModal();
+                closeRoleModal();
                 setRoleFormData({ roleName: "", permission: []});
               }}
             />
@@ -177,34 +184,6 @@ export default function CreateRole({ isModalOpen, closeModal }) {
               </button>
             </div>
           </form>
-        </div>
-      </Modal>
-    </div>
-  );
-}
-
-export function RoleCreated({ show, onClose }) {
-  return (
-    <div>
-      <Modal {...{show, onClose}} className="modal p-10" size={"md"}>
-        <div className="flex flex-row justify-end p-4">
-          <IoClose
-            className="text-tgrey3 cursor-pointer"
-            width={14}
-            height={14}
-            onClick={onClose}
-          />
-        </div>
-        <div className="flex flex-col text-center items-center py-20 font-inter">
-          <Image
-            src={"/role_success.png"}
-            width={79}
-            height={79}
-            alt="Success"
-            className="pb-4"
-          />
-          <h3 className="text-2xl font-bold">Role Created</h3>
-          <p className="font-normal text-lg">You can view them now</p>
         </div>
       </Modal>
     </div>

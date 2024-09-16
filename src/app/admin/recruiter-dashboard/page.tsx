@@ -18,7 +18,7 @@ import AddLearnerModal, {
 } from "../../dashboard/learners/learnerModal";
 
 import RecruiterStaffModal from "./recruiterStaffModal";
-import { AddAuditLearnerModal } from "../../dashboard/roles/CreateRole";
+import { AddAuditLearnerModal } from "../../dashboard/roles/components/Rightside/components/CreateRole/CreateRoleModal";
 import LearnerImportModal, { LearnerImportSuccessModal } from "../../dashboard/learners/LearnerImportModal";
 
 export default function AdminRecruiterdashboard() {

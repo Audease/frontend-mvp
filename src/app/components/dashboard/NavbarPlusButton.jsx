@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCreateRole } from "../../dashboard/roles/hooks/useRoleCreate";
-import CreateRole, {RoleCreated} from "../../dashboard/roles/CreateRole";
+import CreateRole, {RoleCreated} from "../../dashboard/roles/components/Rightside/components/CreateRole/CreateRoleModal";
 
 
 export default function NavbarPlusButton() {

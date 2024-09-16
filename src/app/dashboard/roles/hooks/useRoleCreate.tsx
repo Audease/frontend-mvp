@@ -74,9 +74,12 @@ export const useCreateRole = () => {
         body: JSON.stringify(payload),
       });
 
+      console.log(assignResponse)
+
       if (assignResponse.ok) {
-        setIsRoleSuccessModal(true);
-        setIsModalOpen(false);
+        return true
+      } else {
+        return false
       }
     } catch (error) {
       console.error("Error during role creation:", error);

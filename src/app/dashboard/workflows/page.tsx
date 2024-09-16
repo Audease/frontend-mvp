@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import SetUpAccount from "../roles/SetUpAccount";
-import CreateRole, { RoleCreated } from "../roles/CreateRole";
-import Staff from "../roles/Staff";
+import SetUpAccount from "../roles/components/SetUpAccount";
+import Staff from "../roles/components/Staff";
 import Workflow from "./Workflow";
 import { useRouter } from "next/navigation";
-import Rightside from "../roles/Rightside";
+import Rightside from "../roles/components/Rightside/Rightside";
 
 export default function Role() {
   const [currentComponent, setCurrentComponent] = useState("Default");
@@ -90,9 +89,6 @@ export default function Role() {
       <div className="flex flex-row space-x-12">
         <div className="w-3/4">
           {renderComponent()}
-          {/* Modal */}
-          <CreateRole {...{ isModalOpen, closeModal }} />
-          <RoleCreated show={isSuccessModal} onClose={closeSuccessModal} />
         </div>
 
         {/* right side  */}

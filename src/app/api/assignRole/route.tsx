@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 import { cookies } from 'next/headers';
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function POST(req: NextRequest) {
   const cookieStore = cookies();
@@ -13,7 +14,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const response = await axios.post(
-      'https://backend-mvp-dev-535547563935.europe-west4.run.app/v1/admin/staffs/assign-roles',
+      apiUrl + '/v1/admin/staffs/assign-roles',
       payload, 
       {
         headers: {

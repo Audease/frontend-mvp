@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export async function GET(req: NextRequest) {
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
@@ -13,7 +15,7 @@ export async function GET(req: NextRequest) {
   try {
     // Pass the page and limit in the request URL
     const response = await fetch(
-      'https://backend-mvp-dev-535547563935.europe-west4.run.app/v1/admin/account-setup-status',
+      apiUrl + '/v1/admin/account-setup-status',
       {
         headers: {
           'Authorization': `Bearer ${accessToken}`,

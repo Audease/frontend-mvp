@@ -1,11 +1,11 @@
-import WorkflowCards from "../../components/dashboard/WorflowCards";
+import WorkflowCards from "./Components/WorkflowCards";
 
 
 export default function DragDropBoard() {
 
   return (
    <div>
-        <WorkflowCards />
+      <WorkflowCards />
    </div>
   );
 }

@@ -2,21 +2,19 @@
 import { useEffect, useState, useRef } from "react";
 
 import axios from "axios";
-import Pagination from "../../components/dashboard/Pagination";
 import DropdownButton from "../../components/dashboard/DropdownButton";
-
+import { useStaff } from "./hooks/useStaff";
 
 export default function StaffTable({
   staffData,
-  onCheckedChange,
+  checkedItems,
+  setCheckedItems,
   onRoleSelect,
 }) {
   const [editOptions, setEditOptions] = useState({});
   const menuRef = useRef(null);
-  const [checkedItems, setCheckedItems] = useState({});
   const [selectedRole, setSelectedRole] = useState({});
   const [fullDropdownResponseData, setFullDropdownResponseData] = useState([]);
-  const [dropdownOptions, setDropdownOptions] = useState([]);
   const options = fullDropdownResponseData.map((item) => item.role);
 
   // Row edit button toggle
@@ -26,8 +24,6 @@ export default function StaffTable({
       [rowId]: !prevState[rowId],
     }));
   };
-
-  // console.log(fullDropdownResponseData);
 
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -43,34 +39,26 @@ export default function StaffTable({
   }, []);
 
   // Handle the check box change
-  const handleCheckboxChange = (index) => {
-    if (staffData && staffData.length > index) {
-      const staffItem = staffData[index]; // Get the staff object at the given index
+  const handleCheckboxChange = (staffId: string) => {
+    if (staffData) {
+      const staffItem = staffData.find((staff) => staff.id === staffId);
 
       setCheckedItems((prev) => {
-        const isCurrentlyChecked = prev[index]; // Check if the item is currently checked
-        const newCheckedItems = {
-          ...prev,
-          [index]: !isCurrentlyChecked,
-        };
-
-        // Only log if the item is being checked (not unchecked)
-        if (!isCurrentlyChecked && staffItem && staffItem.email) {
-          // console.log("Checked email:", staffItem.email);
-          // console.log("Checked ID:", staffItem.id);
+        const isCurrentlyChecked = prev[staffId];
+        if (isCurrentlyChecked) {
+          const { [staffId]: removedItem, ...rest } = prev
+          return rest
+        } else {
+          return {
+            ...prev,
+            [staffId]: staffItem,
+          };
         }
-
-        onCheckedChange(newCheckedItems); // Notify parent of changes
-        return newCheckedItems;
       });
+
     } else {
       console.error("Invalid index or staffData is not populated yet");
     }
-  };
-
-  // Handle email click
-  const handleEmailClick = (index) => {
-    handleCheckboxChange(index);
   };
 
   // Fetch dropdown options
@@ -79,12 +67,7 @@ export default function StaffTable({
       try {
         const response = await axios.get("/api/roleDropdownOptions");
         if (response.status === 200) {
-          // console.log(response.data)
           setFullDropdownResponseData(response.data);
-          // const roles = response.data.map((item) => item.role); // Extracting the role
-          // setDropdownOptions(roles);
-          // const roleId = response.data.map((itemId) => itemId.id);
-          // console.log(roleId)
         } else {
           console.error(
             "Failed to fetch dropdown options:",
@@ -107,27 +90,17 @@ export default function StaffTable({
     );
 
     if (selectedRoleData) {
-      const selectedRoleId = selectedRoleData.id; // Get the ID
+      const selectedRoleId = selectedRoleData.id;
+
       setSelectedRole((prev) => ({
         ...prev,
         [index]: selectedRole,
       }));
-      onRoleSelect(index, selectedRoleId); // Pass the ID to the parent component
+      onRoleSelect(index, selectedRoleId); 
     } else {
       console.error("Selected role not found in the dropdown data");
     }
   };
-
-  // Pagination 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(staffData.length / itemsPerPage);
-
-  const handlePageChange = (page) => {
-    if (page < 1 || page > totalPages) return;
-    setCurrentPage(page);
-  };
-
 
   return (
     <div>
@@ -160,11 +133,11 @@ export default function StaffTable({
               </td>
             </tr>
           ) : (
-            staffData.map((row, index) => (
-              <tr key={row.id}>
+            staffData.map((staff, index) => (
+              <tr key={staff.id}>
                 <td
                   className="px-2 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-row cursor-pointer"
-                  onClick={() => handleEmailClick(index)}
+                  onClick={() => handleCheckboxChange(staff.id)}
                 >
                   <span className="pr-4">
                     {" "}
@@ -172,53 +145,53 @@ export default function StaffTable({
                     <input
                       type="checkbox"
                       className="staff-checkbox h-4 w-4 text-tableText2 rounded-md focus:ring-tgrey2"
-                      checked={checkedItems[index] || false}
-                      onChange={() => handleCheckboxChange(index)}
+                      checked={checkedItems[staff.id] || false}
+                      onChange={() => handleCheckboxChange(staff.id)}
                     />
                   </span>
-                  {row.email}
+                  {staff.email}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
                   <DropdownButton
                     options={options}
-                    onSelect={(option) => handleSelect(index, option)}
-                    label={selectedRole[index] || "Assign"} // Update label based on selection
-                    disabled={!checkedItems[index]} // Disable dropdown if not checked
+                    onSelect={(option) => handleSelect(staff.id, option)}
+                    label={selectedRole[staff.id] || "Assign"} 
+                    disabled={!checkedItems[staff.id]}
                     className={`py-1 px-4 rounded focus:outline-none ${
-                      selectedRole[index]
+                      selectedRole[staff.id]
                         ? "bg-dashboardButtons text-white"
                         : "bg-tgrey5 text-[#625F65]"
                     }`}
                   />
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
-                  {row.status}
+                  {staff.status}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
-                  {row.username}
+                  {staff.username}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-col justify-end relative">
                   <p
-                    onClick={() => toggleVisibility(row.id)}
-                    aria-expanded={editOptions[row.id] || false}
+                    onClick={() => toggleVisibility(staff.id)}
+                    aria-expanded={editOptions[staff.id] || false}
                     aria-haspopup="true"
                     className="cursor-default font-bold"
                   >
                     ...
                   </p>
-                  {editOptions[row.id] && (
+                  {editOptions[staff.id] && (
                     <div
                       ref={menuRef}
                       className="bg-white shadow-lg rounded-lg p-4 font-medium w-32 absolute top-full border-2 right-20 text-tblack3 space-y-4 "
                     >
                       <p className="hover:text-gold1 cursor-pointer">Edit</p>
-                      <p className="hover:text-gold1 cursor-pointer">Rename</p>
+                      {/* <p className="hover:text-gold1 cursor-pointer">Rename</p>
                       <p className="hover:text-gold1 cursor-pointer">
                         Duplicate
-                      </p>
-                      <p className="hover:text-gold1 cursor-pointer">
+                      </p> */}
+                      {/* <p className="hover:text-gold1 cursor-pointer">
                         Move to folder
-                      </p>
+                      </p> */}
                       <hr />
                       <p className="text-tred1 hover:text-gold1 cursor-pointer">
                         Move to Trash
@@ -232,13 +205,6 @@ export default function StaffTable({
         </tbody>
       </table>
       <div>
-      <Pagination
-           currentPage={currentPage}
-           totalPages={totalPages}
-           itemsPerPage={itemsPerPage}
-           totalItems={staffData.length}
-           onPageChange={handlePageChange}
-        />
       </div>
     </div>
   );

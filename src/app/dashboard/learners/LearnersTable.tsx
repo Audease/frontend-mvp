@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import DropdownButton from "./DropdownButton";
-import Pagination from "./Pagination";
+import Pagination from "../../components/dashboard/Pagination";
+import { useLearners } from "./hooks/useLearners";
+
 
 export default function LearnersTable({ learnersData, showUserDetailsPage }) {
   const [editOptions, setEditOptions] = useState({});
@@ -37,22 +38,19 @@ export default function LearnersTable({ learnersData, showUserDetailsPage }) {
     }));
   };
 
-  // Pagination 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
-  const [totalItems, setTotalItems] = useState(0);
-  const totalPages = Math.ceil(learnersData.length / itemsPerPage);
+  const {
+    onPageDecrease,
+    onPageIncrease,
+    allLearners
+  } = useLearners()
 
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
 
   return (
     <div>
       <table className="min-w-full divide-y divide-gray-200 font-inter table-auto rounded-t-lg h-full">
         <thead className="bg-tgrey-6 border border-tgrey6 ">
           <tr>
-            <th className="px-4 py-3 text-left text-sm font-normal text-tableText tracking-wider">
+            <th className="px-4 pl-12 py-3 text-left text-sm font-normal text-tableText tracking-wider">
               Name
             </th>
             <th className="px-4 py-3 text-left text-sm text-tableText font-normal tracking-wider">
@@ -68,13 +66,13 @@ export default function LearnersTable({ learnersData, showUserDetailsPage }) {
               Funding
             </th>
             <th className="px-4 py-3 text-left text-sm font-normal text-tableText tracking-wider">
-              Payment
+              Course
             </th>
             <th className="px-4 py-3 text-left text-sm font-normal text-tableText tracking-wider"></th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {learnersData.length === 0 ? (
+          {allLearners.length === 0 ? (
             <tr className="border-b">
               <td
                 colSpan={4}
@@ -84,7 +82,7 @@ export default function LearnersTable({ learnersData, showUserDetailsPage }) {
               </td>
             </tr>
           ) : (
-            learnersData.map((row) => (
+            allLearners.map((row) => (
               <tr key={row.id}>
                 <td className="px-2 py-4 whitespace-nowrap text-sm  text-tableText2 font-medium flex flex-row">
                   <span className="pr-4">
@@ -111,7 +109,7 @@ export default function LearnersTable({ learnersData, showUserDetailsPage }) {
                   {row.funding}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
-                  {row.payment}
+                  {row.chosen_course}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-col justify-end relative">
                   <p
@@ -142,11 +140,11 @@ export default function LearnersTable({ learnersData, showUserDetailsPage }) {
 
       <div className="mt-7">
       <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          itemsPerPage={itemsPerPage}
-          totalItems={learnersData.length}
-          onPageChange={handlePageChange}
+          currentPage={1}
+          totalPages={10}
+          itemsPerPage={10}
+          totalItems={10}
+          onPageChange={2}
         />
       </div>
     </div>

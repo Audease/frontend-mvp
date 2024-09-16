@@ -13,13 +13,6 @@ export default function CreateWorkflow({
 }) {
   const [inputedRole, setInputedRole] = useState("");
 
-  const clearRole = () => {
-    setInputedRole("");
-    setFormData((prevData) => ({
-      ...prevData,
-      permission: "",
-    }));
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;

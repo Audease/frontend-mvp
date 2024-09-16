@@ -1,16 +1,18 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import SearchBox from "../../components/dashboard/SearchBox";
+import { useState, useMemo } from "react";
 import FilterButton from "../../components/dashboard/FilterButton";
-import LearnersTable from "../../components/dashboard/LearnersTable";
+
 import CreateButton from "../../components/dashboard/CreateButton";
 import AddLearnerModal, { LearnerCreated } from "./learnerModal";
+import LearnersTable from "./LearnersTable";
+import { usePostLearners } from "./hooks/usePostLearners";
 
 export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
   const [activeTab, setActiveTab] = useState("All");
-  const [activeBarStyle, setActiveBarStyle] = useState({});
   const [selectedOption, setSelectedOption] = useState(null);
+  const [learnerCreateModalState, setLearnerCreateModalState] = useState(false)
+  const [learnerSuccessModal, setLearnerSuccessModal] = useState(false)
 
   const tabs = useMemo(
     () => [
@@ -24,15 +26,6 @@ export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
     []
   );
 
-  useEffect(() => {
-    const activeIndex = tabs.indexOf(activeTab);
-    const tabWidth = 10 / tabs.length;
-    setActiveBarStyle({
-      width: `${tabWidth}%`,
-      transform: `translateX(${activeIndex * 380}%)`,
-    });
-  }, [activeTab, tabs]);
-
   const handleSelect = (option) => {
     setSelectedOption(option);
     console.log("Selected option:", option);
@@ -40,22 +33,9 @@ export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
 
   const options = ["Recruiter", "BKSD", "Accessor", "Inductor", "Lazer"];
 
-  const [learnerCreateModalState, setLearnerCreateModalState] = useState(false);
-  const [learnerSuccessModal, setLearnerSuccessModal] = useState(false);
-
-  const showLearnerCreateModal = () => {
-    setLearnerCreateModalState(true);
-  };
-
   const closeLearnerCreateModal = () => {
-    console.log("closed");
     setLearnerCreateModalState(false);
   };
-
-  const onCreateClick = () => {
-    setLearnerCreateModalState(false);
-    setLearnerSuccessModal(true);
-  }
 
   const closeLearnerSuccessModal = () => {
     setLearnerSuccessModal(false);
@@ -74,7 +54,7 @@ export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
               <h2
                 key={tab}
                 className={`cursor-pointer pt-4 ${
-                  activeTab === tab ? "text-black" : ""
+                  activeTab === tab ? "text-gold1" : ""
                 }`}
                 onClick={() => setActiveTab(tab)}
               >
@@ -85,9 +65,10 @@ export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
 
           {/* The buttons on the right side */}
           <div className="flex flex-row space-x-4">
-            {/* Search Box */}
-            {/* <SearchBox /> */}
-            <CreateButton label={"Create"} onClick={showLearnerCreateModal} />
+            <CreateButton
+              label={"Create"}
+              onClick={() => setLearnerCreateModalState(true)}
+            />
 
             {/* Filter Button */}
             <FilterButton
@@ -102,12 +83,7 @@ export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
         </div>
 
         {/* The active bar color change */}
-        <div className="w-full h-[0.10rem] bg-gray-300 my-2">
-          <div
-            className={`h-[0.10rem] bg-dashboardButtons transition-all duration-300`}
-            style={activeBarStyle}
-          ></div>
-        </div>
+        <div className="w-full h-[0.10rem] bg-gray-300 my-2"></div>
       </div>
 
       {/* The main body, which is the table list */}
@@ -117,13 +93,22 @@ export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
           showUserDetailsPage={showUserDetailsPage}
         />
 
-        <AddLearnerModal
-          show={learnerCreateModalState}
-          onClose={closeLearnerCreateModal}
-          onCreateClick={onCreateClick}
-        />
+        {learnerCreateModalState && (
+          <AddLearnerModal
+            {...{setLearnerSuccessModal}}
+            show={learnerCreateModalState}
+            onClose={closeLearnerCreateModal}
+          />
+        )}
 
-        <LearnerCreated show={learnerSuccessModal} onClose={closeLearnerSuccessModal}/>
+        {learnerSuccessModal && (
+          <LearnerCreated
+          show={learnerSuccessModal}
+          onClose={closeLearnerSuccessModal}
+        />
+        )}
+
+        
       </div>
     </div>
   );

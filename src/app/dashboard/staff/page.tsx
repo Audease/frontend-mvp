@@ -1,23 +1,63 @@
 "use client";
+import { useState, useMemo, useEffect } from "react";
 import { useStaff } from "./hooks/useStaff";
 import SearchBox from "../../components/dashboard/SearchBox";
 import FilterButton from "../../components/dashboard/FilterButton";
 import StaffTable from "./StaffTable";
+import Pagination from "../../components/dashboard/Pagination";
+
+type CheckedItems = {
+  [key:number]: any
+}
 
 export default function Staff() {
+  const [activeTab, setActiveTab] = useState("All");
+  const [dropdownOptions, setDropdownOptions] = useState([]);
+
+  const [staffData, setStaffData] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [checkedItems, setCheckedItems] = useState<CheckedItems>({});
+  const [selectedRole, setSelectedRole] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalpages] = useState(1);
+  const [totalItems, setTotalItems] = useState(1);
+
   const {
-    activeTab,
-    setActiveTab,
-    tabs,
-    dropdownOptions,
-    staffData,
-    checkedItems,
-    setCheckedItems,
-    selectedRole,
-    handleRoleSelect,
-    assignRole,
+    assignStaffRole,
+    fetchStaffData
   } = useStaff();
 
+  const tabs = useMemo(() => ["All", "Recent", "Deleted"], []);
+
+  const handleRoleSelect = (index, role) => {
+    setSelectedRole((prev) => ({
+      ...prev,
+      [index]: role,
+    }));
+  };
+
+  const handleAssignRole = async () => {
+    console.log(checkedItems)
+    const newStaffData = await assignStaffRole(checkedItems, selectedRole)
+    // setStaffData(newStaffData)
+  }
+
+  const handleFetchStaffData = async(page) => {
+    const { totalPages, totalItems, result } = await fetchStaffData(page)
+    setTotalpages(totalPages)
+    setTotalItems(totalItems)
+    setStaffData(result)
+  }
+
+  const handlePageChange = async (page) => {
+    setCurrentPage(page)
+    handleFetchStaffData(page)
+  };
+
+  useEffect(() => {
+    handleFetchStaffData(currentPage)
+  }, [])
+ 
   return (
     <div className="flex flex-col space-y-4">
       <div>
@@ -47,7 +87,7 @@ export default function Staff() {
             <div>
               <button
                 className="bg-dashboardRolesBtn text-white py-2 px-4 rounded focus:outline-none"
-                onClick={assignRole}
+                onClick={() => handleAssignRole()}
               >
                 Assign a role
               </button>
@@ -61,20 +101,26 @@ export default function Staff() {
         </div>
       </div>
 
-       {/* The active bar color change */}
-       <div className="w-full h-[0.10rem] bg-gray-300 my-2">
-          <div
-            className="h-[0.10rem]"
-          ></div>
-        </div>
-      
+      {/* The active bar color change */}
+      <div className="w-full h-[0.10rem] bg-gray-300 my-2">
+        <div className="h-[0.10rem]"></div>
+      </div>
+
       {/* The main body, which is the table list */}
       <div>
         <StaffTable
-          staffData={staffData}
-          onCheckedChange={setCheckedItems}
+          {...{staffData, setStaffData, currentPage, setCurrentPage, checkedItems, setCheckedItems}}
           onRoleSelect={handleRoleSelect}
         />
+        <div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            itemsPerPage={10}
+            totalItems={totalItems}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
     </div>
   );

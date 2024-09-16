@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import Button from "../../components/dashboard/Button";
+import Button from "../../../components/dashboard/Button";
 import { SlArrowRight, SlArrowDown } from "react-icons/sl";
-import RoleTable from "../../components/dashboard/RoleTable";
-import { useAppSelector } from "../../../redux/store";
+import RoleTable from "../../../components/dashboard/RoleTable";
+import { useAppSelector } from "../../../../redux/store";
 
 
 export default function DefaultLeft({ onClickSetUpAcct }) {

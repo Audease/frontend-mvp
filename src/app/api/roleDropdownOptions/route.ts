@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export async function GET(req: NextRequest) {
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
@@ -11,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const response = await fetch(
-      'https://backend-mvp-dev-535547563935.europe-west4.run.app/v1/admin/roles',
+      apiUrl + '/v1/admin/roles',
       {
         headers: {
           'Authorization': `Bearer ${accessToken}`,

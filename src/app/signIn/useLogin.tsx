@@ -92,7 +92,7 @@ export function useLogin() {
       setError("Invalid email or password");
       setLoading(false);
     } finally {
-      setLoading(false); // Ensure loading state is reset
+      setLoading(false); 
     }
   };
 

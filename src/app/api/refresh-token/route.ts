@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export async function POST(req: NextRequest) {
   const payload = await req.json();
 
   try {
     const fetchResponse = await fetch(
-      "https://backend-mvp-dev-535547563935.europe-west4.run.app/v1/auth/refresh-token",
+      apiUrl + "/v1/auth/refresh-token",
       {
         method: "POST",
         headers: {

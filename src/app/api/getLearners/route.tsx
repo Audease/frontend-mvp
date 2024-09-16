@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
   try {
     // Pass the page and limit in the request URL
     const response = await fetch(
-      apiUrl + `/v1/admin/new-staff?page=${page}&limit=${limit}`,
+      apiUrl + `/v1/admin/learners?page=${page}&limit=${limit}`,
       {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -34,9 +34,9 @@ export async function GET(req: NextRequest) {
       const data = await response.json();
       return NextResponse.json(data, { status: 200 });
     } else {
-      return NextResponse.json({ message: 'Failed to list staff' }, { status: response.status });
+      return NextResponse.json({ message: 'Failed to list learners' }, { status: response.status });
     }
   } catch (error: any) {
-    return NextResponse.json({ message: 'Failed to list staff' }, { status: 500 });
+    return NextResponse.json({ message: 'Failed to list learners' }, { status: 500 });
   }
 }

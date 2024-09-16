@@ -1,6 +1,7 @@
-import { Type2Button } from "../../components/dashboard/Button";
-import RoleCard from "../../components/dashboard/RoleCard";
-
+import { Type2Button } from "../../../../components/dashboard/Button";
+import RoleCard from "../../../../components/dashboard/RoleCard";
+import CreateRole from "./components/CreateRole/CreateRole";
+import CreateWorkflow from "./components/CreateWorkflow/CreateWorkflow";
 
 export default function Rightside({
   onRoleClick,
@@ -22,16 +23,8 @@ export default function Rightside({
         {/* Buttons  */}
         <div>
           <div className="flex flex-row space-x-4 my-2">
-            <Type2Button
-              leftIcon={"/role.png"}
-              buttonText={"Role"}
-              onClick={onRoleClick}
-            />
-            <Type2Button
-              leftIcon={"/worflow.png"}
-              buttonText={"Workflow"}
-              onClick={onWorkflowClick}
-            />
+            <CreateRole />
+            <CreateWorkflow />
           </div>
           <div className="flex flex-row space-x-4 my-2">
             <Type2Button

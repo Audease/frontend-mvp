@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { Avatar } from "flowbite-react";
 import Image from "next/image";
 import axios from "axios";
-import { staffRevalidation } from "../../action";
+import { staffRevalidation } from "../../../action";
 
 export default function Staff({ onClick }) {
   const [emailInput, setEmailInput] = useState("");

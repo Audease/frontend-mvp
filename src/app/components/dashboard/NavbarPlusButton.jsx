@@ -1,8 +1,8 @@
 'use client'
 
 import Image from "next/image";
-import { useCreateRole } from "../../dashboard/roles/hooks/useRoleCreate";
-import CreateRole, {RoleCreated} from "../../dashboard/roles/components/Rightside/components/CreateRole/CreateRoleModal";
+import { useCreateRole } from "../../admin/roles/hooks/useRoleCreate";
+import CreateRole, {RoleCreated} from "../../admin/roles/components/Rightside/components/CreateRole/CreateRoleModal";
 
 
 export default function NavbarPlusButton() {

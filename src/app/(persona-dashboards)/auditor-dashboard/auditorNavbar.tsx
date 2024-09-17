@@ -2,29 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import NavLinks from "./NavLinks";
+import NavLinks from "../../components/dashboard/NavLinks";
 import { useState, useEffect, useRef } from "react";
-import Notifications from "./Notifications";
-import NavbarPlusButton from "./NavbarPlusButton";
+import Notifications from "../../components/dashboard/Notifications";
+import NavbarPlusButton from "../../components/dashboard/NavbarPlusButton";
 import { useRouter } from "next/navigation";
-import { useAppSelector } from "../../../redux/store";
 
-export default function Navbar() {
+export default function AuditorNavbar() {
   const [profileOptions, setProfileOptions] = useState(false);
   const [notifications, setNotifications] = useState(false);
   const [plusButton, setPlusButton] = useState(false);
-  const [userEmailFirstLetter, setuserEmailFirstLetter] = useState("");
   const menuRef = useRef(null);
   const router = useRouter();
-
-  const links = [
-    { name: "Apps", href: "/admin" },
-    { name: "Resources", href: "#" },
-    { name: "Messenger", href: "/admin/messenger" },
-    { name: "Learners", href: "/admin/learners" },
-    { name: "Staff", href: "/admin/staff" },
-    { name: "Worflows", href: "/admin/workflows" },
-  ];
 
   const toggleVisibility = () => {
     setProfileOptions((prevState) => !prevState);
@@ -55,34 +44,30 @@ export default function Navbar() {
 
   const logout = async () => {
     console.log("logout");
-
+  
     // Call the server-side logout route to clear cookies on the server side
-    const response = await fetch("/api/logout", {
-      method: "POST",
+    const response = await fetch('/api/logout', {
+      method: 'POST',
     });
-
+  
     if (response.ok) {
       // Redirect to the login page
       router.push("/signIn");
     } else {
-      console.error("Failed to log out");
+      console.error('Failed to log out');
     }
   };
 
-  const userEmail = useAppSelector(
-    (state) => state.authReducer.value.userEmail
-  );
-  useEffect(() => {
-    if (userEmail) {
-      const firstLetter = userEmail.charAt(0).toUpperCase();
-      setuserEmailFirstLetter(firstLetter);
-    }
-  }, [userEmail]);
+  const links = [
+    { name: "Learners", href: "/auditor-dashboard" },
+    { name: "Messenger", href: "#" },
+    { name: "Analytics", href: "/auditor-dashboard/analytics"},
+  ];
 
   return (
-    <div className="flex flex-row space-x-24 mx-auto py-4  justify-center">
+    <div className="flex flex-row justify-between mx-10 py-4">
       {/* Logo */}
-      <div>
+      <div className="flex flex-row space-x-20">
         <Link href="/">
           <Image
             src="/audease_logo.png"
@@ -91,14 +76,14 @@ export default function Navbar() {
             alt="Audease logo"
           />
         </Link>
+
+        <div>
+        {/* Links */}
+        <NavLinks links={links} />
+      </div>
       </div>
       {/* Navigation and Options */}
       <div className="flex flex-row space-x-8">
-        <div>
-          {/* Links */}
-          <NavLinks links={links} />
-        </div>
-
         {/* Search Field */}
         <div className="relative">
           <input
@@ -136,9 +121,7 @@ export default function Navbar() {
               aria-expanded={profileOptions}
               aria-haspopup="true"
             >
-              <p className="text-tgrey3 text-lg">
-                {userEmailFirstLetter}
-              </p>
+              <p className="text-tgrey3 text-h5 font-semibold">N</p>
             </div>
           </div>
           {profileOptions && (

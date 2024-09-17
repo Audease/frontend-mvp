@@ -4,7 +4,7 @@ export default function SearchBox() {
     return (
         <div>
              {/* Search Field */}
-        <div className="relative">
+        <div className="">
           <input
             type="text"
             placeholder="Search ..."

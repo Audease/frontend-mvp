@@ -50,7 +50,7 @@ export function useLogin() {
     ]
 
     if (permissions.length > 3) {
-      return router.push('/dashboard')
+      return router.push('/admin')
     } else {
       for (const permission of permissionsMap) {
         if (permissions.includes(permission.label))
@@ -81,7 +81,7 @@ export function useLogin() {
 
         dispatch(setUserEmail(email));
         dispatch(setUserPackage("Free"));
-        dispatch(setUserPermissions("Admin"));
+        dispatch(setUserPermissions(response.data.permissions));
         
       } else {
         console.error("Login failed:", response.data);

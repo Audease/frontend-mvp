@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import SearchBox from "../../../components/dashboard/SearchBox";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { FaPlus, FaCheck } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";

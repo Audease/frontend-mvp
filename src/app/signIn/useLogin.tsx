@@ -35,10 +35,6 @@ export function useLogin() {
       {
         label: "Learning Platform",
         route: "/lazer-dashboard"
-      },
-      {
-        label: "Learning Platform",
-        route: "/lazer-dashboard"
       },{
         label: "Audit",
         route: "/auditor-dashboard"

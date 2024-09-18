@@ -6,6 +6,7 @@ import AccessorDashboardTable from "../../../components/dashboard/AccessorDashbo
 import learnersData from "../../../data/learnersData.json";
 import AccessorStaffModal from "../accessor-dashboard/accessorModal";
 import InductionStaffModal from "./inductionStaffModal";
+import { useRouter } from "next/navigation";
 
 export default function Accessor({ onViewChange }) {
   const [inductorName, setinductorName] = useState("Induction");
@@ -36,6 +37,7 @@ export default function Accessor({ onViewChange }) {
   const closeBKSDStaffModal = () => {
     setShowBKSDStaffModal(false);
   }
+  const router = useRouter();
 
   return (
     <div className="h-screen overflow-y-auto">
@@ -47,7 +49,7 @@ export default function Accessor({ onViewChange }) {
             <button
               className="flex flex-row space-x-2 text-tgrey3"
               type="button"
-              // onClick={onBackClick}
+              onClick={() => router.push("/admin")}
             >
               <div className="pt-2">
                 <SlArrowLeft className="text-tgrey3 h-[0.6rem]" />

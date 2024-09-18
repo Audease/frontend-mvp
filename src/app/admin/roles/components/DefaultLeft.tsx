@@ -30,40 +30,6 @@ export default function DefaultLeft({ onClickSetUpAcct }) {
   const tabs = useMemo(() => ["All","Recent", "Starred", "Modules", "Folders", "Thrash"],[]);
 
 
-
-  const data = [
-    {
-      id: 1,
-      name: "John Doe",
-      updated: "1 month ago",
-      lastEditor: "Engineer",
-      role: "role",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      updated: "2 months ago",
-      lastEditor: "Doctor",
-      role: "workflow",
-    },
-    {
-      id: 3,
-      name: "Sam Green",
-      updated: "3 months ago",
-      lastEditor: "Designer",
-      role: "role",
-    },
-  ];
-
-  const dataIcons = [
-    { role: "role", roleIcon: "/role.svg" },
-    { role: "workflow", roleIcon: "/workflow.svg" },
-    { role: "staff", roleIcon: "/staffIcon.png" },
-    { role: "learner", roleIcon: "/learnerIcon.png" },
-    { role: "resource", roleIcon: "/resourcesIcon.png" },
-    { role: "form", roleIcon: "/formIcon.png" },
-  ];
-
   return (
     <div className="flex flex-col">
       {/* Welcome  */}
@@ -131,7 +97,7 @@ export default function DefaultLeft({ onClickSetUpAcct }) {
       </div>
       {/* Table  */}
       <div className="mt-8">
-        <RoleTable data={data} roleIcons={dataIcons} />
+        <RoleTable  />
       </div>
     </div>
   );

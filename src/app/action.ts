@@ -16,3 +16,7 @@ export async function rolesRevalidation() {
     revalidateTag('accountStatus')
   }
 
+
+  export async function learnerRevalidation() {
+    revalidateTag('learnersList')
+  }

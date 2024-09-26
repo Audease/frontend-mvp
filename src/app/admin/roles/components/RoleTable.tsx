@@ -2,10 +2,12 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { fetchRoles } from "../../utils/fetchRoles";
 import { useRouter } from "next/navigation";
+import { Spinner } from "flowbite-react";
 
 export default function RoleTable() {
   const [availableRoles, setAvailableRoles] = useState([]);
   const [editOptions, setEditOptions] = useState({});
+  const [loading, setLoading] = useState(false);
   const menuRef = useRef(null);
   const router = useRouter();
 
@@ -31,14 +33,16 @@ export default function RoleTable() {
 
   useEffect(() => {
     const roleData = async () => {
+      setLoading(true);
       const allRoles = await fetchRoles();
       if (allRoles) {
         setAvailableRoles(allRoles);
       }
-    }
+      setLoading(false);
+    };
 
     roleData();
-  }, [])
+  }, []);
 
   // const dataIcons = [
   //   { rolePermision: "Add student", roleIcon: "/role.svg" },
@@ -47,10 +51,10 @@ export default function RoleTable() {
   //   { rolePermision: "resource", roleIcon: "/resourcesIcon.png" },
   //   { rolePermision: "form", roleIcon: "/formIcon.png" },
   // ];
-  
+
   // const getRoleIcon = (role) => {
   //   const foundIcon = dataIcons.find((icon) => role.includes(icon.rolePermision));
-  //   return foundIcon ? foundIcon.roleIcon : "";  
+  //   return foundIcon ? foundIcon.roleIcon : "";
   // };
 
   const permissionsMap = [
@@ -60,7 +64,7 @@ export default function RoleTable() {
     },
     {
       label: "Send Application",
-      route: "/admin/bksd-dashboard", 
+      route: "/admin/bksd-dashboard",
     },
     {
       label: "Approve/reject application",
@@ -83,7 +87,7 @@ export default function RoleTable() {
       route: "/admin/certificate-dashboard",
     },
   ];
-  
+
   const handleRoleClick = (permissions) => {
     if (permissions.length > 4) {
       return router.push("/admin");
@@ -113,7 +117,18 @@ export default function RoleTable() {
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">
-        {availableRoles.length === 0 ? (
+        {loading ? (
+          <tr className="border-b">
+            <td
+              colSpan={7}
+              className="px-4 py-4 text-center text-sm text-tableText2 font-medium"
+            >
+              <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
+                <Spinner aria-label="Loading..." size="xl" color="warning" />
+              </div>
+            </td>
+          </tr>
+        ) : availableRoles.length === 0 ? (
           <tr className="border-b">
             <td
               colSpan={4}
@@ -125,8 +140,11 @@ export default function RoleTable() {
         ) : (
           availableRoles.map((row, index) => (
             <tr key={index}>
-              <td className="px-6 py-4 whitespace-nowrap text-sm  text-tableText2 font-medium flex flex-row cursor-pointer" onClick={() => handleRoleClick(row.permissions)}>
-              <span className="pr-4">
+              <td
+                className="px-6 py-4 whitespace-nowrap text-sm  text-tableText2 font-medium flex flex-row cursor-pointer"
+                onClick={() => handleRoleClick(row.permissions)}
+              >
+                <span className="pr-4">
                   <Image
                     src={"/role.svg"}
                     width={18}
@@ -161,7 +179,9 @@ export default function RoleTable() {
                     <p className="hover:text-gold1 cursor-pointer">Duplicate</p>
                     <p className="hover:text-gold1 cursor-pointer">Move to folder</p> */}
                     <hr />
-                    <p className="text-tred1 hover:text-gold1 cursor-pointer">Move to Trash</p>
+                    <p className="text-tred1 hover:text-gold1 cursor-pointer">
+                      Move to Trash
+                    </p>
                   </div>
                 )}
               </td>

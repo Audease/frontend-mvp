@@ -2,16 +2,14 @@
 
 import { useState } from "react";
 import { LuPencil } from "react-icons/lu";
-import { SlArrowLeft } from "react-icons/sl";
 import { BKSDFilterButton } from "../../../components/dashboard/FilterButton";
 import BKSDDashboardTable from "../../../components/dashboard/BKSDDashboardTable";
 import learnersData from "../../../data/learnersData.json";
 import BKSDStaffModal from "./bksdStaffModal";
-import { useRouter } from "next/navigation";
+import PersonaBackButton from "../components/PersonaBackButton";
 
 export default function AdminBKSDDashboard() {
   const [BKSDName, setBKSDName] = useState("BKSD");
- const router = useRouter();
 
   const filterOptions = ["Option 1", "Option 2", "Option 3"];
   const categoriesDropdownOptions = ["Sent", "Not sent"];
@@ -44,18 +42,7 @@ export default function AdminBKSDDashboard() {
       <div className="flex flex-row justify-between">
         <div className="flex flex-row space-x-3">
           {/* Back Button */}
-          <div className="pt-1 ">
-            <button
-              className="flex flex-row space-x-2 text-tgrey3"
-              type="button"
-              onClick={() => router.push("/admin")}
-            >
-              <div className="pt-2">
-                <SlArrowLeft className="text-tgrey3 h-[0.6rem]" />
-              </div>
-              <p className="font-medium text-base">Back</p>
-            </button>
-          </div>
+          <PersonaBackButton />
           {/* Dashboard Title  */}
           <div>
             <h3 className="font-medium text-2xl pl-3">{BKSDName} Dashboard</h3>

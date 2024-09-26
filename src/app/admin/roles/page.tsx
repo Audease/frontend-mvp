@@ -141,8 +141,7 @@ export default function Role() {
           <AddLearnerModal
             show={learnerCreateModalState}
             onClose={closeLearnerCreateModal}
-            setLearnerSuccessModal={undefined}
-          />
+            setLearnerSuccessModal={undefined} onLearnerCreated={undefined}         />
           <LearnerCreated
             show={learnerSuccessModal}
             onClose={setLearnerSuccessModal}

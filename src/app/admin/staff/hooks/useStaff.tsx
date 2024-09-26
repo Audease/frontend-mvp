@@ -1,4 +1,3 @@
-import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { rolesRevalidation, staffRevalidation } from "../../../action";
 
@@ -29,7 +28,7 @@ export const useStaff = () => {
         roleId: selectedRoles[staff.id],
       };
     });
-    
+    console.log(formattedStaffArray)
     try {
       const response = await axios.post(
         "/api/assignRole",

@@ -3,7 +3,7 @@
 import { SlArrowLeft } from "react-icons/sl";
 import { FaPlus, FaCheck } from "react-icons/fa";
 import { useState, useEffect } from "react";
-import { Avatar } from "flowbite-react";
+import { Avatar, Spinner } from "flowbite-react";
 import Image from "next/image";
 import axios from "axios";
 import { staffRevalidation } from "../../../action";
@@ -15,6 +15,7 @@ export default function Staff({ onClick }) {
   const [invitedStaff, setInvitedStaff] = useState([]);
   const [error, setError] = useState("");
   const [addedMessageVisible, setAddedMessageVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Handles change in input field
   const handleEmailChange = (e) => {
@@ -90,6 +91,7 @@ export default function Staff({ onClick }) {
 
   // Invite Now Button
   const addToStaffList = async () => {
+    setLoading(true);
     try {
       const responses = await Promise.all(
         staffs.map((email) =>
@@ -104,11 +106,10 @@ export default function Staff({ onClick }) {
           )
         )
       );
-
+      setLoading(false);
       responses.forEach((response) => {
         if (response.status === 201) {
           staffRevalidation();
-          console.log(response.data.message); // Handle the response as needed
         }
       });
     } catch (error) {
@@ -120,7 +121,6 @@ export default function Staff({ onClick }) {
 
     setInvitedStaff((prevInvitedStaff) => {
       const updatedInvitedStaff = [...prevInvitedStaff, ...staffs];
-      // localStorage.setItem("invitedStaff", JSON.stringify(updatedInvitedStaff)); // Save to local storage immediately
       return updatedInvitedStaff;
     });
     setAddedMessageVisible(true);
@@ -148,7 +148,7 @@ export default function Staff({ onClick }) {
     if (addedMessageVisible) {
       const timer = setTimeout(() => {
         setAddedMessageVisible(false);
-      }, 10000); // 30 seconds
+      }, 5000); // 5 seconds
 
       return () => clearTimeout(timer); // Cleanup the timer on unmount
     }
@@ -221,6 +221,11 @@ export default function Staff({ onClick }) {
               </span>{" "}
               Add
             </button>
+            {loading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
+            <Spinner aria-label="Loading..." size="xl" color="warning" />
+          </div>
+        )}
             {/* Import button  */}
             <button className="flex flex-row rounded-md py-2 px-3 bg-dashboardRolesBtn text-white font-medium text-sm">
               <span>

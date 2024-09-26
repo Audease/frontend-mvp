@@ -5,6 +5,8 @@ import SearchBox from "../../components/dashboard/SearchBox";
 import FilterButton from "../../components/dashboard/FilterButton";
 import StaffTable from "./StaffTable";
 import Pagination from "../../components/dashboard/Pagination";
+import { Spinner } from "flowbite-react";
+import { staffRevalidation } from "../../action";
 
 type CheckedItems = {
   [key:number]: any
@@ -13,7 +15,7 @@ type CheckedItems = {
 export default function Staff() {
   const [activeTab, setActiveTab] = useState("All");
   const [dropdownOptions, setDropdownOptions] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   const [staffData, setStaffData] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [checkedItems, setCheckedItems] = useState<CheckedItems>({});
@@ -37,16 +39,19 @@ export default function Staff() {
   };
 
   const handleAssignRole = async () => {
-    // console.log(checkedItems)
+    setLoading(true)
     const newStaffData = await assignStaffRole(checkedItems, selectedRole)
-    // setStaffData(newStaffData)
+    staffRevalidation();
+    setLoading(false)
   }
 
   const handleFetchStaffData = async(page) => {
+    setLoading(true);
     const { totalPages, totalItems, result } = await fetchStaffData(page)
     setTotalpages(totalPages)
     setTotalItems(totalItems)
     setStaffData(result)
+    setLoading(false);
   }
 
   const handlePageChange = async (page) => {
@@ -82,8 +87,11 @@ export default function Staff() {
           </div>
 
           {/* The buttons on the right side */}
-          <div className="flex flex-row space-x-4">
+          <div className="flex flex-row space-x-4 ">
+            <div className="z-0"> 
             <SearchBox />
+            </div>
+            
             <div>
               <button
                 className="bg-dashboardRolesBtn text-white py-2 px-4 rounded focus:outline-none"
@@ -112,6 +120,11 @@ export default function Staff() {
           {...{staffData, setStaffData, currentPage, setCurrentPage, checkedItems, setCheckedItems}}
           onRoleSelect={handleRoleSelect}
         />
+         {loading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
+            <Spinner aria-label="Loading..." size="xl" color="warning" />
+          </div>
+        )}
         <div>
           <Pagination
             currentPage={currentPage}

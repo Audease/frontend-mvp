@@ -1,6 +1,6 @@
 'use client';
 
-import { Modal } from "flowbite-react";
+import { Modal, Spinner } from "flowbite-react";
 import { IoClose } from "react-icons/io5";
 import { PlainButton } from "../../../../../../components/dashboard/Button";
 import { useState } from "react";
@@ -11,10 +11,12 @@ import FilterButton, {
   RecruiterFilterButton,
 } from "../../../../../../components/dashboard/FilterButton";
   import { useCreateRole } from "../../../../hooks/useRoleCreate";
+import { rolesRevalidation } from "../../../../../../action";
 
 export default function CreateRoleModal({ isRoleModalOpen, closeRoleModal, setSuccess }) {
   const [inputedPermission, setInputedPermission] = useState([]);
   const [tags, setTags] = useState([]);
+  const [loading, setLoading] = useState(false);
   
   const {
     roleFormData,
@@ -54,8 +56,11 @@ export default function CreateRoleModal({ isRoleModalOpen, closeRoleModal, setSu
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const roleCreated = await roleCreate();
+    setLoading(false);
     if (roleCreated) {
+      rolesRevalidation();
       setSuccess(true);
     }
   };
@@ -175,6 +180,11 @@ export default function CreateRoleModal({ isRoleModalOpen, closeRoleModal, setSu
                 </div>
               </div>
             </div>
+            {loading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
+            <Spinner aria-label="Loading..." size="xl" color="warning" />
+          </div>
+        )}
             <div className="flex items-center justify-between">
               <button
                 type="submit"

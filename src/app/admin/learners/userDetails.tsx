@@ -6,7 +6,6 @@ import { IoPerson } from "react-icons/io5";
 import { FaBell } from "react-icons/fa";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
-// import PropTypes from 'prop-types';
 import UserDetailsDefault from "./userDetailsDefault";
 import UserDetailsDocuments from "./userDetailsDocuments";
 import UserDetailsPassword from "./userDetailsPassword";
@@ -179,15 +178,3 @@ export default function UserDetails({ userId: initialUserId, onBackClick }) {
     </div>
   );
 }
-
-// UserDetails.propTypes = {
-//   userId: PropTypes.shape({
-//     name: PropTypes.string,
-//     username: PropTypes.string,
-//     email: PropTypes.string,
-//     loginTime: PropTypes.string,
-//     funding: PropTypes.string,
-//     payment: PropTypes.string,
-//   }).isRequired,
-//   onBackClick: PropTypes.func.isRequired,
-// };

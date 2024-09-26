@@ -3,18 +3,23 @@ import Image from "next/image";
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { usePostLearners } from "./hooks/usePostLearners";
+import { learnerRevalidation } from "../../action";
+import { useLearners } from "./hooks/useLearners";
 
 export default function AddLearnerModal({
   show,
   onClose,
   setLearnerSuccessModal,
+  onLearnerCreated
 }) {
   const { formData, handleChange, createLearner, error } = usePostLearners();
+  
 
   const handleCreateClick = async () => {
     const success = await createLearner();
     if (success) {
       onClose();
+      onLearnerCreated();
       setLearnerSuccessModal(true);
     }
   };
@@ -230,6 +235,7 @@ export default function AddLearnerModal({
 }
 
 export function LearnerCreated({ show, onClose }) {
+
   return (
     <div>
       <Modal {...{ show, onClose }} className="modal p-10" size={"3xl"}>
@@ -249,7 +255,7 @@ export function LearnerCreated({ show, onClose }) {
           <button
             type="button"
             className="bg-dashboardButtons hover:bg-tgrey1 text-white w-96 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            onClick={onClose}
+            onClick={onClose} 
           >
             Go to Dashboard
           </button>
@@ -258,3 +264,4 @@ export function LearnerCreated({ show, onClose }) {
     </div>
   );
 }
+

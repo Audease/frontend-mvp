@@ -46,13 +46,12 @@ export const useCreateRole = () => {
   };
 
   const roleCreate = async () => {
-    console.log(roleFormData)
+    // console.log(roleFormData)
     try {
       const selectedPermission = endPointPermissions.filter(
         (perm) => roleFormData.permission.includes(perm.name)
       );
-
-      console.log(selectedPermission);
+      // console.log(selectedPermission);
 
       if (!selectedPermission) {
         console.error("Permission not found for the selected role.");
@@ -64,7 +63,7 @@ export const useCreateRole = () => {
         role: roleFormData.roleName,
       };
 
-      console.log(payload)
+      // console.log(payload)
 
       const assignResponse = await fetch("/api/createRole", {
         method: "POST",
@@ -74,7 +73,7 @@ export const useCreateRole = () => {
         body: JSON.stringify(payload),
       });
 
-      console.log(assignResponse)
+      // console.log(assignResponse)
 
       if (assignResponse.ok) {
         return true

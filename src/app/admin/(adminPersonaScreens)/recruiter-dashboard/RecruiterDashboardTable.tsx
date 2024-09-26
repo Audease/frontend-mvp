@@ -1,39 +1,14 @@
 "use client";
-import { useState,  } from "react";
-import Pagination from "./Pagination";
-import DatePicker from "./Datepicker";
+import { Spinner } from "flowbite-react";
 
-
-
-export default function RecruiterDashboardTable({ 
-  learnersData,
+export default function RecruiterDashboardTable({
   checkedItems,
   handleCheckboxChange,
   isEditing,
-  setLearnersData, 
+  loading,
+  allLearners,
+  handleInputChange,
 }) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(learnersData.length / itemsPerPage);
-
-  const handlePageChange = (page) => {
-    if (page < 1 || page > totalPages) return;
-    setCurrentPage(page);
-  };
-
-  const displayedLearners = learnersData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const handleInputChange = (id, field, value) => {
-    setLearnersData((prevData) =>
-      prevData.map((learner) =>
-        learner.id === id ? { ...learner, [field]: value } : learner
-      )
-    );
-  };
-
   return (
     <div className="flex flex-col justify-between min-h-[35rem] w-full overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200 font-inter table-auto rounded-t-lg h-full">
@@ -75,7 +50,18 @@ export default function RecruiterDashboardTable({
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {learnersData.length === 0 ? (
+          {loading ? (
+            <tr className="border-b">
+              <td
+                colSpan={7}
+                className="px-4 py-4 text-center text-sm text-tableText2 font-medium"
+              >
+                <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
+                  <Spinner aria-label="Loading..." size="xl" color="warning" />
+                </div>
+              </td>
+            </tr>
+          ) : allLearners.length === 0 ? (
             <tr className="border-b">
               <td
                 colSpan={11}
@@ -85,7 +71,7 @@ export default function RecruiterDashboardTable({
               </td>
             </tr>
           ) : (
-            displayedLearners.map((row) => (
+            allLearners.map((row) => (
               <tr key={row.id}>
                 <td className="px-2 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium flex flex-row">
                   <span className="pr-4">
@@ -96,11 +82,13 @@ export default function RecruiterDashboardTable({
                       checked={!!checkedItems[row.id]}
                     />
                   </span>
-                  {isEditing && checkedItems[row.id] ?(
+                  {isEditing && checkedItems[row.id] ? (
                     <input
                       type="text"
                       value={row.name}
-                      onChange={(e) => handleInputChange(row.id, 'name', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(row.id, "name", e.target.value)
+                      }
                       className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
@@ -110,25 +98,37 @@ export default function RecruiterDashboardTable({
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
                   {isEditing && checkedItems[row.id] ? (
                     <input
-                      type="text"
-                      value={row.dateOfBirth}
-                      onChange={(e) => handleInputChange(row.id, 'dateOfBirth', e.target.value)}
+                      type="date"
+                      value={row.date_of_birth}
+                      onChange={(e) =>
+                        handleInputChange(
+                          row.id,
+                          "date_of_birth",
+                          e.target.value
+                        )
+                      }
                       className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
-                    row.dateOfBirth
+                    row.date_of_birth
                   )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
                   {isEditing && checkedItems[row.id] ? (
                     <input
                       type="text"
-                      value={row.mobileNumber}
-                      onChange={(e) => handleInputChange(row.id, 'mobileNumber', e.target.value)}
+                      value={row.mobile_number}
+                      onChange={(e) =>
+                        handleInputChange(
+                          row.id,
+                          "mobile_number",
+                          e.target.value
+                        )
+                      }
                       className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
-                    row.mobileNumber
+                    row.mobile_number
                   )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
@@ -136,7 +136,9 @@ export default function RecruiterDashboardTable({
                     <input
                       type="text"
                       value={row.email}
-                      onChange={(e) => handleInputChange(row.id, 'email', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(row.id, "email", e.target.value)
+                      }
                       className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
@@ -147,36 +149,50 @@ export default function RecruiterDashboardTable({
                   {isEditing && checkedItems[row.id] ? (
                     <input
                       type="text"
-                      value={row.niNumber}
-                      onChange={(e) => handleInputChange(row.id, 'niNumber', e.target.value)}
+                      value={row.NI_number}
+                      onChange={(e) =>
+                        handleInputChange(row.id, "NI_number", e.target.value)
+                      }
                       className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
-                    row.niNumber
+                    row.NI_number
                   )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
                   {isEditing && checkedItems[row.id] ? (
                     <input
                       type="text"
-                      value={row.passportNumber}
-                      onChange={(e) => handleInputChange(row.id, 'passportNumber', e.target.value)}
+                      value={row.passport_number}
+                      onChange={(e) =>
+                        handleInputChange(
+                          row.id,
+                          "passport_number",
+                          e.target.value
+                        )
+                      }
                       className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
-                    row.passportNumber
+                    row.passport_number
                   )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
                   {isEditing && checkedItems[row.id] ? (
                     <input
                       type="text"
-                      value={row.homeAddress}
-                      onChange={(e) => handleInputChange(row.id, 'homeAddress', e.target.value)}
+                      value={row.home_address}
+                      onChange={(e) =>
+                        handleInputChange(
+                          row.id,
+                          "home_address",
+                          e.target.value
+                        )
+                      }
                       className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
-                    row.homeAddress
+                    row.home_address
                   )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
@@ -184,7 +200,9 @@ export default function RecruiterDashboardTable({
                     <input
                       type="text"
                       value={row.funding}
-                      onChange={(e) => handleInputChange(row.id, 'funding', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(row.id, "funding", e.target.value)
+                      }
                       className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
@@ -196,7 +214,9 @@ export default function RecruiterDashboardTable({
                     <input
                       type="text"
                       value={row.level}
-                      onChange={(e) => handleInputChange(row.id, 'level', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(row.id, "level", e.target.value)
+                      }
                       className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
@@ -208,7 +228,9 @@ export default function RecruiterDashboardTable({
                     <input
                       type="text"
                       value={row.awarding}
-                      onChange={(e) => handleInputChange(row.id, 'awarding', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(row.id, "awarding", e.target.value)
+                      }
                       className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
@@ -217,32 +239,23 @@ export default function RecruiterDashboardTable({
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
                   {isEditing && checkedItems[row.id] ? (
-                    <select name="" id=""
-                    className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 space-y-2">
-                      <option value="" >Adultcare</option>
+                    <select
+                      name=""
+                      id=""
+                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 space-y-2"
+                    >
+                      <option value="">Adultcare</option>
                       <option value="">Children Care</option>
                     </select>
                   ) : (
-                    row.choseCourse
+                    row.chosen_course
                   )}
-                </td> 
+                </td>
               </tr>
             ))
           )}
         </tbody>
       </table>
-      <div className="mt-7">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          itemsPerPage={itemsPerPage}
-          totalItems={learnersData.length}
-          onPageChange={handlePageChange}
-        />
-      </div>
-      <div className="w-60 text-sm">
-      {/* <DatePicker /> */}
-      </div>
     </div>
   );
 }

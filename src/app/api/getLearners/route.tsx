@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
           'Content-Type': 'application/json',
         },
         cache: 'force-cache',
-        next: { tags: ['stafflist'] }, 
+        next: { tags: ['learnersList'] }, 
       }
     );
 

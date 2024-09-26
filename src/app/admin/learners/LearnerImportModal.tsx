@@ -6,8 +6,8 @@ import { IoClose } from "react-icons/io5";
 import { SlCloudUpload } from "react-icons/sl";
 import type { CustomFlowbiteTheme } from "flowbite-react";
 import { Progress } from "flowbite-react";
-import { useState } from "react";
 import { MdCancel, MdOutlineDeleteForever } from "react-icons/md";
+import { useLearnerImport } from "../(adminPersonaScreens)/recruiter-dashboard/utils/useLearnerUpload";
 
 const customTheme: CustomFlowbiteTheme["progress"] = {
   base: "w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700",
@@ -24,44 +24,19 @@ const customTheme: CustomFlowbiteTheme["progress"] = {
   },
 };
 
-export default function LearnerImportModal({ show, onClose, onCreateClick }) {
-  const [fileName, setFileName] = useState("File Name");
-  const [fileSelected, setFileSelected] = useState(false);
-  const [uploadingError, setUploadingError] = useState("");
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploaded, setUploaded] = useState(false);
-  const [uploading, setUploading] = useState(false);
-
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setFileName(file.name);
-      setUploading(true);
-      setUploadProgress(0);
-      setUploadingError("");
-
-      // Mock upload process
-      const uploadInterval = setInterval(() => {
-        setUploadProgress((prev) => {
-          if (prev >= 100) {
-            clearInterval(uploadInterval);
-            setUploading(false);
-            setUploaded(true);
-            return 100;
-          }
-          return prev + 10;
-        });
-      }, 500);
-    }
-  };
-
-  const handleFileRemove = () => {
-    setFileName("File Name");
-    setUploadingError("");
-    setUploading(false);
-    setUploaded(false);
-    setUploadProgress(0);
-  };
+export default function LearnerImportModal({ show, onClose, randomFunction}) {
+  const {
+    fileName,
+    fileSelected,
+    isFile,
+    uploadingError,
+    uploadProgress,
+    uploaded,
+    uploading,
+    handleFileUpload,
+    onUploadClick,
+    handleFileRemove,
+  } = useLearnerImport(randomFunction);
 
   return (
     <div className="font-inter">
@@ -87,6 +62,7 @@ export default function LearnerImportModal({ show, onClose, onCreateClick }) {
               <div className="space-y-2">
                 <input
                   type="file"
+                  accept=".csv"
                   className="hidden"
                   id="fileInput"
                   onChange={handleFileUpload}
@@ -103,6 +79,27 @@ export default function LearnerImportModal({ show, onClose, onCreateClick }) {
                 </p>
               </div>
             </div>
+
+            {isFile && (
+              <div className="flex flex-col my-4">
+                <div>
+                  <h2 className="text-sm text-gray-500 font-bold text-left pb-2">
+                    Upload
+                  </h2>
+                </div>
+                <div className="border-2 border-tgrey2 rounded-lg shadow-sm pt-2 w-80">
+                  <div className="flex flex-row justify-between px-2">
+                    <p className="text-left py-1 text-xs font-normal">
+                      {fileName}
+                    </p>
+                    <MdCancel
+                      className="text-gray-400 cursor-pointer"
+                      onClick={handleFileRemove}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
 
             {uploading && (
               <div className="flex flex-col my-4">
@@ -164,7 +161,10 @@ export default function LearnerImportModal({ show, onClose, onCreateClick }) {
                     <p className="text-left py-1 text-xs font-normal">
                       {fileName}
                     </p>
-                    <MdCancel className="text-tred2" />
+                    <MdCancel
+                      className="text-tred2"
+                      onClick={handleFileRemove}
+                    />
                   </div>
                 </div>
                 <p className="text-[10px] text-tred2 font-medium pt-1">
@@ -177,7 +177,7 @@ export default function LearnerImportModal({ show, onClose, onCreateClick }) {
               <button
                 type="button"
                 className="bg-dashboardButtons hover:bg-tgrey1 text-white w-72 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline opacity-75"
-                onClick={onCreateClick}
+                onClick={onUploadClick}
                 disabled={uploading}
               >
                 Upload Files

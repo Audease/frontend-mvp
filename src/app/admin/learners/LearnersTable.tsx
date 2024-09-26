@@ -3,9 +3,13 @@ import { useEffect, useState, useRef } from "react";
 import Pagination from "../../components/dashboard/Pagination";
 import { useLearners } from "./hooks/useLearners";
 
-
-export default function LearnersTable({ learnersData, showUserDetailsPage }) {
+export default function LearnersTable({ showUserDetailsPage }) {
   const [editOptions, setEditOptions] = useState({});
+  const [allLearners, setallLearners] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalpages] = useState(1);
+  const [totalItems, setTotalItems] = useState(1);
+  const [loading, setLoading] = useState(true); 
   const menuRef = useRef(null);
   const [checkedItems, setCheckedItems] = useState({});
   const options = ["Recruiter", "BKSD", "Accessor", "Inductor", "Lazer"];
@@ -38,12 +42,25 @@ export default function LearnersTable({ learnersData, showUserDetailsPage }) {
     }));
   };
 
-  const {
-    onPageDecrease,
-    onPageIncrease,
-    allLearners
-  } = useLearners()
+  const { fetchLearnersData } = useLearners();
 
+  const handleFetchLearnersData = async (page) => {
+    setLoading(true); 
+    const { totalPages, totalItems, allLearners } = await fetchLearnersData(page);
+    setTotalpages(totalPages);
+    setTotalItems(totalItems);
+    setallLearners(allLearners);
+    setLoading(false); 
+  };
+
+  useEffect(() => {
+    handleFetchLearnersData(currentPage);
+  }, []);
+
+  const handlePageChange = async (page) => {
+    setCurrentPage(page);
+    handleFetchLearnersData(page);
+  };
 
   return (
     <div>
@@ -72,10 +89,19 @@ export default function LearnersTable({ learnersData, showUserDetailsPage }) {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {allLearners.length === 0 ? (
+          {loading ? ( 
             <tr className="border-b">
               <td
-                colSpan={4}
+                colSpan={7}
+                className="px-4 py-4 text-center text-sm text-tableText2 font-medium"
+              >
+                Loading...
+              </td>
+            </tr>
+          ) : allLearners.length === 0 ? (
+            <tr className="border-b">
+              <td
+                colSpan={7}
                 className="px-4 py-4 text-center text-sm text-tableText2 font-medium"
               >
                 Nothing here
@@ -125,7 +151,12 @@ export default function LearnersTable({ learnersData, showUserDetailsPage }) {
                       ref={menuRef}
                       className="bg-white shadow-lg rounded-lg p-4 font-medium w-32 absolute top-full border-2 right-20 text-tblack3 space-y-4 "
                     >
-                      <p className="hover:text-gold1 cursor-pointer" onClick={(e) => showUserDetailsPage(e, row.id)}>View</p>
+                      <p
+                        className="hover:text-gold1 cursor-pointer"
+                        onClick={(e) => showUserDetailsPage(e, row.id)}
+                      >
+                        View
+                      </p>
                       <p className="text-tred1 hover:text-gold1 cursor-pointer">
                         Move to Trash
                       </p>
@@ -139,12 +170,12 @@ export default function LearnersTable({ learnersData, showUserDetailsPage }) {
       </table>
 
       <div className="mt-7">
-      <Pagination
-          currentPage={1}
-          totalPages={10}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
           itemsPerPage={10}
-          totalItems={10}
-          onPageChange={2}
+          totalItems={totalItems}
+          onPageChange={handlePageChange}
         />
       </div>
     </div>

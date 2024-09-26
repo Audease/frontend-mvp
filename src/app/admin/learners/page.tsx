@@ -90,7 +90,6 @@ export default function Learners() {
         <div className="font-inter">
             {currentLearnersComponent === "LearnersDefault" && (
                 <LearnersDefault
-                    learnersData={learnersData}
                     showUserDetailsPage={showUserDetailsPage}
                 />
             )}

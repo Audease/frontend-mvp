@@ -2,17 +2,14 @@
 
 import { useState, useMemo } from "react";
 import FilterButton from "../../components/dashboard/FilterButton";
-
-import CreateButton from "../../components/dashboard/CreateButton";
-import AddLearnerModal, { LearnerCreated } from "./learnerModal";
 import LearnersTable from "./LearnersTable";
-import { usePostLearners } from "./hooks/usePostLearners";
+import CreateLearner from "./components/CreateLearner";
+import { learnerRevalidation } from "../../action";
 
-export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
+export default function LearnersDefault({ showUserDetailsPage }) {
   const [activeTab, setActiveTab] = useState("All");
   const [selectedOption, setSelectedOption] = useState(null);
-  const [learnerCreateModalState, setLearnerCreateModalState] = useState(false)
-  const [learnerSuccessModal, setLearnerSuccessModal] = useState(false)
+  const [tableKey, setTableKey] = useState(1);
 
   const tabs = useMemo(
     () => [
@@ -33,12 +30,9 @@ export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
 
   const options = ["Recruiter", "BKSD", "Accessor", "Inductor", "Lazer"];
 
-  const closeLearnerCreateModal = () => {
-    setLearnerCreateModalState(false);
-  };
-
-  const closeLearnerSuccessModal = () => {
-    setLearnerSuccessModal(false);
+  const handleLearnerCreated = () => {
+    learnerRevalidation(); 
+    setTableKey((prev) => prev + 1); 
   };
 
   return (
@@ -65,10 +59,7 @@ export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
 
           {/* The buttons on the right side */}
           <div className="flex flex-row space-x-4">
-            <CreateButton
-              label={"Create"}
-              onClick={() => setLearnerCreateModalState(true)}
-            />
+          <CreateLearner onLearnerCreated={handleLearnerCreated} />
 
             {/* Filter Button */}
             <FilterButton
@@ -88,27 +79,7 @@ export default function LearnersDefault({ learnersData, showUserDetailsPage }) {
 
       {/* The main body, which is the table list */}
       <div>
-        <LearnersTable
-          learnersData={learnersData}
-          showUserDetailsPage={showUserDetailsPage}
-        />
-
-        {learnerCreateModalState && (
-          <AddLearnerModal
-            {...{setLearnerSuccessModal}}
-            show={learnerCreateModalState}
-            onClose={closeLearnerCreateModal}
-          />
-        )}
-
-        {learnerSuccessModal && (
-          <LearnerCreated
-          show={learnerSuccessModal}
-          onClose={closeLearnerSuccessModal}
-        />
-        )}
-
-        
+        <LearnersTable key={tableKey} showUserDetailsPage={showUserDetailsPage} />
       </div>
     </div>
   );

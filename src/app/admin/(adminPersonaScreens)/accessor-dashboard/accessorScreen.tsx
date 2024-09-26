@@ -2,12 +2,11 @@
 
 import { useState } from "react";
 import { LuPencil } from "react-icons/lu";
-import { SlArrowLeft } from "react-icons/sl";
 import { BKSDFilterButton } from "../../../components/dashboard/FilterButton";
 import AccessorDashboardTable from "../../../components/dashboard/AccessorDashboardTable";
 import learnersData from "../../../data/learnersData.json";
 import AccessorStaffModal from "./accessorModal";
-import { useRouter } from "next/navigation";
+import PersonaBackButton from "../components/PersonaBackButton";
 
 
 export default function Accessor({ onViewChange }) {
@@ -40,26 +39,13 @@ export default function Accessor({ onViewChange }) {
     setShowBKSDStaffModal(false);
   }
 
-  const router = useRouter();
-
   return (
     <div className="h-screen overflow-y-auto">
       {/* Accessor Title and Filter Button */}
       <div className="flex flex-row justify-between">
         <div className="flex flex-row space-x-3">
           {/* Back Button */}
-          <div className="pt-1 ">
-            <button
-              className="flex flex-row space-x-2 text-tgrey3"
-              type="button"
-              onClick={() => router.push("/admin")}
-            >
-              <div className="pt-2">
-                <SlArrowLeft className="text-tgrey3 h-[0.6rem]" />
-              </div>
-              <p className="font-medium text-base">Back</p>
-            </button>
-          </div>
+          <PersonaBackButton />
           {/* Dashboard Title  */}
           <div>
             <h3 className="font-medium text-2xl pl-3">

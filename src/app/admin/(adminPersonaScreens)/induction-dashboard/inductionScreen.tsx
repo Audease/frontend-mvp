@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { LuPencil } from "react-icons/lu";
 import { BKSDFilterButton } from "../../../components/dashboard/FilterButton";
-import AccessorDashboardTable from "../accessor-dashboard/AccessorDashboardTable";
+
 import learnersData from "../../../data/learnersData.json";
 import AccessorStaffModal from "../accessor-dashboard/accessorModal";
 import InductionStaffModal from "./inductionStaffModal";
 import PersonaBackButton from "../components/PersonaBackButton";
+import AccessorDashboardTable from "../accessor-dashboard/components/AccessorDashboardTable";
 
 export default function Accessor({ onViewChange }) {
   const [inductorName, setinductorName] = useState("Induction");
@@ -85,7 +86,6 @@ export default function Accessor({ onViewChange }) {
       {/* The table  */}
       <div className="mt-6">
         <AccessorDashboardTable
-          learnersData={learnersData.learners}
           checkedItems={checkedItems}
           handleCheckboxChange={handleCheckboxChange}
           onViewChange={onViewChange}

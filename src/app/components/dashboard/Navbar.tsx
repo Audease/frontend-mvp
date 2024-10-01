@@ -18,12 +18,12 @@ export default function Navbar() {
   const router = useRouter();
 
   const links = [
-    { name: "Apps", href: "/dashboard" },
+    { name: "Apps", href: "/admin" },
     { name: "Resources", href: "#" },
-    { name: "Messenger", href: "/dashboard/messenger" },
-    { name: "Learners", href: "/dashboard/learners" },
-    { name: "Staff", href: "/dashboard/staff" },
-    { name: "Worflows", href: "/dashboard/workflows" },
+    { name: "Messenger", href: "/admin/messenger" },
+    { name: "Learners", href: "/admin/learners" },
+    { name: "Staff", href: "/admin/staff" },
+    { name: "Worflows", href: "/admin/workflows" },
   ];
 
   const toggleVisibility = () => {
@@ -54,15 +54,11 @@ export default function Navbar() {
   }, []);
 
   const logout = async () => {
-    console.log("logout");
-
-    // Call the server-side logout route to clear cookies on the server side
     const response = await fetch("/api/logout", {
       method: "POST",
     });
 
     if (response.ok) {
-      // Redirect to the login page
       router.push("/signIn");
     } else {
       console.error("Failed to log out");
@@ -86,7 +82,7 @@ export default function Navbar() {
         <Link href="/">
           <Image
             src="/audease_logo.png"
-            width={112}
+            width={100}
             height={30}
             alt="Audease logo"
           />

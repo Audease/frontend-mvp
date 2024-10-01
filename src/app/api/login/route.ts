@@ -49,9 +49,9 @@ export async function POST(req: NextRequest) {
         value: JSON.stringify(permissions),
         secure: process.env.NODE_ENV === "production",
         httpOnly: true,
-        maxAge: 60 * 60 * 24, // 1 day expiration
         path: '/',
       });
+
 
       return res;
     } else {

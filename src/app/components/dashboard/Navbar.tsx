@@ -82,7 +82,7 @@ export default function Navbar() {
         <Link href="/">
           <Image
             src="/audease_logo.png"
-            width={112}
+            width={100}
             height={30}
             alt="Audease logo"
           />

@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useCreateRole } from "../../admin/roles/hooks/useRoleCreate";
-import CreateRole, {RoleCreated} from "../../admin/roles/components/Rightside/components/CreateRole/CreateRoleModal";
+import CreateRole from "../../admin/roles/components/Rightside/components/CreateRole/CreateRoleModal";
+import { RoleCreatedModal } from "../../admin/roles/components/Rightside/components/CreateRole/RoleCreatedModal";
 
 
 export default function NavbarPlusButton() {
@@ -106,7 +107,7 @@ export default function NavbarPlusButton() {
       />
 
       {/* Role Success Modal */}
-      <RoleCreated
+      <RoleCreatedModal
         show={isRoleSuccessModal}
         onClose={closeRoleSuccessModal}
       />

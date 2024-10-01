@@ -20,7 +20,7 @@ function CreateWorkflow({ }: Props) {
   return (
     <>
       <Type2Button
-        leftIcon={"/workflow.png"}
+        leftIcon={"/worflow.png"}
         buttonText={"Workflow"}
         onClick={onWorkflowClick}
       />

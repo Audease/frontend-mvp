@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { BKSDFilterButton } from "../../components/dashboard/FilterButton";
-import AccessorDashboardTable from "../../admin/(adminPersonaScreens)/accessor-dashboard/AccessorDashboardTable";
-import learnersData from "../../data/learnersData.json";
+import AccessorDashboardTable from "../../admin/(adminPersonaScreens)/accessor-dashboard/components/AccessorDashboardTable";
 
 export default function Accessor({ onViewChange }) {
   const [inductorName, setinductorName] = useState("Induction");
@@ -41,7 +40,6 @@ export default function Accessor({ onViewChange }) {
       {/* The table  */}
       <div className="mt-6">
         <AccessorDashboardTable
-          learnersData={learnersData.learners}
           checkedItems={checkedItems}
           handleCheckboxChange={handleCheckboxChange}
           onViewChange={onViewChange}

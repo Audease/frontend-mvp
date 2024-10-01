@@ -5,12 +5,12 @@ import SearchBox from "../../components/dashboard/SearchBox";
 import FilterButton from "../../components/dashboard/FilterButton";
 import StaffTable from "./StaffTable";
 import Pagination from "../../components/dashboard/Pagination";
-import { Spinner } from "flowbite-react";
 import { staffRevalidation } from "../../action";
+import LoadingSpinner from "../../components/dashboard/Spinner";
 
 type CheckedItems = {
-  [key:number]: any
-}
+  [key: number]: any;
+};
 
 export default function Staff() {
   const [activeTab, setActiveTab] = useState("All");
@@ -24,10 +24,7 @@ export default function Staff() {
   const [totalPages, setTotalpages] = useState(1);
   const [totalItems, setTotalItems] = useState(1);
 
-  const {
-    assignStaffRole,
-    fetchStaffData
-  } = useStaff();
+  const { assignStaffRole, fetchStaffData } = useStaff();
 
   const tabs = useMemo(() => ["All", "Recent", "Deleted"], []);
 
@@ -39,30 +36,29 @@ export default function Staff() {
   };
 
   const handleAssignRole = async () => {
-    setLoading(true)
-    const newStaffData = await assignStaffRole(checkedItems, selectedRole)
-    staffRevalidation();
-    setLoading(false)
-  }
-
-  const handleFetchStaffData = async(page) => {
     setLoading(true);
-    const { totalPages, totalItems, result } = await fetchStaffData(page)
-    setTotalpages(totalPages)
-    setTotalItems(totalItems)
-    setStaffData(result)
+    const newStaffData = await assignStaffRole(checkedItems, selectedRole);
+    staffRevalidation();
+    setCheckedItems({});
     setLoading(false);
-  }
+  };
+
+  const handleFetchStaffData = async (page) => {
+    const { totalPages, totalItems, result } = await fetchStaffData(page);
+    setTotalpages(totalPages);
+    setTotalItems(totalItems);
+    setStaffData(result);
+  };
 
   const handlePageChange = async (page) => {
-    setCurrentPage(page)
-    handleFetchStaffData(page)
+    setCurrentPage(page);
+    handleFetchStaffData(page);
   };
 
   useEffect(() => {
-    handleFetchStaffData(currentPage)
-  }, [])
- 
+    handleFetchStaffData(currentPage);
+  }, []);
+
   return (
     <div className="flex flex-col space-y-4">
       <div>
@@ -88,10 +84,10 @@ export default function Staff() {
 
           {/* The buttons on the right side */}
           <div className="flex flex-row space-x-4 ">
-            <div className="z-0"> 
-            <SearchBox />
+            <div className="z-0">
+              <SearchBox />
             </div>
-            
+
             <div>
               <button
                 className="bg-dashboardRolesBtn text-white py-2 px-4 rounded focus:outline-none"
@@ -116,15 +112,19 @@ export default function Staff() {
 
       {/* The main body, which is the table list */}
       <div>
+        <div>{loading && <LoadingSpinner />}</div>
+        
         <StaffTable
-          {...{staffData, setStaffData, currentPage, setCurrentPage, checkedItems, setCheckedItems}}
+          {...{
+            staffData,
+            setStaffData,
+            currentPage,
+            setCurrentPage,
+            checkedItems,
+            setCheckedItems,
+          }}
           onRoleSelect={handleRoleSelect}
         />
-         {loading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
-            <Spinner aria-label="Loading..." size="xl" color="warning" />
-          </div>
-        )}
         <div>
           <Pagination
             currentPage={currentPage}

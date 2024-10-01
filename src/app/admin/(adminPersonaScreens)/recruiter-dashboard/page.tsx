@@ -6,9 +6,9 @@ import DeleteStudent, { UpdateLearner } from "./utils/action";
 import { learnerRevalidation } from "../../../action";
 import Pagination from "../../../components/dashboard/Pagination";
 import { useLearnerByRecruiter } from "./utils/useLearnerByRecruiter";
-import { Spinner } from "flowbite-react";
 import ActionButtons from "./components/ActionButton";
 import DashboardHeader from "./components/DashBoardHeader";
+import LoadingSpinner from "../../../components/dashboard/Spinner";
 
 export default function AdminRecruiterdashboard({
   showStaffButton = true,
@@ -171,6 +171,8 @@ export default function AdminRecruiterdashboard({
 
       <section>
         <div className="min-h-[35rem]">
+          {loading2 && <LoadingSpinner />}
+
           <RecruiterDashboardTable
             key={tableKey}
             {...{
@@ -183,12 +185,6 @@ export default function AdminRecruiterdashboard({
             }}
           />
         </div>
-
-        {loading2 && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
-            <Spinner aria-label="Loading..." size="xl" color="warning" />
-          </div>
-        )}
 
         <div className="mt-2">
           <Pagination

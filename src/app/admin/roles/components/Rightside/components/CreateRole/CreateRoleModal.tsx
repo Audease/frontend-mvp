@@ -1,6 +1,6 @@
 'use client';
 
-import { Modal, Spinner } from "flowbite-react";
+import { Modal } from "flowbite-react";
 import { IoClose } from "react-icons/io5";
 import { PlainButton } from "../../../../../../components/dashboard/Button";
 import { useState } from "react";
@@ -12,6 +12,7 @@ import FilterButton, {
 } from "../../../../../../components/dashboard/FilterButton";
   import { useCreateRole } from "../../../../hooks/useRoleCreate";
 import { rolesRevalidation } from "../../../../../../action";
+import LoadingSpinner from "../../../../../../components/dashboard/Spinner";
 
 export default function CreateRoleModal({ isRoleModalOpen, closeRoleModal, setSuccess }) {
   const [inputedPermission, setInputedPermission] = useState([]);
@@ -181,9 +182,7 @@ export default function CreateRoleModal({ isRoleModalOpen, closeRoleModal, setSu
               </div>
             </div>
             {loading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
-            <Spinner aria-label="Loading..." size="xl" color="warning" />
-          </div>
+         <LoadingSpinner />
         )}
             <div className="flex items-center justify-between">
               <button

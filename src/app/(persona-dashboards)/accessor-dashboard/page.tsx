@@ -1,29 +1,18 @@
 'use client'
 
 import { useState } from "react";
-import Accessor from "./accessorScreen";
-import AccessorApproval from "./accessorApproval";
+import AccessorDashboard from "../../admin/(adminPersonaScreens)/accessor-dashboard/page";
+import AccessorFilterButton from "../../admin/(adminPersonaScreens)/accessor-dashboard/components/AccessorFilterButton";
 
-export default function AccessorDashboard() {
-  const [view, setView] = useState("dashboard");
-  const [selectedLearner, setSelectedLearner] = useState(null);
-
-  const handleViewChange = (learner) => {
-    setSelectedLearner(learner);
-    setView("approval");
-  };
-
-  const handleBackToDashboard = () => {
-    setView("dashboard");
-  };
-
+export default function AccessorPersona() {
+  const [roleName, setRoleName] = useState("Accessor");
   return (
     <div className="">
-      {view === "dashboard" ? (
-        <Accessor onViewChange={handleViewChange} />
-      ) : (
-        <AccessorApproval learner={selectedLearner} onBack={handleBackToDashboard} />
-      )}
+     <div className="flex justify-between">
+        <h3 className="font-medium text-2xl">{roleName} Dashboard</h3>
+        <AccessorFilterButton />
+      </div>
+      <AccessorDashboard showHeader={false}/>
     </div>
   );
 }

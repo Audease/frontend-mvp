@@ -3,10 +3,11 @@
 import { SlArrowLeft } from "react-icons/sl";
 import { FaPlus, FaCheck } from "react-icons/fa";
 import { useState, useEffect } from "react";
-import { Avatar, Spinner } from "flowbite-react";
+import { Avatar } from "flowbite-react";
 import Image from "next/image";
 import axios from "axios";
 import { staffRevalidation } from "../../../action";
+import LoadingSpinner from "../../../components/dashboard/Spinner";
 
 export default function Staff({ onClick }) {
   const [emailInput, setEmailInput] = useState("");
@@ -221,11 +222,7 @@ export default function Staff({ onClick }) {
               </span>{" "}
               Add
             </button>
-            {loading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
-            <Spinner aria-label="Loading..." size="xl" color="warning" />
-          </div>
-        )}
+            {loading && <LoadingSpinner />}
             {/* Import button  */}
             <button className="flex flex-row rounded-md py-2 px-3 bg-dashboardRolesBtn text-white font-medium text-sm">
               <span>

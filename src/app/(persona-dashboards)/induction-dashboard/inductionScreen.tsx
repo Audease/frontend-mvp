@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BKSDFilterButton } from "../../components/dashboard/FilterButton";
-import AccessorDashboardTable from "../../components/dashboard/AccessorDashboardTable";
+import AccessorDashboardTable from "../../admin/(adminPersonaScreens)/accessor-dashboard/AccessorDashboardTable";
 import learnersData from "../../data/learnersData.json";
 
 export default function Accessor({ onViewChange }) {

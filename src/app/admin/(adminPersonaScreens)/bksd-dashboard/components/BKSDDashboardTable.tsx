@@ -1,33 +1,25 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import Pagination from "./Pagination";
+import Pagination from "../../../../components/dashboard/Pagination";
 import clsx from "clsx";
+import LoadingSpinner from "../../../../components/dashboard/Spinner";
+import { SendEmail } from "../utils/action";
+import { learnerRevalidation } from "../../../../action";
+import SuccessToast, { FailureToast } from "../../../../components/NotificationToast";
+import { useBKSDLearners } from "../utils/useBKSDLearners";
 
-export default function BKSDDashboardTable({
-  learnersData,
-  checkedItems,
-  handleCheckboxChange,
-}) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(learnersData.length / itemsPerPage);
-
-  const handlePageChange = (page) => {
-    if (page < 1 || page > totalPages) return;
+export default function BKSDDashboardTable({}) {
+  const handlePageChange = async (page) => {
     setCurrentPage(page);
+    handleFetchLearnersData(page);
   };
 
-  const displayedLearners = learnersData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const [editOptionsVisible, setEditOptionsVisible] = useState(null); // Store the index of the clicked row
+  const [editOptionsVisible, setEditOptionsVisible] = useState(null);
   const menuRef = useRef(null);
 
   const toggleVisibility = (index, rowId) => {
     if (checkedItems[rowId]) {
-      setEditOptionsVisible((prev) => (prev === index ? null : index)); // Toggle visibility for the specific row
+      setEditOptionsVisible((prev) => (prev === index ? null : index));
     } else {
       setEditOptionsVisible(null);
     }
@@ -35,7 +27,7 @@ export default function BKSDDashboardTable({
 
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
-      setEditOptionsVisible(null); // Close menu when clicking outside
+      setEditOptionsVisible(null);
     }
   };
 
@@ -46,8 +38,77 @@ export default function BKSDDashboardTable({
     };
   }, []);
 
+  const [allLearners, setallLearners] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalpages] = useState(1);
+  const [totalItems, setTotalItems] = useState(1);
+  const [loading, setLoading] = useState(true);
+
+  const { fetchBKSDLearnersData } = useBKSDLearners();
+
+  const handleFetchLearnersData = async (page) => {
+    setLoading(true);
+    const { totalPages, totalItems, allLearners } = await fetchBKSDLearnersData(
+      page
+    );
+    setTotalpages(totalPages);
+    setTotalItems(totalItems);
+    setallLearners(allLearners);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    handleFetchLearnersData(currentPage);
+  }, []);
+
+  const [checkedItems, setCheckedItems] = useState({});
+  const [checkedIds, setCheckedIds] = useState([]);
+
+  const handleCheckboxChange = (id: string) => {
+    setCheckedItems((prev) => {
+      const updatedItems = { ...prev, [id]: !prev[id] };
+
+      const updatedIds = Object.keys(updatedItems).filter(
+        (key) => updatedItems[key]
+      );
+      setCheckedIds(updatedIds);
+
+      return updatedItems;
+    });
+  };
+
+  // console.log(checkedIds);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showFailureToast, setShowFailureToast] = useState(false);
+  const sendApplication = async () => {
+    const results = await Promise.all(
+      checkedIds.map((id) => SendEmail(id)) 
+    );
+    
+    const allSuccess = results.every((result) => result === true);
+
+    if (allSuccess) {
+      await learnerRevalidation();
+      setCheckedItems({});
+      setShowSuccessToast(true);
+      setTimeout(() => {
+        setShowSuccessToast(false);
+      }, 5000);
+    } else {
+      setCheckedItems({});
+      setShowFailureToast(true);
+      setTimeout(() => {
+        setShowFailureToast(false);
+      }, 5000);
+    }
+  };
+
   return (
     <div className="flex flex-col justify-between min-h-[35rem] w-full overflow-x-auto">
+      <div className="fixed z-50 right-8 animate-bounce">
+        {showSuccessToast && <SuccessToast text={"Application(s) successfully."}/>}
+        {showFailureToast && <FailureToast text={"Fail to send Application(s)"}/>}
+      </div>
       <table className="min-w-full divide-y divide-gray-200 font-inter table-auto rounded-t-lg h-full">
         <thead className="bg-tgrey-6 border border-tgrey6 ">
           <tr>
@@ -93,7 +154,16 @@ export default function BKSDDashboardTable({
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {learnersData.length === 0 ? (
+          {loading ? (
+            <tr className="border-b">
+              <td
+                colSpan={7}
+                className="px-4 py-4 text-center text-sm text-tableText2 font-medium"
+              >
+                <LoadingSpinner />
+              </td>
+            </tr>
+          ) : allLearners.length === 0 ? (
             <tr className="border-b">
               <td
                 colSpan={13}
@@ -103,9 +173,12 @@ export default function BKSDDashboardTable({
               </td>
             </tr>
           ) : (
-            displayedLearners.map((row, index) => (
+            allLearners.map((row, index) => (
               <tr key={row.id}>
-                <td className="px-2 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium flex flex-row">
+                <td
+                  className="px-2 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium flex flex-row cursor-pointer"
+                  // onClick={() => handleCheckboxChange(row.id)}
+                >
                   <span className="pr-4">
                     <input
                       type="checkbox"
@@ -117,22 +190,22 @@ export default function BKSDDashboardTable({
                   {row.name}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
-                  {row.dateOfBirth}
+                  {row.date_of_birth}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
-                  {row.mobileNumber}
+                  {row.mobile_number}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   {row.email}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
-                  {row.niNumber}
+                  {row.NI_number}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
-                  {row.passportNumber}
+                  {row.passport_number}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
-                  {row.homeAddress}
+                  {row.home_address}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   {row.funding}
@@ -144,33 +217,38 @@ export default function BKSDDashboardTable({
                   {row.awarding}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
-                  {row.chosenCourse}
+                  {row.chosen_course}
                 </td>
                 <td className="px-2 py-2 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   <p
                     className={clsx("text-center p-1 rounded-lg", {
-                      "bg-green4 text-green3": row.application === "Sent",
-                      "bg-tgrey8 text-tblack4": row.application === "Not sent",
+                      "bg-green4 text-green3": row.application_mail === "Sent",
+                      "bg-tgrey8 text-tblack4": row.application_mail === "Not sent",
                     })}
                   >
-                    {row.application}
+                    {row.application_mail}
                   </p>
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-bold text-center relative">
                   <p
-                    onClick={() => toggleVisibility(index, row.id)} // Pass the current row index and ID
+                    onClick={() => toggleVisibility(index, row.id)}
                     aria-expanded={editOptionsVisible === index}
                     aria-haspopup="true"
                     className="cursor-pointer font-bold"
                   >
                     ...
                   </p>
-                  {editOptionsVisible === index && checkedItems[row.id] && ( // Check if the current index matches and the row is checked
+                  {editOptionsVisible === index && checkedItems[row.id] && (
                     <div
                       ref={menuRef}
                       className="bg-white shadow-lg rounded-lg p-2 font-medium w-32 absolute left-[-80px]  border-2 right-0 text-tblack3 space-y-4 z-10 top-10"
                     >
-                      <p className="hover:text-gold1 cursor-pointer">Send Application</p>
+                      <p
+                        className="hover:text-gold1 cursor-pointer"
+                        onClick={sendApplication}
+                      >
+                        Send Application
+                      </p>
                     </div>
                   )}
                 </td>
@@ -183,8 +261,8 @@ export default function BKSDDashboardTable({
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          itemsPerPage={itemsPerPage}
-          totalItems={learnersData.length}
+          itemsPerPage={10}
+          totalItems={totalItems}
           onPageChange={handlePageChange}
         />
       </div>

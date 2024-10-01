@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import Pagination from "../../components/dashboard/Pagination";
 import { useLearners } from "./hooks/useLearners";
+import LoadingSpinner from "../../components/dashboard/Spinner";
 
 export default function LearnersTable({ showUserDetailsPage }) {
   const [editOptions, setEditOptions] = useState({});
@@ -95,7 +96,7 @@ export default function LearnersTable({ showUserDetailsPage }) {
                 colSpan={7}
                 className="px-4 py-4 text-center text-sm text-tableText2 font-medium"
               >
-                Loading...
+               <LoadingSpinner />
               </td>
             </tr>
           ) : allLearners.length === 0 ? (

@@ -1,5 +1,5 @@
 "use client";
-import { Spinner } from "flowbite-react";
+import LoadingSpinner from "../../../components/dashboard/Spinner";
 
 export default function RecruiterDashboardTable({
   checkedItems,
@@ -56,9 +56,7 @@ export default function RecruiterDashboardTable({
                 colSpan={7}
                 className="px-4 py-4 text-center text-sm text-tableText2 font-medium"
               >
-                <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
-                  <Spinner aria-label="Loading..." size="xl" color="warning" />
-                </div>
+                <LoadingSpinner />
               </td>
             </tr>
           ) : allLearners.length === 0 ? (

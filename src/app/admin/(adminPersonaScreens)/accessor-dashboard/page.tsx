@@ -4,7 +4,7 @@ import { useState } from "react";
 import Accessor from "./accessorScreen";
 import AccessorApproval from "./accessorApproval";
 
-export default function AccessorDashboard() {
+export default function AccessorDashboard({showHeader=true}) {
   const [view, setView] = useState("dashboard");
   const [selectedLearner, setSelectedLearner] = useState(null);
 
@@ -20,7 +20,7 @@ export default function AccessorDashboard() {
   return (
     <div className="">
       {view === "dashboard" ? (
-        <Accessor onViewChange={handleViewChange} />
+        <Accessor onViewChange={handleViewChange} {...{showHeader}}/>
       ) : (
         <AccessorApproval learner={selectedLearner} onBack={handleBackToDashboard} />
       )}

@@ -1,34 +1,50 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import Pagination from "./Pagination";
 import clsx from "clsx";
+import Pagination from "../../../../components/dashboard/Pagination";
+import { useAccessorLearners } from "../utils/useAccessorLearners";
+import LoadingSpinner from "../../../../components/dashboard/Spinner";
 
 export default function AccessorDashboardTable({
-  learnersData,
   checkedItems,
   handleCheckboxChange,
   onViewChange
 }) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(learnersData.length / itemsPerPage);
+  const { fetchAccessorLearnersData } = useAccessorLearners();
 
-  const handlePageChange = (page) => {
-    if (page < 1 || page > totalPages) return;
-    setCurrentPage(page);
+  const [allLearners, setallLearners] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalpages] = useState(1);
+  const [totalItems, setTotalItems] = useState(1);
+  const [loading, setLoading] = useState(true);
+
+  const handleFetchAccessorLearnersData = async (page) => {
+    setLoading(true);
+    const {  allLearners } = await fetchAccessorLearnersData(
+      page
+    );
+    setTotalpages(totalPages);
+    setTotalItems(totalItems);
+    setallLearners(allLearners);
+    setLoading(false);
   };
 
-  const displayedLearners = learnersData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  useEffect(() => {
+    handleFetchAccessorLearnersData(currentPage);
+  }, []);
 
-  const [editOptionsVisible, setEditOptionsVisible] = useState(null); // Store the index of the clicked row
+  const handlePageChange = async (page) => {
+    setCurrentPage(page);
+    handleFetchAccessorLearnersData(page);
+  };
+
+
+  const [editOptionsVisible, setEditOptionsVisible] = useState(null); 
   const menuRef = useRef(null);
 
   const toggleVisibility = (index, rowId) => {
     if (checkedItems[rowId]) {
-      setEditOptionsVisible((prev) => (prev === index ? null : index)); // Toggle visibility for the specific row
+      setEditOptionsVisible((prev) => (prev === index ? null : index)); 
     } else {
       setEditOptionsVisible(null);
     }
@@ -36,7 +52,7 @@ export default function AccessorDashboardTable({
 
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
-      setEditOptionsVisible(null); // Close menu when clicking outside
+      setEditOptionsVisible(null); 
     }
   };
 
@@ -94,7 +110,16 @@ export default function AccessorDashboardTable({
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {learnersData.length === 0 ? (
+          { loading ? (
+            <tr className="border-b">
+            <td
+              colSpan={12}
+              className="px-4 py-4 text-center text-sm text-tableText2 font-medium"
+            >
+              <LoadingSpinner />
+            </td>
+          </tr>
+        ) : allLearners.length === 0 ? (
             <tr className="border-b">
               <td
                 colSpan={13}
@@ -104,7 +129,7 @@ export default function AccessorDashboardTable({
               </td>
             </tr>
           ) : (
-            displayedLearners.map((row, index) => (
+            allLearners.map((row, index) => (
               <tr key={row.id}>
                 <td className="px-2 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium flex flex-row">
                   <span className="pr-4">
@@ -118,22 +143,22 @@ export default function AccessorDashboardTable({
                   {row.name}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
-                  {row.dateOfBirth}
+                  {row.date_of_birth}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
-                  {row.mobileNumber}
+                  {row.mobile_number}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   {row.email}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
-                  {row.niNumber}
+                  {row.NI_number}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
-                  {row.passportNumber}
+                  {row.passport_number}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
-                  {row.homeAddress}
+                  {row.home_address}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   {row.funding}
@@ -145,28 +170,28 @@ export default function AccessorDashboardTable({
                   {row.awarding}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
-                  {row.chosenCourse}
+                  {row.chosen_course}
                 </td>
                 <td className="px-2 py-2 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   <p
                     className={clsx("text-center p-1 rounded-lg", {
-                      "bg-green4 text-green3": row.status === "Approved",
-                      "bg-tgrey8 text-tblack4": row.status === "Pending",
+                      "bg-green4 text-green3": row.application_status === "Approved",
+                      "bg-tgrey8 text-tblack4": row.application_status === "Pending",
                     })}
                   >
-                    {row.status}
+                    {row.application_status}
                   </p>
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-bold text-center relative">
                   <p
-                    onClick={() => toggleVisibility(index, row.id)} // Pass the current row index and ID
+                    onClick={() => toggleVisibility(index, row.id)} 
                     aria-expanded={editOptionsVisible === index}
                     aria-haspopup="true"
                     className="cursor-pointer font-bold"
                   >
                     ...
                   </p>
-                  {editOptionsVisible === index && checkedItems[row.id] && ( // Check if the current index matches and the row is checked
+                  {editOptionsVisible === index && checkedItems[row.id] && (
                     <div
                       ref={menuRef}
                       className="bg-white shadow-lg rounded-lg p-2 font-medium w-24 absolute left-[-60px] border-2 right-0 text-tblack3 space-y-4 z-10 top-10"
@@ -193,8 +218,8 @@ export default function AccessorDashboardTable({
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          itemsPerPage={itemsPerPage}
-          totalItems={learnersData.length}
+          itemsPerPage={10}
+          totalItems={totalItems}
           onPageChange={handlePageChange}
         />
       </div>

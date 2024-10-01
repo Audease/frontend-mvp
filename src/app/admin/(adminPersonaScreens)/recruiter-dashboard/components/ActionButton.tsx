@@ -16,22 +16,21 @@ import {
     onConfirmEditButtonClick,
     onRevertEditButtonClick,
     handleLearnerCreated,
-    showStaffButton = true,  // new prop with default value
+    showStaffButton = true,  
   }) {
     return (
       <div className="flex flex-row space-x-4">
         {Object.values(checkedItems).some((isChecked) => isChecked) && (
-          <>
+          <div className="flex space-x-4">
             <DeleteLearnerButton {...{ onDeleteClick }} />
             <EditLearnerButton {...{ onEditClick }} />
             <ConfirmEditButton {...{ onConfirmEditButtonClick }} />
             <RevertEditButton {...{ onRevertEditButtonClick }} />
-          </>
+          </div>
         )}
         <CreateLearner onLearnerCreated={handleLearnerCreated} />
         <ImportLearner />
-  
-        {/* Conditionally render the RecruiterStaff button based on the showStaffButton prop */}
+
         {showStaffButton && <RecruiterStaff />}
         <FilterLearner />
       </div>

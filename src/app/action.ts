@@ -1,22 +1,29 @@
-'use server'
- 
-import { revalidateTag } from 'next/cache'
- 
+"use server";
+
+import { revalidateTag } from "next/cache";
+
 export async function staffRevalidation() {
-  revalidateTag('stafflist')
+  revalidateTag("stafflist");
+}
+
+export async function rolesRevalidation() {
+  revalidateTag("roles");
+}
+
+export async function statusRevalidation() {
+  revalidateTag("accountStatus");
+}
+
+export async function learnerRevalidation() {
+  revalidateTag("learnersList");
+}
+
+export async function bksdLearnerRevalidation() {
+  revalidateTag("bksdLearnersList");
+}
+
+export async function accessorLearnerRevalidation() {
+  revalidateTag("accessorLearnersList");
 }
 
 
-export async function rolesRevalidation() {
-    revalidateTag('roles')
-  }
-
-
-  export async function statusRevalidation() {
-    revalidateTag('accountStatus')
-  }
-
-
-  export async function learnerRevalidation() {
-    revalidateTag('learnersList')
-  }

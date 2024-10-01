@@ -1,76 +1,23 @@
 import { Modal } from "flowbite-react";
 import { IoClose } from "react-icons/io5";
 import { Avatar } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { GetPersonaStaff } from "../../action";
 
 export default function RecruiterStaffModal({ show, onClose }) {
-  const initialStaffList = [
-    {
-      id: 1,
-      staffName: "Johnson Williamson",
-      staffEmail: "johnson.dencollege.recruite",
-      imgUrl: "/avatar.png",
-    },
-    {
-      id: 2,
-      staffName: "Emily Smith",
-      staffEmail: "emily.dencollege.recruite",
-      imgUrl: "/avatar.png",
-    },
-    {
-      id: 3,
-      staffName: "Emily Smith",
-      staffEmail: "emily.dencollege.recruite",
-      imgUrl: "/avatar.png",
-    },
-    {
-      id: 4,
-      staffName: "Emily Smith",
-      staffEmail: "emily.dencollege.recruite",
-      imgUrl: "/avatar.png",
-    },
-    {
-      id: 5,
-      staffName: "Emily Smith",
-      staffEmail: "emily.dencollege.recruite",
-      imgUrl: "/avatar.png",
-    },
-    {
-      id: 6,
-      staffName: "Emily Smith",
-      staffEmail: "emily.dencollege.recruite",
-      imgUrl: "/avatar.png",
-    },
-    {
-      id: 7,
-      staffName: "Emily Smith",
-      staffEmail: "emily.dencollege.recruite",
-      imgUrl: "/avatar.png",
-    },
-    {
-      id: 8,
-      staffName: "Emily Smith",
-      staffEmail: "emily.dencollege.recruite",
-      imgUrl: "/avatar.png",
-    },
-    {
-      id: 9,
-      staffName: "Emily Smith",
-      staffEmail: "emily.dencollege.recruite",
-      imgUrl: "/avatar.png",
-    },
-    {
-      id: 10,
-      staffName: "Emily Smith",
-      staffEmail: "emily.dencollege.recruite",
-      imgUrl: "/avatar.png",
-    },
-  ];
-
-  const [staffList, setStaffList] = useState(initialStaffList);
+  const [staffList, setStaffList] = useState([]);
+  const getStaffList = async () => {
+    let success = await GetPersonaStaff({
+      personaPermission: "Send Application",
+    });
+    setStaffList(success);
+  };
+  useEffect(() => {
+    getStaffList();
+  }, []);
 
   const handleRemove = (id) => {
-    setStaffList(staffList.filter(staff => staff.id !== id));
+    setStaffList(staffList.filter((staff) => staff.id !== id));
   };
 
   return (
@@ -109,7 +56,10 @@ export default function RecruiterStaffModal({ show, onClose }) {
         {/* Search Results */}
         <div className="flex flex-col px-4 space-y-4 h-80 overflow-y-auto">
           {staffList.map((staff) => (
-            <div key={staff.id} className="flex flex-row justify-between space-x-2 items-center">
+            <div
+              key={staff.id}
+              className="flex flex-row justify-between space-x-2 items-center"
+            >
               <div className="flex flex-row space-x-2">
                 <div>
                   <Avatar
@@ -119,9 +69,9 @@ export default function RecruiterStaffModal({ show, onClose }) {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <h4 className="font-medium text-sm">{staff.staffName}</h4>
+                  <h4 className="font-medium text-sm">{staff.email}</h4>
                   <p className="font-normal text-xs text-tgrey3">
-                    {staff.staffEmail}
+                    {staff.username}
                   </p>
                 </div>
               </div>

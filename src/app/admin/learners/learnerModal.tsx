@@ -10,10 +10,9 @@ export default function AddLearnerModal({
   show,
   onClose,
   setLearnerSuccessModal,
-  onLearnerCreated
+  onLearnerCreated,
 }) {
   const { formData, handleChange, createLearner, error } = usePostLearners();
-  
 
   const handleCreateClick = async () => {
     const success = await createLearner();
@@ -147,55 +146,36 @@ export default function AddLearnerModal({
                   required
                 />
               </div>
-              {/* Funding, Level, Awarding  */}
-              <div className="flex flex-row space-x-4   ">
-                {/* Funding  */}
-                <div className="flex flex-col font-normal text-sm">
-                  <label htmlFor="" className="text-tgrey3 pb-2">
-                    Funding
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.funding}
-                    name="funding"
-                    onChange={handleChange}
-                    className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 w-20"
-                    placeholder="Input"
-                    required
-                  />
-                </div>
-                {/* Level  */}
-                <div className="flex flex-col font-normal text-sm">
-                  <label htmlFor="" className="text-tgrey3 pb-2">
-                    Level
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.level}
-                    name="level"
-                    onChange={handleChange}
-                    className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 w-20"
-                    placeholder="Input"
-                    required
-                  />
-                </div>
-                {/* Awarding  */}
-                <div className="flex flex-col font-normal text-sm">
-                  <label htmlFor="" className="text-tgrey3 pb-2">
-                    Awarding
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.awarding}
-                    name="awarding"
-                    onChange={handleChange}
-                    className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 w-36"
-                    placeholder="Input"
-                    required
-                  />
-                </div>
+              {/* Funding  */}
+              <div className="flex flex-col font-normal text-sm">
+                <label htmlFor="" className="text-tgrey3 pb-2">
+                  Funding
+                </label>
+                <input
+                  type="text"
+                  value={formData.funding}
+                  name="funding"
+                  onChange={handleChange}
+                  className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1"
+                  placeholder="Input"
+                  required
+                />
               </div>
-
+              {/* Awarding  */}
+              <div className="flex flex-col font-normal text-sm">
+                <label htmlFor="" className="text-tgrey3 pb-2">
+                  Awarding
+                </label>
+                <input
+                  type="text"
+                  value={formData.awarding}
+                  name="awarding"
+                  onChange={handleChange}
+                  className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 "
+                  placeholder="Input"
+                  required
+                />
+              </div>
               {/* Chose course  */}
               <div className="flex flex-col font-normal text-sm">
                 <label htmlFor="" className="text-tgrey3 pb-2">
@@ -212,12 +192,28 @@ export default function AddLearnerModal({
                   <option value="Children Care">Children Care</option>
                 </select>
               </div>
+              {/* Level  */}
+              <div className="flex flex-col font-normal text-sm">
+                <label htmlFor="" className="text-tgrey3 pb-2">
+                  Level
+                </label>
+                <input
+                  type="number"
+                  value={formData.level}
+                  name="level"
+                  onChange={handleChange}
+                  className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 w-1/2"
+                  placeholder="Input"
+                  min="0"
+                  required
+                />
+              </div>
             </div>
             {error && (
-            <p className="text-red-500 mt-2">
-              {error.message || "An error occurred"}
-            </p>
-          )}
+              <p className="text-red-500 mt-2">
+                {error.message || "An error occurred"}
+              </p>
+            )}
             <div className="flex items-center justify-center mt-4">
               <button
                 type="button"
@@ -235,7 +231,6 @@ export default function AddLearnerModal({
 }
 
 export function LearnerCreated({ show, onClose }) {
-
   return (
     <div>
       <Modal {...{ show, onClose }} className="modal p-10" size={"3xl"}>
@@ -255,7 +250,7 @@ export function LearnerCreated({ show, onClose }) {
           <button
             type="button"
             className="bg-dashboardButtons hover:bg-tgrey1 text-white w-96 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            onClick={onClose} 
+            onClick={onClose}
           >
             Go to Dashboard
           </button>
@@ -264,4 +259,3 @@ export function LearnerCreated({ show, onClose }) {
     </div>
   );
 }
-

@@ -1,24 +1,16 @@
 import { Modal } from "flowbite-react";
 import { IoClose } from "react-icons/io5";
 import { Avatar } from "flowbite-react";
-import { useEffect, useState } from "react";
-import { GetPersonaStaff } from "../../../action";
+import { useDeleteStaff } from "../../utils/useDeleteStaff";
+import LoadingSpinner from "../../../../components/dashboard/Spinner";
+import SuccessToast, {
+  FailureToast,
+} from "../../../../components/NotificationToast";
+import { usePersonaStaff } from "../../utils/usePersonaStaff";
 
 export default function BKSDStaffModal({ show, onClose }) {
-  const [staffList, setStaffList] = useState([]);
-  const getStaffList = async () => {
-    let success = await GetPersonaStaff({
-      personaPermission: "Send Application",
-    });
-    setStaffList(success);
-  };
-  useEffect(() => {
-    getStaffList();
-  }, []);
-
-  const handleRemove = (id) => {
-    setStaffList(staffList.filter((staff) => staff.id !== id));
-  };
+  const { staffList, error, refetch } = usePersonaStaff("Send Application");
+  const { handleRemove, loading, succesToast, failureToast } = useDeleteStaff();
 
   return (
     <div>
@@ -55,18 +47,24 @@ export default function BKSDStaffModal({ show, onClose }) {
 
         {/* Search Results */}
         <div className="flex flex-col px-4 space-y-4 h-80 overflow-y-auto">
+          {loading && <LoadingSpinner />}
+          <div className="fixed z-50 animate-bounce">
+            {succesToast && (
+              <SuccessToast text={"Staff Successfully deleted"} />
+            )}
+            {failureToast && <FailureToast text={"Failed to delete staff"} />}
+            {error && <p>Failed to load staff</p>}
+          </div>
           {staffList.map((staff) => (
             <div
               key={staff.id}
               className="flex flex-row justify-between space-x-2 items-center"
             >
               <div className="flex flex-row space-x-2">
-                <div>
-                  <Avatar
-                    img={staff.imgUrl}
-                    alt={`Image of ${staff.staffName}`}
-                    rounded
-                  />
+                <div className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center p-2 cursor-pointer">
+                  <p className="text-tgrey3 text-lg">
+                    {staff.email.charAt(0).toUpperCase()}
+                  </p>
                 </div>
                 <div className="flex flex-col">
                   <h4 className="font-medium text-sm">{staff.email}</h4>

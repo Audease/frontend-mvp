@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { fetchRoles } from "../../utils/fetchRoles";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "../../../components/dashboard/Spinner";
+import { Tooltip } from "flowbite-react";
 
 export default function RoleTable() {
   const [availableRoles, setAvailableRoles] = useState([]);
@@ -60,42 +61,47 @@ export default function RoleTable() {
   const permissionsMap = [
     {
       label: "Add student",
+      title: "Recruiter dashboard",
       route: "/admin/recruiter-dashboard",
     },
     {
       label: "Send Application",
+      title: "BKSD dashboard",
       route: "/admin/bksd-dashboard",
     },
     {
       label: "Approve/reject application",
+      title: "Accessor dashboard",
       route: "/admin/accessor-dashboard",
     },
     {
       label: "Induction",
+      title: "Inductor dashboard",
       route: "/admin/induction-dashboard",
     },
     {
       label: "Learning Platform",
+      title: "Lazer dashboard",
       route: "/admin/lazer-dashboard",
     },
     {
       label: "Audit",
+      title: "Auditor dashboard",
       route: "/admin/auditor-dashboard",
     },
     {
       label: "Certificate",
+      title: "Certificate dashboard",
       route: "/admin/certificate-dashboard",
     },
   ];
 
   const handleRoleClick = (permissions) => {
-    if (permissions.length > 4) {
-      return router.push("/admin");
-    } else {
-      for (const permissionMap of permissionsMap) {
-        if (permissions.includes(permissionMap.label)) {
-          return router.push(permissionMap.route);
-        }
+    console.log(permissions);
+
+    for (const permissionMap of permissionsMap) {
+      if (permissions === permissionMap.label) {
+        return router.push(permissionMap.route);
       }
     }
   };
@@ -123,7 +129,7 @@ export default function RoleTable() {
               colSpan={7}
               className="px-4 py-4 text-center text-sm text-tableText2 font-medium"
             >
-             <LoadingSpinner />
+              <LoadingSpinner />
             </td>
           </tr>
         ) : availableRoles.length === 0 ? (
@@ -138,20 +144,45 @@ export default function RoleTable() {
         ) : (
           availableRoles.map((row, index) => (
             <tr key={index}>
-              <td
-                className="px-6 py-4 whitespace-nowrap text-sm  text-tableText2 font-medium flex flex-row cursor-pointer"
-                onClick={() => handleRoleClick(row.permissions)}
+              <Tooltip
+                content={
+                  <div>
+                    {row.permissions.map((permission, index) => {
+                      const matchedPermission = permissionsMap.find(
+                        (permissionMap) => permission === permissionMap.label
+                      );
+
+                      return (
+                        <div
+                          key={index}
+                          onClick={() => handleRoleClick(permission)}
+                          className="block py-1 text-black hover:text-tgrey1 cursor-pointer"
+                        >
+                          {matchedPermission
+                            ? matchedPermission.title
+                            : permission}
+                        </div>
+                      );
+                    })}
+                  </div>
+                }
+                placement="right"
+                animation="duration-1000"
+                className="bg-tgrey5"
               >
-                <span className="pr-4">
-                  <Image
-                    src={"/role.svg"}
-                    width={18}
-                    height={18}
-                    alt="role icon"
-                  />
-                </span>
-                {row.role}
-              </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-row cursor-pointer">
+                  <span className="pr-4">
+                    <Image
+                      src="/role.svg"
+                      width={18}
+                      height={18}
+                      alt="role icon"
+                    />
+                  </span>
+                  {row.role}
+                </td>
+              </Tooltip>
+
               <td className="px-6 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
                 {row.createdDate}
               </td>

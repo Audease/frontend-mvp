@@ -155,7 +155,7 @@ export default function Role() {
         </div>
 
         {/* Right side */}
-        <div className="w-1/4">
+        <div className="w-1/4 hidden lg:flex">
           <Rightside
             onRoleClick={onRoleClick}
             onStaffClick={onStaffClick}

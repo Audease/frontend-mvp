@@ -2,8 +2,6 @@ import { useState } from "react";
 import { LuPencil } from "react-icons/lu";
 import { BKSDFilterButton } from "../../../components/dashboard/FilterButton";
 
-import learnersData from "../../../data/learnersData.json";
-import AccessorStaffModal from "../accessor-dashboard/accessorModal";
 import InductionStaffModal from "./inductionStaffModal";
 import PersonaBackButton from "../components/PersonaBackButton";
 import AccessorDashboardTable from "../accessor-dashboard/components/AccessorDashboardTable";

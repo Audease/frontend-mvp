@@ -44,14 +44,10 @@ export default function PersonaNavbar() {
 
   const logout = async () => {
     console.log("logout");
-  
-    // Call the server-side logout route to clear cookies on the server side
     const response = await fetch('/api/logout', {
       method: 'POST',
     });
-  
     if (response.ok) {
-      // Redirect to the login page
       router.push("/signIn");
     } else {
       console.error('Failed to log out');
@@ -59,7 +55,6 @@ export default function PersonaNavbar() {
   };
 
  
-
   return (
     <div className="flex flex-row justify-between mx-10 py-4">
       {/* Logo */}

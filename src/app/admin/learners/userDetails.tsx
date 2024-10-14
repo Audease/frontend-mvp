@@ -7,11 +7,11 @@ import { FaBell } from "react-icons/fa";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
 import UserDetailsDefault from "./userDetailsDefault";
-import UserDetailsDocuments from "./userDetailsDocuments";
+import UserDetailsDocuments from "./documents/userDetailsDocuments";
 import UserDetailsPassword from "./userDetailsPassword";
 import UserDetailsDeactivation from "./userDetailsDeactivation";
 
-export default function UserDetails({ userId: initialUserId, onBackClick }) {
+export default function UserDetails({ userId: initialUserId, onBackClick , backButton = true }) {
   const [activeSection, setActiveSection] = useState("userDetails");
   const [userId, setUserId] = useState(initialUserId);  
 
@@ -91,8 +91,8 @@ export default function UserDetails({ userId: initialUserId, onBackClick }) {
   return (
     <div className="flex flex-col space-y-4">
       {/* Back Button */}
-      <div>
-        <button
+      <div >
+        {backButton && <button
           className="flex flex-row space-x-2 text-tgrey3"
           type="button"
           onClick={onBackClick}
@@ -101,7 +101,7 @@ export default function UserDetails({ userId: initialUserId, onBackClick }) {
             <SlArrowLeft className="text-tgrey3 h-[0.6rem]" />
           </div>
           <p className="font-medium text-base">Back</p>
-        </button>
+        </button>}
       </div>
 
       <div className="flex flex-row w-full h-full min-h-[30rem] border border-tgrey2 rounded p-4 space-x-4">

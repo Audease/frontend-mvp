@@ -131,7 +131,7 @@ export default function AdminRecruiterdashboard({
 
       {/* Selection and active bar */}
       <section className="mt-4 flex-col">
-        <div className="flex flex-row justify-between font-medium text-sm text-tgrey3">
+        <div className="flex flex-col xl:flex-row justify-between font-medium text-sm text-tgrey3">
           <div className="flex flex-row space-x-6">
             {tabs.map((tab) => (
               <h2

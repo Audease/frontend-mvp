@@ -7,6 +7,7 @@ export async function PATCH(req: NextRequest) {
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
+
   if (!accessToken) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
@@ -18,11 +19,13 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ message: 'studentId is required' }, { status: 400 });
   }
 
+  console.log(studentId)
+
   try {
     const response = await fetch(
-      apiUrl +  `/v1/accessor/approve-application/${studentId}`,
+      apiUrl +`v1/accessor/approve-application/${studentId}`,
       {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',

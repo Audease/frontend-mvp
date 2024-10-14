@@ -10,15 +10,15 @@ export const ApproveLearner = async (studentId) => {
         },
       }
     );
-
-    if (response.status === 204) {
+    console.log(response)
+    if (response.status === 200) {
       return true;
     }
 
     if (!response.ok) {
       return false;
     }
-    console.log("Approval Succesful");
+  
   } catch (error) {
     console.error("Error Approving Learner:", error);
   }

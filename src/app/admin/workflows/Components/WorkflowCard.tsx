@@ -22,7 +22,7 @@ export default function WorkflowCard({ card, index }) {
       {...listeners}
       key={id}
       style={style}
-      className="p-4 border rounded-lg w-full h-[13rem] box-shadow"
+      className="p-4 border rounded-lg w-full min-h-[13rem] box-shadow"
     >
       <div className="flex flex-row justify-between pb-3">
         <h3 className="flex items-center text-black font-bold text-base pt-2">
@@ -31,19 +31,25 @@ export default function WorkflowCard({ card, index }) {
         </h3>
         <p className="text-[#5A5B80] text-2xl">...</p>
       </div>
-      <div className="">
-        <p className="text-tgrey3 text-[15px] font-medium py-4">
-          {rolePermission}
+      <div className="space-y-4">
+        <p className="text-tgrey3 text-[15px] font-medium">
+          <span className="font-bold">Permissions:</span> {rolePermission}
+        </p>
+        <p className="text-tgrey3 text-[15px] font-medium">
+          <span className="font-bold">No of Students:</span> {rolePermission}
+        </p>
+        <p className="text-tgrey3 text-[15px] font-medium">
+        <span className="font-bold"> No of Staff:</span> {rolePermission}
         </p>
       </div>
       <div>
-        <Avatar.Group>
+        {/* <Avatar.Group>
           <Avatar img={profilePics} rounded stacked />
           <Avatar img={profilePics} rounded stacked />
           <Avatar img={profilePics} rounded stacked />
           <Avatar img={profilePics} rounded stacked />
           <Avatar img={profilePics} rounded stacked />
-        </Avatar.Group>
+        </Avatar.Group> */}
       </div>
       <p></p>
     </div>

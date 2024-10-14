@@ -41,12 +41,12 @@ export default function DefaultLeft({ onClickSetUpAcct }) {
               Welcome back, {firstName}
             </h3>
           </div>
-          <sup className="p-4 mx-2 bg-dashboardButtonsBg rounded-2xl text-dashboardButtons font-medium">
+          <sup className="p-4 mx-2 bg-dashboardButtonsBg rounded-2xl text-dashboardButtons font-medium hidden xl:flex">
             {plan}
           </sup>
         </div>
         {/* complete your step button  */}
-        <div className="flex flex-row justify-between">
+        <div className=" flex-row justify-between hidden xl:flex">
           <div className="">
             <p className="font-normal font-inter text-tgrey3 text-base pt-4">
               Please complete a few steps to finalise your account
@@ -66,7 +66,7 @@ export default function DefaultLeft({ onClickSetUpAcct }) {
       {/* Selection and active bar */}
       <div className="flex flex-col mt-3">
         <div className="flex flex-row justify-between font-medium text-sm text-tgrey3">
-          <div className="flex flex-row space-x-6">
+          <div className="xl:flex flex-row space-x-6 hidden">
             {tabs.map((tab) => (
               <h2
                 key={tab}
@@ -96,7 +96,7 @@ export default function DefaultLeft({ onClickSetUpAcct }) {
         </div>
       </div>
       {/* Table  */}
-      <div className="mt-8">
+      <div className="mt-8 w-full overflow-x-auto">
         <RoleTable  />
       </div>
     </div>

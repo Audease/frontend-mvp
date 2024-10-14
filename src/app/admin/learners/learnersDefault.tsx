@@ -43,7 +43,7 @@ export default function LearnersDefault({ showUserDetailsPage }) {
       {/* Selection and active bar */}
       <div className="flex flex-col mt-3">
         <div className="flex flex-row justify-between font-medium text-sm text-tgrey3">
-          <div className="flex flex-row space-x-6 w-auto">
+          <div className="hidden xl:flex flex-row space-x-6 w-auto ">
             {tabs.map((tab) => (
               <h2
                 key={tab}
@@ -58,7 +58,7 @@ export default function LearnersDefault({ showUserDetailsPage }) {
           </div>
 
           {/* The buttons on the right side */}
-          <div className="flex flex-row space-x-4">
+          <div className="hidden xl:flex flex-row space-x-4">
           <CreateLearner onLearnerCreated={handleLearnerCreated} />
 
             {/* Filter Button */}
@@ -78,7 +78,7 @@ export default function LearnersDefault({ showUserDetailsPage }) {
       </div>
 
       {/* The main body, which is the table list */}
-      <div>
+      <div className="w-full overflow-x-auto">
         <LearnersTable key={tableKey} showUserDetailsPage={showUserDetailsPage} />
       </div>
     </div>

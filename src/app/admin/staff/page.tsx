@@ -39,6 +39,7 @@ export default function Staff() {
     setLoading(true);
     const newStaffData = await assignStaffRole(checkedItems, selectedRole);
     staffRevalidation();
+    handleFetchStaffData(1);
     setCheckedItems({});
     setLoading(false);
   };
@@ -51,8 +52,11 @@ export default function Staff() {
   };
 
   const handlePageChange = async (page) => {
+    setLoading(true);
     setCurrentPage(page);
     handleFetchStaffData(page);
+    setCheckedItems({});
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -67,7 +71,7 @@ export default function Staff() {
 
       {/* Selection and active bar */}
       <div className="flex flex-col mt-3">
-        <div className="flex flex-row justify-between font-medium text-sm text-tgrey3">
+        <div className="flex flex-col xl:flex-row justify-between font-medium text-sm text-tgrey3">
           <div className="flex flex-row space-x-6">
             {tabs.map((tab) => (
               <h2
@@ -83,11 +87,10 @@ export default function Staff() {
           </div>
 
           {/* The buttons on the right side */}
-          <div className="flex flex-row space-x-4 ">
+          <div className="flex flex-col xl:flex-row xl:space-x-4 space-y-4 xl:space-y-0 my-3 xl:my-0">
             <div className="z-0">
               <SearchBox />
             </div>
-
             <div>
               <button
                 className="bg-dashboardRolesBtn text-white py-2 px-4 rounded focus:outline-none"
@@ -111,9 +114,8 @@ export default function Staff() {
       </div>
 
       {/* The main body, which is the table list */}
-      <div>
+      <div className="w-full overflow-x-auto">
         <div>{loading && <LoadingSpinner />}</div>
-        
         <StaffTable
           {...{
             staffData,

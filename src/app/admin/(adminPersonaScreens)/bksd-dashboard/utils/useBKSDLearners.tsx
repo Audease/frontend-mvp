@@ -6,7 +6,7 @@ export const useBKSDLearners = () => {
       );
       const data = await response.json();
       if (response.ok) {
-        const totalPages = data.totalPages;
+        const totalPages = data.lastPage;
         const totalItems = data.total;
         const allLearners = data.data;
 

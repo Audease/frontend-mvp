@@ -1,21 +1,55 @@
 "use client";
+
+// Imports
 import { useEffect, useState, useRef } from "react";
 import Pagination from "../../../../components/dashboard/Pagination";
 import clsx from "clsx";
-import LoadingSpinner from "../../../../components/dashboard/Spinner";
+import LoadingSpinner, { LoadingSpinner2 } from "../../../../components/dashboard/Spinner";
 import { SendEmail } from "../utils/action";
 import { learnerRevalidation } from "../../../../action";
 import SuccessToast, { FailureToast } from "../../../../components/NotificationToast";
 import { useBKSDLearners } from "../utils/useBKSDLearners";
 
-export default function BKSDDashboardTable({}) {
+// State handling
+export default function BKSDDashboardTable() {
+  const [allLearners, setAllLearners] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [loading2, setLoading2] = useState(false);
+  const [editOptionsVisible, setEditOptionsVisible] = useState(null);
+  const [checkedItems, setCheckedItems] = useState({});
+  const [checkedIds, setCheckedIds] = useState([]);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showFailureToast, setShowFailureToast] = useState(false);
+  const menuRef = useRef(null);
+
+  const { fetchBKSDLearnersData } = useBKSDLearners();
+
+  // Event handling functions
   const handlePageChange = async (page) => {
     setCurrentPage(page);
     handleFetchLearnersData(page);
   };
 
-  const [editOptionsVisible, setEditOptionsVisible] = useState(null);
-  const menuRef = useRef(null);
+  const handleFetchLearnersData = async (page) => {
+    setLoading(true);
+    const { totalPages, totalItems, allLearners } = await fetchBKSDLearnersData(page);
+    setTotalPages(totalPages);
+    setTotalItems(totalItems);
+    setAllLearners(allLearners);
+    setLoading(false);
+  };
+
+  const handleCheckboxChange = (id) => {
+    setCheckedItems((prev) => {
+      const updatedItems = { ...prev, [id]: !prev[id] };
+      const updatedIds = Object.keys(updatedItems).filter((key) => updatedItems[key]);
+      setCheckedIds(updatedIds);
+      return updatedItems;
+    });
+  };
 
   const toggleVisibility = (index, rowId) => {
     if (checkedItems[rowId]) {
@@ -31,6 +65,28 @@ export default function BKSDDashboardTable({}) {
     }
   };
 
+  const sendApplication = async () => {
+    setLoading2(true);
+    const results = await Promise.all(checkedIds.map((id) => SendEmail(id)));
+    const allSuccess = results.every((result) => result === true);
+
+    if (allSuccess) {
+      learnerRevalidation();
+      handleFetchLearnersData(1);
+      setCheckedItems({});
+      setShowSuccessToast(true);
+      setTimeout(() => setShowSuccessToast(false), 5000);
+      setLoading2(false);
+    } else {
+      handleFetchLearnersData(1);
+      setCheckedItems({});
+      setShowFailureToast(true);
+      setTimeout(() => setShowFailureToast(false), 5000);
+      setLoading2(false);
+    }
+  };
+
+  // Lifecycle effects
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -38,79 +94,24 @@ export default function BKSDDashboardTable({}) {
     };
   }, []);
 
-  const [allLearners, setallLearners] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalpages] = useState(1);
-  const [totalItems, setTotalItems] = useState(1);
-  const [loading, setLoading] = useState(true);
-
-  const { fetchBKSDLearnersData } = useBKSDLearners();
-
-  const handleFetchLearnersData = async (page) => {
-    setLoading(true);
-    const { totalPages, totalItems, allLearners } = await fetchBKSDLearnersData(
-      page
-    );
-    setTotalpages(totalPages);
-    setTotalItems(totalItems);
-    setallLearners(allLearners);
-    setLoading(false);
-  };
-
   useEffect(() => {
     handleFetchLearnersData(currentPage);
   }, []);
 
-  const [checkedItems, setCheckedItems] = useState({});
-  const [checkedIds, setCheckedIds] = useState([]);
-
-  const handleCheckboxChange = (id: string) => {
-    setCheckedItems((prev) => {
-      const updatedItems = { ...prev, [id]: !prev[id] };
-
-      const updatedIds = Object.keys(updatedItems).filter(
-        (key) => updatedItems[key]
-      );
-      setCheckedIds(updatedIds);
-
-      return updatedItems;
-    });
-  };
-
-  // console.log(checkedIds);
-  const [showSuccessToast, setShowSuccessToast] = useState(false);
-  const [showFailureToast, setShowFailureToast] = useState(false);
-  const sendApplication = async () => {
-    const results = await Promise.all(
-      checkedIds.map((id) => SendEmail(id)) 
-    );
-    
-    const allSuccess = results.every((result) => result === true);
-
-    if (allSuccess) {
-      await learnerRevalidation();
-      setCheckedItems({});
-      setShowSuccessToast(true);
-      setTimeout(() => {
-        setShowSuccessToast(false);
-      }, 5000);
-    } else {
-      setCheckedItems({});
-      setShowFailureToast(true);
-      setTimeout(() => {
-        setShowFailureToast(false);
-      }, 5000);
-    }
-  };
-
+  // Rendering
   return (
-    <div className="flex flex-col justify-between min-h-[35rem] w-full overflow-x-auto">
+    <div className="flex flex-col justify-between  w-full overflow-x-auto">
       <div className="fixed z-50 right-8 animate-bounce">
-        {showSuccessToast && <SuccessToast text={"Application(s) successfully."}/>}
-        {showFailureToast && <FailureToast text={"Fail to send Application(s)"}/>}
+        {showSuccessToast && <SuccessToast text={"Application(s) successfully."} />}
+        {showFailureToast && <FailureToast text={"Fail to send Application(s)"} />}
       </div>
+      {loading2 && (
+        <div className=" flex justify-center items-center">
+          <LoadingSpinner2 />
+        </div>
+      )}
       <table className="min-w-full divide-y divide-gray-200 font-inter table-auto rounded-t-lg h-full">
-        <thead className="bg-tgrey-6 border border-tgrey6 ">
+        <thead className="bg-tgrey-6 border border-tgrey6">
           <tr>
             <th className="px-2 py-2 text-left text-[10px] font-normal text-tableText tracking-wider">
               Name
@@ -175,10 +176,7 @@ export default function BKSDDashboardTable({}) {
           ) : (
             allLearners.map((row, index) => (
               <tr key={row.id}>
-                <td
-                  className="px-2 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium flex flex-row cursor-pointer"
-                  // onClick={() => handleCheckboxChange(row.id)}
-                >
+                <td className="px-2 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium flex flex-row cursor-pointer">
                   <span className="pr-4">
                     <input
                       type="checkbox"
@@ -243,10 +241,7 @@ export default function BKSDDashboardTable({}) {
                       ref={menuRef}
                       className="bg-white shadow-lg rounded-lg p-2 font-medium w-32 absolute left-[-80px]  border-2 right-0 text-tblack3 space-y-4 z-10 top-10"
                     >
-                      <p
-                        className="hover:text-gold1 cursor-pointer"
-                        onClick={sendApplication}
-                      >
+                      <p className="hover:text-gold1 cursor-pointer" onClick={sendApplication}>
                         Send Application
                       </p>
                     </div>

@@ -74,15 +74,15 @@ export default function AccessorApproval({ learner, onBack }) {
       <div className="border rounded-md w-full h-[28rem] p-6">
         {loading && <LoadingSpinner />}
         {learner ? (
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-col md:flex-row justify-between">
             <div>
               <p className="text-xl font-medium">{learner.name}</p>
             </div>
-            <div className="flex justify-between space-x-6">
+            <div className="flex flex-col md:flex-row  my-4 md:mt-0 justify-between md:space-x-6">
               {/* Approve Button */}
               <button
                 onClick={approve}
-                className="flex flex-row bg-black text-white text-sm font-semibold py-0 px-3 rounded-lg"
+                className="flex flex-row bg-black text-white text-sm font-semibold my-4 md:my-0 py-0 px-3 rounded-lg"
               >
                 <IoIosCheckmark className="w-10 h-10" />
                 <p className="py-2">Approve</p>

@@ -1,46 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
-import { LuPencil } from "react-icons/lu";
 import CardGrid from "./CardGrid";
+import { fetchRoles } from "../../utils/fetchRoles";
+import LoadingSpinner from "../../../components/dashboard/Spinner";
 
 export default function WorkflowCards() {
-  // Data should come from the api
-  const dummyData = [
-    {
-      id: 1,
-      roleName: "Recruiter",
-      rolePermission: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      profilePics: "/avatar.png",
-    },
-    {
-      id: 2,
-      roleName: "Induction",
-      rolePermission: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      profilePics: "/avatar.png",
-    },
-    {
-      id: 3,
-      roleName: "BKSD",
-      rolePermission: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      profilePics: "/avatar.png",
-    },
-    {
-      id: 4,
-      roleName: "Accessor",
-      rolePermission: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      profilePics: "/avatar.png",
-    },
-    {
-      id: 5,
-      roleName: "Lazer",
-      rolePermission: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      profilePics: "/avatar.png",
-    },
-  ];
-  const [cardData, setCardData] = useState(dummyData);
+  const [availableRoles, setAvailableRoles] = useState([]);
+  const [cardData, setCardData] = useState([]); 
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const roleData = async () => {
+      setLoading(true);
+      const allRoles = await fetchRoles();
+      if (allRoles) {
+        setAvailableRoles(allRoles);
+        // console.log(allRoles)
+        
+        
+        const formattedData = allRoles.map((role, index) => ({
+          id: role.id || index, 
+          roleName: role.role || "Unknown Role", 
+          rolePermission: role.permissions || "No permissions available", 
+          profilePics: role.profilePics || "/avatar.png", 
+        }));
+
+        setCardData(formattedData); 
+      }
+      setLoading(false);
+    };
+
+    roleData();
+  }, []);
 
   const handleDragEnd = (e: DragEndEvent) => {
     const { active, over } = e;
@@ -51,17 +45,21 @@ export default function WorkflowCards() {
         return arrayMove(items, oldIndex, newIndex);
       });
     }
-    console.log({ cardData });
+    // console.log({ cardData });
   };
 
   return (
     <div className="grid grid-cols-1 grid-rows-1">
-      <div className="grid grid-cols-3 gap-8 col-start-1 col-end-2 row-start-1 row-end-2">
-        <DndContext onDragEnd={handleDragEnd}>
-          <SortableContext items={cardData}>
-            <CardGrid cardData={cardData} />
-          </SortableContext>
-        </DndContext>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mx-auto gap-8 col-start-1 col-end-2 row-start-1 row-end-2">
+        {loading ? (
+          <p><LoadingSpinner /></p>
+        ) : (
+          <DndContext onDragEnd={handleDragEnd}>
+            <SortableContext items={cardData}>
+              <CardGrid cardData={cardData} />
+            </SortableContext>
+          </DndContext>
+        )}
       </div>
     </div>
   );

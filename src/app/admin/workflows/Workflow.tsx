@@ -57,7 +57,7 @@ export default function Workflow({ onClick }) {
       {/* the board  */}
       <div className="flex flex-col space-y-4">
         {/* create worflows and buttons */}
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-col md:flex-row space-y-4 xl:space-y-0 justify-between">
           {/* Heading  */}
           <div className="">
             <h3 className="font-medium text-lg">Create a Workflow</h3>

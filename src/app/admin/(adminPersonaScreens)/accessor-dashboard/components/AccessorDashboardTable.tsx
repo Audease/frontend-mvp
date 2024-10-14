@@ -4,6 +4,7 @@ import clsx from "clsx";
 import Pagination from "../../../../components/dashboard/Pagination";
 import { useAccessorLearners } from "../utils/useAccessorLearners";
 import LoadingSpinner from "../../../../components/dashboard/Spinner";
+import { accessorLearnerRevalidation } from "@/app/action";
 
 export default function AccessorDashboardTable({
   checkedItems,
@@ -20,7 +21,7 @@ export default function AccessorDashboardTable({
 
   const handleFetchAccessorLearnersData = async (page) => {
     setLoading(true);
-    const {  allLearners } = await fetchAccessorLearnersData(
+    const { totalPages, totalItems, allLearners } = await fetchAccessorLearnersData(
       page
     );
     setTotalpages(totalPages);
@@ -31,6 +32,7 @@ export default function AccessorDashboardTable({
 
   useEffect(() => {
     handleFetchAccessorLearnersData(currentPage);
+    accessorLearnerRevalidation();
   }, []);
 
   const handlePageChange = async (page) => {

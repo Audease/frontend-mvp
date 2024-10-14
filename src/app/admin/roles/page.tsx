@@ -120,7 +120,7 @@ export default function Role() {
       {/* Body section */}
       <div className="flex flex-row space-x-12">
         {/* Left side */}
-        <div className="w-3/4">
+        <div className="w-full xl:w-3/4">
           {renderComponent()}
           {/* Role Modal */}
 
@@ -141,7 +141,7 @@ export default function Role() {
           <AddLearnerModal
             show={learnerCreateModalState}
             onClose={closeLearnerCreateModal}
-            setLearnerSuccessModal={undefined} onLearnerCreated={undefined}         />
+            setLearnerSuccessModal={undefined} onLearnerCreated={undefined}/>
           <LearnerCreated
             show={learnerSuccessModal}
             onClose={setLearnerSuccessModal}
@@ -155,7 +155,7 @@ export default function Role() {
         </div>
 
         {/* Right side */}
-        <div className="w-1/4 hidden lg:flex">
+        <div className="w-1/4 hidden xl:flex">
           <Rightside
             onRoleClick={onRoleClick}
             onStaffClick={onStaffClick}

@@ -11,7 +11,7 @@ export const SendEmail = async (studentId) => {
         }
       );
   
-      if (response.status === 204) {
+      if (response.status === 200) {
         return true;
       }
   

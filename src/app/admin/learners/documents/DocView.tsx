@@ -4,7 +4,8 @@ import WebViewer from "@pdftron/webviewer";
 import { useEffect, useRef } from "react";
 
 const DocView = ({ onBackClick }) => {
-  const viewer = useRef(null);
+  const viewer = useRef(null); // DOM element for WebViewer
+  const instanceRef = useRef(null); // WebViewer instance reference
 
   useEffect(() => {
     WebViewer(
@@ -16,15 +17,16 @@ const DocView = ({ onBackClick }) => {
       },
       viewer.current
     ).then((instance) => {
+      instanceRef.current = instance; // Store WebViewer instance
+
       const { documentViewer, annotationManager } = instance.Core;
 
-      // Function to trigger PDF download
-      const downloadPDF = async () => {
+      // Define the download function within the instance
+      instanceRef.current.downloadPDF = async () => {
         const doc = documentViewer.getDocument();
-        const xfdfString = await annotationManager.exportAnnotations(); 
+        const xfdfString = await annotationManager.exportAnnotations();
         const data = await doc.getFileData({
-          // Merges annotations into the PDF
-          xfdfString,
+          xfdfString, // Merge annotations into the PDF
         });
         const arr = new Uint8Array(data);
         const blob = new Blob([arr], { type: "application/pdf" });
@@ -33,13 +35,8 @@ const DocView = ({ onBackClick }) => {
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
         link.download = "annotated-document.pdf";
-        link.click(); // Programmatically click the link to trigger the download
+        link.click(); // Trigger the download
       };
-
-      // Attach the download function to the Submit Doc button
-      document
-        .getElementById("submit-btn")
-        .addEventListener("click", downloadPDF);
     });
   }, []);
 
@@ -47,6 +44,10 @@ const DocView = ({ onBackClick }) => {
     <div>
       <button onClick={onBackClick}>Back</button>
       <div className="webviewer" ref={viewer} style={{ height: "100vh" }}></div>
+      {/* Trigger the download function using the WebViewer instance stored in instanceRef */}
+      <button id="submit-btn" onClick={() => instanceRef.current?.downloadPDF()}>
+        Submit Doc
+      </button>
     </div>
   );
 };

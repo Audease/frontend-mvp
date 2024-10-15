@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DocDefault from "./docDefault";
-import DocView from "./docView";
+import DocView from "./DocView";
 
 export default function UserDetailsDocuments() {
   const [renderComponent, setRenderComponent] = useState<"default" | "view">("default");

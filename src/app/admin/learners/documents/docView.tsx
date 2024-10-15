@@ -7,7 +7,6 @@ const DocView = ({ onBackClick }) => {
   const viewer = useRef(null);
 
   useEffect(() => {
-    // Initialize WebViewer
     WebViewer(
       {
         path: "/lib",
@@ -22,7 +21,7 @@ const DocView = ({ onBackClick }) => {
       // Function to trigger PDF download
       const downloadPDF = async () => {
         const doc = documentViewer.getDocument();
-        const xfdfString = await annotationManager.exportAnnotations(); // Get annotations in XFDF format
+        const xfdfString = await annotationManager.exportAnnotations(); 
         const data = await doc.getFileData({
           // Merges annotations into the PDF
           xfdfString,

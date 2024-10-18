@@ -8,7 +8,7 @@ const SendBtn = ({ onSendClick, disabled }) => {
         onClick={onSendClick}
         disabled={disabled}
       >
-        Send Application
+        Induct
       </button>
     </div>
   );

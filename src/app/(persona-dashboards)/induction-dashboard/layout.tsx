@@ -1,5 +1,5 @@
 import PersonaNavbar from "../../components/dashboard/PersonaNavbar";
-import RecruiterNavbar from "../../components/dashboard/RecruiterNavbar";
+// import RecruiterNavbar from "../components/dashboard/RecruiterNavbar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

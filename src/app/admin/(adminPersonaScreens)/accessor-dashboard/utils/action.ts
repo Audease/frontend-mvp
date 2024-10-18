@@ -1,5 +1,6 @@
 export const ApproveLearner = async (studentId) => {
   const encodedStudentId = encodeURIComponent(studentId);
+
   try {
     const response = await fetch(
       `/api/accessorApproval/?studentId=${encodedStudentId}`,
@@ -10,22 +11,20 @@ export const ApproveLearner = async (studentId) => {
         },
       }
     );
-    console.log(response)
-    if (response.status === 200) {
-      return true;
-    }
 
-    if (!response.ok) {
+    if (response.ok) {
+      return true;
+    } else {
       return false;
     }
-  
   } catch (error) {
-    console.error("Error Approving Learner:", error);
+    return false;
   }
 };
 
 export const RejectLearner = async (studentId) => {
   const encodedStudentId = encodeURIComponent(studentId);
+
   try {
     const response = await fetch(
       `/api/accessorRejection/?studentId=${encodedStudentId}`,
@@ -37,17 +36,15 @@ export const RejectLearner = async (studentId) => {
       }
     );
 
-    if (response.status === 204) {
+    if (response.ok) {
+      console.log("Application Rejected successfully.");
       return true;
-    }
-
-    if (!response.ok) {
+    } else {
+      console.error("Rejection failed with status:", response.status);
       return false;
     }
-    console.log("Approval Succesful");
   } catch (error) {
-    console.error("Error Approving Learner:", error);
+    console.error("Error Rejecting Learner:", error);
+    return false;
   }
 };
-
-

@@ -93,12 +93,12 @@ export default function Learners() {
                     showUserDetailsPage={showUserDetailsPage}
                 />
             )}
-            {currentLearnersComponent === "UserDetails" && selectedUserId && (
+            {/* {currentLearnersComponent === "UserDetails" && selectedUserId && (
                 <UserDetails
                     userId={learnersData.find((user) => user.id === selectedUserId)}
                     onBackClick={onBackClick}
                 />
-            )}
+            )} */}
         </div>
     );
 }

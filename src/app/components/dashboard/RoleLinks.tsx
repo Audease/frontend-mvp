@@ -48,7 +48,7 @@ export default function RoleLinks () {
                   key={link}
                   onClick={() => {
                     setActive(link);
-                    clickHandlers[link](); // Call the corresponding click handler
+                    clickHandlers[link](); 
                   }}
                   className={`cursor-pointer pb-0 ${
                     active === link ? "border-b-4 border-dashboardButtons" : ""

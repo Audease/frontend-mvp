@@ -1,45 +1,57 @@
-// app/api/signup/route.ts
-
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
+import { cookies } from 'next/headers';
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function POST(req: NextRequest) {
   const payload = await req.json();
 
   try {
     const response = await axios.post(
-      "https://audease-dev.onrender.com/v1/auth/login",
+      apiUrl + "/v1/auth/login",
       payload
     );
+
     if (response.status === 200) {
       const {
         token: { access, refresh },
+        permissions,
       } = response.data;
-      console.log(
-        `"Access token": ${access.token} ${access.expires}, Refresh Token: ${refresh.token}, ${refresh.expires}`
-      );
 
-      const res = new NextResponse(
-        JSON.stringify({ message: "Login Successful" }),
-        {
-          status: 200,
-        }
-      );
-
-      // Set cookies
-      res.cookies.set("accessToken", access.token, {
-        httpOnly: true, // For security, prevent access from JavaScript
-        secure: process.env.NODE_ENV === "production", // Set secure flag on production
-        maxAge: access.expires, // Set expiration time
-        path: "/",
+      const res = new NextResponse(JSON.stringify({ permissions }), {
+        status: 200,
       });
 
-      res.cookies.set("refreshToken", refresh.token, {
-        httpOnly: true,
+      // Set accessToken cookie
+      cookies().set({
+        name: 'accessToken',
+        value: access.token,
         secure: process.env.NODE_ENV === "production",
-        maxAge: refresh.expires,
-        path: "/",
+        httpOnly: true,
+        maxAge: access.expires,
+        path: '/',
       });
+
+      // Set refreshToken cookie
+      cookies().set({
+        name: 'refreshToken',
+        value: refresh.token,
+        secure: process.env.NODE_ENV === "production",
+        httpOnly: true,
+        maxAge: refresh.expires,
+        path: '/',
+      });
+
+      // Set permissions cookie
+      cookies().set({
+        name: 'permissions',
+        value: JSON.stringify(permissions),
+        secure: process.env.NODE_ENV === "production",
+        httpOnly: true,
+        path: '/',
+      });
+
 
       return res;
     } else {

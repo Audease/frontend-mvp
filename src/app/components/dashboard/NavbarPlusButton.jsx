@@ -1,32 +1,71 @@
+'use client'
+
 import Image from "next/image";
-import { MdKeyboardArrowRight } from "react-icons/md";
+import { useCreateRole } from "../../admin/roles/hooks/useRoleCreate";
+import CreateRole from "../../admin/roles/components/Rightside/components/CreateRole/CreateRoleModal";
+import { RoleCreatedModal } from "../../admin/roles/components/Rightside/components/CreateRole/RoleCreatedModal";
+
 
 export default function NavbarPlusButton() {
+
+  const {
+    isModalOpen,
+    isRoleSuccessModal,
+    roleFormData,
+    setRoleFormData,
+    openModal,
+    closeModal,
+    closeRoleSuccessModal,
+    roleCreate,
+  } = useCreateRole();
+
+
+  const handleCreateAppRole = () => {
+    console.log("Create App/Role clicked");
+    openModal();
+
+  };
+
+  const handleCreateStaff = () => {
+    console.log("Create Staff clicked");
+
+  };
+
+  const handleCreateLearner = () => {
+    console.log("Create Learner clicked");
+
+  };
+
+  const handleCreateWorkflow = () => {
+    console.log("Create Workflow clicked");
+
+  };
+
   const createTask = [
     {
       id: 1,
       icon: "/roleGoldIcon.png",
       taskDone: "Create App/Role",
       taskDoneText: "Create new role now",
-      link: "",
+      handler: handleCreateAppRole,
     },
     {
       icon: "/staffGoldIcon.png",
       taskDone: "Create Staff",
       taskDoneText: "Create a staff now",
-      link: "",
+      handler: handleCreateStaff,
     },
     {
       icon: "/learnerGoldIcon.png",
       taskDone: "Create Learner",
       taskDoneText: "Create a learner now",
-      link: "",
+      handler: handleCreateLearner,
     },
     {
       icon: "/workflowGoldIcon.png",
       taskDone: "Create Workflow",
       taskDoneText: "Create a process now",
-      link: "",
+      handler: handleCreateWorkflow,
     },
   ];
 
@@ -34,14 +73,16 @@ export default function NavbarPlusButton() {
     <div className="absolute top-14 bg-white shadow-lg rounded-lg p-4 font-medium w-60 right-[6rem] space-y-4 font-inter">
       <div className="space-y-4">
         {createTask.map((taskToCreate) => (
-          <div key="" className="flex flex-row space-x-4">
+          <div
+            key={taskToCreate.taskDone}
+            className="flex flex-row space-x-4 cursor-pointer hover:text-gold1"
+            onClick={taskToCreate.handler}
+          >
             <div className="bg-dashboardButtonsBg w-10 h-10 rounded-full flex justify-center items-center">
-              {" "}
-              {/* <{taskToCreate.icon} className="w-5 h-5" /> */}
-              <Image 
+              <Image
                 className="text-gold1"
                 src={taskToCreate.icon}
-                alt="Create"
+                alt={taskToCreate.taskDone}
                 width={16}
                 height={16}
               />
@@ -55,6 +96,21 @@ export default function NavbarPlusButton() {
           </div>
         ))}
       </div>
+
+       {/* Role Modal */}
+       <CreateRole
+        show={isModalOpen}
+        onClose={closeModal}
+        onClick={roleCreate}
+        formData={roleFormData}
+        setFormData={setRoleFormData}
+      />
+
+      {/* Role Success Modal */}
+      <RoleCreatedModal
+        show={isRoleSuccessModal}
+        onClose={closeRoleSuccessModal}
+      />
     </div>
   );
 }

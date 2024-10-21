@@ -42,15 +42,20 @@ export default function RecruiterNavbar() {
     };
   }, []);
 
-  const logout = () => {
+  const logout = async () => {
     console.log("logout");
-
-    // Delete the cookies by setting their max-age to 0 and ensuring the same path
-    document.cookie = "accessToken=; path=/; max-age=0; secure; httponly";
-    document.cookie = "refreshToken=; path=/; max-age=0; secure; httponly";
-
-    // Redirect to the login page
-    router.push("/signIn");
+  
+    // Call the server-side logout route to clear cookies on the server side
+    const response = await fetch('/api/logout', {
+      method: 'POST',
+    });
+  
+    if (response.ok) {
+      // Redirect to the login page
+      router.push("/signIn");
+    } else {
+      console.error('Failed to log out');
+    }
   };
 
   const links = [

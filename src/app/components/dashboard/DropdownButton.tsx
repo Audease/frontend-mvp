@@ -8,11 +8,16 @@ export default function DropdownButton({
   onSelect,
   label,
   className,
+  disabled = false,  // Set default value to false
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  const toggleDropdown = () => {
+    if (!disabled) {
+      setIsOpen(!isOpen);
+    }
+  };
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -34,7 +39,11 @@ export default function DropdownButton({
 
   return (
     <div className="relative inline-block" ref={dropdownRef}>
-      <button onClick={toggleDropdown} className={className}>
+      <button
+        onClick={toggleDropdown}
+        className={`${className} ${disabled ? "cursor-not-allowed opacity-50" : ""}`} // Handle disabled state
+        disabled={disabled}  // Disable the button when the prop is true
+      >
         <div className="flex flex-row text-sm font-medium">
           {label}{" "}
           <span>

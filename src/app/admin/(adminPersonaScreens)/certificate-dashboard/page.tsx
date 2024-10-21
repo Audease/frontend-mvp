@@ -1,22 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import InductionDashboardTable from "./components/InductionDashboardTable";
-import InductionStaffModal from "./components/InductionStaffModal";
-import InductionDashboardHeader from "./components/InductionDashboardHeader";
+import CertificateDashboardTable from "./components/CertificateDashboardTable";
+import CertificateDashboardHeader from "./components/CertificateDashboardHeader";
 import StaffButton from "./components/StaffButton";
-import FilterInduction from "./components/FilterInduction";
+import FilterCertificate from "./components/FilterCertificate";
 import SendBtn from "./components/SendBtn";
 import { SendEmail } from "./utils/action";
 import { learnerRevalidation } from "@/app/action";
 import { useInductionLearners } from "./utils/useInductionLearners";
+import CertificateStaffModal from "./components/CertificateStaffModal";
 
-export default function AdminBKSDDashboard({
+export default function AdminCertificateDashboard({
   showHeader = true,
   showStaffButton = true,
 }) {
   // State management
-  const [roleName, setRoleName] = useState("Induction");
+  const [roleName, setRoleName] = useState("Certificate");
   const [showInductionStaffModal, setShowInductionStaffModal] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [checkedIds, setCheckedIds] = useState([]);
@@ -114,21 +114,21 @@ export default function AdminBKSDDashboard({
     <div>
       {/* Header Section */}
       <div className="flex flex-col xl:flex-row justify-between">
-        {showHeader && <InductionDashboardHeader {...{ roleName }} />}
+        {showHeader && <CertificateDashboardHeader {...{ roleName }} />}
 
         {/* Button Section */}
         <div className="flex flex-row space-x-4 my-3 xl:my-0">
           <SendBtn onSendClick={sendApplication} disabled={isDisabled} />
           {showStaffButton && <StaffButton {...{ onViewStaffClick }} />}
           <div className="hidden xl:flex">
-            {showStaffButton && <FilterInduction />}
+            {showStaffButton && <FilterCertificate />}
           </div>
         </div>
       </div>
 
       {/* Dashboard Table Section */}
       <div className="mt-6">
-        <InductionDashboardTable
+        <CertificateDashboardTable
           {...{
             sendApplication,
             successfulEmail,
@@ -148,7 +148,7 @@ export default function AdminBKSDDashboard({
       </div>
 
       {/* Staff Modal Section */}
-      <InductionStaffModal show={showInductionStaffModal} onClose={closeInductionStaffModal} />
+      <CertificateStaffModal show={showInductionStaffModal} onClose={closeInductionStaffModal} />
     </div>
   );
 }

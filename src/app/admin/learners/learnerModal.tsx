@@ -19,6 +19,7 @@ export default function AddLearnerModal({
     if (success) {
       onClose();
       onLearnerCreated();
+      learnerRevalidation();
       setLearnerSuccessModal(true);
     }
   };

@@ -12,7 +12,7 @@ export async function PATCH(req: NextRequest) {
   }
 
   const { searchParams } = new URL(req.url);
-  const studentId = searchParams.get('studentId'); 
+  const studentId = searchParams.get('studentId');
 
   if (!studentId) {
     return NextResponse.json({ message: 'studentId is required' }, { status: 400 });
@@ -20,9 +20,9 @@ export async function PATCH(req: NextRequest) {
 
   try {
     const response = await fetch(
-      apiUrl +  `/v1/accessor/reject-application/${studentId}`,
+      `${apiUrl}/v1/accessor/reject-application/${studentId}`,
       {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ export async function PATCH(req: NextRequest) {
     );
 
     if (response.ok) {
-      return NextResponse.json({ status: 204 });
+      return NextResponse.json({ message: 'Application rejected successfully' }, { status: 200 });
     } else {
       return NextResponse.json({ message: 'Rejection failed' }, { status: response.status });
     }

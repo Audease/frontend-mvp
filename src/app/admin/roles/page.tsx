@@ -11,6 +11,7 @@ import CreateWorkflow, { WorkflowCreated } from "../workflows/CreateWorkflow";
 import Rightside from "./components/Rightside/Rightside";
 import AddLearnerModal, { LearnerCreated } from "../learners/learnerModal";
 import { useCreateRole } from "./hooks/useRoleCreate";
+import { learnerRevalidation } from "@/app/action";
 
 export default function Role() {
   const [currentComponent, setCurrentComponent] = useState("Default");
@@ -115,6 +116,10 @@ export default function Role() {
     }
   };
 
+  const onLearnerCreated = async () => {
+    await learnerRevalidation();
+  };
+
   return (
     <div>
       {/* Body section */}
@@ -138,14 +143,19 @@ export default function Role() {
           />
 
           {/* Learner Modals */}
-          <AddLearnerModal
-            show={learnerCreateModalState}
-            onClose={closeLearnerCreateModal}
-            setLearnerSuccessModal={undefined} onLearnerCreated={undefined}/>
-          <LearnerCreated
-            show={learnerSuccessModal}
-            onClose={setLearnerSuccessModal}
-          />
+          {learnerCreateModalState && (
+            <AddLearnerModal
+              {...{ setLearnerSuccessModal, onLearnerCreated }}
+              show={learnerCreateModalState}
+              onClose={closeLearnerCreateModal}
+            />
+          )}
+          {learnerSuccessModal && (
+            <LearnerCreated
+              show={learnerSuccessModal}
+              onClose={closeLearnerSuccessModal}
+            />
+          )}
 
           {/* Audit Learner Modal */}
           <AddAuditLearnerModal

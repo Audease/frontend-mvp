@@ -98,7 +98,7 @@ export default function AccessorApproval({ learner, onBack }) {
             </div>
           </div>
         ) : (
-          <p>Loading...</p>
+          <p><LoadingSpinner /></p>
         )}
       </div>
     </div>

@@ -1,16 +1,17 @@
 "use client";
 
+
 import { Toggle } from "@/components/ui/toggle";
 import { type Editor } from "@tiptap/react";
 import { Bold, Heading1, Heading2, Heading6, Italic } from "lucide-react";
 
 type Props = {
-  editor: Editor | null;
+  editor: Editor | null;                                                                          
 };
 
 const Toolbar = ({ editor }: Props) => {
   if (!editor) {
-    return null;
+    return null;                                              
   }
   return (
     <div className="border border-input bg-transparent rounded-lg p-2 my-2">

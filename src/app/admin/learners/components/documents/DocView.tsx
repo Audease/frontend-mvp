@@ -15,6 +15,8 @@ import { applicationForm } from "./dummyForm";
 import BehaviouralPolicy from "./applicationForm/BehaviouralPolicy/BehaviouralPolicy";
 import CandidateRecordForm from "./applicationForm/CandidateRecord";
 import Confidentiality from "./applicationForm/Confidentiality/Confidentiality";
+import DataProtection from "./applicationForm/DataProtection/DataProtection";
+import EqualOpportunitiesForm from "./applicationForm/EqualOpoortunities/EqualOpportunitiesForm";
 
 const styles = StyleSheet.create({
   text1: { padding: 5, textTransform: "capitalize", fontSize: "12px" },
@@ -89,7 +91,7 @@ const FormPDFDocument = ({ formData }) => (
         </Text>
         {/* Confidentiality  */}
         <Confidentiality />
-        {/* <Text style={styles.text1}>
+        <Text style={styles.text1}>
           Candidate Name: {formData.confidentiality.candidateName}
         </Text>
         <Text style={styles.text1}>
@@ -115,10 +117,17 @@ const FormPDFDocument = ({ formData }) => (
         </Text>
         <Text style={styles.text1}>
           LDA Signature Date: {formData.confidentiality.ldaSignatureDate}
-        </Text> */}
+        </Text>
+        {/* Data Protection  */}
+        <DataProtection />
+        <Text style={styles.text1}>
+          LDA Signature Date: {formData.dataprotection.name}
+        </Text>
+
+        <EqualOpportunitiesForm />
       </View>
     </Page>
-  </Document>
+  </Document> 
 );
 
 const DocView = ({ onBackClick }) => {
@@ -126,6 +135,8 @@ const DocView = ({ onBackClick }) => {
     behavioural: {},
     candidaterecord: {},
     confidentiality: {},
+    dataprotection: {},
+    equalopportunities: {},
   });
 
   const [CollegeName, setCollegeName] = useState<string>("");
@@ -140,6 +151,8 @@ const DocView = ({ onBackClick }) => {
     "BehaviouralPolicy",
     "CandidateRecord",
     "Confidentiality",
+    "DataProtection",
+    "EqualOpportunities",
   ];
 
   useEffect(() => {
@@ -211,6 +224,24 @@ const DocView = ({ onBackClick }) => {
             onNextClick={onNextClick}
           />
         );
+        case "DataProtection":
+        return (
+          <DataProtection
+            formData={formData.dataprotection}
+            setFormData={(data) => handleSaveFormData(data, "dataprotection")}
+            onPrevClick={onPrevClick}
+            onNextClick={onNextClick}
+          />
+        );
+        case "EqualOpportunities":
+          return (
+            <EqualOpportunitiesForm
+              formData={formData.equalopportunities}
+              setFormData={(data) => handleSaveFormData(data, "equalopportunities")}
+              onPrevClick={onPrevClick}
+              onNextClick={onNextClick}
+            />
+          );
       default:
         return <Appeal {...{ onNextClick }} />;
     }

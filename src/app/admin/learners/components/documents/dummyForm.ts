@@ -283,19 +283,19 @@ export const applicationForm = [
       title: "Confidentiality and Privacy Agreement",
       paragraphs: [
         {
-          id:1,
+          id: 1,
           p: "The data you provide on your application form and the information in your assignments will be treated confidentially, and we willcomplywiththerequirementsofthe1998DataProtection Act as well as the new GDPR regulations to ensure your data is securely kept with Eden College. This means that you have the right to see the data and information that is being kept about you if you want to.",
         },
         {
-          id:2,
+          id: 2,
           p: "You also have the right to say whether this or other information about you is shared with other organisations. We will be able to help you more effectively if we are able to share information with e.g. Schools, Colleges, other Eden College trainers and assessors, training organisations and employers. If you are unhappy about this, please let us know now or at any time in the future.",
         },
         {
-          id:2,
+          id: 2,
           p: "I am aware that – Eden College will create and maintain computer and paper records on me, both during my course and after I complete the course. These records will be processed in compliance with the Data Protection Act 1998.",
         },
         {
-          id:3,
+          id: 3,
           p: "I consent that the information in the records may be used for reports, both internally within the training centre and to external bodies working with the centre in candidate administration.I agree that basic information can be shared with other organisations if necessary and in my interest. I understand that sensitive information will be treated separately.",
         },
       ],
@@ -305,28 +305,28 @@ export const applicationForm = [
           id: "candidateName",
           label: "Candidate Name",
           placeholder: "Candidate Name",
-          validation: "z.string().min(2).max(100)",
+          validation: z.string().min(2).max(100),
         },
         {
           type: "text",
           id: "employer",
           label: "Employer",
           placeholder: "Employer",
-          validation: "z.string().min(2).max(100)",
+          validation: z.string().min(2).max(100),
         },
         {
           type: "text",
           id: "courseDetails",
           label: "Course/Project Details",
           placeholder: "Course/Project Details",
-          validation: "z.string().min(2).max(250)",
+          validation: z.string().min(2).max(250),
         },
         {
           type: "text",
           id: "candidateSignature",
           label: "Candidate Signature",
           placeholder: "Candidate Signature",
-          validation: "z.string().min(1)",
+          validation: z.string().min(1),
         },
         {
           type: "date",
@@ -340,14 +340,14 @@ export const applicationForm = [
           id: "ldaName",
           label: "Learning and Development Adviser Name (please print)",
           placeholder: "Eden College Allocated LDA",
-          validation: "z.string().min(2).max(100)",
+          validation: z.string().min(2).max(100),
         },
         {
           type: "text",
           id: "ldaSignature",
           label: "Learning and Development Adviser Signature",
           placeholder: "Eden College Allocated LDA",
-          validation: "z.string().min(1)",
+          validation: z.string().min(1),
         },
         {
           type: "date",
@@ -358,62 +358,287 @@ export const applicationForm = [
         },
       ],
     },
-
-    // scetion: [
-    //   {
-    //     sid: 2,
-    //     title: "Section B",
-    //     description: "lorem ipsum",
-    //     fields: [
-    //       {
-    //         id: 1,
-    //         name: "firstName",
-    //         label: "First name",
-    //         placeholder: "John Doe",
-    //         description: "Please enter your first name",
-    //         type: "text",
-    //         required: true,
-    //       },
-    //       {
-    //         id: 2,
-    //         name: "lastName",
-    //         label: "Last Name",
-    //         placeholder: "John Doe",
-    //         description: "Please enter your last name",
-    //         type: "text",
-    //         required: true,
-    //       },
-    //       {
-    //         id: 3,
-    //         name: "middleName",
-    //         label: "Middle Name",
-    //         placeholder: "John Doe",
-    //         description: "Please enter your middle name",
-    //         type: "text",
-    //         required: true,
-    //       },
-    //     ],
-    //     fields2: [
-    //       {
-    //         id: 1,
-    //         name: "gender",
-    //         label: "Gender",
-    //         placeholder: "John Doe",
-    //         description: "Please enter your gender",
-    //         type: "text",
-    //         required: true,
-    //       },
-    //       {
-    //         id: 1,
-    //         name: "gender",
-    //         label: "Gender",
-    //         placeholder: "John Doe",
-    //         description: "Please enter your gender",
-    //         type: "select",
-    //         required: true,
-    //       },
-    //     ],
-    //   },
-    // ],
+    dataProtection: {
+      id: 5,
+      title: "Data Protection Consent Form - Students Enrolment",
+      section1: {
+        id: 1,
+        title: "Eden College Obligations to the Students",
+        sections: [
+          {
+            id: 1,
+            title: "Eden College Obligations to the Students",
+            content:
+              "Eden College recognizes its responsibilities under the Data Protection Act1998 in respect of the data that it maintains on computer and in relevant filing systems in respect of applicants for admission and of members of the organisation. Like all educational establishments, Eden college holds and processes information about its applicants and students for various purposes (for example, to help in the running of the admissions process, to record academic progress, to operate the organisation accounting, and security systems and to enable correspondence and communications).Eden College must comply with the data protection principles which are set out in the Data Protection Act1998 (the1998Act).For example: information must be collected and used fairly, stored safely and not disclosed to any other person unlawfully. It is Eden college policy to seek the consent of students for admission to hold and process personal data, including sensitive personal data, about them. A refusal to consent to the processing of the information listed below will delay the processing of applications.",
+          },
+          {
+            id: 2,
+            title: "Data Processing",
+            content:
+              "Listed in the enclosed schedule are the main categories of data which the Eden College may hold / process,	the	main	purpose(s) for	holding /	processing	such	data,	the	possible disclosures of such data and the likely sources of such data. In addition to having a legitimate basis for processing	data, Eden College has an additional duty to process that data fairly (for example, in accordance with any duty of confidence owed to you).",
+          },
+          {
+            id: 3,
+            title: "Students’ Obligations",
+            content:
+              "Students must now, and as members, ensure that any personal data provided to the organisation are accurate and up-to-date. They must ensure that any changes of address or other personal details are notified to the Tutor for Admissions or to their Tutor after admission. They should also be aware that if they take up a place at Eden College they will be required to sign an Eden college data protection consent form prior to matriculation.",
+          },
+          {
+            id: 4,
+            title: "Retention of Data",
+            content:
+              "Eden College will keep some classes of information for longer than others. These will include information held, for example, for reference and archive purposes. Some data on students maybe held/processed indefinitely in an anonymous form for statistical records and research.",
+          },
+          {
+            id: 5,
+            title: "Data Protection Officer",
+            content:
+              "Eden College Data Protection Officer is the Freda Jacobson. All enquiries regarding the 1998 Act and the organisation policy should be made to the Data Protection Officer.",
+          },
+        ],
+      },
+      section2: {
+        id: 2,
+        title: "The Students’ Obligations of Confidentiality",
+        paragraphs: [
+          {
+            id: "p1",
+            text: "I agree to Eden College, processing data contained in my personal file whether provided in confidence or by other individuals or institutions. I recognize that some of the information received by Eden College will have been provided confidentially. I accept that this information will be retained by Eden College for as long as it remains relevant. In the case of unsuccessful applications this normally means that files will be destroyed on 31March in the year following application.",
+          },
+          {
+            id: "p2",
+            text: "Sharing details of your admissions assessment and/or interviews risks compromising our standards of admission, and could harm the interpretation of your own performance. You understand that the organization expects you to maintain confidentiality. Therefore you must not disclose the content of any admissions assessment or interview to other applicants or any commercial organisations at any point, either during the admissions process or while you are a student at Eden College. This includes, but is not limited to, communication indirectly or directly by email, websites, chatrooms and texts with other applicants. While we understand that you may wish to discuss your interviews with advisers at your training centre, you are requested not to share full details of any questions asked with them. The organization will treat any breach of confidentiality as a very serious matter.",
+          },
+        ],
+      },
+      section3: {
+        id: 3,
+        title: "Feedback on Applications",
+        paragraph: [
+          {
+            id: "p1",
+            p: "Eden College is happy to provide feedback, when requested, to clients who have been informally interviewed by the organisation, but have failed to secure an offer on a course from Eden College.",
+          },
+          {
+            id: "p2",
+            p: "This is for two reasons:",
+          },
+        ],
+        list: [
+          {
+            id: "l1",
+            text: "The referee is well placed to judge the best way to convey the feedback to you so that it is received as a beneficial learning experience;",
+          },
+          {
+            id: "l2",
+            text: "The provision of feedback to your learning centre informs advisers of future applicants about the standards and requirements for the relevant course and is therefore of wider benefit to the admissions process.",
+          },
+        ],
+      },
+      section4: {
+        id: 3,
+        title: "Data Protection Act 1998:",
+        content: [
+          {
+            id: 1,
+            title: "Schedule Data Processing",
+            text: "Listed below are the main categories of data which the organisation may hold/process, the main purpose(s) for holding/processing such data, the possible disclosures of such data and the likely sources of such data.",
+            data: "Personal details (including address and contact details); academic record; qualification and skills; student record; student financial record; immigration status.",
+            mainP:
+              "To assess applications from students for admission and assist in the admissions process; Accommodation issues; to process proper and up-to-date records of academic progress, development and welfare; fees and charges administration/collection; legal issues and obligations (e.g. Health & Safety record; UK Border Agency reporting); communications/mailings; references.",
+            mainSnD:
+              "Application forms; family; local authority (and other governmental bodies); examination results; scholarships; Student Loans Company; examination boards; other educational institutions; employers and potential employers; legal representatives; admissions officers; UK Border Agency.",
+          },
+          {
+            id: 2,
+            title: "Medical records",
+            text: "Provision of healthcare",
+            data: "Family; Senior Tutor; other authorized Eden College staff; relevant authorized staff of the organisation; general practitioners; other medical practitioners",
+            mainP: "Equal opportunities monitoring",
+            mainSnD: "Applications forms; Eden College staff.",
+          },
+          {
+            id: 3,
+            title: "Criminal records and Eden College security systems",
+            text: "",
+            data: "",
+            mainP: "Disciplinary matters; legal obligations",
+            mainSnD:
+              "Application forms; police (and other authorities); legal representatives; court service; CCTV Lock records (accessed only when necessary).",
+          },
+        ],
+      },
+      consentConfirmation: [
+        {
+          type: "checkbox",
+          id: "confirm",
+          label:
+            "I confirm that I have read the summary of Eden college Data Protection policy set out in this form and consent to the Eden college holding and processing the categories of personal data about me in the attached schedule for the specified purposes (summarised therein) in respect of my application(s) for admission, as a learner if successful, and after completion and achievement.",
+          validation: z.boolean(),
+        },
+        {
+          type: "checkbox",
+          id: "altconfirm",
+          label:
+            "In the event that my application to Eden College is unsuccessful I consent to my personal data held on computer and in my files being passed to a not her training organisation for consideration for admission.",
+          validation: z.boolean(),
+        },
+        {
+          type: "checkbox",
+          id: "feedback confirm",
+          label:
+            "I have read and understand the statement on the confidentiality of the admissions process as outlined above and I accept this. I am also aware of the feedback arrangements.",
+          validation: z.boolean(),
+        },
+        {
+          type: "text",
+          id: "fullName",
+          label: "Full Name",
+          placeholder: "Full Name",
+          validation: z.string().min(2).max(100),
+        },
+        {
+          label: "Subject / Course Applied for",
+          type: "text",
+          id: "Subject / Course Applied for",
+          placeholder: "Subject / Course Applied for",
+          validation: z.string().min(2).max(100),
+        },
+      ],
+    },
+    equalOpportunitiesPolicy: {
+      id: 1,
+      title: "Eden College Equal Opportunities Policy",
+      introduction:
+        "Eden College is committed to taking positive action to fight unlawful discrimination in every aspect of its work.",
+      statement:
+        "Eden College is an equal opportunities employer and provider of Education, Training, and Employment. The aim of its equal opportunities policy is to ensure that no job applicant, learner, or employee receives less favourable treatment on the grounds of race, colour, ethnic or national origin, religion, gender, sexual orientation, marital status, HIV antibody status, AIDS, disability, age, or any other potential disadvantage.",
+      objectives: [
+        {
+          id: 1,
+          description:
+            "Eden College will strive to redress any imbalance that may become evident.",
+        },
+        {
+          id: 2,
+          description:
+            "Establish a broad base for consultation from learners to identify priorities and needs, ensuring alignment with the broader black and minority ethnic population.",
+        },
+        {
+          id: 3,
+          description:
+            "Maintain anti-discrimination objectives in all campaign and promotional work.",
+        },
+      ],
+      policyReview: {
+        frequency:
+          "Whenever a new staff appointment is to be made and at other times as necessary.",
+        responsibility:
+          "The Director is responsible for the day-to-day implementation of the policy.",
+        monitoring:
+          "Eden College will monitor and review the composition of its senior management team to promote a broad-based representation.",
+      },
+      legislation: [
+        {
+          id: 1,
+          act: "Race Relations Act 1976",
+        },
+        {
+          id: 2,
+          act: "Sex Discrimination Acts 1975-85",
+        },
+        {
+          id: 3,
+          act: "Equal Pay Act 1970",
+        },
+        {
+          id: 4,
+          act: "Disability Discrimination Act 1995",
+        },
+        {
+          id: 5,
+          act: "Rehabilitation of Offenders Act 1974",
+        },
+        {
+          id: 6,
+          act: "Equality Act 2010",
+        },
+      ],
+      serviceCommitment: {
+        goal: "Eden College is committed to ensuring equality of access to all its services for learners and to counter past discrimination while monitoring outcomes.",
+        accessibility: [
+          {
+            id: 1,
+            description:
+              "Services are based on consultation with learners, including excluded groups in decision-making.",
+          },
+          {
+            id: 2,
+            description:
+              "Services remain flexible and responsive to changing community needs.",
+          },
+          {
+            id: 3,
+            description:
+              "Information on services is widely available and targeted for maximum awareness.",
+          },
+          {
+            id: 4,
+            description:
+              "Systems are developed to audit and monitor service delivery and consumer satisfaction.",
+          },
+        ],
+      },
+      formFields: [
+        {
+          type: "text",
+          id: "candidateName",
+          label: "Candidate Name",
+          placeholder: "Candidate Name",
+          validation: "string(2-100)",
+        },
+        {
+          type: "text",
+          id: "employer",
+          label: "Employer",
+          placeholder: "Employer",
+          validation: "string(2-100)",
+        },
+        {
+          type: "text",
+          id: "courseDetails",
+          label: "Course/Project Details",
+          placeholder: "Course/Project Details",
+          validation: "string(2-250)",
+        },
+        {
+          type: "text",
+          id: "candidateSignature",
+          label: "Candidate Signature",
+          placeholder: "Candidate Signature",
+          validation: "string(1)",
+        },
+        {
+          type: "text",
+          id: "ldaName",
+          label: "Learning and Development Adviser Name",
+          placeholder: "LDA Name",
+          validation: "string(2-100)",
+        },
+        {
+          type: "text",
+          id: "ldaSignature",
+          label: "Learning and Development Adviser Signature",
+          placeholder: "LDA Signature",
+          validation: "string(1)",
+        },
+        {
+          type: "checkbox",
+          id: "agreement",
+          label: "I have read and understood the policy.",
+          validation: "boolean(true)",
+        },
+      ],
+    },
   },
 ];

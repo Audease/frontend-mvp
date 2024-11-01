@@ -7,9 +7,9 @@ import { FaBell } from "react-icons/fa";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
 import UserDetailsDefault from "./userDetailsDefault";
-import UserDetailsDocuments from "./documents/userDetailsDocuments";
 import UserDetailsPassword from "./userDetailsPassword";
 import UserDetailsDeactivation from "./userDetailsDeactivation";
+import UserDetailsDocuments from "../documents/userDetailsDocuments";
 
 export default function UserDetails({ userId: initialUserId, onBackClick , backButton = true }) {
   const [activeSection, setActiveSection] = useState("userDetails");

@@ -1,12 +1,20 @@
 "use client";
 
+import { learnerRevalidation } from "@/app/action";
 import { useState, useMemo } from "react";
-import FilterButton from "../../components/dashboard/FilterButton";
-import LearnersTable from "./LearnersTable";
 import CreateLearner from "./components/CreateLearner";
-import { learnerRevalidation } from "../../action";
+import FilterButton from "@/app/components/dashboard/FilterButton";
+import LearnersTable from "./components/LearnersTable";
 
-export default function LearnersDefault({ showUserDetailsPage }) {
+export default function LearnersDefault({
+  showUserDetailsPage,
+  allLearners,
+  currentPage,
+  totalPages,
+  totalItems,
+  loading,
+  handlePageChange,
+}) {
   const [activeTab, setActiveTab] = useState("All");
   const [selectedOption, setSelectedOption] = useState(null);
   const [tableKey, setTableKey] = useState(1);
@@ -31,8 +39,8 @@ export default function LearnersDefault({ showUserDetailsPage }) {
   const options = ["Recruiter", "BKSD", "Accessor", "Inductor", "Lazer"];
 
   const handleLearnerCreated = () => {
-    learnerRevalidation(); 
-    setTableKey((prev) => prev + 1); 
+    learnerRevalidation();
+    setTableKey((prev) => prev + 1);
   };
 
   return (
@@ -59,7 +67,7 @@ export default function LearnersDefault({ showUserDetailsPage }) {
 
           {/* The buttons on the right side */}
           <div className="hidden xl:flex flex-row space-x-4">
-          <CreateLearner onLearnerCreated={handleLearnerCreated} />
+            <CreateLearner onLearnerCreated={handleLearnerCreated} />
 
             {/* Filter Button */}
             <FilterButton
@@ -79,7 +87,18 @@ export default function LearnersDefault({ showUserDetailsPage }) {
 
       {/* The main body, which is the table list */}
       <div className="w-full overflow-x-auto">
-        <LearnersTable key={tableKey} showUserDetailsPage={showUserDetailsPage} />
+        <LearnersTable
+          key={tableKey}
+          {...{
+            showUserDetailsPage,
+            allLearners,
+            currentPage,
+            totalPages,
+            totalItems,
+            loading,
+            handlePageChange,
+          }}
+        />
       </div>
     </div>
   );

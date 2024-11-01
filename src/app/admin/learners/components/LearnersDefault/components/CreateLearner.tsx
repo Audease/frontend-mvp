@@ -1,6 +1,7 @@
+import CreateButton from "@/app/components/dashboard/CreateButton";
 import React, { useState } from "react";
-import CreateButton from "../../../components/dashboard/CreateButton";
-import AddLearnerModal, { LearnerCreated } from "../learnerModal";
+import AddLearnerModal, { LearnerCreated } from "./learnerModal";
+
 
 type Props = {};
 

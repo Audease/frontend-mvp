@@ -7,7 +7,8 @@ import { SlCloudUpload } from "react-icons/sl";
 import type { CustomFlowbiteTheme } from "flowbite-react";
 import { Progress } from "flowbite-react";
 import { MdCancel, MdOutlineDeleteForever } from "react-icons/md";
-import { useLearnerImport } from "../(adminPersonaScreens)/recruiter-dashboard/utils/useLearnerUpload";
+import { useLearnerImport } from "@/app/admin/(adminPersonaScreens)/recruiter-dashboard/utils/useLearnerUpload";
+
 
 const customTheme: CustomFlowbiteTheme["progress"] = {
   base: "w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700",

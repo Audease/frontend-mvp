@@ -17,6 +17,8 @@ import CandidateRecordForm from "./applicationForm/CandidateRecord";
 import Confidentiality from "./applicationForm/Confidentiality/Confidentiality";
 import DataProtection from "./applicationForm/DataProtection/DataProtection";
 import EqualOpportunitiesForm from "./applicationForm/EqualOpoortunities/EqualOpportunitiesForm";
+import EqualOpportunitiesPolicy from "./applicationForm/EqualOpoortunities/EqualOpportunities";
+import HealthSafetyPolicy from "./applicationForm/HealthSafetyPolicy/HealthSafetyPolicy";
 
 const styles = StyleSheet.create({
   text1: { padding: 5, textTransform: "capitalize", fontSize: "12px" },
@@ -137,6 +139,7 @@ const DocView = ({ onBackClick }) => {
     confidentiality: {},
     dataprotection: {},
     equalopportunities: {},
+    healthAndSafetyPolicy: {},
   });
 
   const [CollegeName, setCollegeName] = useState<string>("");
@@ -153,6 +156,7 @@ const DocView = ({ onBackClick }) => {
     "Confidentiality",
     "DataProtection",
     "EqualOpportunities",
+    "HealthSafetyPolicy",
   ];
 
   useEffect(() => {
@@ -235,9 +239,18 @@ const DocView = ({ onBackClick }) => {
         );
         case "EqualOpportunities":
           return (
-            <EqualOpportunitiesForm
+            <EqualOpportunitiesPolicy
               formData={formData.equalopportunities}
               setFormData={(data) => handleSaveFormData(data, "equalopportunities")}
+              onPrevClick={onPrevClick}
+              onNextClick={onNextClick}
+            />
+          );
+        case "HealthSafetyPolicy":
+          return (
+            <HealthSafetyPolicy
+              formData={formData.healthAndSafetyPolicy}
+              setFormData={(data) => handleSaveFormData(data, "healthAndSafetyPolicy")}
               onPrevClick={onPrevClick}
               onNextClick={onNextClick}
             />

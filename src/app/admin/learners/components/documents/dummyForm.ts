@@ -595,50 +595,133 @@ export const applicationForm = [
           id: "candidateName",
           label: "Candidate Name",
           placeholder: "Candidate Name",
-          validation: "string(2-100)",
+          validation: z.string().min(2).max(100),
         },
         {
           type: "text",
           id: "employer",
           label: "Employer",
           placeholder: "Employer",
-          validation: "string(2-100)",
+          validation: z.string().min(2).max(100),
         },
         {
           type: "text",
           id: "courseDetails",
           label: "Course/Project Details",
           placeholder: "Course/Project Details",
-          validation: "string(2-250)",
+          validation: z.string().min(2).max(100),
         },
         {
           type: "text",
           id: "candidateSignature",
           label: "Candidate Signature",
           placeholder: "Candidate Signature",
-          validation: "string(1)",
+          validation: z.string().min(2).max(100),
         },
         {
           type: "text",
           id: "ldaName",
           label: "Learning and Development Adviser Name",
           placeholder: "LDA Name",
-          validation: "string(2-100)",
+          validation: z.string().min(2).max(100),
         },
         {
           type: "text",
           id: "ldaSignature",
           label: "Learning and Development Adviser Signature",
           placeholder: "LDA Signature",
-          validation: "string(1)",
+          validation: z.string().min(2).max(100),
         },
         {
           type: "checkbox",
           id: "agreement",
           label: "I have read and understood the policy.",
-          validation: "boolean(true)",
+          validation: z.boolean(),
         },
       ],
     },
+    healthAndSafetyPolicy: {
+      id: 1,
+      title: "Eden College Health and Safety Policy",
+      purpose: "The purpose of this policy is to ensure active, consultative commitment to health and safety management at Eden College.",
+      audience: "Every manager, client, staff member, student, visitor, or person with business at Eden College.",
+      legislation: [
+        { id: 1, act: "Health and Safety in Employment Act 1992" },
+        { id: 2, act: "Health and Safety in Employment Amendment Act 2002" },
+        { id: 3, act: "Health and Safety in Employment Regulations 1995" },
+        { id: 4, act: "Health and Safety in Employment (Prescribed Matters) Regulations 2003" },
+        { id: 5, act: "Injury Prevention, Rehabilitation Compensation Act 2001" }
+      ],
+      commitment: "Eden College regards the promotion and maintenance of occupational health, safety, and loss control as mutual objectives for everyone who works, studies, visits, or has business at the center. Health and safety are integrated with the center’s primary aims and all other functions.",
+      managementResponsibilities: [
+        { id: 1, description: "Provide leadership, examples, and commitment to health and safety policy and objectives." },
+        { id: 2, description: "Ensure coordination of health and safety systems within center regions and nationally shared services." },
+        { id: 3, description: "Allocate appropriate resources to health and safety." },
+        { id: 4, description: "Set health and safety objectives and performance criteria for all managers and campus regions." },
+        { id: 5, description: "Annually review health and safety objectives and managers’ performance." },
+        { id: 6, description: "Require accurate and timely reporting and recording of all incidents and injuries." },
+        { id: 7, description: "Investigate all reported incidents and injuries to identify contributing factors and formulate corrective action plans." },
+        { id: 8, description: "Encourage early reporting of pain or discomfort and provide a rehabilitation plan for safe and early return to work." },
+        { id: 9, description: "Identify and take steps to eliminate, isolate, or minimize exposure to significant hazards." },
+        { id: 10, description: "Review accident statistics to assess hazard control effectiveness." },
+        { id: 11, description: "Ensure all individuals on site are aware of hazards and are adequately trained for safe performance." },
+        { id: 12, description: "Promote continuous improvement, including an annual review of policies and periodic review of procedures." },
+        { id: 13, description: "Meet all obligations under relevant health and safety legislation and standards." }
+      ],
+      individualResponsibilities: [
+        { id: 1, description: "All individuals are expected to share in the commitment to this policy." },
+        { id: 2, description: "Report all accidents, incidents, and unsafe conditions to the appropriate person." }
+      ],
+      formFields: [
+        {
+          type: "text",
+          id: "candidateName",
+          label: "Candidate Name",
+          placeholder: "Candidate Name",
+          validation: "z.string().min(2).max(100)"
+        },
+        {
+          type: "text",
+          id: "employer",
+          label: "Employer",
+          placeholder: "Employer",
+          validation: "z.string().min(2).max(100)"
+        },
+        {
+          type: "text",
+          id: "courseDetails",
+          label: "Course/Project Details",
+          placeholder: "Course/Project Details",
+          validation: "z.string().min(2).max(100)"
+        },
+        {
+          type: "text",
+          id: "candidateSignature",
+          label: "Candidate Signature",
+          placeholder: "Candidate Signature",
+          validation: "z.string().min(2).max(100)"
+        },
+        {
+          type: "text",
+          id: "ldaName",
+          label: "Learning and Development Adviser Name",
+          placeholder: "Eden College Allocated LDA",
+          validation: "z.string().min(2).max(100)"
+        },
+        {
+          type: "text",
+          id: "ldaSignature",
+          label: "Learning and Development Adviser Signature",
+          placeholder: "Eden College Allocated LDA",
+          validation: "z.string().min(2).max(100)"
+        },
+        {
+          type: "checkbox",
+          id: "agreement",
+          label: "I have read and understood the policy.",
+          validation: "z.boolean()"
+        }
+      ]
+    }    
   },
 ];

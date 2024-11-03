@@ -478,14 +478,14 @@ export const applicationForm = [
         },
         {
           type: "checkbox",
-          id: "altconfirm",
+          id: "altConfirm",
           label:
             "In the event that my application to Eden College is unsuccessful I consent to my personal data held on computer and in my files being passed to a not her training organisation for consideration for admission.",
           validation: z.boolean(),
         },
         {
           type: "checkbox",
-          id: "feedback confirm",
+          id: "feedbackConfirm",
           label:
             "I have read and understand the statement on the confidentiality of the admissions process as outlined above and I accept this. I am also aware of the feedback arrangements.",
           validation: z.boolean(),
@@ -500,7 +500,7 @@ export const applicationForm = [
         {
           label: "Subject / Course Applied for",
           type: "text",
-          id: "Subject / Course Applied for",
+          id: "CourseAppliedfor",
           placeholder: "Subject / Course Applied for",
           validation: z.string().min(2).max(100),
         },

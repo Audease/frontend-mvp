@@ -509,86 +509,83 @@ export const applicationForm = [
     equalOpportunitiesPolicy: {
       id: 1,
       title: "Eden College Equal Opportunities Policy",
-      introduction:
-        "Eden College is committed to taking positive action to fight unlawful discrimination in every aspect of its work.",
-      statement:
-        "Eden College is an equal opportunities employer and provider of Education, Training, and Employment. The aim of its equal opportunities policy is to ensure that no job applicant, learner, or employee receives less favourable treatment on the grounds of race, colour, ethnic or national origin, religion, gender, sexual orientation, marital status, HIV antibody status, AIDS, disability, age, or any other potential disadvantage.",
-      objectives: [
+      statement: [
         {
           id: 1,
-          description:
-            "Eden College will strive to redress any imbalance that may become evident.",
+          text: "Eden College is committed to taking positive action to fight unlawful discrimination in every respect of its work.",
         },
         {
           id: 2,
-          description:
-            "Establish a broad base for consultation from learners to identify priorities and needs, ensuring alignment with the broader black and minority ethnic population.",
+          text: "Eden College is an equal opportunities employer and provider of Education Training and Employment. The aim of its equal opportunities policy is to ensure that no job applicant, learner or employee receives less favourable treatment on the grounds of race, colour, ethnic or national origin, religion, gender, sexual orientation, marital status, HIV antibody status, AIDS or disability, and age or should they be disadvantaged by requirement. Eden College will strive to redress any in balance that may become evident.",
         },
         {
           id: 3,
-          description:
-            "Maintain anti-discrimination objectives in all campaign and promotional work.",
-        },
-      ],
-      policyReview: {
-        frequency:
-          "Whenever a new staff appointment is to be made and at other times as necessary.",
-        responsibility:
-          "The Director is responsible for the day-to-day implementation of the policy.",
-        monitoring:
-          "Eden College will monitor and review the composition of its senior management team to promote a broad-based representation.",
-      },
-      legislation: [
-        {
-          id: 1,
-          act: "Race Relations Act 1976",
-        },
-        {
-          id: 2,
-          act: "Sex Discrimination Acts 1975-85",
-        },
-        {
-          id: 3,
-          act: "Equal Pay Act 1970",
+          text: "Eden College will endeavour to establish a broad base for consultation from learners to identify priorities and needs as reflected by the black and minority ethnic population at large, and in all campaign, work will maintain the objectives stated above.",
         },
         {
           id: 4,
-          act: "Disability Discrimination Act 1995",
+          text: "The senior management team shall review the content and effectiveness of the policy whenevera new staff appointment is to be made, and at other times as may be necessary. The Director is responsible for the policy's day to day implementation.",
         },
         {
           id: 5,
-          act: "Rehabilitation of Offenders Act 1974",
-        },
-        {
-          id: 6,
-          act: "Equality Act 2010",
+          text: "Eden College will monitor and review the composition of its senior management team with the aim of promoting a broad-based representation.",
         },
       ],
-      serviceCommitment: {
-        goal: "Eden College is committed to ensuring equality of access to all its services for learners and to counter past discrimination while monitoring outcomes.",
-        accessibility: [
-          {
-            id: 1,
-            description:
-              "Services are based on consultation with learners, including excluded groups in decision-making.",
-          },
-          {
-            id: 2,
-            description:
-              "Services remain flexible and responsive to changing community needs.",
-          },
-          {
-            id: 3,
-            description:
-              "Information on services is widely available and targeted for maximum awareness.",
-          },
-          {
-            id: 4,
-            description:
-              "Systems are developed to audit and monitor service delivery and consumer satisfaction.",
-          },
-        ],
-      },
+      procedures: [
+        {
+          id: 1,
+          text: "Employment procedures and practices will be undertaken strictly in accordance with the following and all other relevant legislation:",
+          list: [
+            {
+              id: 1,
+              text: "Race Relations Act 1976",
+            },
+            {
+              id: 2,
+              text: "Sex Discrimination Acts 1975-85",
+            },
+            {
+              id: 3,
+              text: "Equal Pay Act 1970",
+            },
+            {
+              id: 4,
+              text: "Disability Discrimination Act 1995",
+            },
+            {
+              id: 5,
+              text: "Rehabilitation of Offenders Act 1974",
+            },
+            {
+              id: 6,
+              text: "Equality Act 2010",
+            },
+          ],
+        },
+        {
+          id: 2,
+          text: "Eden College is committed to ensuring equality of access to all its services for learners. The management takes action to provide genuine equality of opportunity to counter past discrimination and to monitor the outcome. The senior management team will aim toensure that no sector of the community shall be denied access or receive a poor service on the grounds of age, race, gender, disability, being a lesbian or gay man, marital status, ethnicity or religious belief.The senior management team will aim to ensure that all its services will be provided in line with this anti-discrimination policy. In order to promote equality of access the executive will aim to ensure the following:",
+          list: [
+            {
+              id: 1,
+              text: "That services are based on consultation with those who receive the services being learners and positive steps are taken to include excluded groups in decision making.",
+            },
+            {
+              id: 2,
+              text: "That all services are flexible and responsive to the changing needs in the community.",
+            },
+            {
+              id: 3,
+              text: "That information on services is widely available and where necessary targeted to ensure maximum awareness of provisions.",
+            },
+            {
+              id: 4,
+              text: "That systems are developed to audit and monitor service delivery and consumer satisfaction. ",
+            },
+          ],
+        },
+      ],
+
       formFields: [
         {
           type: "text",
@@ -635,42 +632,212 @@ export const applicationForm = [
         {
           type: "checkbox",
           id: "agreement",
-          label: "I have read and understood the policy.",
+          label: "I confirm that I have read and understood the above policy.",
           validation: z.boolean(),
         },
       ],
     },
     healthAndSafetyPolicy: {
       id: 1,
-      title: "Eden College Health and Safety Policy",
-      purpose: "The purpose of this policy is to ensure active, consultative commitment to health and safety management at Eden College.",
-      audience: "Every manager, client, staff member, student, visitor, or person with business at Eden College.",
-      legislation: [
-        { id: 1, act: "Health and Safety in Employment Act 1992" },
-        { id: 2, act: "Health and Safety in Employment Amendment Act 2002" },
-        { id: 3, act: "Health and Safety in Employment Regulations 1995" },
-        { id: 4, act: "Health and Safety in Employment (Prescribed Matters) Regulations 2003" },
-        { id: 5, act: "Injury Prevention, Rehabilitation Compensation Act 2001" }
+      title: "HEALTH AND SAFETY POLICY",
+      purpose:
+        "The purpose of this policy is to ensure active, consultative commitment to health and safety management at Eden College.",
+      audience: [
+        {
+          id: 1,
+          title:
+            "To every manager, client, staff member, student, visitor or person with business at Eden College; the policy is governed by the following legislation:",
+        },
+        {
+          id: 2,
+          title:
+            "Health and Safety in Employment Act 1992, Health and Safety in Employment Amendment Act 2002, Health and Safety in Employment Regulations 1995, Health and Safety in Employment (Prescribed Matters) Regulations 2003, Injury Prevention, Rehabilitation Compensation Act 2001",
+        },
+        {
+          id: 3,
+          title:
+            "Eden College regards the promotion and maintenance of occupational health, safety and loss control as mutual objectives for everyone who works, studies, visits, or has business at the centre. Health, safety is to be ranked equal with the centre’s primary aims and objectives and be integrated with all other functions within the centre. To ensure a safe and health work environment, the centre will develop and maintain a Health and Safety environment, operational and management System.",
+        },
       ],
-      commitment: "Eden College regards the promotion and maintenance of occupational health, safety, and loss control as mutual objectives for everyone who works, studies, visits, or has business at the center. Health and safety are integrated with the center’s primary aims and all other functions.",
-      managementResponsibilities: [
-        { id: 1, description: "Provide leadership, examples, and commitment to health and safety policy and objectives." },
-        { id: 2, description: "Ensure coordination of health and safety systems within center regions and nationally shared services." },
-        { id: 3, description: "Allocate appropriate resources to health and safety." },
-        { id: 4, description: "Set health and safety objectives and performance criteria for all managers and campus regions." },
-        { id: 5, description: "Annually review health and safety objectives and managers’ performance." },
-        { id: 6, description: "Require accurate and timely reporting and recording of all incidents and injuries." },
-        { id: 7, description: "Investigate all reported incidents and injuries to identify contributing factors and formulate corrective action plans." },
-        { id: 8, description: "Encourage early reporting of pain or discomfort and provide a rehabilitation plan for safe and early return to work." },
-        { id: 9, description: "Identify and take steps to eliminate, isolate, or minimize exposure to significant hazards." },
-        { id: 10, description: "Review accident statistics to assess hazard control effectiveness." },
-        { id: 11, description: "Ensure all individuals on site are aware of hazards and are adequately trained for safe performance." },
-        { id: 12, description: "Promote continuous improvement, including an annual review of policies and periodic review of procedures." },
-        { id: 13, description: "Meet all obligations under relevant health and safety legislation and standards." }
-      ],
-      individualResponsibilities: [
-        { id: 1, description: "All individuals are expected to share in the commitment to this policy." },
-        { id: 2, description: "Report all accidents, incidents, and unsafe conditions to the appropriate person." }
+      lists: [
+        {
+          id: 1,
+          title: "THE CENTRE MANAGEMENT WILL:",
+          points: [
+            {
+              id: 1,
+              point:
+                "provide leadership, examples and commitment to health and safety policy and objectives",
+            },
+            {
+              id: 2,
+              point:
+                "ensure coordination of health and safety systems within centre regions and nationally shared services",
+            },
+            {
+              id: 3,
+              point:
+                "ensure appropriate resources are allocated to health and safety",
+            },
+            {
+              id: 4,
+              point:
+                "set health and safety objectives and performance criteria for all managers and campus regions",
+            },
+            {
+              id: 5,
+              point:
+                "annually review health and safety objectives and managers' performance",
+            },
+            {
+              id: 6,
+              point:
+                "require accurate and timely reporting and recording of all incidents and injuries",
+            },
+            {
+              id: 7,
+              point:
+                "investigate all reported incidents and injuries to ensure all contributing factors are identified and, where appropriate, plans are formulated to take corrective action",
+            },
+            {
+              id: 8,
+              point:
+                "actively encourage the early reporting of any pain or discomfort, provide a treatment and rehabilitation plan that ensures a safe, early and durable return to work for injured staff",
+            },
+            {
+              id: 9,
+              point:
+                "identify all existing and new hazards and take all practicable steps to eliminate, isolate or minimise the exposure to any hazards deemed to be significant",
+            },
+            {
+              id: 10,
+              point:
+                "review accident statistics to ensure adequacy of hazard controls",
+            },
+            {
+              id: 11,
+              point:
+                "ensure that all staff, students, visitors and those who have business on the centre sites are made aware of the hazards in their work area and are adequately trained to enable them to perform in a safe manner",
+            },
+            {
+              id: 12,
+              point:
+                "encourage staff and student consultation and participation in all matters relating to health and safety",
+            },
+            {
+              id: 13,
+              point:
+                "promote a system of continuous improvement, including	an annual review of policies and three yearly reviews of procedures",
+            },
+            {
+              id: 14,
+              point:
+                "meet obligations under the Health and Safety Legislation, Regulations, Codes of Practices and any relevant Standards of Guidelines",
+            },
+            {
+              id: 15,
+              point:
+                "every staff member, student, visitor or person with business at Eden College expected to share in the commitment to this policy",
+            },
+            {
+              id: 16,
+              point:
+                "ensuring that all accidents, incidents and unsafe conditions are reported to the appropriate person",
+            },
+          ],
+        },
+        {
+          id: 2,
+          title:
+            "The Centre Manager (Learning and Assessment Coordinator) undertakes the following:",
+          points: [
+            {
+              id: 1,
+              point:
+                "provide leadership, examples and commitment to health and safety policy and objectives",
+            },
+            {
+              id: 2,
+              point:
+                "ensure coordination of health and safety systems within centre regions and nationally shared services",
+            },
+            {
+              id: 3,
+              point:
+                "ensure appropriate resources are allocated to health and safety",
+            },
+            {
+              id: 4,
+              point:
+                "set health and safety objectives and performance criteria for all managers and campus regions",
+            },
+            {
+              id: 5,
+              point:
+                "annually review health and safety objectives and managers’ performance",
+            },
+            {
+              id: 6,
+              point:
+                "require accurate and timely reporting and recording of all incidents and injuries",
+            },
+            {
+              id: 7,
+              point:
+                "investigate all reported incidents and injuries to ensure all contributing factors are identified and, where appropriate, plans are formulated to take corrective action",
+            },
+            {
+              id: 8,
+              point:
+                "actively encourage the early reporting of any pain or discomfort",
+            },
+            {
+              id: 9,
+              point:
+                "provide a treatment and rehabilitation plan that ensures a safe, early and durable return to work for injured staff",
+            },
+            {
+              id: 10,
+              point:
+                "identify all existing and new hazards and take all practicable steps to eliminate, isolate or minimise the exposure to any hazards deemed to be significant",
+            },
+            {
+              id: 11,
+              point:
+                "review accident statistics to ensure adequacy of hazards controls, the centre sites are made aware of the hazards in their work area and are adequately trained to enable them to perform in a safe manner",
+            },
+            {
+              id: 12,
+              point:
+                "ensure that all staff, students, visitors and those who have business on the centre sites are made aware of the hazards in their work area and are adequately trained to enable them to perform in a safe manner",
+            },
+            {
+              id: 13,
+              point:
+                "encourage staff and student consultation and participation in all matters relating to health and safety",
+            },
+            {
+              id: 14,
+              point:
+                "promote a system of continuous improvement, including an annual review of policies and three-yearly reviews of procedures",
+            },
+            {
+              id: 15,
+              point:
+                "meet obligations under the Health and Safety Legislation, Regulations, Codes of Practice and any relevant Standards or Guidelines",
+            },
+            {
+              id: 16,
+              point:
+                "ensure that every staff member, student, visitor or person with business at Eden College is expected to share in the commitment to this policy",
+            },
+            {
+              id: 17,
+              point:
+                "ensure that all accidents, incidents, and unsafe conditions are reported to the appropriate authority",
+            },
+          ],
+        },
       ],
       formFields: [
         {
@@ -678,50 +845,485 @@ export const applicationForm = [
           id: "candidateName",
           label: "Candidate Name",
           placeholder: "Candidate Name",
-          validation: "z.string().min(2).max(100)"
+          validation: z.string().min(2).max(100),
         },
         {
           type: "text",
           id: "employer",
           label: "Employer",
           placeholder: "Employer",
-          validation: "z.string().min(2).max(100)"
+          validation: z.string().min(2).max(100),
         },
         {
           type: "text",
           id: "courseDetails",
           label: "Course/Project Details",
           placeholder: "Course/Project Details",
-          validation: "z.string().min(2).max(100)"
+          validation: z.string().min(2).max(100),
         },
         {
           type: "text",
           id: "candidateSignature",
           label: "Candidate Signature",
           placeholder: "Candidate Signature",
-          validation: "z.string().min(2).max(100)"
+          validation: z.string().min(2).max(100),
         },
         {
           type: "text",
           id: "ldaName",
           label: "Learning and Development Adviser Name",
-          placeholder: "Eden College Allocated LDA",
-          validation: "z.string().min(2).max(100)"
+          placeholder: "LDA Name",
+          validation: z.string().min(2).max(100),
         },
         {
           type: "text",
           id: "ldaSignature",
           label: "Learning and Development Adviser Signature",
-          placeholder: "Eden College Allocated LDA",
-          validation: "z.string().min(2).max(100)"
+          placeholder: "LDA Signature",
+          validation: z.string().min(2).max(100),
         },
         {
           type: "checkbox",
           id: "agreement",
-          label: "I have read and understood the policy.",
-          validation: "z.boolean()"
-        }
-      ]
-    }    
+          label: "I confirm that I have read and understood the above policy.",
+          validation: z.boolean(),
+        },
+      ],
+    },
+    guidancePolicy: {
+      id: 1,
+      title: "Eden College INFORMATION, ADVICE AND GUIDANCE POLICY",
+      commitment:
+        "Eden College is committed to delivering an Information, Advice and Guidance (IAG) service that provides a range of opportunities for learners, employers and partners to make informed choices about their training and development needs.",
+      body: [
+        {
+          id: 1,
+          title: "Eden College Training IAG Service Delivery",
+          points: [
+            {
+              id: 1,
+              point: "Pre-Learning: ",
+              description:
+                "Choosing a programme with Eden or any other provider that is most suited to the learner's needs, considering location, content, level, delivery style, costs, qualification, entry requirements, support available, etc.",
+            },
+            {
+              id: 2,
+              point: "At Induction: ",
+              description:
+                "Via learner progress reviews, advice on learner support, and possible progression routes. For the employer, mid-course reviews are conducted.",
+            },
+            {
+              id: 3,
+              point: "Post-Learning: ",
+              description:
+                "Final progress reviews, exit interview, and learner questionnaire to identify further learning opportunities. For the employer, end-course reviews.",
+            },
+            {
+              id: 4,
+              point: "At Any Time: ",
+              description:
+                "Referral to other agencies and training providers for advice on careers, work, and learning that may be outside the scope of what Eden provides.",
+            },
+          ],
+        },
+        {
+          id: 2,
+          title:
+            "To ensure that IAG service are accessible to all and are of high quality, we well: ",
+          points: [
+            {
+              id: 1,
+              point: "Achieve Matrix IAG Quality Mark: ",
+              description:
+                "Work towards achieving and maintaining the Matrix IAG quality mark to ensure IAG services meet the standards within this framework.",
+            },
+            {
+              id: 2,
+              point: "Comprehensive Marketing Materials: ",
+              description:
+                "Ensure that marketing, promotional, and information materials are comprehensive, accessible, and available in a range of formats.",
+            },
+            {
+              id: 3,
+              point:
+                "Monitor the effectiveness and improve the quality of information, advice and guidance via: ",
+              sub_points: [
+                {
+                  id: 1,
+                  sub_point: "Customer feedback",
+                },
+                {
+                  id: 2,
+                  sub_point: "Staff feedback",
+                },
+                {
+                  id: 3,
+                  sub_point: "Employer feedback",
+                },
+                {
+                  id: 4,
+                  sub_point: "Partner College feedback",
+                },
+                {
+                  id: 5,
+                  sub_point:
+                    "Analysis of initial Learner Profiles, ILPs, career aspirations and Learner Progress Reviews",
+                },
+                {
+                  id: 6,
+                  sub_point: "Analysis of outcomes for learners",
+                },
+                {
+                  id: 7,
+                  sub_point:
+                    "Annual review, renewal & update of information materials",
+                },
+              ],
+            },
+            {
+              id: 4,
+              point: "Professional Training for SR Staff",
+              description:
+                "Provide opportunities for SR staff to obtain professional training and/or qualifications in IAG to ensure understanding of: ",
+              sub_points: [
+                {
+                  id: 1,
+                  sub_point:
+                    "IAG policy, strategy, aims, objectives, procedures and performance indicators",
+                },
+                {
+                  id: 2,
+                  sub_point: "Equality and diversity",
+                },
+                {
+                  id: 3,
+                  sub_point: "Confidentiality issues",
+                },
+                {
+                  id: 4,
+                  sub_point: "Learner support, including financial support",
+                },
+                {
+                  id: 5,
+                  sub_point: "Referral systems (internal and external)",
+                },
+                {
+                  id: 6,
+                  sub_point: "Customer Care, Health & Safety and Safeguarding",
+                },
+                {
+                  id: 7,
+                  sub_point: "Technological support",
+                },
+                {
+                  id: 8,
+                  sub_point: "Information sources",
+                },
+              ],
+            },
+            {
+              id: 5,
+              point: "Develop and Review Partnerships: ",
+              description:
+                "Develop and review partnerships and networks to support provision of impartial IAG and referral to appropriate partners and other external agencies/services",
+            },
+            {
+              id: 6,
+              point: "Embed IAG in Quality Assurance: ",
+              description:
+                "Embed IAG in quality assurance, staff development and training and the performance review/appraisal processes",
+            },
+            {
+              id: 7,
+              point: "Information, Advice and guidance Aim",
+              description:
+                "All Eden staff involved in the delivery of the IAG service are expected to support and potential learners, clients, employers and partners to make informed choices by giving IAG that is: ",
+              sub_points: [
+                {
+                  id: 1,
+                  sub_point:
+                    "Impartial: We won’t look at learning programmes delivered by Eden and our partners organisations. We will help clients look at what other providers are offering. They will be told how to find out more–perhaps given a phone number or website address, and other referral appointments made for clients where Eden unable to provide the service.",
+                },
+                {
+                  id: 2,
+                  sub_point:
+                    "Confidential:Nothing from the discussion will be shared with anyone else without the client’s knowledge or permission. Except the exclusions to confidentiality of which all Advisers and practitioners are aware of.",
+                },
+                {
+                  id: 3,
+                  sub_point:
+                    "Fair: Clients will be treated fairly and equally, in line with the Eden College, Equality, Diversity and Inclusion Policy",
+                },
+                {
+                  id: 4,
+                  sub_point:
+                    "Transparent: Learners, clients and stakeholders will be told what will happen. If, at anytime, learners do not understand what is going on, they will been courage to ask their Learning, Development Adviser and Careers Advisers to explain.",
+                },
+              ],
+            },
+            {
+              id: 7,
+              point: "IAG OBJECTIVES",
+              sub_points: [
+                {
+                  id: 1,
+                  sub_point:
+                    "To provide impartial information, advice and guidance to learners at all stages of their learning journey, these include; pre-learning, induction, in-learning and post-learning on exit",
+                },
+                {
+                  id: 2,
+                  sub_point:
+                    "To provide impartial information, advice and guidance to all learners that enables them to make informed choice about their options and next steps in relation to their chosen course’s programme/s and aspirations",
+                },
+                {
+                  id: 3,
+                  sub_point:
+                    "To provide support that enables learners to develop self and opportunity awareness",
+                },
+                {
+                  id: 4,
+                  sub_point: "To achieve nationally recognized qualifications.",
+                },
+                {
+                  id: 5,
+                  sub_point:
+                    "To makeapositiveprogressionintoemploymentorfurtherlearningand/ortraining",
+                },
+              ],
+            },
+            {
+              id: 8,
+              point: " In delivery these objectives Eden College staff will: ",
+              sub_points: [
+                {
+                  id: 1,
+                  sub_point:
+                    "Establish effective communication with learners and potential learners.",
+                },
+                {
+                  id: 2,
+                  sub_point:
+                    "Identify information requested by learners and potential learners.",
+                },
+                {
+                  id: 3,
+                  sub_point:
+                    "Supply information materials to learners and potential learners.",
+                },
+                {
+                  id: 4,
+                  sub_point:
+                    "Assist learners and potential learners to clarify their requirements.",
+                },
+                {
+                  id: 5,
+                  sub_point:
+                    "Identify a range of options for achieving learner requirements.",
+                },
+                {
+                  id: 6,
+                  sub_point:
+                    "Enable learners and potential learners to select a course of action.",
+                },
+                {
+                  id: 7,
+                  sub_point: "Maintain and improve information material.",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      table: {
+        title: "Eden College Information, Advice & Guidance Process",
+        paragraph: "The process flow diagram over leaf outlines the IAG process steps and opportunities to deliver information, advice and guidance.",
+        processData : {
+          columns: [
+            {
+              header: "Pre-Learning",
+              sections: [
+                {
+                  title: "EMPLOYER",
+                  items: [
+                    "Organisational Needs Analysis",
+                    "Investigate Training Plan",
+                    "Continuous Improvement Plan",
+                    "Agree Outcomes to be achieved",
+                    "Advise learning and development outcomes to be delivered"
+                  ]
+                }
+              ]
+            },
+            {
+              header: "In Learning",
+              sections: [
+                {
+                  title: "LEARNER",
+                  items: [
+                    "IAG Guidance notes",
+                    "My Learning Journey",
+                    "My Personal Skills Review",
+                    "My Programme Plan and Tracker",
+                    "Enrolment & Data Capture Form",
+                    "Apprenticeship IAG document"
+                  ]
+                }
+              ]
+            },
+            {
+              header: "Learning",
+              sections: [
+                {
+                  title: "LEARNER",
+                  items: [
+                    "Learner Progress Reviews - monthly",
+                    "Process Tracker",
+                    "One to One meeting",
+                    "Project Updates"
+                  ]
+                },
+                {
+                  title: "EMPLOYER",
+                  items: []
+                }
+              ]
+            },
+            {
+              header: "Post-Learning",
+              sections: [
+                {
+                  title: "LEARNER",
+                  items: [
+                    "Final Progress Review",
+                    "Final interview",
+                    "Exit Interview",
+                    "Learner Questionnaire"
+                  ]
+                },
+                {
+                  title: "EMPLOYER",
+                  items: []
+                }
+              ]
+            },
+            {
+              header: "Support Process",
+              sections: [
+                {
+                  title: "",
+                  items: [
+                    "IAG Policy",
+                    "Appraisal Process",
+                    "Strategic Plan",
+                    "Information Hand-outs",
+                    "IAG Observation",
+                    "Lesson Observations",
+                    "Equality, Diversity and inclusion",
+                    "Safeguarding Policy",
+                    "Confidentiality & Professional integrity",
+                    "Continuing Professional Development"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        toc: [
+          {
+            id: 1,
+            text: "Feedback and Continuous Improvement"
+          },
+          {
+            id: 2,
+            text: "Progress Trackers"
+          },
+          {
+            id: 3,
+            text: "Standardisation Meetings"
+          },
+          {
+            id: 4,
+            text: "Monthly Meetings"
+          },
+          {
+            id: 5,
+            text: "Team Meetings"
+          },
+          {
+            id: 6,
+            text: "Lessons Observations"
+          },
+          {
+            id: 7,
+            text: "IAG Process Observation"
+          },
+          {
+            id: 8,
+            text: "CPD Process"
+          },
+          {
+            id: 9,
+            text: "Learner Questionnaire"
+          },
+        ],
+      },
+      formFields: [
+        {
+          type: "text",
+          id: "candidateName",
+          label: "Candidate Name",
+          placeholder: "Candidate Name",
+          validation: z.string().min(2).max(100),
+        },
+        {
+          type: "text",
+          id: "employer",
+          label: "Employer",
+          placeholder: "Employer",
+          validation: z.string().min(2).max(100),
+        },
+        {
+          type: "text",
+          id: "candidateSignature",
+          label: "Candidate Signature",
+          placeholder: "Candidate Signature",
+          validation: z.string().min(2).max(100),
+        },
+        {
+          type: "text",
+          id: "ldaName",
+          label: "Learning and Development Adviser Name",
+          placeholder: "LDA Name",
+          validation: z.string().min(2).max(100),
+        },
+        {
+          type: "text",
+          id: "ldaSignature",
+          label: "Learning and Development Adviser Signature",
+          placeholder: "LDA Signature",
+          validation: z.string().min(2).max(100),
+        },
+        {
+          type: "text",
+          id: "eldaName",
+          label: " Eden College Allocated LDA",
+          placeholder: "LDA Name",
+          validation: z.string().min(2).max(100),
+        },
+        {
+          type: "text",
+          id: "eldaSignature",
+          label: " Eden College Allocated LDA Signature",
+          placeholder: "LDA Signature",
+          validation: z.string().min(2).max(100),
+        },
+        {
+          type: "checkbox",
+          id: "agreement",
+          label: "I confirm that I have read and understood the above policy.",
+          validation: z.boolean(),
+        },
+      ],
+    },
   },
 ];

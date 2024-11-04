@@ -27,31 +27,34 @@ const HealthSafetyPolicy: React.FC<HealthAndSafetyPolicyProps> = ({
   onNextClick,
 }) => {
   return (
-    <div >
+    <div>
       <div className="text-xl flex flex-col">
         <Text style={{ fontSize: 18, fontWeight: "bold" }}>
           {content.title}
         </Text>
-        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-          {content.purpose}
-        </Text>
-        <Text style={{ fontSize: 18 }}>{content.commitment}</Text>
+        <Text style={{ fontSize: 12 }}>{content.purpose}</Text>
       </div>
       <div>
-        {content.managementResponsibilities.map((section) => (
+        {content.audience.map((section) => (
           <div key={section.id} style={styles.page}>
             <div className="text-xl">
-              <Text style={{ fontSize: 18 }}>{section.description}</Text>
+              <Text style={{ fontSize: 12 }}>{section.title}</Text>
             </div>
           </div>
         ))}
       </div>
       <div>
-        {content.individualResponsibilities.map((section) => (
+        {content.lists.map((section) => (
           <div key={section.id} style={styles.page}>
-            <div className="text-xl">
-              <Text style={{ fontSize: 18 }}>{section.description}</Text>
-            </div>
+            <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+              {section.title}
+            </Text>
+
+            {section.points.map((section) => (
+              <li key={section.id} style={styles.page}>
+                <Text style={{ fontSize: 12 }}>{section.point}</Text>
+              </li>
+            ))}
           </div>
         ))}
       </div>

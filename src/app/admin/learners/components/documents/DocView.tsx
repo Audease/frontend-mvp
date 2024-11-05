@@ -16,10 +16,10 @@ import BehaviouralPolicy from "./applicationForm/BehaviouralPolicy/BehaviouralPo
 import CandidateRecordForm from "./applicationForm/CandidateRecord";
 import Confidentiality from "./applicationForm/Confidentiality/Confidentiality";
 import DataProtection from "./applicationForm/DataProtection/DataProtection";
-import EqualOpportunitiesForm from "./applicationForm/EqualOpoortunities/EqualOpportunitiesForm";
 import EqualOpportunitiesPolicy from "./applicationForm/EqualOpoortunities/EqualOpportunities";
 import HealthSafetyPolicy from "./applicationForm/HealthSafetyPolicy/HealthSafetyPolicy";
 import GuidancePolicy from "./applicationForm/GuidancePolicy/GuidancePolicy";
+import Enrolment from "./applicationForm/EnrollmentForm/Enrolment";
 
 const styles = StyleSheet.create({
   text1: { padding: 5, textTransform: "capitalize", fontSize: "12px" },
@@ -290,6 +290,7 @@ const DocView = ({ onBackClick }) => {
     equalopportunities: {},
     healthandsafetypolicy: {},
     guidancepolicy: {},
+    enrolment: {},
   });
 
   const [CollegeName, setCollegeName] = useState<string>("");
@@ -308,6 +309,7 @@ const DocView = ({ onBackClick }) => {
     "EqualOpportunities",
     "HealthSafetyPolicy",
     "GuidancePolicy",
+    "Enrolment",
   ];
 
   useEffect(() => {
@@ -416,6 +418,17 @@ const DocView = ({ onBackClick }) => {
             formData={formData.guidancepolicy}
             setFormData={(data) =>
               handleSaveFormData(data, "guidancepolicy")
+            }
+            onPrevClick={onPrevClick}
+            onNextClick={onNextClick}
+          />
+        );
+        case "Enrolment":
+        return (
+          <Enrolment
+            formData={formData.enrolment}
+            setFormData={(data) =>
+              handleSaveFormData(data, "enrolment")
             }
             onPrevClick={onPrevClick}
             onNextClick={onNextClick}

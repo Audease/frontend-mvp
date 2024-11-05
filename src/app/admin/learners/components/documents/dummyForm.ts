@@ -1136,8 +1136,9 @@ export const applicationForm = [
       ],
       table: {
         title: "Eden College Information, Advice & Guidance Process",
-        paragraph: "The process flow diagram over leaf outlines the IAG process steps and opportunities to deliver information, advice and guidance.",
-        processData : {
+        paragraph:
+          "The process flow diagram over leaf outlines the IAG process steps and opportunities to deliver information, advice and guidance.",
+        processData: {
           columns: [
             {
               header: "Pre-Learning",
@@ -1149,10 +1150,10 @@ export const applicationForm = [
                     "Investigate Training Plan",
                     "Continuous Improvement Plan",
                     "Agree Outcomes to be achieved",
-                    "Advise learning and development outcomes to be delivered"
-                  ]
-                }
-              ]
+                    "Advise learning and development outcomes to be delivered",
+                  ],
+                },
+              ],
             },
             {
               header: "In Learning",
@@ -1165,10 +1166,10 @@ export const applicationForm = [
                     "My Personal Skills Review",
                     "My Programme Plan and Tracker",
                     "Enrolment & Data Capture Form",
-                    "Apprenticeship IAG document"
-                  ]
-                }
-              ]
+                    "Apprenticeship IAG document",
+                  ],
+                },
+              ],
             },
             {
               header: "Learning",
@@ -1179,14 +1180,14 @@ export const applicationForm = [
                     "Learner Progress Reviews - monthly",
                     "Process Tracker",
                     "One to One meeting",
-                    "Project Updates"
-                  ]
+                    "Project Updates",
+                  ],
                 },
                 {
                   title: "EMPLOYER",
-                  items: []
-                }
-              ]
+                  items: [],
+                },
+              ],
             },
             {
               header: "Post-Learning",
@@ -1197,14 +1198,14 @@ export const applicationForm = [
                     "Final Progress Review",
                     "Final interview",
                     "Exit Interview",
-                    "Learner Questionnaire"
-                  ]
+                    "Learner Questionnaire",
+                  ],
                 },
                 {
                   title: "EMPLOYER",
-                  items: []
-                }
-              ]
+                  items: [],
+                },
+              ],
             },
             {
               header: "Support Process",
@@ -1221,49 +1222,49 @@ export const applicationForm = [
                     "Equality, Diversity and inclusion",
                     "Safeguarding Policy",
                     "Confidentiality & Professional integrity",
-                    "Continuing Professional Development"
-                  ]
-                }
-              ]
-            }
-          ]
+                    "Continuing Professional Development",
+                  ],
+                },
+              ],
+            },
+          ],
         },
         toc: [
           {
             id: 1,
-            text: "Feedback and Continuous Improvement"
+            text: "Feedback and Continuous Improvement",
           },
           {
             id: 2,
-            text: "Progress Trackers"
+            text: "Progress Trackers",
           },
           {
             id: 3,
-            text: "Standardisation Meetings"
+            text: "Standardisation Meetings",
           },
           {
             id: 4,
-            text: "Monthly Meetings"
+            text: "Monthly Meetings",
           },
           {
             id: 5,
-            text: "Team Meetings"
+            text: "Team Meetings",
           },
           {
             id: 6,
-            text: "Lessons Observations"
+            text: "Lessons Observations",
           },
           {
             id: 7,
-            text: "IAG Process Observation"
+            text: "IAG Process Observation",
           },
           {
             id: 8,
-            text: "CPD Process"
+            text: "CPD Process",
           },
           {
             id: 9,
-            text: "Learner Questionnaire"
+            text: "Learner Questionnaire",
           },
         ],
       },
@@ -1322,6 +1323,643 @@ export const applicationForm = [
           id: "agreement",
           label: "I confirm that I have read and understood the above policy.",
           validation: z.boolean(),
+        },
+      ],
+    },
+    enrollmentForm: {
+      id: 1,
+      title: "LEARNER ENROLMENT & DATA CAPTURE FORM 2024/2025",
+      fields: [
+        {
+          type: "text",
+          id: "topsid",
+          label: "TOPSID",
+          placeholder: "Enter TOPSID",
+          validation: z.string().optional(),
+        },
+        {
+          type: "text",
+          id: "uln",
+          label: "ULN",
+          placeholder: "Enter ULN",
+          validation: z.string().optional(),
+        },
+        {
+          type: "text",
+          id: "learnerReference",
+          label: "Learner Reference",
+          placeholder: "Enter Learner Reference",
+          validation: z.string().optional(),
+        },
+      ],
+      section: [
+        {
+          id: 1,
+          title:
+            "SECTION 01: Personal Information (Fill all details using BLOCK CAPITAL letters only)",
+          p: "",
+          fields: [
+            {
+              type: "text",
+              id: "title",
+              label: "Title (Mr./Mrs./Miss. etc.)",
+              placeholder: "Enter Title",
+              validation: z.string().max(10),
+            },
+            {
+              type: "date",
+              id: "dateOfBirth",
+              label: "Date of Birth",
+              placeholder: "Enter Date of Birth",
+              validation: z.date(),
+            },
+            {
+              type: "text",
+              id: "firstName",
+              label: "First Name",
+              placeholder: "Enter First Name",
+              validation: z.string().min(2).max(50),
+            },
+            {
+              type: "text",
+              id: "surname",
+              label: "Surname",
+              placeholder: "Enter Surname",
+              validation: z.string().min(2).max(50),
+            },
+            {
+              type: "number",
+              id: "ageOnAug312024",
+              label: "Age on 31 August 2024",
+              placeholder: "Enter Age",
+              validation: z.number().positive().int().max(120),
+              min: 0,
+              max: 100,
+            },
+            {
+              type: "text",
+              id: "nationalInsuranceNumber",
+              label: "National Insurance Number",
+              placeholder: "Enter National Insurance Number",
+              validation: z.string().regex(/^\\w{2}\\d{6}\\w$/),
+            },
+            {
+              type: "radio",
+              id: "gender",
+              label: "Gender",
+              options: [
+                { label: "Female", value: "female" },
+                { label: "Male", value: "male" },
+              ],
+              validation: z.enum(["Female", "Male"]),
+            },
+            {
+              type: "text",
+              id: "address",
+              label: "Address",
+              placeholder: "Enter Address",
+              validation: z.string().max(200),
+            },
+            {
+              type: "text",
+              id: "postcode",
+              label: "Postcode",
+              placeholder: "Enter Postcode",
+              validation: z.string().max(10),
+            },
+            {
+              type: "tel",
+              id: "homePhone",
+              label: "Home Phone",
+              placeholder: "Enter Home Phone",
+              validation: z.string().regex(/^\\+?\\d{10,15}$/),
+            },
+            {
+              type: "tel",
+              id: "mobile",
+              label: "Mobile",
+              placeholder: "Enter Mobile",
+              validation: z.string().regex(/^\\+?\\d{10,15}$/),
+            },
+            {
+              type: "email",
+              id: "emailAddress",
+              label: "E-Mail Address",
+              placeholder: "Enter Email",
+              validation: z.string().email(),
+            },
+          ],
+        },
+        {
+          id: 2,
+          title:
+            "Emergency Contact Details (Please provide details of someone we can contact in case of an emergency)",
+          p: "",
+          fields: [
+            {
+              type: "text",
+              id: "emergencyContactName",
+              label: "Emergency Contact Name",
+              placeholder: "Enter Emergency Contact Name",
+              validation: z.string().min(2).max(100),
+            },
+            {
+              type: "text",
+              id: "relationshipToContact",
+              label: "Relationship to Contact",
+              placeholder: "Enter Relationship",
+              validation: z.string().max(50),
+            },
+            {
+              type: "tel",
+              id: "emergencyContactMobile",
+              label: "Emergency Contact Mobile Number",
+              placeholder: "Enter Emergency Contact Mobile",
+              validation: z.string().regex(/^\\+?\\d{10,15}$/),
+            },
+            {
+              type: "email",
+              id: "emergencyContactEmail",
+              label: "Emergency Contact Email Address",
+              placeholder: "Enter Emergency Contact Email",
+              validation: z.string().email().optional(),
+            },
+            {
+              type: "text",
+              id: "emergencyContactAddress",
+              label: "Emergency Contact Address",
+              placeholder: "Enter Emergency Contact Address",
+              validation: z.string().max(200),
+            },
+          ],
+        },
+        {
+          id: 3,
+          title: "SECTION 02 : Equal Opportunities Monitoring",
+          p: "",
+          fields: [],
+        },
+        {
+          id: 4,
+          title:
+            "2.1 Ethnicity (Tick (√) the box that best describes your ethnic group)",
+          p: "",
+          fields: [
+            {
+              type: "radio",
+              id: "ethnicity",
+              label: "Ethnicity",
+              options: [
+                { label: "British", value: "british" },
+                {
+                  label: "English/Welsh/Scottish/Northern Irish/British",
+                  value: "english_welsh_scottish_northern_irish_british",
+                },
+                { label: "Irish", value: "irish" },
+                {
+                  label: "Gypsy or Irish traveler",
+                  value: "gypsy_or_irish_traveler",
+                },
+                {
+                  label: "Any other White background",
+                  value: "any_other_white_background",
+                },
+                {
+                  label: "Mixed/Multiple ethnic group",
+                  value: "mixed_multiple_ethnic_group",
+                },
+                {
+                  label: "White and Black Caribbean",
+                  value: "white_and_black_caribbean",
+                },
+                {
+                  label: "White and Black African",
+                  value: "white_and_black_african",
+                },
+                { label: "White and Asian", value: "white_and_asian" },
+                {
+                  label: "Any other Mixed multiple ethnic background",
+                  value: "any_other_mixed_multiple_ethnic_background",
+                },
+                {
+                  label: "Black/African/Caribbean/Black British",
+                  value: "black_african_caribbean_black_british",
+                },
+                { label: "Asian/Asian British", value: "asian_asian_british" },
+                { label: "African", value: "african" },
+                { label: "Indian", value: "indian" },
+                { label: "Caribbean", value: "caribbean" },
+                { label: "Pakistani", value: "pakistani" },
+                {
+                  label: "Any other Black African Caribbean background",
+                  value: "any_other_black_african_caribbean_background",
+                },
+                { label: "Bangladeshi", value: "bangladeshi" },
+                { label: "Chinese", value: "chinese" },
+                { label: "Arabian", value: "arabian" },
+                {
+                  label: "Any other Asian background",
+                  value: "any_other_asian_background",
+                },
+                { label: "Other ethnic group", value: "other_ethnic_group" },
+                { label: "Prefer not to say", value: "prefer_not_to_say" },
+              ],
+              validation: z.string().optional(),
+            },
+          ],
+        },
+        {
+          id: 5,
+          title: "2.2 Religion (Tick (√) where applicable)",
+          p: "",
+          fields: [
+            {
+              type: "radio",
+              id: "religion",
+              label: "Religion",
+              options: [
+                { label: "Christian", value: "christian" },
+                { label: "Islam", value: "islam" },
+                { label: "Sikh", value: "sikh" },
+                { label: "Jewish", value: "jewish" },
+                { label: "Hindu", value: "hindu" },
+                { label: "Non-Religious", value: "non_religious" },
+                {
+                  label: "Other: Please Specify",
+                  value: "other_please_specify",
+                },
+                { label: "Prefer not to say", value: "prefer_not_to_say" },
+              ],
+              validation: z.string().optional(),
+            },
+          ],
+        },
+        {
+          id: 6,
+          title: "2.3 Please state what is your first language",
+          p: "",
+          fields: [
+            {
+              type: "text",
+              id: "firstLanguage",
+              label: "First Language",
+              placeholder: "Enter First Language",
+              validation: z.string().max(50),
+            },
+          ],
+        },
+        {
+          id: 7,
+          title: "2.4 Sexual Orientation (Tick (√) where applicable)",
+          p: "",
+          fields: [
+            {
+              type: "radio",
+              id: "sexualOrientation",
+              label: "Sexual Orientation",
+              options: [
+                {
+                  label: "Heterosexual / Straight",
+                  value: "heterosexual_straight",
+                },
+                { label: "Bisexual", value: "bisexual" },
+                { label: "Gay Man", value: "gay_man" },
+                { label: "Gay woman / Lesbian", value: "gay_woman_lesbian" },
+                { label: "Other", value: "other" },
+                { label: "Prefer not to say", value: "prefer_not_to_say" },
+              ],
+              validation: z.string().optional(),
+            },
+          ],
+        },
+        {
+          id: 8,
+          title: "2.5 Learning Support (Tick (√) where applicable)",
+          p: "This section helps us to provide the additional support you need to succeed on your course and access the available facilities.",
+          fields: [
+            {
+              type: "checkbox",
+              id: "additionalSupportNeeds",
+              label: "Do you have any additional support needs?",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+          ],
+        },
+        {
+          id: 9,
+          title:
+            "2.6 Learning Difficulties / Disabilities(LLDD) (Tick (√) where applicable)",
+          p: "Do you consider yourself to a disability, learning difficulty or health problem?",
+          fields: [
+            {
+              type: "checkbox",
+              id: "visualImpairment",
+              label: "Visual impairment",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "hearingImpairment",
+              label: "Hearing impairment",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "mobilityDisability",
+              label: "Disability affecting mobility",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "profoundComplexDisability",
+              label: "Profound complex disability",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "socialEmotionalDifficulties",
+              label: "Social and emotional difficulties",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "mentalHealthDifficulty",
+              label: "Mental health difficulty",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "otherMedicalCondition",
+              label:
+                "Other medical condition (e.g. epilepsy, asthma, diabetes)",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "moderateLearningDifficulty",
+              label: "Moderate learning difficulty",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "severeLearningDifficulty",
+              label: "Severe learning difficulty",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "dyslexia",
+              label: "Dyslexia",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "dyscalculia",
+              label: "Dyscalculia",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "autismSpectrumDisorder",
+              label: "Autism Spectrum disorder",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "aspergersSyndrome",
+              label: "Asperger’s Syndrome",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "otherDisability",
+              label: "Other disability",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "preferNotToSay",
+              label: "Prefer not to say",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "text",
+              id: "primaryHealthProblem",
+              label:
+                "Please tell us which of these you consider to be your primary health problem:",
+              placeholder: "Specify Primary Health Problem",
+              validation: z.string().optional(),
+            },
+          ],
+        },
+        {
+          id: 10,
+          title: "",
+          p: "Would you find learning easier with the following support? Please tick if appropriate.",
+          fields: [
+            {
+              type: "checkbox",
+              id: "readingWritingSupport",
+              label: "Reading and writing support",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "mathSupport",
+              label: "Math’s support",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "englishLanguageSupport",
+              label: "English language support",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "equipmentSupport",
+              label: "Equipment support",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "otherSpecialistSupport",
+              label: "Other specialist support",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+          ],
+        },
+        {
+          id: 11,
+          title: "SECTION 03: Employment Details",
+          p: "",
+          fields: [],
+        },
+        {
+          id: 12,
+          title:
+            "3.1 – Employment Status (Please tick (√) boxes that apply to you)",
+          p: "",
+          fields: [],
+        },
+        {
+          id: 13,
+          title: "",
+          p: "",
+          fields: [
+            {
+              type: "radio",
+              id: "employmentStatus",
+              label: "Employed",
+              options: [
+                {
+                  label: "In paid employment 0 to 10 hours per week",
+                  value: "in_paid_employment_0_to_10_hours",
+                },
+                {
+                  label: "In paid employment 11 to 20 hours per week",
+                  value: "in_paid_employment_11_to_20_hours",
+                },
+                {
+                  label: "In paid employment 21 to 30 hours per week",
+                  value: "in_paid_employment_21_to_30_hours",
+                },
+                {
+                  label: "In paid employment 31+ hours per week",
+                  value: "in_paid_employment_31_plus_hours",
+                },
+              ],
+              validation: z.string().optional(),
+            },
+          ],
+        },
+        {
+          id: 14,
+          title: "",
+          p: "",
+          fields: [
+            {
+              type: "radio",
+              id: "employmentduration",
+              label: "How long have you been employed",
+              options: [
+                { label: "Up to 3 months", value: "up_to_3_months" },
+                { label: "4 – 6 months", value: "4_to_6_months" },
+                { label: "7 - 12 months", value: "7_to_12_months" },
+                { label: "More than 12 months", value: "more_than_12_months" },
+              ],
+              validation: z.string().optional(),
+            },
+          ],
+        },
+        {
+          id: 14,
+          title: "",
+          p: "",
+          fields: [
+            {
+              type: "radio",
+              id: "selfEmployed",
+              label: "Are you self-employed",
+              options: [
+                { label: "yes", value: "yes" },
+                { label: "no", value: "no" },
+              ],
+              validation: z.string().optional(),
+            },
+            {
+              type: "text",
+              id: "workingDuration",
+              label: "How long have you been self-employed in	month(s)/year(s)",
+              placeholder: "How long have you been self-employed",
+              validation: z.string().max(50),
+            },
+          ],
+        },
+        {
+          id: 15,
+          title: "",
+          p: "",
+          fields: [
+            {
+              type: "radio",
+              id: "employmentStatus",
+              label: "Employed",
+              options: [
+                {
+                  label: "In self-employment 0 to 10 hours per week",
+                  value: "in_self_employment_0_to_10_hours_per_week",
+                },
+                {
+                  label: "In self employment 11 to 20 hours per week",
+                  value: "in_self_employment_11_to_20_hours",
+                },
+                {
+                  label: "In self employment 21 to 30 hours per week",
+                  value: "in_self_employment_21_to_30_hours",
+                },
+                {
+                  label: "In self employment 31+ hours per week",
+                  value: "in_self_employment_31_plus_hours",
+                },
+              ],
+              validation: z.string().optional(),
+            },
+            {
+              type: "radio",
+              id: "economicallyInactive",
+              label: "Economically Inactive (Not in paid employment, not looking and/or available to start work)",
+              options: [
+                { label: "Yes", value: "Yes" },
+                { label: "No", value: "No" },
+              ],
+              validation: z.string().optional(),
+            },
+            {
+              type: "radio",
+              id: "unemployed",
+              label: "Unemployed",
+              options: [
+                { label: "Not in paid employment, looking and available to start work", value: "Yes" },
+                { label: "Not in paid employment, not looking and/or available to start work", value: "No" },
+              ],
+              validation: z.string().optional(),
+            },
+            {
+              type: "radio",
+              id: "unemployedDuration",
+              label: "How long have you been unemployed",
+              options: [
+                { label: "Less than 6 months", value: "Less than 6 months" },
+                { label: "6 – 11months", value: "6 – 11months" },
+                { label: "12–23 months", value: "12–23 months" },
+                { label: "24–35 months", value: "24–35 months" },
+                { label: "36+ months", value: "36+ months" },
+              ],
+              validation: z.string().optional(),
+            },
+          ],
         },
       ],
     },

@@ -1929,7 +1929,8 @@ export const applicationForm = [
             {
               type: "radio",
               id: "economicallyInactive",
-              label: "Economically Inactive (Not in paid employment, not looking and/or available to start work)",
+              label:
+                "Economically Inactive (Not in paid employment, not looking and/or available to start work)",
               options: [
                 { label: "Yes", value: "Yes" },
                 { label: "No", value: "No" },
@@ -1941,8 +1942,16 @@ export const applicationForm = [
               id: "unemployed",
               label: "Unemployed",
               options: [
-                { label: "Not in paid employment, looking and available to start work", value: "Yes" },
-                { label: "Not in paid employment, not looking and/or available to start work", value: "No" },
+                {
+                  label:
+                    "Not in paid employment, looking and available to start work",
+                  value: "Yes",
+                },
+                {
+                  label:
+                    "Not in paid employment, not looking and/or available to start work",
+                  value: "No",
+                },
               ],
               validation: z.string().optional(),
             },
@@ -1956,6 +1965,248 @@ export const applicationForm = [
                 { label: "12–23 months", value: "12–23 months" },
                 { label: "24–35 months", value: "24–35 months" },
                 { label: "36+ months", value: "36+ months" },
+              ],
+              validation: z.string().optional(),
+            },
+          ],
+        },
+        {
+          id: 16,
+          title: "3.2 – Employer Role",
+          p: "",
+          fields: [
+            {
+              type: "checkbox",
+              id: "emloyerRole",
+              label: "Have you been asked by an employer to attend a course?",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+          ],
+        },
+        {
+          id: 17,
+          title: "3.3 – Employer responsive courses only",
+          p: "PLEASE COMPLETE IF YOUR EMPLOYER IS PAYING FOR COURSE FEES",
+          fields: [
+            {
+              type: "text",
+              id: "companyName",
+              label: "Company/Organization Name",
+              placeholder: "Enter Company/Organization Name",
+              validation: z.string().optional(),
+            },
+            {
+              type: "text",
+              id: "companyAddress",
+              label: "Company/Organization Name",
+              placeholder: "Enter Company/Organization Address",
+              validation: z.string().optional(),
+            },
+            {
+              type: "text",
+              id: "companyPostCode",
+              label: "Post  Code",
+              placeholder: "Enter Company Post Code",
+              validation: z.string().optional(),
+            },
+            {
+              type: "text",
+              id: "companyContactName",
+              label: "Contact Name",
+              placeholder: "Enter Company Contact Name",
+              validation: z.string().optional(),
+            },
+            {
+              type: "text",
+              id: "companyContactNumber",
+              label: "Contact Number",
+              placeholder: "Enter Company Contact Number",
+              validation: z.string().optional(),
+            },
+          ],
+        },
+        {
+          id: 18,
+          title: "3.4 – Benefit Receipt (please tick (√) where applicable)",
+          p: "",
+          fields: [
+            {
+              type: "checkbox",
+              id: "benefitReceipt",
+              label:
+                "Are you registered with your local Job Centre Plus Office?",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "text",
+              id: "jcpOffice",
+              label: "If yes, please state your JCP office:",
+              placeholder: "State your JCP office:",
+              validation: z.string().optional(),
+            },
+          ],
+        },
+        {
+          id: 19,
+          title:
+            "3.5 – Benefit status (if you receive any of the income-based benefits below please tick (√) the relevant box)",
+          p: "Job Seekers Allowance",
+          fields: [
+            {
+              type: "checkbox",
+              id: "universalCredit",
+              label:
+                "Universal Credit, and earn either less than 16 times the appropriate age-related rate of the national",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "minimumWage",
+              label:
+                "Minimum wage / national living wage a week, or £338 a month (individual claims) or£541 a month (household claims)",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+          ],
+        },
+        {
+          id: 20,
+          title: "",
+          p: "Working Tax Credits",
+          fields: [
+            {
+              type: "checkbox",
+              id: "incomeSupport",
+              label:
+                "Income Support, and earn either less than 16 times the appropriate age-related rate of the national minimum wage/ national living wage a week, or £338 a month (individual claims) or £541 a month (household claims)",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+          ],
+        },
+        {
+          id: 21,
+          title: "",
+          p: "Employment and Support Allowance (ESA)",
+          fields: [
+            {
+              type: "checkbox",
+              id: "housingBenefit",
+              label: "Housing Benefit",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "pensionCredit",
+              label: "Pension Credit",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "nationalInsurance",
+              label: "National Insurance Contributions",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "employedEarning",
+              label:
+                "Are you employed and earning less than £20,572.00 annual gross salary",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "noBenefits",
+              label: "No Benefits",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+          ],
+        },
+        {
+          id: 22,
+          title: "3.6 Current Situation (please tick (√) where applicable)",
+          p: "",
+          fields: [
+            {
+              type: "checkbox",
+              id: "loneParent",
+              label: "I am a lone parent",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "careLeaver",
+              label: "I am a care leaver",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "exOffender",
+              label: "I am an ex- offender",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "homelessPerson",
+              label: "I am a Homeless Person",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "checkbox",
+              id: "otherCollegeTraining",
+              label:
+                "Are you currently attending any other college or training provider",
+              options: ["Yes", "No"],
+              validation: z.boolean(),
+            },
+            {
+              type: "text",
+              id: "proveDetails",
+              label: "If yes, please provide details:",
+              placeholder: "Prove details",
+              validation: z.string().optional(),
+            },
+          ],
+        },
+        {
+          id: 23,
+          title:
+            "SECTION 04: Household Situation (please tick(√) which of the following apply to you)",
+          p: "",
+          fields: [
+            {
+              type: "radio",
+              id: "householdSituation",
+              label: "Household Situation",
+              options: [
+                {
+                  label:
+                    "No household member is in employment (with dependent children)",
+                  value: "no_employment_with_children",
+                },
+                {
+                  label:
+                    "No household member is in employment (no dependent children)",
+                  value: "no_employment_no_children",
+                },
+                {
+                  label: "Single adult household with dependent children",
+                  value: "single_adult_with_children",
+                },
+                { label: "None of the above", value: "none_of_the_above" },
+                { label: "Prefer not to say", value: "prefer_not_to_say" },
               ],
               validation: z.string().optional(),
             },

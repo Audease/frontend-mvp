@@ -24,6 +24,11 @@ interface EnrolmentFormProps {
 const formFields = applicationForm[0].enrollmentForm.fields;
 const sectionFields = applicationForm[0].enrollmentForm.section;
 
+const allFields = [
+  ...formFields,
+  ...sectionFields.flatMap((section) => section.fields),
+];
+
 const formSchema = z.object(
   formFields.reduce((acc, field) => {
     acc[field.id] = field.validation;

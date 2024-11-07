@@ -20,6 +20,7 @@ import EqualOpportunitiesPolicy from "./applicationForm/EqualOpoortunities/Equal
 import HealthSafetyPolicy from "./applicationForm/HealthSafetyPolicy/HealthSafetyPolicy";
 import GuidancePolicy from "./applicationForm/GuidancePolicy/GuidancePolicy";
 import Enrolment from "./applicationForm/EnrollmentForm/Enrolment";
+import PrivacyNotice from "./applicationForm/PrivacyNotice/PrivacyNotice";
 
 const styles = StyleSheet.create({
   text1: { padding: 5, textTransform: "capitalize", fontSize: "12px" },
@@ -291,6 +292,7 @@ const DocView = ({ onBackClick }) => {
     healthandsafetypolicy: {},
     guidancepolicy: {},
     enrolment: {},
+    privacynotice: {},
   });
 
   const [CollegeName, setCollegeName] = useState<string>("");
@@ -310,6 +312,7 @@ const DocView = ({ onBackClick }) => {
     "HealthSafetyPolicy",
     "GuidancePolicy",
     "Enrolment",
+    "PrivacyNotice",
   ];
 
   useEffect(() => {
@@ -434,6 +437,17 @@ const DocView = ({ onBackClick }) => {
             onNextClick={onNextClick}
           />
         );
+        case "PrivacyNotice":
+          return (
+            <PrivacyNotice
+              formData={formData.privacynotice}
+              setFormData={(data) =>
+                handleSaveFormData(data, "privacynotice")
+              }
+              onPrevClick={onPrevClick}
+              onNextClick={onNextClick}
+            />
+          );
       default:
         return <Appeal {...{ onNextClick }} />;
     }

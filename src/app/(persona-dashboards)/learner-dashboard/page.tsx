@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import UserDetails from "../../admin/learners/userDetails";
 import WelcomeModal from "./components/WelcomeModal";
 
 const Learner = () => {

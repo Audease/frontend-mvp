@@ -33,6 +33,7 @@ export default function AccessorDashboardTable({
   useEffect(() => {
     handleFetchAccessorLearnersData(currentPage);
     accessorLearnerRevalidation();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handlePageChange = async (page) => {

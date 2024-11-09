@@ -322,6 +322,7 @@ const DocView = ({ onBackClick }) => {
       setCollegeName(form.name);
       setTotalSectionNumber(formComponents.length);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Load saved form data on initial render

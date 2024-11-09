@@ -4,10 +4,11 @@ import {
   EditLearnerButton,
   RevertEditButton,
 } from "./RecruiterButtons";
-import CreateLearner from "../../../learners/components/CreateLearner";
+
 import ImportLearner from "./ImportLearner";
 import RecruiterStaff from "./RecruiterStaff";
 import FilterLearner from "./Filter";
+import CreateLearner from "@/app/admin/learners/components/LearnersDefault/components/CreateLearner";
 
 export default function ActionButtons({
   checkedItems,

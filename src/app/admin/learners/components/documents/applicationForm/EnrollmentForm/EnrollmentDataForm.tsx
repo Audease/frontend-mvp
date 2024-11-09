@@ -24,16 +24,14 @@ interface EnrolmentFormProps {
 const formFields = applicationForm[0].enrollmentForm.fields;
 const sectionFields = applicationForm[0].enrollmentForm.section;
 
-const allFields = [
-  ...formFields,
-  ...sectionFields.flatMap((section) => section.fields),
-];
-
 const formSchema = z.object(
-  formFields.reduce((acc, field) => {
-    acc[field.id] = field.validation;
-    return acc;
-  }, {})
+  [...formFields, ...sectionFields.flatMap((section) => section.fields)].reduce(
+    (acc, field) => {
+      acc[field.id] = field.validation;
+      return acc;
+    },
+    {}
+  )
 );
 
 export default function EnrolmentForm({
@@ -50,7 +48,10 @@ export default function EnrolmentForm({
   } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      ...formFields.reduce((acc, field) => {
+      ...[
+        ...formFields,
+        ...sectionFields.flatMap((section) => section.fields),
+      ].reduce((acc, field) => {
         acc[field.id] = field.type === "checkbox" ? false : "";
         return acc;
       }, {}),
@@ -67,12 +68,12 @@ export default function EnrolmentForm({
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
-        {formFields.map((field) => {
+        {formFields.map((field, index) => {
           switch (field.type) {
             case "text":
               return (
                 <Controller
-                  key={field.id}
+                key={`formField-${field.id || index}`}
                   name={field.id}
                   control={control}
                   render={({ field: { onChange, value } }) => (
@@ -94,20 +95,20 @@ export default function EnrolmentForm({
               return null;
           }
         })}
-        {sectionFields.map((field) => (
-          <div key={field.title}>
+        {sectionFields.map((field, sectionIndex) => (
+          <div key={`section-${field.title || sectionIndex}`}>
             <div className="flex flex-col">
               <Text style={{ fontSize: 18, fontWeight: "bold" }}>
                 {field.title}
               </Text>
               <Text style={{ fontSize: 12 }}>{field.p}</Text>
             </div>
-            {field.fields.map((innerField) => {
+            {field.fields.map((innerField, index) => {
               switch (innerField.type) {
                 case "text":
                   return (
                     <Controller
-                      key={innerField.id}
+                    key={`sectionField-${innerField.id || `${sectionIndex}-${index}`}`} 
                       name={innerField.id}
                       control={control}
                       render={({ field: { onChange, value } }) => (
@@ -128,7 +129,7 @@ export default function EnrolmentForm({
                 case "checkbox":
                   return (
                     <Controller
-                      key={innerField.id}
+                    key={`sectionField-${innerField.id || `${sectionIndex}-${index}`}`} 
                       name={innerField.id}
                       control={control}
                       render={({ field: { onChange, value } }) => (
@@ -146,7 +147,7 @@ export default function EnrolmentForm({
                 case "date":
                   return (
                     <Controller
-                      key={innerField.id}
+                    key={`sectionField-${innerField.id || `${sectionIndex}-${index}`}`} 
                       name={innerField.id}
                       control={control}
                       render={({ field: { onChange, value } }) => (
@@ -165,7 +166,7 @@ export default function EnrolmentForm({
                 case "number":
                   return (
                     <Controller
-                      key={innerField.id}
+                    key={`sectionField-${innerField.id || `${sectionIndex}-${index}`}`} 
                       name={innerField.id}
                       control={control}
                       render={({ field: { onChange, value } }) => (
@@ -187,7 +188,7 @@ export default function EnrolmentForm({
                 case "radio":
                   return (
                     <Controller
-                      key={innerField.id}
+                    key={`sectionField-${innerField.id || `${sectionIndex}-${index}`}`} 
                       name={innerField.id}
                       control={control}
                       render={({ field: { onChange, value } }) => (
@@ -205,7 +206,7 @@ export default function EnrolmentForm({
                 case "tel":
                   return (
                     <Controller
-                      key={innerField.id}
+                    key={`sectionField-${innerField.id || `${sectionIndex}-${index}`}`} 
                       name={innerField.id}
                       control={control}
                       render={({ field: { onChange, value } }) => (
@@ -223,7 +224,7 @@ export default function EnrolmentForm({
                 case "email":
                   return (
                     <Controller
-                      key={innerField.id}
+                    key={`sectionField-${innerField.id || `${sectionIndex}-${index}`}`} 
                       name={innerField.id}
                       control={control}
                       render={({ field: { onChange, value } }) => (

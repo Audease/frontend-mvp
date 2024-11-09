@@ -21,6 +21,7 @@ import HealthSafetyPolicy from "./applicationForm/HealthSafetyPolicy/HealthSafet
 import GuidancePolicy from "./applicationForm/GuidancePolicy/GuidancePolicy";
 import Enrolment from "./applicationForm/EnrollmentForm/Enrolment";
 import PrivacyNotice from "./applicationForm/PrivacyNotice/PrivacyNotice";
+import Image from "next/image";
 
 const styles = StyleSheet.create({
   text1: { padding: 5, textTransform: "capitalize", fontSize: "12px" },
@@ -473,10 +474,12 @@ const DocView = ({ onBackClick }) => {
         <button onClick={onBackClick}>Back</button>
         <h3>{`Page ${sectionNumber} of  ${totalSectionNumber}`}</h3>
       </div>
-      <div>
+      <div className="flex flex-row px-4 justify-between ">
+        <div></div>
         <h2 className="text-center text-xl my-6 font-bold capitalize">
           {CollegeName}
         </h2>
+        <Image src={"/EdenCollegelogo.jpg"} alt={""} width={80} height={40}></Image>
       </div>
       <div>
         <div>{renderFormComponent()}</div>

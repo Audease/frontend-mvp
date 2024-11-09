@@ -40,7 +40,6 @@ export default function AccessorDashboardTable({
     handleFetchAccessorLearnersData(page);
   };
 
-
   const [editOptionsVisible, setEditOptionsVisible] = useState(null); 
   const menuRef = useRef(null);
 

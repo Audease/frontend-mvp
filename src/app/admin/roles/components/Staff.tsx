@@ -125,10 +125,13 @@ export default function Staff({ onClick }) {
       return updatedInvitedStaff;
     });
     setAddedMessageVisible(true);
+    setTimeout(() => {
+      setAddedMessageVisible(false);
+    }, 5000); 
     // Delay the clearing of the staffs array
     setTimeout(() => {
       setStaffs([]);
-    }, 5000); // 5 seconds
+    }, 10000); 
   };
 
   // Load invitedStaff from local storage on component mount
@@ -143,17 +146,6 @@ export default function Staff({ onClick }) {
   useEffect(() => {
     localStorage.setItem("invitedStaff", JSON.stringify(invitedStaff));
   }, [invitedStaff]);
-
-  // Set a timer to hide the "Added!" message after 30 seconds
-  useEffect(() => {
-    if (addedMessageVisible) {
-      const timer = setTimeout(() => {
-        setAddedMessageVisible(false);
-      }, 5000); // 5 seconds
-
-      return () => clearTimeout(timer); // Cleanup the timer on unmount
-    }
-  }, [addedMessageVisible]);
 
   // Get avatars from https://ui-avatars.com/
   async function getAvatarUrl(email) {

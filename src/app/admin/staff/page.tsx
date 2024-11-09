@@ -6,7 +6,7 @@ import FilterButton from "../../components/dashboard/FilterButton";
 import StaffTable from "./StaffTable";
 import Pagination from "../../components/dashboard/Pagination";
 import { staffRevalidation } from "../../action";
-import LoadingSpinner from "../../components/dashboard/Spinner";
+import LoadingSpinner, { LoadingSpinner2 } from "../../components/dashboard/Spinner";
 
 type CheckedItems = {
   [key: number]: any;
@@ -54,7 +54,7 @@ export default function Staff() {
   const handlePageChange = async (page) => {
     setLoading(true);
     setCurrentPage(page);
-    handleFetchStaffData(page);
+    await handleFetchStaffData(page);
     setCheckedItems({});
     setLoading(false);
   };
@@ -115,7 +115,7 @@ export default function Staff() {
 
       {/* The main body, which is the table list */}
       <div className="w-full overflow-x-auto">
-        <div>{loading && <LoadingSpinner />}</div>
+        <div className="flex justify-center">{loading && <LoadingSpinner2 />}</div>
         <StaffTable
           {...{
             staffData,

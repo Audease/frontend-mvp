@@ -1,16 +1,19 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import Pagination from "../../components/dashboard/Pagination";
-import { useLearners } from "./hooks/useLearners";
-import LoadingSpinner from "../../components/dashboard/Spinner";
+import LoadingSpinner from "@/app/components/dashboard/Spinner";
+import Pagination from "@/app/components/dashboard/Pagination";
 
-export default function LearnersTable({ showUserDetailsPage }) {
+export default function LearnersTable({
+  showUserDetailsPage,
+  allLearners,
+  currentPage,
+  totalPages,
+  totalItems,
+  loading,
+  handlePageChange,
+}) {
   const [editOptions, setEditOptions] = useState({});
-  const [allLearners, setallLearners] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalpages] = useState(1);
-  const [totalItems, setTotalItems] = useState(1);
-  const [loading, setLoading] = useState(true); 
+
   const menuRef = useRef(null);
   const [checkedItems, setCheckedItems] = useState({});
   const options = ["Recruiter", "BKSD", "Accessor", "Inductor", "Lazer"];
@@ -43,26 +46,6 @@ export default function LearnersTable({ showUserDetailsPage }) {
     }));
   };
 
-  const { fetchLearnersData } = useLearners();
-
-  const handleFetchLearnersData = async (page) => {
-    setLoading(true); 
-    const { totalPages, totalItems, allLearners } = await fetchLearnersData(page);
-    setTotalpages(totalPages);
-    setTotalItems(totalItems);
-    setallLearners(allLearners);
-    setLoading(false); 
-  };
-
-  useEffect(() => {
-    handleFetchLearnersData(currentPage);
-  }, []);
-
-  const handlePageChange = async (page) => {
-    setCurrentPage(page);
-    handleFetchLearnersData(page);
-  };
-
   return (
     <div>
       <table className="min-w-full divide-y divide-gray-200 font-inter table-auto rounded-t-lg h-full">
@@ -90,13 +73,13 @@ export default function LearnersTable({ showUserDetailsPage }) {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {loading ? ( 
+          {loading ? (
             <tr className="border-b">
               <td
                 colSpan={7}
                 className="px-4 py-4 text-center text-sm text-tableText2 font-medium"
               >
-               <LoadingSpinner />
+                <LoadingSpinner />
               </td>
             </tr>
           ) : allLearners.length === 0 ? (
@@ -110,10 +93,9 @@ export default function LearnersTable({ showUserDetailsPage }) {
             </tr>
           ) : (
             allLearners.map((row) => (
-              <tr key={row.id}>
-                <td className="px-2 py-4 whitespace-nowrap text-sm  text-tableText2 font-medium flex flex-row">
+              <tr key={row.id} className="group">
+                <td className="px-2 py-4 whitespace-nowrap text-sm  text-tableText2 font-medium flex flex-row ">
                   <span className="pr-4">
-                    {" "}
                     {/* checkBox  */}
                     <input
                       type="checkbox"
@@ -123,22 +105,22 @@ export default function LearnersTable({ showUserDetailsPage }) {
                   </span>
                   {row.name}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium " >
                   {row.username}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium ">
                   {row.email}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium ">
                   {row.loginTime}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium ">
                   {row.funding}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium ">
                   {row.chosen_course}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-col justify-end relative">
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-col justify-end relative ">
                   <p
                     onClick={() => toggleVisibility(row.id)}
                     aria-expanded={editOptions[row.id] || false}

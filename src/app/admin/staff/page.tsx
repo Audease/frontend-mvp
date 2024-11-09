@@ -61,6 +61,7 @@ export default function Staff() {
 
   useEffect(() => {
     handleFetchStaffData(currentPage);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

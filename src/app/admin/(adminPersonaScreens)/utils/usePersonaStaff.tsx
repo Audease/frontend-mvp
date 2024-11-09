@@ -21,6 +21,7 @@ export const usePersonaStaff = (personaPermission = "Send Application") => {
 
   useEffect(() => {
     getStaffList();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [personaPermission]);  
   return {
     staffList,

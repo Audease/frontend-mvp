@@ -63,6 +63,7 @@ export default function InductionDashboardTable({
 
   useEffect(() => {
     handleFetchLearnersData(currentPage);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Rendering

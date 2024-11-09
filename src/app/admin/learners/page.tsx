@@ -42,6 +42,7 @@ export default function Learners() {
 
   useEffect(() => {
     handleFetchLearnersData(currentPage);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handlePageChange = async (page) => {

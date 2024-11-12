@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import LearnersDefault from "./components/LearnersDefault/learnersDefault";
 import UserDetails from "./components/UserDetails/userDetails";
 import { useLearners } from "./hooks/useLearners";
+import DocView from "./components/documents/DocView";
 
 export default function Learners() {
   const [selectedUserId, setSelectedUserId] = useState(null);

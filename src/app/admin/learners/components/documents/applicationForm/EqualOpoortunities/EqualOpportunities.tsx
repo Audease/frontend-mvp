@@ -14,7 +14,10 @@ interface EqualOpportunitiesPolicyProps {
 }
 
 const styles = StyleSheet.create({
-  page: { marginBottom: 10, textTransform: "capitalize" },
+  page: { marginBottom: 4, textTransform: "capitalize", padding: 10 },
+  title: { fontSize: 18, fontWeight: "bold", paddingBottom: 5 },
+  description: {paddingVertical: 10, fontSize: 12, lineHeight:2.5 },
+  list: {paddingVertical: 5, fontSize: 12, lineHeight:2.5 },
   section: { textAlign: "center", margin: 30 },
 });
 
@@ -27,32 +30,32 @@ const EqualOpportunitiesPolicy: React.FC<EqualOpportunitiesPolicyProps> = ({
   onNextClick,
 }) => {
   return (
-    <div>
+    <div style={styles.page}>
       <div className="text-xl flex flex-col">
-        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+        <Text style={styles.title}>
           {content.title}
         </Text>
       </div>
       <div>
         {content.statement.map((section) => (
-          <div key={section.id} style={styles.page}>
+          <div key={section.id}>
             <div className="text-xl">
-              <Text style={{ fontSize: 12 }}>{section.text}</Text>
+              <Text style={styles.description}>{section.text}</Text>
             </div>
           </div>
         ))}
       </div>
       <div>
         {content.procedures.map((section) => (
-          <div key={section.id} style={styles.page}>
+          <div key={section.id}>
             <div className="text-xl">
-              <Text style={{ fontSize: 12 }}>{section.text}</Text>
+              <Text style={styles.description}>{section.text}</Text>
             </div>
             <div>
               {section.list.map((points) => (
                 <div key={points.id}>
                   <li className="text-xl">
-                    <Text style={{ fontSize: 12 }}>{points.text}</Text>
+                    <Text style={styles.list}>{points.text}</Text>
                   </li>
                 </div>
               ))}

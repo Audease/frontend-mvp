@@ -17,7 +17,10 @@ interface CollegeObligationProps {
 }
 
 const styles = StyleSheet.create({
-  page: { marginBottom: 10, textTransform: "capitalize" },
+  page: { marginBottom: 10, textTransform: "capitalize", padding: 10 },
+  title: { fontSize: 14, fontWeight: "bold" },
+  description: {paddingVertical: 10, fontSize: 12, lineHeight:2.5 },
+  list: {paddingVertical: 5, fontSize: 12, lineHeight:2.5 },
   section: { textAlign: "center", margin: 30 },
 });
 
@@ -67,14 +70,14 @@ export default function CollegeObligation({
     <div>
       <div>
         {formContent1.map((section) => (
-          <div key={section.id} style={styles.page}>
+          <div key={section.id}>
             <div className="text-xl">
-              <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+              <Text style={styles.title}>
                 {section.title}
               </Text>
             </div>
             <div className="text-lg">
-              <Text style={{ fontSize: 12, marginLeft: 10 }}>
+              <Text style={styles.description}>
                 {section.content}
               </Text>
             </div>
@@ -83,14 +86,14 @@ export default function CollegeObligation({
       </div>
       <div>
         <div className="text-xl">
-          <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+          <Text style={styles.title}>
             {dataprotection.section2.title}
           </Text>
         </div>
         {formContent2.map((section) => (
-          <div key={section.id} style={styles.page}>
+          <div key={section.id}>
             <div className="text-xl">
-              <Text style={{ fontSize: 12, marginLeft: 10 }}>
+              <Text style={styles.list}>
                 {section.text}
               </Text>
             </div>
@@ -99,23 +102,23 @@ export default function CollegeObligation({
       </div>
       <div>
         <div className="text-xl">
-          <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+          <Text style={styles.title}>
             {dataprotection.section3.title}
           </Text>
         </div>
         {formContent3.paragraph.map((section) => (
           <div key={section.id} style={styles.page}>
             <div className="text-xl">
-              <Text style={{ fontSize: 12, marginLeft: 10 }}>
+              <Text style={styles.list}>
                 {section.p}
               </Text>
             </div>
           </div>
         ))}
          {formContent3.list.map((section) => (
-          <div key={section.id} style={styles.page}>
+          <div key={section.id}>
             <li className="text-xl">
-              <Text style={{ fontSize: 12 }}>
+              <Text style={styles.list}>
                 {section.text}
               </Text>
             </li>
@@ -125,26 +128,26 @@ export default function CollegeObligation({
       {/* Section 4 */}
       <div>
         <div className="text-xl">
-          <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+          <Text style={styles.title}>
             {dataprotection.section4.title}
           </Text>
         </div>
         {formContent4.content.map((section) => (
-          <div key={section.id} style={styles.page}>
+          <div key={section.id}>
             <div className="text-xl flex flex-col">
-              <Text style={{ fontSize: 12, marginLeft: 10, fontWeight: "bold" }}>
+              <Text style={styles.title}>
                 {section.title}
               </Text>
-              <Text style={{ fontSize: 12, marginLeft: 10,  }}>
+              <Text style={styles.list}>
                 {section.text}
               </Text>
-              <Text style={{ fontSize: 12, marginLeft: 10 }}>
+              <Text style={styles.list}>
                 {section.data}
               </Text>
-              <Text style={{ fontSize: 12, marginLeft: 10 }}>
+              <Text style={styles.list}>
                 {section.mainP}
               </Text>
-              <Text style={{ fontSize: 12, marginLeft: 10 }}>
+              <Text style={styles.list}>
                 {section.mainSnD}
               </Text>
             </div>

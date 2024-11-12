@@ -9,28 +9,28 @@ export const applicationForm = [
       sid: 1,
       title: "Appeals Procedure",
       description:
-        "All learners have the right to appeal in case of concerns, disagreements and disputes about the interpretation of standards and / or an assessment decision as well as an information, advice and guidance intervention. Appeals are referred to the Centre Coordinator (the Learning and Assessment Coordinator) in the first instance who then passes this to the Internal Verifier. The Internal Verifier requires copies of all relevant material, following receipt of such, discusses the matter individually with the candidates and assessor/trainers/tutors/ Careers Adviser- Consultants concerned in a formal meeting. If it is not clear to make a decision on this basis. The Internal Verifier seeks guidance from the Principal Learning and Development Adviser, being the Managing Director. The Principal Learning Development Adviser then forms a separate appeals panel to look at the case in more depth and at this point a decision is made. The panel normally consists of an independent representative agreed by the learner, a trainer/tutor or assess or who is not familiar with the learner’s work. If the dispute is still unresolved the matter is referred to the External Verifier / Chief Verifier of the awarding body concerned.",
+        "All learners have the right to appeal in case of concerns, disagreements and disputes about the interpretation of standards and / or an assessment decision as well as an information, advice and guidance intervention. Appeals are referred to the Centre Coordinator (the Learning and Assessment Coordinator) in the first instance who then passes this to the Internal Verifier. The Internal Verifier requires copies of all relevant material, following receipt of such, discusses the matter individually with the candidates and assessor /trainers /tutors / Careers Adviser - Consultants concerned in a formal meeting. If it is not clear to make a decision on this basis. The Internal Verifier seeks guidance from the Principal Learning and Development Adviser, being the Managing Director. The Principal Learning Development Adviser then forms a separate appeals panel to look at the case in more depth and at this point a decision is made. The panel normally consists of an independent representative agreed by the learner, a trainer/tutor or assess or who is not familiar with the learner’s work. If the dispute is still unresolved the matter is referred to the External Verifier / Chief Verifier of the awarding body concerned.",
       diagram: [
         {
           id: 1,
           title:
-            "Candidate/Client-Dispute (Learning and Assessment Coordinator)",
-          text: "Learning and Assessment Coordinator records receipt of disagreement immediately. And gives details of disagreement/complaint to the relevant Eden College Internal Verifier in no more than five days.",
+            "Candidate/Client-Dispute (Learning and Assessment Coordinator):",
+          text: " Learning and Assessment Coordinator records receipt of disagreement immediately. And gives details of disagreement/complaint to the relevant Eden College Internal Verifier in no more than five days.",
         },
         {
           id: 2,
-          title: "Eden College Internal Verifier",
-          text: "Internal Verifier is given five days to review the case and if the Internal Verifier cannot resolve the case the Internal Verifier passes details to the chair of the panel of adjudicators. Normally Independent assessors who are not familiar with the learner.",
+          title: "Eden College Internal Verifier:",
+          text: " Internal Verifier is given five days to review the case and if the Internal Verifier cannot resolve the case the Internal Verifier passes details to the chair of the panel of adjudicators. Normally Independent assessors who are not familiar with the learner.",
         },
         {
           id: 3,
-          title: "Panel of Independent Adjudications",
-          text: "Panel is given two days from sitting to come to a decision.",
+          title: "Panel of Independent Adjudications:",
+          text: " Panel is given two days from sitting to come to a decision.",
         },
         {
           id: 4,
-          title: "Case not resolved",
-          text: "If the panel cannot come to a decision they must pass on their findings after three days to the awarding body, external Verifier to make a decision and recommendations. Timescale to be negotiated with the Awarding body concerned. (TQUK, Pearson, Cache, VTCT, Active IQ)",
+          title: "Case not resolved:",
+          text: " If the panel cannot come to a decision they must pass on their findings after three days to the awarding body, external Verifier to make a decision and recommendations. Timescale to be negotiated with the Awarding body concerned. (TQUK, Pearson, Cache, VTCT, Active IQ)",
         },
       ],
     },
@@ -156,8 +156,8 @@ export const applicationForm = [
           id: "candidateSignature",
           label: "Candidate Signature",
           type: "text",
-          placeholder: "Candidate Signature",
-          validation: z.string().min(1),
+          placeholder: "Type in your surname and credentials to append signature",
+          validation: z.string().min(3),
         },
         {
           id: "ldaName",
@@ -246,13 +246,13 @@ export const applicationForm = [
           id: "alternativeName",
           label: "If no, please specify (in BLOCK CAPITALS)",
           placeholder: "Alternative Name",
-          validation: z.string().min(1).max(50).optional(),
+          validation: z.string().optional(),
         },
         {
           type: "text",
           id: "candidateSignature",
           label: "Candidate Signature",
-          placeholder: "Candidate Signature",
+          placeholder: "Type in your surname and credentials to append signature",
           validation: z.string().min(1),
         },
         {
@@ -338,7 +338,14 @@ export const applicationForm = [
         {
           type: "text",
           id: "ldaName",
-          label: "Learning and Development Adviser Name (please print)",
+          label: "Learning and Development Adviser Name",
+          placeholder: "Eden College Allocated LDA",
+          validation: z.string().min(2).max(100),
+        },
+        {
+          type: "text",
+          id: "eldaName",
+          label: "Eden College Allocated LDA",
           placeholder: "Eden College Allocated LDA",
           validation: z.string().min(2).max(100),
         },
@@ -346,7 +353,7 @@ export const applicationForm = [
           type: "text",
           id: "ldaSignature",
           label: "Learning and Development Adviser Signature",
-          placeholder: "Eden College Allocated LDA",
+          placeholder: "Eden College Allocated LDA Signature",
           validation: z.string().min(1),
         },
         {
@@ -474,21 +481,27 @@ export const applicationForm = [
           id: "confirm",
           label:
             "I confirm that I have read the summary of Eden college Data Protection policy set out in this form and consent to the Eden college holding and processing the categories of personal data about me in the attached schedule for the specified purposes (summarised therein) in respect of my application(s) for admission, as a learner if successful, and after completion and achievement.",
-          validation: z.boolean(),
+            validation: z.boolean().refine((value) => value === true, {
+              message: "You must check this box to continue.",
+            }),
         },
         {
           type: "checkbox",
           id: "altConfirm",
           label:
             "In the event that my application to Eden College is unsuccessful I consent to my personal data held on computer and in my files being passed to a not her training organisation for consideration for admission.",
-          validation: z.boolean(),
+            validation: z.boolean().refine((value) => value === true, {
+              message: "You must check this box to continue.",
+            }),
         },
         {
           type: "checkbox",
           id: "feedbackConfirm",
           label:
             "I have read and understand the statement on the confidentiality of the admissions process as outlined above and I accept this. I am also aware of the feedback arrangements.",
-          validation: z.boolean(),
+            validation: z.boolean().refine((value) => value === true, {
+              message: "You must check this box to continue.",
+            }),
         },
         {
           type: "text",
@@ -612,7 +625,7 @@ export const applicationForm = [
           type: "text",
           id: "candidateSignature",
           label: "Candidate Signature",
-          placeholder: "Candidate Signature",
+          placeholder: "Type in your surname and credentials to append signature",
           validation: z.string().min(2).max(100),
         },
         {
@@ -633,7 +646,9 @@ export const applicationForm = [
           type: "checkbox",
           id: "agreement",
           label: "I confirm that I have read and understood the above policy.",
-          validation: z.boolean(),
+          validation: z.boolean().refine((value) => value === true, {
+            message: "You must check this box to continue.",
+          }),
         },
       ],
     },
@@ -886,7 +901,9 @@ export const applicationForm = [
           type: "checkbox",
           id: "agreement",
           label: "I confirm that I have read and understood the above policy.",
-          validation: z.boolean(),
+          validation: z.boolean().refine((value) => value === true, {
+            message: "You must check this box to continue.",
+          }),
         },
       ],
     },
@@ -1322,7 +1339,9 @@ export const applicationForm = [
           type: "checkbox",
           id: "agreement",
           label: "I confirm that I have read and understood the above policy.",
-          validation: z.boolean(),
+          validation: z.boolean().refine((value) => value === true, {
+            message: "You must check this box to continue.",
+          }),
         },
       ],
     },

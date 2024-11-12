@@ -16,7 +16,7 @@ function Checkbox({ onChange, value, label, error }: CheckboxProps) {
         checked={value}
         className="mr-2"
       />
-      <label className="text-sm">{label}</label>
+      <label className="text-[12px]">{label}</label>
       {error && <span className="text-red-500 text-sm ml-2">{error}</span>}
     </div>
   );

@@ -13,7 +13,10 @@ interface ConfidentialityPolicyProps {
 }
 
 const styles = StyleSheet.create({
-  page: { marginBottom: 10, textTransform: "capitalize" },
+  page: { textTransform: "capitalize", padding: 10 },
+  title: { fontSize: 18, fontWeight: "bold", paddingBottom: 3 },
+  description: {paddingVertical: 10, fontSize: 12, lineHeight:2.5 },
+  list: {paddingVertical: 5, fontSize: 12, lineHeight:2.5 },
   section: { textAlign: "center", margin: 30 },
 });
 
@@ -28,14 +31,14 @@ const Confidentiality: React.FC<ConfidentialityPolicyProps> = ({
       {applicationForm.map((section) => (
         <div key={section.id} style={styles.page}>
           <div className="text-xl">
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+            <Text style={styles.title}>
               {section.confidentiality.title}
             </Text>
           </div>
           <div>
             {section.confidentiality.paragraphs.map((list) => (
               <div key={list.id} className="text-lg">
-                  <Text style={{ fontSize: 12, marginLeft: 10 }}>{list.p}</Text>
+                  <Text style={styles.list}>{list.p}</Text>
               </div>
             ))}
           </div>

@@ -3,12 +3,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { TextInput } from "@/app/components/form";
 import { Button } from "@/components/ui/button";
 import Checkbox from "@/app/components/form/Checkbox/Checkbox";
 import { applicationForm } from "../dummyForm";
-import { Text } from "@react-pdf/renderer";
+import { StyleSheet, Text } from "@react-pdf/renderer";
 import DatePicker from "@/app/components/form/DatePicker/DatePicker";
 import Dropdown from "@/app/components/form/SelectInput/SelectInput";
 
@@ -18,6 +17,13 @@ interface CandidateRecordFormProps {
   onNextClick?: () => void;
   onPrevClick?: () => void;
 }
+
+const styles = StyleSheet.create({
+  page: { marginBottom: 1, textTransform: "capitalize", padding: 10 },
+  title: { fontSize: 18, fontWeight: "bold" },
+  description: {paddingVertical: 5, fontSize: 12, lineHeight:2.5 },
+  section: { textAlign: "center", margin: 30 },
+});
 
 const formFields = applicationForm[0].candidateRecord.formFields;
 
@@ -63,7 +69,7 @@ export default function CandidateRecordForm({
           return (
             <div key={section.candidateRecord.id}>
               <div className="text-xl">
-                <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                <Text style={{ fontSize: 18, fontWeight: "bold", paddingTop: 20, paddingBottom:10 }}>
                   {section.candidateRecord.title}
                 </Text>
               </div>

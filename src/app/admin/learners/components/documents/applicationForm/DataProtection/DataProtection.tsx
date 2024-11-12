@@ -15,6 +15,7 @@ interface DataProtectionProps {
 
 const styles = StyleSheet.create({
   page: { marginBottom: 10, textTransform: "capitalize" },
+  title: { fontSize: 18, fontWeight: "bold", paddingBottom: 5, paddingHorizontal: 10 },
   section: { textAlign: "center", margin: 30 },
 });
 
@@ -29,7 +30,7 @@ const DataProtection: React.FC<DataProtectionProps> = ({
       {applicationForm.map((section) => (
         <div key={section.id} style={styles.page}>
           <div className="text-xl">
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+            <Text style={styles.title}>
               {section.dataProtection.title}
             </Text>
           </div>

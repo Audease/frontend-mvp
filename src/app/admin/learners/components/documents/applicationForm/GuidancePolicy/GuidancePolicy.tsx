@@ -14,7 +14,10 @@ interface GuidancePolicyProps {
 }
 
 const styles = StyleSheet.create({
-  page: { marginBottom: 10, textTransform: "capitalize" },
+  title: { fontSize: 18, fontWeight: "bold", padding: 10 },
+  sub_title: { fontSize: 12, fontWeight: "bold", paddingHorizontal: 10 },
+  description: { paddingHorizontal: 10, paddingVertical: 5, fontSize: 12, lineHeight: 2.5 },
+  list: { paddingHorizontal: 12, paddingVertical: 5, fontSize: 12, lineHeight: 2 },
   section: { textAlign: "center", margin: 30 },
 });
 
@@ -30,33 +33,33 @@ const GuidancePolicy: React.FC<GuidancePolicyProps> = ({
     <div>
       {/* Policy Title and Commitment */}
       <div className="text-xl flex flex-col">
-        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+        <Text style={styles.title}>
           {content.title}
         </Text>
-        <Text style={{ fontSize: 12 }}>{content.commitment}</Text>
+        <Text style={styles.description}>{content.commitment}</Text>
       </div>
 
       {/* Body Sections */}
       <div>
         {content.body.map((section) => (
-          <div key={section.id} style={styles.page}>
-            <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+          <div key={section.id}>
+            <Text style={styles.sub_title}>
               {section.title}
             </Text>
             <ul>
               {section.points.map((point) => (
-                <li key={point.id} style={styles.page}>
-                  <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+                <li key={point.id}>
+                  <Text style={styles.sub_title}>
                     {point.point}
                   </Text>
-                  <Text style={{ fontSize: 12 }}>{point.description}</Text>
+                  <Text style={styles.list}>{point.description}</Text>
 
                   {/* Render sub_points if they exist */}
                   {point.sub_points && (
                     <ul>
                       {point.sub_points.map((subPoint) => (
-                        <li key={subPoint.id} style={styles.page}>
-                          <Text style={{ fontSize: 12 }}>
+                        <li key={subPoint.id} >
+                          <Text style={styles.list}>
                             - {subPoint.sub_point}
                           </Text>
                         </li>
@@ -70,12 +73,12 @@ const GuidancePolicy: React.FC<GuidancePolicyProps> = ({
         ))}
         <div>
           <div>
-            <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+            <Text style={styles.sub_title}>
               {content.table.title}
             </Text>
             <p>
               {" "}
-              <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+              <Text style={styles.sub_title}>
                 {content.table.paragraph}
               </Text>
             </p>

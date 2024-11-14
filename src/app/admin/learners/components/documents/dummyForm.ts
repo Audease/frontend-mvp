@@ -156,7 +156,8 @@ export const applicationForm = [
           id: "candidateSignature",
           label: "Candidate Signature",
           type: "text",
-          placeholder: "Type in your surname and credentials to append signature",
+          placeholder:
+            "Type in your surname and credentials to append signature",
           validation: z.string().min(3),
         },
         {
@@ -252,7 +253,8 @@ export const applicationForm = [
           type: "text",
           id: "candidateSignature",
           label: "Candidate Signature",
-          placeholder: "Type in your surname and credentials to append signature",
+          placeholder:
+            "Type in your surname and credentials to append signature",
           validation: z.string().min(1),
         },
         {
@@ -481,27 +483,27 @@ export const applicationForm = [
           id: "confirm",
           label:
             "I confirm that I have read the summary of Eden college Data Protection policy set out in this form and consent to the Eden college holding and processing the categories of personal data about me in the attached schedule for the specified purposes (summarised therein) in respect of my application(s) for admission, as a learner if successful, and after completion and achievement.",
-            validation: z.boolean().refine((value) => value === true, {
-              message: "You must check this box to continue.",
-            }),
+          validation: z.boolean().refine((value) => value === true, {
+            message: "You must check this box to continue.",
+          }),
         },
         {
           type: "checkbox",
           id: "altConfirm",
           label:
             "In the event that my application to Eden College is unsuccessful I consent to my personal data held on computer and in my files being passed to a not her training organisation for consideration for admission.",
-            validation: z.boolean().refine((value) => value === true, {
-              message: "You must check this box to continue.",
-            }),
+          validation: z.boolean().refine((value) => value === true, {
+            message: "You must check this box to continue.",
+          }),
         },
         {
           type: "checkbox",
           id: "feedbackConfirm",
           label:
             "I have read and understand the statement on the confidentiality of the admissions process as outlined above and I accept this. I am also aware of the feedback arrangements.",
-            validation: z.boolean().refine((value) => value === true, {
-              message: "You must check this box to continue.",
-            }),
+          validation: z.boolean().refine((value) => value === true, {
+            message: "You must check this box to continue.",
+          }),
         },
         {
           type: "text",
@@ -625,7 +627,8 @@ export const applicationForm = [
           type: "text",
           id: "candidateSignature",
           label: "Candidate Signature",
-          placeholder: "Type in your surname and credentials to append signature",
+          placeholder:
+            "Type in your surname and credentials to append signature",
           validation: z.string().min(2).max(100),
         },
         {
@@ -1516,7 +1519,7 @@ export const applicationForm = [
           id: 3,
           title: "SECTION 02 : Equal Opportunities Monitoring",
           p: "",
-          fields: [{validation: z.string().max(50)}],
+          fields: [{ validation: z.string().max(50) }],
         },
         {
           id: 4,
@@ -2656,32 +2659,32 @@ export const applicationForm = [
           title:
             "SECTION 11: Learning Agreementand Declaration – IMPORTANT ALLLEARNERS MUST READ AND SIGN",
           p: "",
-          fields: [{validation: z.string().max(50)}],
+          fields: [{ validation: z.string().max(50) }],
         },
         {
           id: 36,
           title: "Who we are and what we do",
           p: "Eden College is a non-profit based in Romford Essex. We are committed to raising the level of skills for life and work in Romford Essex.",
-          fields: [{validation: z.string().max(50)}],
+          fields: [{ validation: z.string().max(50) }],
         },
         {
           id: 37,
           title: "Why we need your information and how we use it",
           p: "Eden College collects and uses personal data to provide services to residents. The data we collect is done on the lawful basis of legitimate interest, contractual obligation or consent. We are committed to making sure that we protect the personal and confidential information we hold. We will ensure that the personal data we collect is dealt with legally, securely, efficiently and effectively, so we can provide the best possible services to our residents and other service users.",
-          fields: [{validation: z.string().max(50)}],
+          fields: [{ validation: z.string().max(50) }],
         },
         {
           id: 38,
           title:
             "Data we collect and why Courses where we do not receive funding",
           p: "For these courses we are the data controller under the Data Protection law as we collect and process personal information about you in order to provide services and meet our legal obligations.",
-          fields: [{validation: z.string().max(50)}],
+          fields: [{ validation: z.string().max(50) }],
         },
         {
           id: 39,
           title: "Privacy notice for Education Skills Funding Agency (ESFA)",
           p: "Please see the attached privacy notice for Education Skills Funding Agency (ESFA).",
-          fields: [{validation: z.string().max(50)}],
+          fields: [{ validation: z.string().max(50) }],
         },
         {
           id: 40,
@@ -2893,13 +2896,13 @@ export const applicationForm = [
           id: 2,
           title: "",
           p: "Further information about use of and access to your personal data, details of organisations with whom we regularly share data, information about how long we retain your data, and how to change your consent to being contacted, please visit:",
-          fields: [{validation: z.string().max(50)}],
+          fields: [{ validation: z.string().max(50) }],
         },
         {
           id: 3,
           title: "",
           p: "https://www.gov.uk/government/publications/esfa-privacy-notice",
-          fields: [{validation: z.string().max(50)}],
+          fields: [{ validation: z.string().max(50) }],
         },
         {
           id: 4,
@@ -2923,6 +2926,617 @@ export const applicationForm = [
           ],
         },
       ],
+    },
+    award: {
+      id: 12,
+      title: "LEARNING AGREEMENT BETWEEN EDEN COLLEGE & LEARNERS",
+      subTitle:
+        "For the Learning delivery, Development and Assessment of the following NVQ/QCF award:",
+      formFields: [
+        {
+          type: "text",
+          id: "nameOfAward",
+          label: "Name of Award",
+          placeholder: "Name of Award",
+          validation: z.string().min(2).max(100),
+        },
+        {
+          type: "date",
+          id: "dateofRegistrationWithEdenCollege:",
+          label: "Date of registration with Eden College:",
+          placeholder: "Enter valid date",
+          validation: z.string().date(),
+        },
+        {
+          type: "text",
+          id: "candidateEnrolmentNo",
+          label: "Candidate enrolment No",
+          placeholder: "Candidate enrolment No",
+          validation: z.string().min(2).max(100),
+        },
+        {
+          type: "date",
+          id: "targetCompletionDate",
+          label: "Target completion date (12 months from start date)",
+          placeholder: "Enter valid date",
+          validation: z.string().date(),
+        },
+      ],
+      arrangement: {
+        interest:
+          "In the interest of all parties and to ensure the successful achievement of the above award, the following arrangement should be confirmed and signed:",
+        personas: [
+          {
+            id: "candidate",
+            title: "Candidate",
+            description:
+              "I have read and understand the role and expectation of the candidate in the induction pack given to me. I confirm that I have been inducted for this course and hereby undertake to:",
+            points: [
+              {
+                p: "Attend NVQ/QCF workshops as scheduled until completion of my award",
+              },
+              {
+                p: "Prepare for assessments and workshops ensuring that all evidence is accessible to my Learning and Development Adviser/Assessor",
+              },
+              {
+                p: "Inform all others involved in the assessment process, including my manager and supervisors",
+              },
+            ],
+          },
+          {
+            id: "college",
+            title: "What the college expects from you",
+            description: "",
+            points: [
+              {
+                p: "Personal commitment to your college course and the individual learning goals.",
+              },
+              {
+                p: "Punctual attendance at all required activities and explanation of any absence to your tutor.",
+              },
+              {
+                p: "Immediate contact with the college to notify absence.",
+              },
+              {
+                p: "Completion of course related work and the acceptance of any conditions or specific requirements laid down in the course handbook.",
+              },
+              {
+                p: "Behaviour in a way which does not offend others, is not discriminatory, and shows care, consideration and respect to all staff and fellow students.",
+              },
+              {
+                p: "Acceptance of responsibility to keep the college clean and tidy.",
+              },
+              {
+                p: "Compliance with the requirements of the Health and Safety Act 1974 and other legislation.",
+              },
+            ],
+          },
+          {
+            id: "services",
+            title: "",
+            description:
+              "Eden College is dedicated to your success. To help you identify, plan for and achieve your educational, career and lifelong learning objectives, we have established a number of support services to help make your studying with us easy as possible. These services include: ",
+            points: [
+              {
+                p: "A caring and friendly place where serious and committed student scan study.",
+              },
+              {
+                p: "A learning environment free from discrimination.",
+              },
+              {
+                p: "Applications are dealt with promptly and efficiently.",
+              },
+              {
+                p: "Admission to learning programmes on a fair basis.",
+              },
+              {
+                p: "Comprehensive introduction or induction programme.",
+              },
+              {
+                p: "High quality teaching and a commitment to the promotion of learning.",
+              },
+              {
+                p: "Regular reviews with your personal tutor.",
+              },
+              {
+                p: "Outgoing internal assessment and a profile of your progress at regular intervals.",
+              },
+              {
+                p: "Work experience placements.",
+              },
+              {
+                p: "Expect help and impartial advice and guidance on progression to the job market, training for higher and further education and how to apply.",
+              },
+              {
+                p: "Access to the Skills Centre, books and IT resources.",
+              },
+              {
+                p: "Opportunities to express your views through student’s representation of Academic board and governing body.",
+              },
+              {
+                p: "Access to formal complaints procedures.",
+              },
+              {
+                p: "Information about students’ activities and events.",
+              },
+              {
+                p: "Induction for the candidate.",
+              },
+              {
+                p: "Assessment.",
+              },
+              {
+                p: "Assessor keeps appointments and notifies the learner with as much notice as possible if changes to dates and times have to be made.",
+              },
+              {
+                p: "Records of assessment are maintained safely and securely and are only available to those who should have access to them.",
+              },
+              {
+                p: "Feedback on assessment is given as soon as possible after each assessment takes place.",
+              },
+              {
+                p: "Feedback product assessment will take a minimum of 4 weeks to de sent to candidates.",
+              },
+              ,
+              {
+                p: "The assessment complaints and appeals procedure is fully implemented when appropriate.",
+              },
+              ,
+              {
+                p: "Certificates will be issued following approval by the external verifier. The time scale for certification from the date of submission of a fully assessed portfolio is a minimum of 6 weeks. Candidate intending to use the qualification for further and higher education should note these time scales.",
+              },
+            ],
+          },
+        ],
+        formFields: [
+          {
+            type: "checkbox",
+            id: "awardAgreement",
+            label: "I agree with the terms and condition of this agreement",
+            options: ["Yes", "No"],
+            validation: z.boolean(),
+          },
+          {
+            type: "text",
+            id: "nameOfCandidate",
+            label: "Name of candidate",
+            placeholder: "Name of candidate",
+            validation: z.string().min(2).max(100),
+          },
+          {
+            type: "text",
+            id: "candidateSignature",
+            label: "Candidate Signature",
+            placeholder: "Candidate Signature",
+            validation: z.string().min(2).max(100),
+          },
+          {
+            type: "text",
+            id: "candidateEmployer",
+            label: "Employer",
+            placeholder: "Employer",
+            validation: z.string().min(2).max(100),
+          },
+          {
+            type: "text",
+            id: "currentPosition",
+            label: "Current Position",
+            placeholder: "Current Position",
+            validation: z.string().min(2).max(100),
+          },
+          {
+            type: "date",
+            id: "employerDate",
+            label: "Date",
+            placeholder: "Enter valid date",
+            validation: z.string().date(),
+          },
+        ],
+        eden: {
+          p: "On behalf of Eden College",
+          formFields: [
+            {
+              type: "text",
+              id: "edenStaffName",
+              label: "Name",
+              placeholder: "Name",
+              validation: z.string().min(2).max(100),
+            },
+            {
+              type: "text",
+              id: "edenStaffPosition",
+              label: "Position",
+              placeholder: "Position",
+              validation: z.string().min(2).max(100),
+            },
+            {
+              type: "text",
+              id: "edenSignature",
+              label: "Signature",
+              placeholder: "Signature",
+              validation: z.string().min(2).max(100),
+            },
+            {
+              type: "text",
+              id: "currentPosition",
+              label: "Current Position",
+              placeholder: "Current Position",
+              validation: z.string().min(2).max(100),
+            },
+            {
+              type: "date",
+              id: "employerDate",
+              label: "Date",
+              placeholder: "Enter valid date",
+              validation: z.string().date(),
+            },
+          ],
+        },
+      },
+    },
+    employerAgreement: {
+      id: 13,
+      title:
+        "Learning Contract / Agreement Between Eden College, Learner and Employer",
+      subTitle: "Employer:",
+      fields: [
+        {
+          type: "checkbox",
+          id: "employerLearnerAgreement",
+          label:
+            "I agree to the following in respect of the learner on NVQ/QCF programme",
+          options: ["Yes", "No"],
+          validation: z.boolean(),
+        },
+        {
+          type: "text",
+          id: "employerLearnerName",
+          label: "Learner Name",
+          placeholder: "Learner Name",
+          validation: z.string().min(1).max(50).optional(),
+        },
+      ],
+      agreement: {
+        p: "In relation to the above learner I agree to ensure that:",
+        points: [
+          "Sufficient time is allocated for the learner to demonstrate competence to the Learning and Development Adviser at the work place and where necessary some time to carry out any additional work needed.",
+          "Support learner and provide opportunities for them to demonstrate competence against the full award requirements.",
+          "Appropriate training is accessed/provided if paid for where further training needs are identified, such as basic skills.",
+          "Appropriate arrangements are made to enable the candidate to complete training and assessment, and take action when learner fails to attend classes or submit work regularly for assessment.",
+          "Any changes to the candidate’s job role or working conditions which may impact upon the achievement of the award will be communicated to Eden College as soon as reasonable practicable but not later than a week after the change occurs.",
+          "Any contributions from work colleagues, managers, supervisors and witnesses are provided, for Learning, development and assessment purposes are signed and dated.",
+          "Contribute as appropriate to the evaluation of Learning, Development and Assessment processes.",
+        ],
+      },
+      formFields: [
+        {
+          type: "text",
+          id: "learnerSignature",
+          label: "Learner signature:",
+          placeholder: "Learner signature",
+          validation: z.string().optional(),
+        },
+        {
+          type: "text",
+          id: "learnerName",
+          label: "Learner Name",
+          placeholder: "Learner Name",
+          validation: z.string().optional(),
+        },
+        {
+          type: "date",
+          id: "learnerDate",
+          label: "Date",
+          placeholder: "Enter Date",
+          validation: z.string().date(),
+        },
+        {
+          type: "text",
+          id: "edenCollegeSignature",
+          label: "Eden College signature",
+          placeholder: "Eden College signature",
+          validation: z.string().optional(),
+        },
+        {
+          type: "date",
+          id: "learningandAssessmentCoordinatorDate",
+          label: "Learning and Assessment Coordinator Date",
+          placeholder: "Learning and Assessment Coordinator Date",
+          validation: z.string().date(),
+        },
+        {
+          type: "text",
+          id: "edenCollegeName",
+          label: "Name",
+          placeholder: "Name",
+          validation: z.string().optional(),
+        },
+        {
+          type: "text",
+          id: "employerSignature",
+          label: "Employer Signature",
+          placeholder: "Employer Signature",
+          validation: z.string().optional(),
+        },
+        {
+          type: "date",
+          id: "employerSignatureDate",
+          label: "Employer Signature Date",
+          placeholder: "Employer Signature Date",
+          validation: z.string().date(),
+        },
+      ],
+    },
+    participantAgreement: {
+      id: 14,
+      title: "PARTICIPANT AGREEMENT",
+      agreement: [
+        {
+          type: "checkbox",
+          id: "courseInfoConfirm",
+          label: "I agree	to	notify	Eden College if: ",
+          options: ["Yes", "No"],
+          validation: z.boolean(),
+        },
+      ],
+      notificationConditions: [
+        "I take any time off due to sickness.",
+        "I give notice or intend to leave my current place of work.",
+        "I am given notice or dismissed from my current job.",
+        "I take a holiday exceeding 10 working days",
+        "I decided not to attend any longer",
+      ],
+      agreementConditions: {
+        title: "I also agree: ",
+        conditions: [
+          "That I have left and do not plan to return to full time education",
+          "To carry out the tasks set by my Learning and Development Adviser within the agreed timescale",
+          "To not cancel appointments except in exceptional circumstances",
+          "To be punctual for appointments and bring all items/evidence required",
+          "To inform Eden College of any changes in my personal or working circumstances",
+          "To inform Eden College of any accidents or near misses that I have at work",
+          "To attend, if necessary, underpinning knowledge-training sessions",
+        ],
+        formFields: [
+          {
+            type: "text",
+            id: "participantAgreementSignature",
+            label: "Signature",
+            placeholder: "Signature",
+            validation: z.string().optional(),
+          },
+          {
+            type: "date",
+            id: "dateOfParticipantAgreement",
+            label: "Date of Agreement",
+            placeholder: "Enter Date of Agreement",
+            validation: z.string().date(),
+          },
+        ],
+      },
+      collegeInformation: {
+        title: "College Information",
+        LDA: {
+          text: "Your Learning and Development Adviser is Eden College Allocated LDA Your Learning and Careers Adviser is",
+          name: "Freda Jacobson",
+        },
+        contactPerson: {
+          text: "Should you have any questions or issues please contact either your Allocated Learning and Development Adviser and for information, advice and guidance support contact",
+          name: "Freda Jacobson",
+        },
+      },
+    },
+    extremisimPolicy: {
+      id: 14,
+      title: "Preventing Extremism and Radicalisation Policy",
+      description:
+        "Eden College is committed to providing a secure environment for learners and stakeholders, where learners feel safe and are kept safe. Eden College recognizes that safeguarding is everyone’s responsibility irrespective of the role they undertake or whether their role has direct contactor responsibility for learners or not.",
+      content: [
+        {
+          title:
+            "Safeguarding vulnerable people from radicalization is no different from safeguarding them from other forms of harm’ (Home Office, Prevent Strategy – June2015)",
+          paragraphs: [
+            "Eden College delivery of the outcomes to all learners, as set out in s10(2) of the Children’s Act 2004.This Preventing Extremism and Radicalisation Safeguarding Policy is one element with in our overall arrangements to safeguarding and promote the welfare of all learners in line with our statutory duties set out at s175 of the Education Act 2002.",
+            "Our College’s Preventing Extremism and Radicalisation Safeguarding Policy also draws upon the guidance contained in the DfE publication “Keeping Learners safe in Education, 2014”, and specifically DCSF Resources “Learning Together to be Safe, “Prevent: Resources Guide”, “Tackling Extremism in the UK”, DfE’s “Teaching Approaches that help build resilience to Extremism among Young People”, Peter Clarke’s Report (July2014), “Keeping Children Safe in Education” (April2020), the “Counter –Terrorism and Security Act”(2015)and the “Prevent Duty”(June2015).",
+            "We recognize that the management has a responsibility to pay ‘due respect to the need to prevent people being drawn into terrorism’ (Counter Terrorism and Security Act, 2015) and ensure the College has a clear approach to implementing the Prevent duty and keeping learners safe from the dangers of radicalisation and extremism’.",
+          ],
+          lists: {
+            title: "Links to other policies",
+            p: "The Preventing Extremism and Radicalisation Policy links to the following College policies;",
+            li: [
+              "Safeguarding Policy and Child Protection",
+              "Staffs afer working practices policy",
+              "Equal Opportunity Policy",
+              "Anti – bullying Policy",
+              "Getting It Right Policy",
+              "E – Safety Policy",
+            ],
+          },
+        },
+        {
+          title: "Objectives",
+          paragraphs: [
+            "The Preventing Radicalisation and Extremism Policy is intended to provide a framework for dealing with issues relating to vulnerability, radicalization and exposure to extreme views.",
+            "There are different forms of extremist organisations in the UK and the world, i.e.–ISIL (Islamic State), AL – Qaeda, Boko Haram,   British Defense League, Animal Rights extremist groups such as SPEAK, Irish Republican Army (IRA), Anti–Abortion Groups, to name a few.",
+            "We recognise that we are well placed to be able to identify safeguarding issues linked to the dangers of extremist views and this policy clearly sets out how the college will deal with such incidents and identifies how the curriculum and ethos underpins our actions.",
+          ],
+          lists: {
+            title: "",
+            p: "The objectives are that:",
+            li: [
+              "All staff including – teachers, teaching assistants and non–teaching staff will have an understanding of what radicalization and extremism are and why we need to be vigilant in college.",
+              "All staff, teachers, teaching assistants and non–teaching staff will know what the college policy is on tackling extremism and radicalisation and will follow the policy guidance swiftly when issues arise.",
+              "All members of staff are able to identify learners who may be vulnerable to radicalisation and respond by following whole colleague safeguarding procedures with immediate effect.",
+              "All learners will understand the dangers of radicalization and exposure to extremist views; learning about key British values to build resilience against these views and knowing what to do if they experience them.",
+              "All parents/carers and learners will know that the College has policies in place to keep Learners safe from harm and that the College regularly reviews its systems to ensure they are appropriate and effective.",
+            ],
+          },
+        },
+        {
+          title: "Definitions",
+          paragraphs: [
+            "When operating this policy College uses the following accepted Governmental definition of radicalisation and extremism which is: Radicalisation – ‘the process by which a person comes to support terrorism or forms of extremism leading to terrorism’(Prevent Strategy)",
+            "Extremism–‘vocal or active opposition to fundamental British values, including democracy, the rule of law, individual liberty, and mutual respect tolerance of different faith and beliefs; and/or calls for the death of members in our armed forces, whether in this country or oversees’ (Prevent).",
+          ],
+          lists: {
+            title: "",
+            p: "",
+            li: [],
+          },
+        },
+        {
+          title: "Ethos and Practice",
+          paragraphs: [
+            "There is no place for extremist views of any kind in our College, whether from internal sources– learners, staff orgovernors, or external sources–college community, external agencies or individuals. Our learners see our Colleges a safe place where they can explore controversial issues safely and where our teachers encourage and facilitate this –we have a duty to ensure this happens.",
+            "As a College we recognise that extremism and exposure to extremist materials and influences can lead to poor outcomes for learners and so should be addressed as a safeguarding concern as set out in this policy. We also recognize that if we fail to challenge extremist views we are failing to protect our learners, staff and other visitors to our college.",
+            "Extremists of all persuasions aim to develop destructive relationships between different communities by promoting division, and mistrust of others based on ignorance or prejudice and thereby limiting the life chances of young people. Education is a powerful weapon against this; equipping young people, adults and others with the knowledge, skills and critical thinking to challenge and debate in an informed way. Therefore at Eden College we will provide a broad and balanced curriculum so that our learners are enriched, understand and become tolerant of difference and diversity and also to ensure that they thrive, feel valued and not marginalised.",
+            "Furthermore, at Eden College we are aware that learners can be exposed to extremist influences or prejudiced views from an early age which emanate from a variety of sources and media, including via the internet and at times learners themselves reflect or display views that may be discriminatory, prejudices or extremist, including using derogatory language. As part of our whole college e–safety programme we highlight the potential risks learners may face in relation to on–line radicalization and encourage students to report any concerns they may have for themselves or other students to their Learning and Development Adviser or the Confide system, to the Principle Learning and Development Adviser/ Managing Director.",
+            "Discrimination or extremist views, including derogatory language, displayed by learners or staff will always be challenged and where appropriate dealt with in line with our getting-it-Right system and the Code of Behaviour for staff. There is no single way of identifying a learner who is likely to be susceptible to terrorist ideology.",
+          ],
+          lists: {
+            title: "",
+            p: "As part of wider safeguarding responsibilities staff will be alert to:",
+            li: [
+              "Disclosures by learners of their exposure to extremist actions, views or materials of others outside of college such as in their homes or community groups, especially where learners have not actively sought this out.",
+              "Graffiti symbols, writing or artwork promoting extremist messages or images.",
+              "Learners accessing extremist materials online, including through, social networking sites.",
+              "Distributing extremist literature and documentation.",
+              "Parental reports of changes in behaviour, friendship or actions and requests for assistance.",
+              "Partner schools, local authority services and police reports of issues affecting learners in other schools or settings.",
+              "Learners voicing opinions drawn from extremist ideologies and narratives.",
+              "Changes in behaviour which could indicate that they are in need of help or protection.",
+              "Use of extremist or ‘hate’ terms to exclude others or incite violence",
+              "Intolerance of difference, whether secular or religious or, in line with in our equalities policy, views based on but not exclusive to gender, disability, homophobia, race, colour or culture.",
+              "Attempts to impose extremist views or practices on others.",
+              "Anti–Western or Anti–British views.",
+            ],
+          },
+        },
+        {
+          title: "",
+          paragraphs: [],
+          lists: {
+            title: "",
+            p: "Use of extremist language:",
+            li: [
+              "‘Dawlah’ –term used by ISIL to refer to the ‘Islamic state’",
+              "‘Jihad’ – means ‘struggle’ or ’violence’",
+              "‘Caliphate’– ISIL supporters describe the territory they control in Iraq/Syria",
+              "‘Mujahid’– someone who wants to fights as part of the ‘Jihad’",
+              "‘Shahada’ – refers to someone considered to be a martyr.",
+              "‘Kuffar’ – a term used by ISIL to describe non–Muslims",
+              "‘Ummah’ – the phrase is used by ISIL to refer to the ‘world community of Muslims’",
+              "‘Rafidha’ – word is used by ISIL to refer to those who refuse to accept the Islamic state. ",
+            ],
+          },
+        },
+        {
+          title: "",
+          paragraphs: [],
+          lists: {
+            title: "",
+            p: "We recognize that learners in vulnerable social and domestic situations (mental health issues, single parent families, involvement in gangs) may be at greater risk of radicalization than other learners. Through weekly safeguarding meetings information is shared on targeted learners and appropriate external support accessed as necessary. In conclusion we will closely follow any locally agreed procedure as set out by the Local Authority and criteria for safeguarding individuals vulnerable to extremism and radicalisation.",
+            li: [],
+          },
+        },
+        {
+          title: "Ethos and Approach ",
+          paragraphs: [
+            "We will all strive to eradicate the myths and assumptions that can lead to some learners becoming alienated and disempowered, especially where the narrow approaches learners may experience elsewhere may make it harder for them to challenge or question these radical influences.",
+            "This guidance and support will be delivered through the whole College curriculum, form programme and PSD coverage. We will ensure that all of our support and approaches will help our Learners build resilience to extremism and give them a positive sense of identity through the development of critical thinking skills.",
+            "We will develop strategies and staff training to ensure that all our staff are equipped to recognise extremism and are skilled and confident enough to challenge it.",
+          ],
+          lists: {
+            title: "",
+            p: "",
+            li: [],
+          },
+        },
+      ],
+      formFields: [
+        {
+          type: "checkbox",
+          id: "extremisimPolicyAgreed",
+          label: "I confirm that I have read and understood the above policy.",
+          options: ["Yes", "No"],
+          validation: z.boolean(),
+        },
+        {
+          type: "text",
+          id: "extremismCandidateName",
+          label: "Candidate Name",
+          placeholder: "Candidate Name",
+          validation: z.string().optional(),
+        },
+        {
+          type: "text",
+          id: "extremismCandidateEmployer",
+          label: "Employer",
+          placeholder: "Employer",
+          validation: z.string().optional(),
+        },
+        {
+          type: "text",
+          id: "extremismCourseDetails",
+          label: "Course/Project Details",
+          placeholder: "Course/Project Details",
+          validation: z.string().optional(),
+        },
+        {
+          type: "text",
+          id: "extremismCandidateSignature",
+          label: "Candidate Signature",
+          placeholder: "Candidate Signature",
+          validation: z.string().optional(),
+        },
+        {
+          type: "date",
+          id: "extremismDate",
+          label: "Date",
+          placeholder: "Enter Date",
+          validation: z.string().date(),
+        },
+      ],
+      official: {
+        title: "FOR OFFICIALS ONLY",
+        formFields: [
+          {
+            type: "text",
+            id: "extremismLDAName",
+            label: "Learning and Development Adviser Name",
+            placeholder: "Learning and Development Adviser Name",
+            validation: z.string().optional(),
+          },
+          {
+            type: "text",
+            id: "extremismECAName",
+            label: "Eden College Allocated LDA",
+            placeholder: "Employer",
+            validation: z.string().optional(),
+          },
+          {
+            type: "text",
+            id: "extremismLDASignature",
+            label: "Learning and Development Adviser Signature",
+            placeholder: "Learning and Development Adviser Signature",
+            validation: z.string().optional(),
+          },
+          {
+            type: "text",
+            id: "extremismECASignature",
+            label: "Eden College Allocated LDA Signature",
+            placeholder: "Eden College Allocated LDA Signature",
+            validation: z.string().optional(),
+          },
+          {
+            type: "date",
+            id: "extremismOficialDate",
+            label: "Date",
+            placeholder: "Enter Date",
+            validation: z.string().date(),
+          },
+        ],
+      }
     },
   },
 ];

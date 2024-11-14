@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import Appeal from "./applicationForm/Appeal";
 import Complaint from "./applicationForm/Complaint";
 import { applicationForm } from "./dummyForm";
@@ -15,11 +14,15 @@ import GuidancePolicy from "./applicationForm/GuidancePolicy/GuidancePolicy";
 import Enrolment from "./applicationForm/EnrollmentForm/Enrolment";
 import PrivacyNotice from "./applicationForm/PrivacyNotice/PrivacyNotice";
 import Image from "next/image";
-import FrontCover from "./applicationForm/FrontCover";
-import FormPDFDocument from "./FormPDFDocument";
 import Pagination from "./applicationForm/components/Pagination";
+import AwardAssessment from "./applicationForm/AwardAssessment.tsx";
+import EmployerAgreement from "./applicationForm/EmployerAgreement";
+import ParticipantAgreement from "./applicationForm/ParticipantAgreement";
+import ExtremismPolicy from "./applicationForm/ExtremismPolicy/ExtremismPolicy";
+import ChildProtection from "./applicationForm/ChildProtection/ChildProtection";
+import SkillsAssessment from "./applicationForm/SkillSelfAssessment/Assessment";
 
-const DocView = ({ onBackClick }) => {
+export default function DocView({ onBackClick }) {
   const [formData, setFormData] = useState({
     behavioural: {},
     candidaterecord: {},
@@ -30,16 +33,21 @@ const DocView = ({ onBackClick }) => {
     guidancepolicy: {},
     enrolment: {},
     privacynotice: {},
+    awardassessment: {},
+    employeragreement: {},
+    participantagreement: {},
+    extremismpolicy: {},
+    childprotection: {},
+    skillsassessment: {},
   });
 
   const [CollegeName, setCollegeName] = useState<string>("");
-  const [formContent, setFormContent] = useState<string>("FrontCover");
+  const [formContent, setFormContent] = useState<string>("Appeal");
   const [totalSectionNumber, setTotalSectionNumber] = useState<number>();
   const [sectionNumber, setSectionNumber] = useState<number>(1);
 
   // Array of components
   const formComponents = [
-    "FrontCover",
     "Appeal",
     "Complaint",
     "BehaviouralPolicy",
@@ -51,6 +59,12 @@ const DocView = ({ onBackClick }) => {
     "GuidancePolicy",
     "Enrolment",
     "PrivacyNotice",
+    "AwardAssessment",
+    "EmployerAgreement",
+    "ParticipantAgreement",
+    "ExtremismPolicy",
+    "ChildProtection",
+    "SkillsAssessment",
   ];
 
   useEffect(() => {
@@ -92,8 +106,6 @@ const DocView = ({ onBackClick }) => {
 
   const renderFormComponent = () => {
     switch (formContent) {
-      case "FrontCover":
-        return <FrontCover {...{ onNextClick }} />;
       case "Appeal":
         return <Appeal {...{ onPrevClick, onNextClick }} />;
       case "Complaint":
@@ -183,19 +195,77 @@ const DocView = ({ onBackClick }) => {
             onNextClick={onNextClick}
           />
         );
+      case "AwardAssessment":
+        return (
+          <AwardAssessment
+            formData={formData.awardassessment}
+            setFormData={(data) => handleSaveFormData(data, "awardassessment")}
+            onPrevClick={onPrevClick}
+            onNextClick={onNextClick}
+          />
+        );
+      case "EmployerAgreement":
+        return (
+          <EmployerAgreement
+            formData={formData.employeragreement}
+            setFormData={(data) =>
+              handleSaveFormData(data, "employeragreement")
+            }
+            onPrevClick={onPrevClick}
+            onNextClick={onNextClick}
+          />
+        );
+      case "ParticipantAgreement":
+        return (
+          <ParticipantAgreement
+            formData={formData.participantagreement}
+            setFormData={(data) =>
+              handleSaveFormData(data, "participantagreement")
+            }
+            onPrevClick={onPrevClick}
+            onNextClick={onNextClick}
+          />
+        );
+      case "ExtremismPolicy":
+        return (
+          <ExtremismPolicy
+            formData={formData.extremismpolicy}
+            setFormData={(data) => handleSaveFormData(data, "extremismpolicy")}
+            onPrevClick={onPrevClick}
+            onNextClick={onNextClick}
+          />
+        );
+      case "ChildProtection":
+        return (
+          <ChildProtection
+            formData={formData.childprotection}
+            setFormData={(data) => handleSaveFormData(data, "childprotection")}
+            onPrevClick={onPrevClick}
+            onNextClick={onNextClick}
+          />
+        );
+      case "SkillsAssessment":
+        return (
+          <SkillsAssessment
+            formData={formData.skillsassessment}
+            setFormData={(data) => handleSaveFormData(data, "skillsassessment")}
+            onPrevClick={onPrevClick}
+            onNextClick={handleSubmit}
+          />
+        );
       default:
-        return <FrontCover {...{ onNextClick }} />;
+        return <Appeal {...{ onNextClick }} />;
     }
   };
 
   const onNextClick = () => {
     setSectionNumber((prev) => Math.min(prev + 1, totalSectionNumber));
-    setFormContent(formComponents[sectionNumber] || "FrontCover");
+    setFormContent(formComponents[sectionNumber] || "Appeal");
   };
 
   const onPrevClick = () => {
     setSectionNumber((prev) => Math.max(prev - 1, 1));
-    setFormContent(formComponents[sectionNumber - 2] || "FrontCover");
+    setFormContent(formComponents[sectionNumber - 2] || "Appeal");
   };
 
   const handleSubmit = () => {
@@ -204,7 +274,7 @@ const DocView = ({ onBackClick }) => {
 
   const handlePageClick = (pageNumber) => {
     setSectionNumber(pageNumber);
-    setFormContent(formComponents[pageNumber - 1] || "FrontCover");
+    setFormContent(formComponents[pageNumber - 1] || "Appeal");
   };
 
   return (
@@ -228,20 +298,13 @@ const DocView = ({ onBackClick }) => {
       <div>
         <div>{renderFormComponent()}</div>
         <div>
-          <PDFDownloadLink
-            document={<FormPDFDocument formData={formData} />}
-            fileName="form.pdf"
-          >
-            {/* {({ loading }) =>
-              loading ? "Loading document..." : "Download PDF"
-            } */}
-            Download PDF
-          </PDFDownloadLink>
-          <Pagination currentPage={sectionNumber} totalPages={totalSectionNumber} onPageClick={handlePageClick} />
+          <Pagination
+            currentPage={sectionNumber}
+            totalPages={totalSectionNumber}
+            onPageClick={handlePageClick}
+          />
         </div>
       </div>
     </div>
   );
-};
-
-export default DocView;
+}

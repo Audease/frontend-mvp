@@ -2,7 +2,6 @@ import React from "react";
 import { skillsAssesment } from "./data/skillsAssessment";
 import SkillsAssessmentForm from "./AssessmentForm";
 
-
 interface SkillsAssessmentProps {
   formData?: any;
   setFormData?: (data: any) => void;
@@ -22,6 +21,12 @@ const SkillsAssessment = ({
     <div>
       <div>
         <h3>{content.title}</h3>
+      </div>
+      <div>
+        <p>{content.instructions}</p>
+        {content.grade.map((d, index) => (
+          <li key={index}>{d.digit} : {d.text}</li>
+        ))}
       </div>
       <div>
         {/* The Form  */}

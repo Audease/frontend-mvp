@@ -21,6 +21,8 @@ import ParticipantAgreement from "./applicationForm/ParticipantAgreement";
 import ExtremismPolicy from "./applicationForm/ExtremismPolicy/ExtremismPolicy";
 import ChildProtection from "./applicationForm/ChildProtection/ChildProtection";
 import SkillsAssessment from "./applicationForm/SkillSelfAssessment/Assessment";
+import { FinalSubmissionAlert } from "./applicationForm/components/DialogueBox";
+import SubmissionSuccess from "./applicationForm/SubmissionSuccess";
 
 export default function DocView({ onBackClick }) {
   const [formData, setFormData] = useState({
@@ -45,6 +47,9 @@ export default function DocView({ onBackClick }) {
   const [formContent, setFormContent] = useState<string>("Appeal");
   const [totalSectionNumber, setTotalSectionNumber] = useState<number>();
   const [sectionNumber, setSectionNumber] = useState<number>(1);
+  const [showDialog, setShowDialog] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   // Array of components
   const formComponents = [
@@ -65,6 +70,7 @@ export default function DocView({ onBackClick }) {
     "ExtremismPolicy",
     "ChildProtection",
     "SkillsAssessment",
+    "SubmissionSuccess",
   ];
 
   useEffect(() => {
@@ -76,7 +82,6 @@ export default function DocView({ onBackClick }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Load saved form data on initial render
   const FORM_STORAGE_KEY = "multi-step-form-data";
   useEffect(() => {
     const savedData = localStorage.getItem(FORM_STORAGE_KEY);
@@ -250,17 +255,23 @@ export default function DocView({ onBackClick }) {
             formData={formData.skillsassessment}
             setFormData={(data) => handleSaveFormData(data, "skillsassessment")}
             onPrevClick={onPrevClick}
-            onNextClick={handleSubmit}
+            onNextClick={onNextClick}
           />
         );
+      case "SubmissionSuccess":
+        return <SubmissionSuccess />;
       default:
         return <Appeal {...{ onNextClick }} />;
     }
   };
 
   const onNextClick = () => {
-    setSectionNumber((prev) => Math.min(prev + 1, totalSectionNumber));
-    setFormContent(formComponents[sectionNumber] || "Appeal");
+    if (sectionNumber >= totalSectionNumber - 1) {
+      setShowDialog(true);
+    } else {
+      setSectionNumber((prev) => Math.min(prev + 1, totalSectionNumber));
+      setFormContent(formComponents[sectionNumber] || "Appeal");
+    }
   };
 
   const onPrevClick = () => {
@@ -269,7 +280,11 @@ export default function DocView({ onBackClick }) {
   };
 
   const handleSubmit = () => {
+    localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formData));
     console.log("Form submitted:", formData);
+    setShowDialog(false);
+    setSubmitted(true);
+    setFormContent("SubmissionSuccess")
   };
 
   const handlePageClick = (pageNumber) => {
@@ -278,10 +293,10 @@ export default function DocView({ onBackClick }) {
   };
 
   return (
-    <div>
+    <div className="space-y-4 rounded border border-tgrey2  p-4 mb-8 shadow-sm">
       <div className="flex flex-row justify-between m-4">
         <button onClick={onBackClick}>Back</button>
-        <h3>{`Page ${sectionNumber} of  ${totalSectionNumber}`}</h3>
+        <h3>{`Page ${sectionNumber} of  ${totalSectionNumber - 1}`}</h3>
       </div>
       <div className="flex flex-row px-4 justify-between ">
         <div></div>
@@ -297,10 +312,18 @@ export default function DocView({ onBackClick }) {
       </div>
       <div>
         <div>{renderFormComponent()}</div>
+        {showDialog && (
+          <FinalSubmissionAlert
+            isOpen={showDialog}
+            onClose={() => setShowDialog(false)}
+            handleSubmit={handleSubmit}
+          />
+        )}
+        {showSuccessMessage && <SubmissionSuccess />}
         <div>
           <Pagination
             currentPage={sectionNumber}
-            totalPages={totalSectionNumber}
+            totalPages={totalSectionNumber - 1}
             onPageClick={handlePageClick}
           />
         </div>

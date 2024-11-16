@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Appeal from "./applicationForm/Appeal";
+import Appeal from "./applicationForm/AppealProcedure/Appeal";
 import Complaint from "./applicationForm/Complaint";
 import { applicationForm } from "./dummyForm";
 import BehaviouralPolicy from "./applicationForm/BehaviouralPolicy/BehaviouralPolicy";
@@ -284,7 +284,7 @@ export default function DocView({ onBackClick }) {
     console.log("Form submitted:", formData);
     setShowDialog(false);
     setSubmitted(true);
-    setFormContent("SubmissionSuccess")
+    setFormContent("SubmissionSuccess");
   };
 
   const handlePageClick = (pageNumber) => {
@@ -293,14 +293,14 @@ export default function DocView({ onBackClick }) {
   };
 
   return (
-    <div className="space-y-4 rounded border border-tgrey2  p-4 mb-8 shadow-sm">
+    <div className="space-y-4 border-tgrey2  p-4 mb-8  rounded-xl border  bg-tgrey4 text-card-foreground shadow">
       <div className="flex flex-row justify-between m-4">
         <button onClick={onBackClick}>Back</button>
         <h3>{`Page ${sectionNumber} of  ${totalSectionNumber - 1}`}</h3>
       </div>
       <div className="flex flex-row px-4 justify-between ">
         <div></div>
-        <h2 className="text-center text-xl my-6 font-bold capitalize">
+        <h2 className="text-center text-3xl my-6 font-extrabold capitalize">
           {CollegeName}
         </h2>
         <Image

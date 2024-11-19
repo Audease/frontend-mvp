@@ -3,11 +3,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import { applicationForm } from "../../dummyForm";
 import { TextInput } from "@/app/components/form";
 import { Button } from "@/components/ui/button";
 import Checkbox from "@/app/components/form/Checkbox/Checkbox";
-import { StyleSheet, Text } from "@react-pdf/renderer";
+import { dataProtectionData } from "./data/DataProtection";
+import FootLogos from "../components/FootLogos";
 
 interface CollegeObligationProps {
   formData?: any;
@@ -16,21 +16,11 @@ interface CollegeObligationProps {
   onPrevClick?: () => void;
 }
 
-const styles = StyleSheet.create({
-  page: { marginBottom: 10, textTransform: "capitalize", padding: 10 },
-  title: { fontSize: 14, fontWeight: "bold" },
-  description: {paddingVertical: 10, fontSize: 12, lineHeight:2.5 },
-  list: {paddingVertical: 5, fontSize: 12, lineHeight:2.5 },
-  section: { textAlign: "center", margin: 30 },
-});
-
-const dataprotection = applicationForm[0].dataProtection;
-const formFields = applicationForm[0].dataProtection.consentConfirmation;
-const formContent1 = applicationForm[0].dataProtection.section1.sections;
-const formContent2 = applicationForm[0].dataProtection.section2.paragraphs;
-const formContent3 = applicationForm[0].dataProtection.section3;
-const formContent4 = applicationForm[0].dataProtection.section4;
-
+const formFields = dataProtectionData.consentConfirmation;
+const formContent1 = dataProtectionData.section1.sections;
+const formContent2 = dataProtectionData.section2.paragraphs;
+const formContent3 = dataProtectionData.section3;
+const formContent4 = dataProtectionData.section4;
 
 const formSchema = z.object(
   formFields.reduce((acc, field) => {
@@ -70,86 +60,53 @@ export default function CollegeObligation({
     <div>
       <div>
         {formContent1.map((section) => (
-          <div key={section.id}>
-            <div className="text-xl">
-              <Text style={styles.title}>
-                {section.title}
-              </Text>
-            </div>
-            <div className="text-lg">
-              <Text style={styles.description}>
-                {section.content}
-              </Text>
-            </div>
+          <div key={section.id} className="text-base">
+            <h3 className="font-bold py-3">{section.title}</h3>
+            <p className="text-justify">{section.content}</p>
           </div>
         ))}
       </div>
       <div>
-        <div className="text-xl">
-          <Text style={styles.title}>
-            {dataprotection.section2.title}
-          </Text>
-        </div>
+        <h3 className="text-base font-bold ">
+          {dataProtectionData.section2.title}
+        </h3>
+
         {formContent2.map((section) => (
           <div key={section.id}>
-            <div className="text-xl">
-              <Text style={styles.list}>
-                {section.text}
-              </Text>
-            </div>
+            <h3 className="text-base text-justify">{section.text}</h3>
           </div>
         ))}
       </div>
       <div>
-        <div className="text-xl">
-          <Text style={styles.title}>
-            {dataprotection.section3.title}
-          </Text>
-        </div>
+        <h3 className="text-xl font-bold py-3">
+          {dataProtectionData.section3.title}
+        </h3>
+
         {formContent3.paragraph.map((section) => (
-          <div key={section.id} style={styles.page}>
-            <div className="text-xl">
-              <Text style={styles.list}>
-                {section.p}
-              </Text>
-            </div>
+          <div key={section.id}>
+            <p className="text-base text-justify">{section.p}</p>
           </div>
         ))}
-         {formContent3.list.map((section) => (
+        {formContent3.list.map((section) => (
           <div key={section.id}>
-            <li className="text-xl">
-              <Text style={styles.list}>
-                {section.text}
-              </Text>
-            </li>
+            <li className="text-base text-justify py-3">{section.text}</li>
           </div>
         ))}
       </div>
       {/* Section 4 */}
       <div>
-        <div className="text-xl">
-          <Text style={styles.title}>
-            {dataprotection.section4.title}
-          </Text>
-        </div>
+        <h3 className="text-xl font-bold py-3">
+          {dataProtectionData.section4.title}
+        </h3>
+
         {formContent4.content.map((section) => (
           <div key={section.id}>
-            <div className="text-xl flex flex-col">
-              <Text style={styles.title}>
-                {section.title}
-              </Text>
-              <Text style={styles.list}>
-                {section.text}
-              </Text>
-              <Text style={styles.list}>
-                {section.data}
-              </Text>
-              <Text style={styles.list}>
-                {section.mainP}
-              </Text>
-              <Text style={styles.list}>
-                {section.mainSnD}
-              </Text>
+            <div className="text-base text-justify flex flex-col">
+              <h3 className="text-base font-bold py-3">{section.title}</h3>
+              <p>{section.text}</p>
+              <p>{section.data}</p>
+              <p>{section.mainP}</p>
+              <p>{section.mainSnD}</p>
             </div>
           </div>
         ))}
@@ -200,6 +157,10 @@ export default function CollegeObligation({
               return null;
           }
         })}
+
+        <div>
+          <FootLogos />
+        </div>
 
         <div className="flex flex-row space-x-5 my-8">
           {onPrevClick && (

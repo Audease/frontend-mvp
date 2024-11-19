@@ -22,16 +22,31 @@ function TextInput({
   onChange,  
   ...inputElementProps
 }: Props) {
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    setIsActive(!!value);
+  }, [value]);
+
   return (
     <div className="flex flex-col justify-start align-start text-input">
       {label && <label htmlFor={id} className="text-black">{label}</label>}
       <input
         id={id}
-        className={`input order-tgrey2 rounded-md p-2 text-h2 text-stone-950 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 placeholder:text-gray-400 placeholder:italic  ${className}`}
+        className={`
+          input order-tgrey2 rounded-md p-2 text-base text-stone-950 font-normal w-full 
+          focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 
+          placeholder:text-gray-400 placeholder:italic
+          ${isActive ? 'bg-blue-50' : 'bg-white'}
+          ${className}
+        `}
         type={type}
         value={value}
         placeholder={placeholder}
-        onChange={onChange}  
+        onChange={(e) => {
+          onChange?.(e);
+          setIsActive(!!e.target.value);
+        }}  
         {...inputElementProps}
       />
       {error && (

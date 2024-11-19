@@ -3,12 +3,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import { applicationForm } from "../../dummyForm";
 import { TextInput } from "@/app/components/form";
 import { Button } from "@/components/ui/button";
-import { Text } from "@react-pdf/renderer";
 import Checkbox from "@/app/components/form/Checkbox/Checkbox";
-
+import { privacyNotice } from "./data/PrivacyNotice";
+import { enrolmentData } from "../EnrollmentForm/data/Enrollment";
+import FootLogos from "../components/FootLogos";
 
 interface PrivacyNoticeProps {
   formData?: any;
@@ -17,10 +17,10 @@ interface PrivacyNoticeProps {
   onPrevClick?: () => void;
 }
 
-const content = applicationForm[0].privacyNotice;
-const description = applicationForm[0].privacyNotice.description;
-const formFields = applicationForm[0].enrollmentForm.fields;
-const sectionFields = applicationForm[0].privacyNotice.section;
+const content = privacyNotice;
+const description = content.description;
+const formFields = enrolmentData.fields;
+const sectionFields = content.section;
 
 const formSchema = z.object(
   formFields.reduce((acc, field) => {
@@ -60,17 +60,13 @@ export default function PrivacyNotice({
   return (
     <div>
       <div className="text-xl flex flex-col">
-        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-          {content.title}
-        </Text>
-        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-          {content.subtitle}
-        </Text>
+        <h3 className="text-xl font-bold py-3">{content.title}</h3>
+        <p className="text-base text-justify">{content.subtitle}</p>
         <div className="flex flex-col">
           {description.map((paragraph) => (
-            <Text style={{ fontSize: 12 }} key={paragraph.id}>
+            <p className="text-base text-justify" key={paragraph.id}>
               {paragraph.paragraph}
-            </Text>
+            </p>
           ))}
         </div>
       </div>
@@ -79,10 +75,10 @@ export default function PrivacyNotice({
         {sectionFields.map((field) => (
           <div key={field.title}>
             <div className="flex flex-col">
-              <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+              <h3 className="text-base font-bold text-justify">
                 {field.title}
-              </Text>
-              <Text style={{ fontSize: 12 }}>{field.p}</Text>
+              </h3>
+              <p className="text-base text-justify">{field.p}</p>
             </div>
             {field.fields.map((innerField) => {
               switch (innerField.type) {
@@ -125,13 +121,17 @@ export default function PrivacyNotice({
                       )}
                     />
                   );
-                
+
                 default:
                   return null;
               }
             })}
           </div>
         ))}
+
+        <div>
+          <FootLogos />
+        </div>
 
         <div className="flex flex-row space-x-5 my-8">
           {onPrevClick && (

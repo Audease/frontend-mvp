@@ -1,9 +1,8 @@
 "use client";
 
 import React from "react";
-import { applicationForm } from "../../dummyForm";
-import { StyleSheet, Text } from "@react-pdf/renderer";
 import ConfidentialityForm from "./ConfidentitalityForm";
+import { confidentialityData } from "./data/Confidentiality";
 
 interface ConfidentialityPolicyProps {
   formData?: any;
@@ -11,14 +10,6 @@ interface ConfidentialityPolicyProps {
   onNextClick?: () => void;
   onPrevClick?: () => void;
 }
-
-const styles = StyleSheet.create({
-  page: { textTransform: "capitalize", padding: 10 },
-  title: { fontSize: 18, fontWeight: "bold", paddingBottom: 3 },
-  description: {paddingVertical: 10, fontSize: 12, lineHeight:2.5 },
-  list: {paddingVertical: 5, fontSize: 12, lineHeight:2.5 },
-  section: { textAlign: "center", margin: 30 },
-});
 
 const Confidentiality: React.FC<ConfidentialityPolicyProps> = ({
   formData,
@@ -28,26 +19,20 @@ const Confidentiality: React.FC<ConfidentialityPolicyProps> = ({
 }) => {
   return (
     <div>
-      {applicationForm.map((section) => (
-        <div key={section.id} style={styles.page}>
-          <div className="text-xl">
-            <Text style={styles.title}>
-              {section.confidentiality.title}
-            </Text>
-          </div>
-          <div>
-            {section.confidentiality.paragraphs.map((list) => (
-              <div key={list.id} className="text-lg">
-                  <Text style={styles.list}>{list.p}</Text>
-              </div>
-            ))}
-          </div>
-          {/* The Form  */}
-          <ConfidentialityForm
-            {...{ formData, setFormData, onPrevClick, onNextClick }}
-          />
+      <div key={confidentialityData.id}>
+        <h3 className="text-xl font-bold py-3">{confidentialityData.title}</h3>
+        <div>
+          {confidentialityData.paragraphs.map((list) => (
+            <div key={list.id} >
+              <p className="text-base text-justify">{list.p}</p>
+            </div>
+          ))}
         </div>
-      ))}
+        {/* The Form  */}
+        <ConfidentialityForm
+          {...{ formData, setFormData, onPrevClick, onNextClick }}
+        />
+      </div>
     </div>
   );
 };

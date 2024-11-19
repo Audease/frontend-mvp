@@ -2,11 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import { applicationForm } from "../dummyForm";
 import { Button } from "@/components/ui/button";
 import { TextInput } from "@/app/components/form";
 import Checkbox from "@/app/components/form/Checkbox/Checkbox";
 import DatePicker from "@/app/components/form/DatePicker/DatePicker";
+import { participantAgreementData } from "./data/ParticipantAgreement";
+import FootLogos from "../components/FootLogos";
 
 type ParticipantAgreementProps = {
   formData?: any;
@@ -15,7 +16,7 @@ type ParticipantAgreementProps = {
   onPrevClick?: () => void;
 };
 
-const content = applicationForm[0].participantAgreement;
+const content = participantAgreementData;
 const formFieldsA = content.agreement;
 const formFieldsB = content.agreementConditions.formFields;
 
@@ -63,9 +64,7 @@ const ParticipantAgreement: React.FC<ParticipantAgreementProps> = ({
 
   return (
     <div>
-      <div>
-        <h3>{content.title}</h3>
-      </div>
+      <h3 className="text-xl font-bold py-3">{content.title}</h3>
       <div>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
           <div>
@@ -97,13 +96,19 @@ const ParticipantAgreement: React.FC<ParticipantAgreementProps> = ({
 
           <div>
             {content.notificationConditions.map((d, index) => (
-              <li key={index}>{d}</li>
+              <li key={index} className="text-base text-justify">
+                {d}
+              </li>
             ))}
           </div>
           <div>
-            <h3>{content.agreementConditions.title}</h3>
+            <h3 className="text-base font-bold py-2">
+              {content.agreementConditions.title}
+            </h3>
             {content.agreementConditions.conditions.map((d, index) => (
-              <li key={index}>{d}</li>
+              <li key={index} className="text-base text-justify">
+                {d}
+              </li>
             ))}
           </div>
           <div>
@@ -155,10 +160,26 @@ const ParticipantAgreement: React.FC<ParticipantAgreementProps> = ({
             })}
           </div>
           <div>
-            <h3>{content.collegeInformation.title}</h3>
-            <p>{content.collegeInformation.LDA.text} <span>{content.collegeInformation.LDA.name}</span></p>
+            <h3 className="text-base font-bold py-2">
+              {content.collegeInformation.title}
+            </h3>
+            <p className="text-base text-justify">
+              {content.collegeInformation.LDA.text}{" "}
+              <span className="font-bold">
+                {content.collegeInformation.LDA.name}
+              </span>
+            </p>
             <hr />
-            <p>{content.collegeInformation.contactPerson.text} <span>{content.collegeInformation.contactPerson.name}</span></p>
+            <p className="text-base text-justify">
+              {content.collegeInformation.contactPerson.text}{" "}
+              <span className="font-bold">
+                {content.collegeInformation.contactPerson.name}
+              </span>
+            </p>
+          </div>
+
+          <div>
+            <FootLogos />
           </div>
 
           <div className="flex flex-row space-x-5 my-8">

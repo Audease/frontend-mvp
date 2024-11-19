@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import Appeal from "./applicationForm/AppealProcedure/Appeal";
-import Complaint from "./applicationForm/Complaint";
+import Complaint from "./applicationForm/StatementOfComplaint/Complaint";
 import { applicationForm } from "./dummyForm";
 import BehaviouralPolicy from "./applicationForm/BehaviouralPolicy/BehaviouralPolicy";
-import CandidateRecordForm from "./applicationForm/CandidateRecord";
+import CandidateRecordForm from "./applicationForm/CandidateRecord/CandidateRecord";
 import Confidentiality from "./applicationForm/Confidentiality/Confidentiality";
 import DataProtection from "./applicationForm/DataProtection/DataProtection";
 import EqualOpportunitiesPolicy from "./applicationForm/EqualOpoortunities/EqualOpportunities";
@@ -15,9 +15,9 @@ import Enrolment from "./applicationForm/EnrollmentForm/Enrolment";
 import PrivacyNotice from "./applicationForm/PrivacyNotice/PrivacyNotice";
 import Image from "next/image";
 import Pagination from "./applicationForm/components/Pagination";
-import AwardAssessment from "./applicationForm/AwardAssessment.tsx";
-import EmployerAgreement from "./applicationForm/EmployerAgreement";
-import ParticipantAgreement from "./applicationForm/ParticipantAgreement";
+import AwardAssessment from "./applicationForm/AwardAssessment/AwardAssessment.tsx";
+import EmployerAgreement from "./applicationForm/EmployerAgreement/EmployerAgreement";
+import ParticipantAgreement from "./applicationForm/ParticipantAgreement/ParticipantAgreement";
 import ExtremismPolicy from "./applicationForm/ExtremismPolicy/ExtremismPolicy";
 import ChildProtection from "./applicationForm/ChildProtection/ChildProtection";
 import SkillsAssessment from "./applicationForm/SkillSelfAssessment/Assessment";
@@ -311,7 +311,7 @@ export default function DocView({ onBackClick }) {
         ></Image>
       </div>
       <div>
-        <div>{renderFormComponent()}</div>
+        <div className="px-4">{renderFormComponent()}</div>
         {showDialog && (
           <FinalSubmissionAlert
             isOpen={showDialog}

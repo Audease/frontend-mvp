@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { applicationForm } from "../../dummyForm";
-import { StyleSheet, Text } from "@react-pdf/renderer";
 import BehaviouralForm from "./BehaviouralForm";
+import { behaviouralData } from "./data/Behavioural";
+import FootLogos from "../components/FootLogos";
 
 interface BehaviouralPolicyProps {
   formData?: any;
@@ -11,13 +11,6 @@ interface BehaviouralPolicyProps {
   onNextClick?: () => void;
   onPrevClick?: () => void;
 }
-
-const styles = StyleSheet.create({
-  page: { marginBottom: 1, textTransform: "capitalize", padding: 10 },
-  title: { fontSize: 18, fontWeight: "bold" },
-  description: {paddingVertical: 5, fontSize: 12, lineHeight:2.5 },
-  section: { textAlign: "center", margin: 30 },
-});
 
 const BehaviouralPolicy: React.FC<BehaviouralPolicyProps> = ({
   formData,
@@ -27,42 +20,34 @@ const BehaviouralPolicy: React.FC<BehaviouralPolicyProps> = ({
 }) => {
   return (
     <div>
-      {applicationForm.map((section) => (
-        <div key={section.id} style={styles.page}>
-          <div className="text-xl">
-            <Text style={styles.title}>
-              {section.behavioural.title}
-            </Text>
-          </div>
-          <div>
-            {section.behavioural.section.map((list) => (
-              <div key={list.id}>
-                <div className="text-lg font-bold">
-                  <Text style={styles.description}>{list.title}</Text>
-                </div>
-                <div className="text-lg">
-                  <Text style={styles.description}>
-                    {list.paragraph}
-                  </Text>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="text-lg">
-            {section.behavioural.bulletPoints.map((list) => (
-              <ul key={list.id} style={{ ...styles.description, listStyleType: "disc" }}>
-                <li className="list-disc">
-                  <Text style={{ fontSize: 12 }}>{list.paragraph}</Text>
-                </li>
-              </ul>
-            ))}
-          </div>
-          {/* The Form  */}
-          <BehaviouralForm
-            {...{ formData, setFormData, onPrevClick, onNextClick }}
-          />
+      <div key={behaviouralData.id}>
+        <div className="text-xl font-bold py-3">
+          <h3>{behaviouralData.title}</h3>
         </div>
-      ))}
+        <div>
+          {behaviouralData.section.map((list) => (
+            <div key={list.id}>
+              <div className="text-base font-bold">
+                <h3>{list.title}</h3>
+              </div>
+              <div className="text-base text-justify">
+                <p>{list.paragraph}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="text-base">
+          {behaviouralData.bulletPoints.map((list) => (
+            <ul key={list.id} className="pl-3">
+              <li className="list-disc text-base">{list.paragraph}</li>
+            </ul>
+          ))}
+        </div>
+        {/* The Form  */}
+        <BehaviouralForm
+          {...{ formData, setFormData, onPrevClick, onNextClick }}
+        />
+      </div>
     </div>
   );
 };

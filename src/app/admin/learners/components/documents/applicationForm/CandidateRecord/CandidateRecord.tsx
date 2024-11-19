@@ -6,10 +6,10 @@ import { z } from "zod";
 import { TextInput } from "@/app/components/form";
 import { Button } from "@/components/ui/button";
 import Checkbox from "@/app/components/form/Checkbox/Checkbox";
-import { applicationForm } from "../dummyForm";
-import { StyleSheet, Text } from "@react-pdf/renderer";
 import DatePicker from "@/app/components/form/DatePicker/DatePicker";
 import Dropdown from "@/app/components/form/SelectInput/SelectInput";
+import { candidateRecordData } from "./data/CandidateRecord";
+import FootLogos from "../components/FootLogos";
 
 interface CandidateRecordFormProps {
   formData?: any;
@@ -18,14 +18,7 @@ interface CandidateRecordFormProps {
   onPrevClick?: () => void;
 }
 
-const styles = StyleSheet.create({
-  page: { marginBottom: 1, textTransform: "capitalize", padding: 10 },
-  title: { fontSize: 18, fontWeight: "bold" },
-  description: {paddingVertical: 5, fontSize: 12, lineHeight:2.5 },
-  section: { textAlign: "center", margin: 30 },
-});
-
-const formFields = applicationForm[0].candidateRecord.formFields;
+const formFields = candidateRecordData.formFields;
 
 const formSchema = z.object(
   formFields.reduce((acc, field) => {
@@ -65,17 +58,13 @@ export default function CandidateRecordForm({
   return (
     <div>
       <div>
-        {applicationForm.map((section) => {
-          return (
-            <div key={section.candidateRecord.id}>
-              <div className="text-xl">
-                <Text style={{ fontSize: 18, fontWeight: "bold", paddingTop: 20, paddingBottom:10 }}>
-                  {section.candidateRecord.title}
-                </Text>
-              </div>
-            </div>
-          );
-        })}
+        <div key={candidateRecordData.id}>
+          <div>
+            <h3 className="text-xl font-bold py-3">
+              {candidateRecordData.title}
+            </h3>
+          </div>
+        </div>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
         {formFields.map((field) => {
@@ -162,6 +151,9 @@ export default function CandidateRecordForm({
               return null;
           }
         })}
+        <div>
+          <FootLogos />
+        </div>
         <div className="flex flex-row space-x-5 my-8">
           {onPrevClick && (
             <Button type="button" onClick={onPrevClick}>

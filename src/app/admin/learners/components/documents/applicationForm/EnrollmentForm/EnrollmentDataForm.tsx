@@ -3,16 +3,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import { applicationForm } from "../../dummyForm";
 import { TextInput } from "@/app/components/form";
 import { Button } from "@/components/ui/button";
-import { Text } from "@react-pdf/renderer";
 import Checkbox from "@/app/components/form/Checkbox/Checkbox";
 import DatePicker from "@/app/components/form/DatePicker/DatePicker";
 import NumberInput from "@/app/components/form/NumberInput/NumberInput";
 import RadioInput from "@/app/components/form/RadioInput/RadioInput";
 import TelInput from "@/app/components/form/TelInput/TelInput";
 import EmailInput from "@/app/components/form/EmailInput/EmailInput";
+import { enrolmentData } from "./data/Enrollment";
+import FootLogos from "../components/FootLogos";
 
 interface EnrolmentFormProps {
   formData?: any;
@@ -21,8 +21,8 @@ interface EnrolmentFormProps {
   onPrevClick?: () => void;
 }
 
-const formFields = applicationForm[0].enrollmentForm.fields;
-const sectionFields = applicationForm[0].enrollmentForm.section;
+const formFields = enrolmentData.fields;
+const sectionFields = enrolmentData.section;
 
 const formSchema = z.object({
   ...formFields.reduce((acc, field) => {
@@ -104,10 +104,8 @@ export default function EnrolmentForm({
         {sectionFields.map((field, sectionIndex) => (
           <div key={`section-${field.title || sectionIndex}`}>
             <div className="flex flex-col">
-              <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                {field.title}
-              </Text>
-              <Text style={{ fontSize: 12 }}>{field.p}</Text>
+              <h3 className="text-base font-bold py-3">{field.title}</h3>
+              <p className="text-base">{field.p}</p>
             </div>
             {field.fields.map((innerField, index) => {
               switch (innerField.type) {
@@ -265,6 +263,10 @@ export default function EnrolmentForm({
             })}
           </div>
         ))}
+
+        <div>
+          <FootLogos />
+        </div>
 
         <div className="flex flex-row space-x-5 my-8">
           {onPrevClick && (

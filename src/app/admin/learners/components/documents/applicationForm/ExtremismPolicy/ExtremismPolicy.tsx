@@ -1,6 +1,6 @@
 import React from "react";
 import ExtremismPolicyForm from "./ExtremismPolicyForm";
-import { applicationForm } from "../../dummyForm";
+import { extremismPolicyData } from "./data/ExtremismPolicy";
 
 type ExtremismPolicyProps = {
   formData?: any;
@@ -9,7 +9,7 @@ type ExtremismPolicyProps = {
   onPrevClick?: () => void;
 };
 
-const content = applicationForm[0].extremisimPolicy;
+const content = extremismPolicyData;
 
 const ExtremismPolicy: React.FC<ExtremismPolicyProps> = ({
   onNextClick,
@@ -20,22 +20,22 @@ const ExtremismPolicy: React.FC<ExtremismPolicyProps> = ({
   return (
     <div>
       <div>
-        <h3>{content.title}</h3>
-        <p>{content.description}</p>
+        <h3 className="text-xl font-bold py-3">{content.title}</h3>
+        <p className="text-base text-justification">{content.description}</p>
       </div>
       <div>
         {content.content.map((d, index) => (
           <div key={index}>
-            <h3 className="font-bold">{d.title}</h3>
+            <h3 className="text-base font-bold py-2">{d.title}</h3>
             {d.paragraphs.map((d, index) => (
-              <p key={index} className="py-2">{d}</p>
+              <p key={index} className="text-base text-justify">{d}</p>
             ))}
             <div>
-              <h3>{d.lists.title}</h3>
-              <p>{d.lists.p}</p>
+              <h3 className="text-base font-bold py-2">{d.lists.title}</h3>
+              <p className="text-base text-justify">{d.lists.p}</p>
 
               {d.lists.li.map((d, index) => (
-                <li key={index} className=" py-2">{d}</li>
+                <li key={index} className="text-base text-justify">{d}</li>
               ))}
             </div>
           </div>

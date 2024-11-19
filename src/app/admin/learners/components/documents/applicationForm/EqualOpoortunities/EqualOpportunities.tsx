@@ -1,10 +1,8 @@
 "use client";
 
 import React from "react";
-
-import { StyleSheet, Text } from "@react-pdf/renderer";
-import { applicationForm } from "../../dummyForm";
 import EqualOpportunitiesForm from "./EqualOpportunitiesForm";
+import { equalOpportunitiesData } from "./data/EqualOpportunities";
 
 interface EqualOpportunitiesPolicyProps {
   formData?: any;
@@ -13,15 +11,7 @@ interface EqualOpportunitiesPolicyProps {
   onPrevClick?: () => void;
 }
 
-const styles = StyleSheet.create({
-  page: { marginBottom: 4, textTransform: "capitalize", padding: 10 },
-  title: { fontSize: 18, fontWeight: "bold", paddingBottom: 5 },
-  description: {paddingVertical: 10, fontSize: 12, lineHeight:2.5 },
-  list: {paddingVertical: 5, fontSize: 12, lineHeight:2.5 },
-  section: { textAlign: "center", margin: 30 },
-});
-
-const content = applicationForm[0].equalOpportunitiesPolicy;
+const content = equalOpportunitiesData;
 
 const EqualOpportunitiesPolicy: React.FC<EqualOpportunitiesPolicyProps> = ({
   formData,
@@ -30,33 +20,24 @@ const EqualOpportunitiesPolicy: React.FC<EqualOpportunitiesPolicyProps> = ({
   onNextClick,
 }) => {
   return (
-    <div style={styles.page}>
-      <div className="text-xl flex flex-col">
-        <Text style={styles.title}>
-          {content.title}
-        </Text>
-      </div>
+    <div>
+      <h3 className="text-xl font-bold py-3">{content.title}</h3>
+
       <div>
         {content.statement.map((section) => (
           <div key={section.id}>
-            <div className="text-xl">
-              <Text style={styles.description}>{section.text}</Text>
-            </div>
+            <p className="text-base text-justify">{section.text}</p>
           </div>
         ))}
       </div>
       <div>
         {content.procedures.map((section) => (
           <div key={section.id}>
-            <div className="text-xl">
-              <Text style={styles.description}>{section.text}</Text>
-            </div>
+            <p className="text-base text-justify">{section.text}</p>
             <div>
               {section.list.map((points) => (
                 <div key={points.id}>
-                  <li className="text-xl">
-                    <Text style={styles.list}>{points.text}</Text>
-                  </li>
+                  <li className="text-base text-justify">{points.text}</li>
                 </div>
               ))}
             </div>

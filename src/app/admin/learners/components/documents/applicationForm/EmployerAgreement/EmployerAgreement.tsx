@@ -1,5 +1,4 @@
 import React from "react";
-import { applicationForm } from "../dummyForm";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,6 +6,8 @@ import { TextInput } from "@/app/components/form";
 import Checkbox from "@/app/components/form/Checkbox/Checkbox";
 import { Button } from "@/components/ui/button";
 import DatePicker from "@/app/components/form/DatePicker/DatePicker";
+import { employerAgreeemnt } from "./data/EmployerAgreement";
+import FootLogos from "../components/FootLogos";
 
 type EmployerAgreementProps = {
   formData?: any;
@@ -15,7 +16,7 @@ type EmployerAgreementProps = {
   onPrevClick?: () => void;
 };
 
-const content = applicationForm[0].employerAgreement;
+const content = employerAgreeemnt;
 const formFieldsA = content.fields;
 const formFieldsB = content.formFields;
 
@@ -63,8 +64,8 @@ const EmployerAgreement = ({
   return (
     <div className="my-6">
       <div>
-        <h3>{content.title}</h3>
-        <h1>{content.subTitle}</h1>
+        <h3 className="text-xl font-bold py-3">{content.title}</h3>
+        <p className="text-base text-justify">{content.subTitle}</p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
         <div>
@@ -116,7 +117,7 @@ const EmployerAgreement = ({
         </div>
 
         <div>
-          <h3>{content.agreement.p}</h3>
+          <h3 className="text-base text-justify">{content.agreement.p}</h3>
           {content.agreement.points.map((p, index) => (
             <li key={index}>{p}</li>
           ))}
@@ -187,6 +188,10 @@ const EmployerAgreement = ({
                 return null;
             }
           })}
+        </div>
+
+        <div>
+          <FootLogos />
         </div>
 
         <div className="flex flex-row space-x-5 my-8">

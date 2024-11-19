@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
-import { applicationForm } from "../dummyForm";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TextInput } from "@/app/components/form";
 import DatePicker from "@/app/components/form/DatePicker/DatePicker";
 import Checkbox from "@/app/components/form/Checkbox/Checkbox";
+import { awardAssessmentData } from "./data/AwardAssessment";
+import FootLogos from "../components/FootLogos";
 
 type AwardAssessmentProps = {
   formData?: any;
@@ -15,7 +16,7 @@ type AwardAssessmentProps = {
   onPrevClick?: () => void;
 };
 
-const content = applicationForm[0].award;
+const content = awardAssessmentData;
 const formFieldsA = content.formFields;
 const formFieldsB = content.arrangement.formFields;
 const formFieldsC = content.arrangement.eden.formFields;
@@ -73,8 +74,8 @@ const AwardAssessment = ({
   return (
     <div className="my-6">
       <div>
-        <h3>{content.title}</h3>
-        <h1>{content.subTitle}</h1>
+        <h3 className="text-xl font-bold py-3">{content.title}</h3>
+        <p className="text-base py-3 text-justify">{content.subTitle}</p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
         <div>
@@ -130,8 +131,8 @@ const AwardAssessment = ({
           <h1>{content.arrangement.interest}</h1>
           {content.arrangement.personas.map((d) => (
             <div key={d.id}>
-              <h3>{d.title}</h3>
-              <p>{d.description}</p>
+              <h3 className="text-base py-3 font-bold">{d.title}</h3>
+              <p className="text-base py-3 text-justify">{d.description}</p>
               {d.points.map((dd, index) => (
                 <li key={index}>{dd.p}</li>
               ))}
@@ -207,7 +208,7 @@ const AwardAssessment = ({
         </div>
 
         <div>
-          <h3>{content.arrangement.eden.p}</h3>
+          <h3 className="text-base py-3 font-bold">{content.arrangement.eden.p}</h3>
           {formFieldsC.map((field, index) => {
             switch (field.type) {
               case "text":
@@ -254,6 +255,10 @@ const AwardAssessment = ({
                 return null;
             }
           })}
+        </div>
+
+        <div>
+          <FootLogos />
         </div>
 
         <div className="flex flex-row space-x-5 my-8">

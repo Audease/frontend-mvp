@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import Checkbox from "@/app/components/form/Checkbox/Checkbox";
 import { TextInput } from "@/app/components/form";
 import DatePicker from "@/app/components/form/DatePicker/DatePicker";
+import FootLogos from "../components/FootLogos";
 
 interface ChildProtectionFormProps {
   formData?: any;
@@ -131,7 +132,7 @@ const ChildProtectionForm = ({
       </div>
 
       <div>
-        <h3>{content.official.title}</h3>
+        <h3 className="text-base font-bold py-2">{content.official.title}</h3>
       </div>
 
       <div>
@@ -181,6 +182,10 @@ const ChildProtectionForm = ({
               return null;
           }
         })}
+      </div>
+
+      <div>
+        <FootLogos />
       </div>
 
       <div className="flex flex-row space-x-5 my-8">

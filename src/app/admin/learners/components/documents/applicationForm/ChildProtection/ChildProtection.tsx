@@ -20,15 +20,15 @@ const ChildProtection = ({
   return (
     <div>
       <div>
-        <h3>{content.title}</h3>
-        <p>{content.description}</p>
+        <h3 className="text-xl font-bold py-3">{content.title}</h3>
+        <p className="text-base text-justification">{content.description}</p>
       </div>
       <div>
         {content.points.map((d, index) => (
           <div key={index}>
-            <p>{d.text}</p>
+            <p className="text-base text-justification">{d.text}</p>
             {d.points.map((dd, index) => (
-              <li key={index}>{dd}</li>
+              <li key={index} className="text-base text-justification">{dd}</li>
             ))}
           </div>
         ))}

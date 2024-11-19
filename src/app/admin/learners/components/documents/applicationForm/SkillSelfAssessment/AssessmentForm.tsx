@@ -13,6 +13,7 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { skillsAssesment } from "./data/skillsAssessment";
 import { TextInput } from "@/app/components/form";
+import FootLogos from "../components/FootLogos";
 
 interface ChildProtectionFormProps {
   formData?: any;
@@ -158,8 +159,8 @@ const SkillsAssessmentForm = ({
       <Card className="w-full max-w-2xl bg-gray-50">
         <CardContent className="py-4">
           <div className="flex justify-between items-center">
-            <div className="text-lg font-semibold">Overall Score:</div>
-            <div className="text-xl font-bold">
+            <div className="text-base font-semibold">Overall Score:</div>
+            <div className="text-base font-bold">
               {totalScore}/{maxPossibleScore}
               <span className="text-sm text-gray-500 ml-2">
                 ({((totalScore / maxPossibleScore) * 100).toFixed(1)}%)
@@ -170,7 +171,7 @@ const SkillsAssessmentForm = ({
       </Card>
 
       <div>
-        <p>{content.summary.p}</p>
+        <p className="text-base text-justification">{content.summary.p}</p>
         {formFields.map((field) => {
           switch (field.type) {
             case "text":
@@ -199,6 +200,10 @@ const SkillsAssessmentForm = ({
           }
         })}
       </div>
+
+      <div>
+          <FootLogos />
+        </div>
 
       <div className="flex flex-row space-x-5 my-8">
           {onPrevClick && (

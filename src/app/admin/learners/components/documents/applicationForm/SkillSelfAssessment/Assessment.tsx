@@ -19,13 +19,11 @@ const SkillsAssessment = ({
 }: SkillsAssessmentProps) => {
   return (
     <div>
+        <h3 className="text-xl font-bold py-3">{content.title}</h3>
       <div>
-        <h3>{content.title}</h3>
-      </div>
-      <div>
-        <p>{content.instructions}</p>
+        <p className="text-base text-justification">{content.instructions}</p>
         {content.grade.map((d, index) => (
-          <li key={index}>{d.digit} : {d.text}</li>
+          <li key={index} className="text-base text-justification">{d.digit} : {d.text}</li>
         ))}
       </div>
       <div>

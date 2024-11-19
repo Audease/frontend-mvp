@@ -10,7 +10,7 @@ const Pagination = ({ currentPage, totalPages, onPageClick }) => {
           key={pageNumber}
           className={`px-3 py-1 rounded-md ${
             pageNumber === currentPage
-              ? 'bg-blue-500 text-white'
+              ? 'bg-tgrey3 text-white'
               : 'bg-gray-200 hover:bg-gray-300'
           }`}
           onClick={() => onPageClick(pageNumber)}

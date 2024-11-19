@@ -1,10 +1,8 @@
 "use client";
 
 import React from "react";
-
-import { StyleSheet, Text } from "@react-pdf/renderer";
-import { applicationForm } from "../../dummyForm";
 import HealthSafetyPolicyForm from "./HealthSafetyPolicyForm";
+import { healthandSafetyData } from "./data/HealthandSafety";
 
 interface HealthAndSafetyPolicyProps {
   formData?: any;
@@ -13,15 +11,7 @@ interface HealthAndSafetyPolicyProps {
   onPrevClick?: () => void;
 }
 
-const styles = StyleSheet.create({
-  title: { fontSize: 18, fontWeight: "bold", padding:12 },
-  sub_title: { fontSize: 12, fontWeight: "bold", padding:10 },
-  description: {padding: 10, fontSize: 12, lineHeight:2.5 },
-  list: {paddingVertical: 5, fontSize: 12, lineHeight:2.5, paddingHorizontal:10 },
-  section: { textAlign: "center", margin: 30 },
-});
-
-const content = applicationForm[0].healthAndSafetyPolicy;
+const content = healthandSafetyData;
 
 const HealthSafetyPolicy: React.FC<HealthAndSafetyPolicyProps> = ({
   formData,
@@ -32,30 +22,24 @@ const HealthSafetyPolicy: React.FC<HealthAndSafetyPolicyProps> = ({
   return (
     <div>
       <div className="text-xl flex flex-col">
-        <Text style={styles.title}>
-          {content.title}
-        </Text>
-        <Text style={styles.description}>{content.purpose}</Text>
+        <h3 className="text-xl font-bold py-3">{content.title}</h3>
+        <p className="text-base text-justify">{content.purpose}</p>
       </div>
       <div>
         {content.audience.map((section) => (
-          <div key={section.id}>
-            <div className="text-xl">
-              <Text style={styles.description}>{section.title}</Text>
-            </div>
-          </div>
+          <h3 key={section.id} className="text-base text-justify">
+            {section.title}
+          </h3>
         ))}
       </div>
       <div>
         {content.lists.map((section) => (
           <div key={section.id}>
-            <Text style={styles.sub_title}>
-              {section.title}
-            </Text>
+            <h3 className="text-base font-bold py-3">{section.title}</h3>
 
             {section.points.map((section) => (
-              <li key={section.id} >
-                <Text style={styles.list}>{section.point}</Text>
+              <li key={section.id} className="text-base text-justify py-3">
+                {section.point}
               </li>
             ))}
           </div>

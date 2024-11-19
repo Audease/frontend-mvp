@@ -1,0 +1,97 @@
+import { z } from "zod";
+
+export const candidateRecordData = {
+  id: 4,
+  title: "Candidate Registration and Certification Record",
+  formFields: [
+    {
+      type: "text",
+      id: "candidateName",
+      label: "Candidate Name (in BLOCK CAPITALS)",
+      placeholder: "Candidate Name",
+      validation: z.string().min(2).max(100),
+    },
+    {
+      type: "select",
+      id: "gender",
+      label: "Gender",
+      placeholder: "Gender",
+      validation: z.string().min(1).max(50),
+      options: [
+        { value: "male", label: "Male" },
+        { value: "female", label: "Female" },
+        { value: "other", label: "Other" },
+        { value: "prefer_not_to_say", label: "Prefer not to say" },
+      ],
+    },
+    {
+      type: "text",
+      id: "company",
+      label: "Company",
+      placeholder: "Company",
+      validation: z.string().min(2).max(100),
+    },
+    {
+      type: "date",
+      id: "dateOfBirth",
+      label: "Date of Birth",
+      placeholder: "YYYY-MM-DD",
+      validation: z.string().date(),
+    },
+    {
+      type: "text",
+      id: "programmeTitle",
+      label: "Programme Title",
+      placeholder: "Programme Title",
+      validation: z.string().min(2).max(100),
+    },
+    {
+      type: "text",
+      id: "level",
+      label: "Level",
+      placeholder: "Level",
+      validation: z.string().min(1).max(50),
+    },
+    {
+      type: "checkbox",
+      id: "nameOnCertificate",
+      label: "Do you wish the above name to appear on your certificate?",
+      validation: z.boolean(),
+    },
+    {
+      type: "text",
+      id: "alternativeName",
+      label: "If no, please specify (in BLOCK CAPITALS)",
+      placeholder: "Alternative Name",
+      validation: z.string().optional(),
+    },
+    {
+      type: "text",
+      id: "candidateSignature",
+      label: "Candidate Signature",
+      placeholder: "Type in your surname and credentials to append signature",
+      validation: z.string().min(1),
+    },
+    {
+      type: "date",
+      id: "candidateSignatureDate",
+      label: "Date",
+      placeholder: "YYYY-MM-DD",
+      validation: z.string().date(),
+    },
+    {
+      type: "text",
+      id: "learningOfficer",
+      label: "Learning and Assessment Data Officer",
+      placeholder: "Officer Name",
+      validation: z.string().min(2).max(100),
+    },
+    {
+      type: "date",
+      id: "learningOfficerDate",
+      label: "Date",
+      placeholder: "YYYY-MM-DD",
+      validation: z.string().date(),
+    },
+  ],
+};

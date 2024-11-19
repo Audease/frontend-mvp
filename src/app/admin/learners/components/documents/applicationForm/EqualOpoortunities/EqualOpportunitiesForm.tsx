@@ -3,10 +3,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import { applicationForm } from "../../dummyForm";
 import { TextInput } from "@/app/components/form";
 import { Button } from "@/components/ui/button";
 import Checkbox from "@/app/components/form/Checkbox/Checkbox";
+import { equalOpportunitiesData } from "./data/EqualOpportunities";
+import FootLogos from "../components/FootLogos";
 
 interface EqualOpportunitiesFormProps {
   formData?: any;
@@ -15,7 +16,7 @@ interface EqualOpportunitiesFormProps {
   onPrevClick?: () => void;
 }
 
-const formFields = applicationForm[0].equalOpportunitiesPolicy.formFields;
+const formFields = equalOpportunitiesData.formFields;
 
 const formSchema = z.object(
   formFields.reduce((acc, field) => {
@@ -99,6 +100,9 @@ export default function EqualOpportunitiesForm({
             return null;
         }
       })}
+      <div>
+        <FootLogos />
+      </div>
       <div className="flex flex-row space-x-5 my-8">
         {onPrevClick && (
           <Button type="button" onClick={onPrevClick}>

@@ -1,10 +1,8 @@
 "use client";
 
 import React from "react";
-import { applicationForm } from "../../dummyForm";
-import { StyleSheet, Text } from "@react-pdf/renderer";
 import CollegeObligation from "./CollegeObligation";
-
+import { dataProtectionData } from "./data/DataProtection";
 
 interface DataProtectionProps {
   formData?: any;
@@ -12,12 +10,6 @@ interface DataProtectionProps {
   onNextClick?: () => void;
   onPrevClick?: () => void;
 }
-
-const styles = StyleSheet.create({
-  page: { marginBottom: 10, textTransform: "capitalize" },
-  title: { fontSize: 18, fontWeight: "bold", paddingBottom: 5, paddingHorizontal: 10 },
-  section: { textAlign: "center", margin: 30 },
-});
 
 const DataProtection: React.FC<DataProtectionProps> = ({
   formData,
@@ -27,20 +19,13 @@ const DataProtection: React.FC<DataProtectionProps> = ({
 }) => {
   return (
     <div>
-      {applicationForm.map((section) => (
-        <div key={section.id} style={styles.page}>
-          <div className="text-xl">
-            <Text style={styles.title}>
-              {section.dataProtection.title}
-            </Text>
-          </div>
-          {/* The Form  */}
-          <CollegeObligation
-            {...{ formData, setFormData, onPrevClick, onNextClick }}
-          />
-          
-        </div>
-      ))}
+      <div key={dataProtectionData.id}>
+        <h3 className="text-xl font-bold py-3">{dataProtectionData.title}</h3>
+        {/* The Form  */}
+        <CollegeObligation
+          {...{ formData, setFormData, onPrevClick, onNextClick }}
+        />
+      </div>
     </div>
   );
 };

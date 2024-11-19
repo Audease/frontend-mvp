@@ -1,12 +1,8 @@
-
 "use client";
 
 import React from "react";
-
-import { StyleSheet, Text } from "@react-pdf/renderer";
-import { applicationForm } from "../../dummyForm";
 import EnrolmentForm from "./EnrollmentDataForm";
-
+import { enrolmentData } from "./data/Enrollment";
 
 interface EnrolmentProps {
   formData?: any;
@@ -15,12 +11,7 @@ interface EnrolmentProps {
   onPrevClick?: () => void;
 }
 
-const styles = StyleSheet.create({
-  page: { marginBottom: 10, textTransform: "capitalize" },
-  section: { textAlign: "center", margin: 30 },
-});
-
-const content = applicationForm[0].enrollmentForm;
+const content = enrolmentData;
 
 const Enrolment: React.FC<EnrolmentProps> = ({
   formData,
@@ -30,16 +21,10 @@ const Enrolment: React.FC<EnrolmentProps> = ({
 }) => {
   return (
     <div>
-      <div className="text-xl flex flex-col">
-        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-          {content.title}
-        </Text>
-      </div>
+      <h3 className="text-xl font-bold py-3">{content.title}</h3>
 
       {/* The Form */}
-      <EnrolmentForm
-        {...{ formData, setFormData, onPrevClick, onNextClick }}
-      />
+      <EnrolmentForm {...{ formData, setFormData, onPrevClick, onNextClick }} />
     </div>
   );
 };

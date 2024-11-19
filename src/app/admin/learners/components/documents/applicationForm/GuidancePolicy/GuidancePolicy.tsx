@@ -1,10 +1,8 @@
 "use client";
 
 import React from "react";
-
-import { StyleSheet, Text } from "@react-pdf/renderer";
-import { applicationForm } from "../../dummyForm";
 import GuidancePolicyForm from "./GuidancePolicyForm";
+import { guidancePolicyData } from "./data/GuidancePolicy";
 
 interface GuidancePolicyProps {
   formData?: any;
@@ -13,15 +11,8 @@ interface GuidancePolicyProps {
   onPrevClick?: () => void;
 }
 
-const styles = StyleSheet.create({
-  title: { fontSize: 18, fontWeight: "bold", padding: 10 },
-  sub_title: { fontSize: 12, fontWeight: "bold", paddingHorizontal: 10 },
-  description: { paddingHorizontal: 10, paddingVertical: 5, fontSize: 12, lineHeight: 2.5 },
-  list: { paddingHorizontal: 12, paddingVertical: 5, fontSize: 12, lineHeight: 2 },
-  section: { textAlign: "center", margin: 30 },
-});
 
-const content = applicationForm[0].guidancePolicy;
+const content = guidancePolicyData;
 
 const GuidancePolicy: React.FC<GuidancePolicyProps> = ({
   formData,
@@ -32,36 +23,34 @@ const GuidancePolicy: React.FC<GuidancePolicyProps> = ({
   return (
     <div>
       {/* Policy Title and Commitment */}
-      <div className="text-xl flex flex-col">
-        <Text style={styles.title}>
+      <div className="flex flex-col">
+        <h3 className="text-xl font-bold py-3">
           {content.title}
-        </Text>
-        <Text style={styles.description}>{content.commitment}</Text>
+        </h3>
+        <p className="text-base text-justify">{content.commitment}</p>
       </div>
 
       {/* Body Sections */}
       <div>
         {content.body.map((section) => (
           <div key={section.id}>
-            <Text style={styles.sub_title}>
+            <h3 className="text-base font-bold py-3">
               {section.title}
-            </Text>
+            </h3>
             <ul>
               {section.points.map((point) => (
                 <li key={point.id}>
-                  <Text style={styles.sub_title}>
+                  <p className="text-base text-justify py-2">
                     {point.point}
-                  </Text>
-                  <Text style={styles.list}>{point.description}</Text>
+                  </p>
+                  <p className="text-base text-justify">{point.description}</p>
 
                   {/* Render sub_points if they exist */}
                   {point.sub_points && (
                     <ul>
                       {point.sub_points.map((subPoint) => (
-                        <li key={subPoint.id} >
-                          <Text style={styles.list}>
-                            - {subPoint.sub_point}
-                          </Text>
+                        <li key={subPoint.id} className="text-base text-justify py-2 list-disc">
+                            {subPoint.sub_point}
                         </li>
                       ))}
                     </ul>
@@ -73,14 +62,13 @@ const GuidancePolicy: React.FC<GuidancePolicyProps> = ({
         ))}
         <div>
           <div>
-            <Text style={styles.sub_title}>
+            <h3 className="text-base py-3 font-bold">
               {content.table.title}
-            </Text>
+            </h3>
             <p>
-              {" "}
-              <Text style={styles.sub_title}>
+              <p className="text-base text-justify">
                 {content.table.paragraph}
-              </Text>
+              </p>
             </p>
           </div>
           {/* Table  */}
@@ -90,19 +78,19 @@ const GuidancePolicy: React.FC<GuidancePolicyProps> = ({
                 {content.table.processData.columns.map(
                   (column, columnIndex) => (
                     <div key={columnIndex} className=" p-4">
-                      <h3 className="font-bold text-xs mb-4 text-center border-b pb-2">
+                      <h3 className="font-bold text-base mb-4 text-center border-b pb-2">
                         {column.header}
                       </h3>
                       {column.sections.map((section, sectionIndex) => (
                         <div key={sectionIndex} className="mb-4">
                           {section.title && (
-                            <h4 className="font-semibold text-xs mb-2">
+                            <h4 className="font-semibold text-base mb-2">
                               {section.title}
                             </h4>
                           )}
                           <ul className="space-y-2">
                             {section.items.map((item, itemIndex) => (
-                              <li key={itemIndex} className="text-xs">
+                              <li key={itemIndex} className="text-base">
                                 {item}
                               </li>
                             ))}
@@ -120,7 +108,7 @@ const GuidancePolicy: React.FC<GuidancePolicyProps> = ({
           <div className="flex flex-col justify-center items-center">
             {content.table.toc.map((text) => (
               <div key={text.id} className="w-[20rem]">
-                <p className="text-center tet-sm border ">{text.text}</p>
+                <p className="text-center text-base border ">{text.text}</p>
               </div>
             ))}
           </div>

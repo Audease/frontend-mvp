@@ -13,6 +13,7 @@ import TelInput from "@/app/components/form/TelInput/TelInput";
 import EmailInput from "@/app/components/form/EmailInput/EmailInput";
 import { enrolmentData } from "./data/Enrollment";
 import FootLogos from "../components/FootLogos";
+import MultiSelectInput from "@/app/components/form/MultiSelect/MultiSelect";
 
 interface EnrolmentFormProps {
   formData?: any;
@@ -21,10 +22,14 @@ interface EnrolmentFormProps {
   onPrevClick?: () => void;
 }
 
+type FormSchema = {
+  [key: string]: z.ZodType;
+};
+
 const formFields = enrolmentData.fields;
 const sectionFields = enrolmentData.section;
 
-const formSchema = z.object({
+const formSchema: z.ZodObject<FormSchema> = z.object({
   ...formFields.reduce((acc, field) => {
     acc[field.id] = field.validation;
     return acc;
@@ -48,17 +53,18 @@ export default function EnrolmentForm({
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm({
+  } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      ...formData,
       ...formFields.reduce((acc, field) => {
-        acc[field.id] = field.type === "checkbox" ? false : "";
+        acc[field.id] =
+          formData[field.id] || (field.type === "checkbox" ? false : "");
         return acc;
       }, {}),
       ...sectionFields.reduce((acc, section) => {
         section.fields.forEach((field) => {
-          acc[field.id] = field.type === "checkbox" ? false : "";
+          acc[field.id] =
+            formData[field.id] || (field.type === "checkbox" ? false : "");
         });
         return acc;
       }, {}),
@@ -70,6 +76,8 @@ export default function EnrolmentForm({
     // console.log(data)
     onNextClick && onNextClick();
   };
+
+  console.log("Enrolment - Received formData:", formData);
 
   return (
     <div>
@@ -104,7 +112,7 @@ export default function EnrolmentForm({
         {sectionFields.map((field, sectionIndex) => (
           <div key={`section-${field.title || sectionIndex}`}>
             <div className="flex flex-col">
-              <h3 className="text-base font-bold py-3">{field.title}</h3>
+              <h3 className="text-base font-bold py-2">{field.title}</h3>
               <p className="text-base">{field.p}</p>
             </div>
             {field.fields.map((innerField, index) => {
@@ -185,7 +193,7 @@ export default function EnrolmentForm({
                         <NumberInput
                           id={innerField.id}
                           label={innerField.label}
-                          onChange={(e) => onChange(e)}
+                          onChange={(e) => onChange(Number(e.target.value))}
                           value={value || ""}
                           error={errors[innerField.id]?.message as string}
                           placeholder={
@@ -253,6 +261,26 @@ export default function EnrolmentForm({
                           value={value || ""}
                           error={errors[innerField.id]?.message as string}
                           placeholder="Enter email"
+                        />
+                      )}
+                    />
+                  );
+                case "multiselect":
+                  return (
+                    <Controller
+                      key={`formField-${field.id || index}`}
+                      name={innerField.id}
+                      control={control}
+                      render={({ field: { onChange, value } }) => (
+                        <MultiSelectInput
+                          id={innerField.id}
+                          className="application-form-input"
+                          label={innerField.label}
+                          options={innerField.options}
+                          onChange={(selectedValues) => {
+                            onChange(selectedValues);
+                          }}
+                          error={errors[field.id]?.message as string}
                         />
                       )}
                     />

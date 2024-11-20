@@ -9,6 +9,8 @@ interface DataProtectionProps {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  isSubmitted?: boolean;
+  userRole?: string;
 }
 
 const DataProtection: React.FC<DataProtectionProps> = ({
@@ -16,6 +18,8 @@ const DataProtection: React.FC<DataProtectionProps> = ({
   setFormData,
   onPrevClick,
   onNextClick,
+  isSubmitted,
+  userRole
 }) => {
   return (
     <div>
@@ -23,7 +27,8 @@ const DataProtection: React.FC<DataProtectionProps> = ({
         <h3 className="text-xl font-bold py-3">{dataProtectionData.title}</h3>
         {/* The Form  */}
         <CollegeObligation
-          {...{ formData, setFormData, onPrevClick, onNextClick }}
+          {...{ formData, setFormData, onPrevClick, onNextClick , isSubmitted,
+            userRole}}
         />
       </div>
     </div>

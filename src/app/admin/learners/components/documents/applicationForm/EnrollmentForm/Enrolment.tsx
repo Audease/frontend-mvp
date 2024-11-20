@@ -19,6 +19,7 @@ const Enrolment: React.FC<EnrolmentProps> = ({
   onPrevClick,
   onNextClick,
 }) => {
+ 
   return (
     <div>
       <h3 className="text-xl font-bold py-3">{content.title}</h3>

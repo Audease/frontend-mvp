@@ -16,6 +16,8 @@ interface CandidateRecordFormProps {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
+  isSubmitted?: boolean;
 }
 
 const formFields = candidateRecordData.formFields;
@@ -32,6 +34,8 @@ export default function CandidateRecordForm({
   setFormData,
   onPrevClick,
   onNextClick,
+  userRole,
+  isSubmitted
 }: CandidateRecordFormProps) {
   const {
     control,
@@ -68,6 +72,8 @@ export default function CandidateRecordForm({
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
         {formFields.map((field) => {
+          const isEditable =
+          !isSubmitted && field.editableBy.includes(userRole);
           switch (field.type) {
             case "text":
               return (
@@ -82,6 +88,7 @@ export default function CandidateRecordForm({
                       placeholder={field.placeholder}
                       label={field.label}
                       value={value || ""}
+                      disabled={!isEditable}
                       onChange={(e) => {
                         onChange(e);
                       }}
@@ -102,6 +109,7 @@ export default function CandidateRecordForm({
                         onChange(e);
                       }}
                       value={value || ""}
+                      disabled={!isEditable}
                       label={field.label}
                       error={errors[field.id]?.message as string}
                     />
@@ -120,6 +128,7 @@ export default function CandidateRecordForm({
                         onChange(e);
                       }}
                       value={value || ""}
+                      disabled={!isEditable}
                       label={field.label}
                       error={errors[field.id]?.message as string}
                       id={field.id}
@@ -139,6 +148,7 @@ export default function CandidateRecordForm({
                         onChange(e);
                       }}
                       value={value || ""}
+                      disabled={!isEditable}
                       label={field.label}
                       error={errors[field.id]?.message as string}
                       id={field.id}

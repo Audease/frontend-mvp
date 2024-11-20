@@ -1,28 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Appeal from "./applicationForm/AppealProcedure/Appeal";
-import Complaint from "./applicationForm/StatementOfComplaint/Complaint";
 import { applicationForm } from "./dummyForm";
-import BehaviouralPolicy from "./applicationForm/BehaviouralPolicy/BehaviouralPolicy";
-import CandidateRecordForm from "./applicationForm/CandidateRecord/CandidateRecord";
-import Confidentiality from "./applicationForm/Confidentiality/Confidentiality";
-import DataProtection from "./applicationForm/DataProtection/DataProtection";
-import EqualOpportunitiesPolicy from "./applicationForm/EqualOpoortunities/EqualOpportunities";
-import HealthSafetyPolicy from "./applicationForm/HealthSafetyPolicy/HealthSafetyPolicy";
-import GuidancePolicy from "./applicationForm/GuidancePolicy/GuidancePolicy";
-import Enrolment from "./applicationForm/EnrollmentForm/Enrolment";
-import PrivacyNotice from "./applicationForm/PrivacyNotice/PrivacyNotice";
 import Image from "next/image";
 import Pagination from "./applicationForm/components/Pagination";
-import AwardAssessment from "./applicationForm/AwardAssessment/AwardAssessment.tsx";
-import EmployerAgreement from "./applicationForm/EmployerAgreement/EmployerAgreement";
-import ParticipantAgreement from "./applicationForm/ParticipantAgreement/ParticipantAgreement";
-import ExtremismPolicy from "./applicationForm/ExtremismPolicy/ExtremismPolicy";
-import ChildProtection from "./applicationForm/ChildProtection/ChildProtection";
-import SkillsAssessment from "./applicationForm/SkillSelfAssessment/Assessment";
 import { FinalSubmissionAlert } from "./applicationForm/components/DialogueBox";
 import SubmissionSuccess from "./applicationForm/SubmissionSuccess";
+import { SlArrowLeft } from "react-icons/sl";
+import RenderFormComponent from "./RenderComponent";
 
 export default function DocView({ onBackClick }) {
   const [formData, setFormData] = useState({
@@ -48,8 +33,9 @@ export default function DocView({ onBackClick }) {
   const [totalSectionNumber, setTotalSectionNumber] = useState<number>();
   const [sectionNumber, setSectionNumber] = useState<number>(1);
   const [showDialog, setShowDialog] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [useRole, setUserRole] = useState("learner")
 
   // Array of components
   const formComponents = [
@@ -109,162 +95,6 @@ export default function DocView({ onBackClick }) {
     }));
   };
 
-  const renderFormComponent = () => {
-    switch (formContent) {
-      case "Appeal":
-        return <Appeal {...{ onPrevClick, onNextClick }} />;
-      case "Complaint":
-        return <Complaint {...{ onPrevClick, onNextClick }} />;
-      case "BehaviouralPolicy":
-        return (
-          <BehaviouralPolicy
-            formData={formData.behavioural}
-            setFormData={(data) => handleSaveFormData(data, "behavioural")}
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-          />
-        );
-      case "CandidateRecord":
-        return (
-          <CandidateRecordForm
-            formData={formData.candidaterecord}
-            setFormData={(data) => handleSaveFormData(data, "candidaterecord")}
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-          />
-        );
-      case "Confidentiality":
-        return (
-          <Confidentiality
-            formData={formData.confidentiality}
-            setFormData={(data) => handleSaveFormData(data, "confidentiality")}
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-          />
-        );
-      case "DataProtection":
-        return (
-          <DataProtection
-            formData={formData.dataprotection}
-            setFormData={(data) => handleSaveFormData(data, "dataprotection")}
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-          />
-        );
-      case "EqualOpportunities":
-        return (
-          <EqualOpportunitiesPolicy
-            formData={formData.equalopportunities}
-            setFormData={(data) =>
-              handleSaveFormData(data, "equalopportunities")
-            }
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-          />
-        );
-      case "HealthSafetyPolicy":
-        return (
-          <HealthSafetyPolicy
-            formData={formData.healthandsafetypolicy}
-            setFormData={(data) =>
-              handleSaveFormData(data, "healthAndSafetyPolicy")
-            }
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-          />
-        );
-      case "GuidancePolicy":
-        return (
-          <GuidancePolicy
-            formData={formData.guidancepolicy}
-            setFormData={(data) => handleSaveFormData(data, "guidancepolicy")}
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-          />
-        );
-      case "Enrolment":
-        return (
-          <Enrolment
-            formData={formData.enrolment}
-            setFormData={(data) => handleSaveFormData(data, "enrolment")}
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-          />
-        );
-      case "PrivacyNotice":
-        return (
-          <PrivacyNotice
-            formData={formData.privacynotice}
-            setFormData={(data) => handleSaveFormData(data, "privacynotice")}
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-          />
-        );
-      case "AwardAssessment":
-        return (
-          <AwardAssessment
-            formData={formData.awardassessment}
-            setFormData={(data) => handleSaveFormData(data, "awardassessment")}
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-          />
-        );
-      case "EmployerAgreement":
-        return (
-          <EmployerAgreement
-            formData={formData.employeragreement}
-            setFormData={(data) =>
-              handleSaveFormData(data, "employeragreement")
-            }
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-          />
-        );
-      case "ParticipantAgreement":
-        return (
-          <ParticipantAgreement
-            formData={formData.participantagreement}
-            setFormData={(data) =>
-              handleSaveFormData(data, "participantagreement")
-            }
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-          />
-        );
-      case "ExtremismPolicy":
-        return (
-          <ExtremismPolicy
-            formData={formData.extremismpolicy}
-            setFormData={(data) => handleSaveFormData(data, "extremismpolicy")}
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-          />
-        );
-      case "ChildProtection":
-        return (
-          <ChildProtection
-            formData={formData.childprotection}
-            setFormData={(data) => handleSaveFormData(data, "childprotection")}
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-          />
-        );
-      case "SkillsAssessment":
-        return (
-          <SkillsAssessment
-            formData={formData.skillsassessment}
-            setFormData={(data) => handleSaveFormData(data, "skillsassessment")}
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-          />
-        );
-      case "SubmissionSuccess":
-        return <SubmissionSuccess />;
-      default:
-        return <Appeal {...{ onNextClick }} />;
-    }
-  };
-
   const onNextClick = () => {
     if (sectionNumber >= totalSectionNumber - 1) {
       setShowDialog(true);
@@ -279,23 +109,40 @@ export default function DocView({ onBackClick }) {
     setFormContent(formComponents[sectionNumber - 2] || "Appeal");
   };
 
-  const handleSubmit = () => {
-    localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formData));
-    console.log("Form submitted:", formData);
-    setShowDialog(false);
-    setSubmitted(true);
-    setFormContent("SubmissionSuccess");
-  };
-
   const handlePageClick = (pageNumber) => {
     setSectionNumber(pageNumber);
     setFormContent(formComponents[pageNumber - 1] || "Appeal");
   };
 
+  const handleSubmit = () => {
+    localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formData));
+    console.log("Form submitted:", formData);
+    setShowDialog(false);
+    setIsSubmitted(true);
+    setFormContent("SubmissionSuccess");
+  };
+
+  const openUpForEdit = (e) => {
+    e.preventDefault();
+    setIsSubmitted(false)
+  }
+
+
   return (
     <div className="space-y-4 border-tgrey2  p-4 mb-8  rounded-xl border  bg-tgrey4 text-card-foreground shadow">
       <div className="flex flex-row justify-between m-4">
-        <button onClick={onBackClick}>Back</button>
+        <div className="pt-1 ">
+          <button
+            className="flex flex-row space-x-2"
+            type="button"
+            onClick={onBackClick}
+          >
+            <div className="pt-2">
+              <SlArrowLeft className=" h-[0.6rem]" />
+            </div>
+            <p className="font-medium text-base">Back</p>
+          </button>
+        </div>
         <h3>{`Page ${sectionNumber} of  ${totalSectionNumber - 1}`}</h3>
       </div>
       <div className="flex flex-row px-4 justify-between ">
@@ -304,14 +151,24 @@ export default function DocView({ onBackClick }) {
           {CollegeName}
         </h2>
         <Image
-          src={"/EdenCollegelogo.jpg"}
-          alt={""}
+          src={"/enrolmentForm/Logos/eden-college-logo-final.png"}
+          alt={"Eden college logo"}
           width={80}
           height={40}
         ></Image>
       </div>
       <div>
-        <div className="px-4">{renderFormComponent()}</div>
+        <div className="px-4">
+          <RenderFormComponent
+            formContent={formContent}
+            formData={formData}
+            handleSaveFormData={handleSaveFormData}
+            onPrevClick={onPrevClick}
+            onNextClick={onNextClick}
+            isSubmitted={isSubmitted}
+            userRole={useRole}
+          />
+        </div>
         {showDialog && (
           <FinalSubmissionAlert
             isOpen={showDialog}
@@ -319,6 +176,8 @@ export default function DocView({ onBackClick }) {
             handleSubmit={handleSubmit}
           />
         )}
+
+        <button onClick={openUpForEdit}>Open Up</button>
         {showSuccessMessage && <SubmissionSuccess />}
         <div>
           <Pagination

@@ -59,6 +59,8 @@ export const behaviouralData = {
       id: "agreement",
       label: "I have read and understood the policy.",
       type: "checkbox",
+      section: "learner",
+      editableBy: ["learner"],
       validation: z.boolean().refine((value) => value === true, {
         message: "You must agree to the policy",
       }),
@@ -67,44 +69,68 @@ export const behaviouralData = {
       type: "text",
       id: "candidateName",
       label: "Candidate Name",
+      section: "learner",
+      editableBy: ["learner"],
       placeholder: "Candidate Name",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Candidate Name must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "employerName",
       label: "Employer",
+      section: "learner",
+      editableBy: ["learner"],
       placeholder: "Employer",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Employer Name must be at least 2 characters.",
+      }),
     },
 
     {
       type: "text",
       id: "courseDetails",
       label: "Course/Project Details",
+      section: "learner",
+      editableBy: ["learner"],
       placeholder: "Course/Project Details",
-      validation: z.string().min(2).max(250),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Course Details must be at least 2 characters.",
+      }),
     },
     {
       id: "candidateSignature",
       label: "Candidate Signature",
+      section: "learner",
+      editableBy: ["learner"],
       type: "text",
       placeholder: "Type in your surname and credentials to append signature",
-      validation: z.string().min(3),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Signature must be at least 2 characters.",
+      }),
     },
     {
       id: "ldaName",
       label: "Learning and Development Adviser Name",
       type: "text",
+      section: "admin",
+      editableBy: ["accessor"],
       placeholder: "LDA Name",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "LDA Name must be at least 2 characters.",
+      }),
     },
     {
       id: "ldaSignature",
       label: "Learning and Development Adviser Signature",
+      section: "admin",
+      editableBy: ["accessor"],
       type: "text",
-      placeholder: "LDA Signature",
-      validation: z.string().min(1),
-    }
+      placeholder: "Type in your surname and credentials to append signature",
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Signature must be at least 2 characters.",
+      }),
+    },
   ],
 };

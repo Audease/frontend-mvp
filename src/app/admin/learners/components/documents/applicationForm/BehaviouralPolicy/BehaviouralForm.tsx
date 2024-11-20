@@ -14,6 +14,8 @@ interface BehaviouralFormProps {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
+  isSubmitted?: boolean;
 }
 
 const formFields = behaviouralData.formFields;
@@ -30,6 +32,8 @@ export default function BehaviouralForm({
   setFormData,
   onPrevClick,
   onNextClick,
+  userRole,
+  isSubmitted
 }: BehaviouralFormProps) {
   const {
     control,
@@ -56,6 +60,9 @@ export default function BehaviouralForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
       {formFields.map((field) => {
+        const isEditable =
+        !isSubmitted && field.editableBy.includes(userRole);
+
         switch (field.type) {
           case "text":
             return (
@@ -70,6 +77,7 @@ export default function BehaviouralForm({
                     placeholder={field.placeholder}
                     label={field.label}
                     value={value || ""}
+                    disabled={!isEditable}
                     onChange={(e) => {
                       onChange(e);
                     }}
@@ -90,6 +98,7 @@ export default function BehaviouralForm({
                       onChange(e);
                     }}
                     value={value || ""}
+                    disabled={!isEditable}
                     label={field.label}
                     error={errors[field.id]?.message as string}
                   />

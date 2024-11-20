@@ -7,23 +7,50 @@ export const enrolmentData = {
     {
       type: "text",
       id: "topsid",
+      section: "learner",
+      editableBy: ["learner"],
       label: "TOPSID",
       placeholder: "Enter TOPSID",
-      validation: z.string().optional(),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "TOPSID must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "uln",
+      section: "learner",
+      editableBy: ["learner"],
       label: "ULN",
       placeholder: "Enter ULN",
-      validation: z.string(),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "ULN must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "learnerReference",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Learner Reference",
       placeholder: "Enter Learner Reference",
-      validation: z.string().optional(),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Learner reference must be at least 2 characters.",
+      }),
+    },
+    {
+      type: "multiselect",
+      id: "preferredLanguages",
+      label: "Preferred Languages",
+      options: [
+        { value: "javascript", label: "JavaScript" },
+        { value: "python", label: "Python" },
+        { value: "java", label: "Java" },
+        { value: "csharp", label: "C#" },
+      ],
+      validation: z
+        .array(z.string())
+        .min(1, { message: "Please select at least one option" }),
+      disabled: false,
     },
   ],
   section: [
@@ -36,13 +63,19 @@ export const enrolmentData = {
         {
           type: "text",
           id: "title",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Title (Mr./Mrs./Miss. etc.)",
           placeholder: "Enter Title",
-          validation: z.string().max(10),
+          validation: z.string().refine((value) => value.trim().length >= 2, {
+            message: "Title must be at least 2 characters.",
+          }),
         },
         {
           type: "date",
           id: "dateOfBirth",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Date of Birth",
           placeholder: "Enter Date of Birth",
           validation: z.string().date(),
@@ -50,77 +83,133 @@ export const enrolmentData = {
         {
           type: "text",
           id: "firstName",
+          section: "learner",
+          editableBy: ["learner"],
           label: "First Name",
           placeholder: "Enter First Name",
-          validation: z.string().min(2).max(50),
+          validation: z.string().refine((value) => value.trim().length >= 2, {
+            message: "First name must be at least 2 characters.",
+          }),
         },
         {
           type: "text",
           id: "surname",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Surname",
           placeholder: "Enter Surname",
-          validation: z.string().min(2).max(50),
+          validation: z.string().refine((value) => value.trim().length >= 2, {
+            message: "Surname must be at least 2 characters.",
+          }),
         },
         {
           type: "number",
           id: "ageOnAug312024",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Age on 31 August 2024",
           placeholder: "Enter Age",
-          validation: z.string(),
+          validation: z.number().refine((value) => value >= 2, {
+            message: "Must be a valid number",
+          }),
           min: 0,
           max: 100,
         },
         {
           type: "tel",
           id: "nationalInsuranceNumber",
+          section: "learner",
+          editableBy: ["learner"],
           label: "National Insurance Number",
           placeholder: "Enter National Insurance Number",
-          validation: z.string(),
+          validation: z.string().regex(/^[A-Z]{2}\d{6}[A-D]$/, {
+            message:
+              "Must be a valid National Insurance Number (e.g., AB123456C)",
+          }),
         },
         {
           type: "radio",
           id: "gender",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Gender",
           options: [
             { label: "Female", value: "Female" },
             { label: "Male", value: "Male" },
           ],
-          validation: z.enum(["Female", "Male"]),
+          validation: z.enum(["Female", "Male"], {
+            errorMap: () => ({ message: "Please select a valid gender" }),
+          }),
         },
         {
           type: "text",
           id: "address",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Address",
           placeholder: "Enter Address",
-          validation: z.string().max(200),
+          validation: z.string().refine((value) => value.trim().length >= 2, {
+            message: "Address must be at least 2 characters.",
+          }),
         },
         {
           type: "text",
           id: "postcode",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Postcode",
           placeholder: "Enter Postcode",
-          validation: z.string().max(10),
+          validation: z
+            .string()
+            .min(5, { message: "Postcode must be at least 5 characters" })
+            .max(10, { message: "Postcode cannot exceed 10 characters" })
+            .regex(/^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$/i, {
+              message: "Please enter a valid UK postcode",
+            }),
         },
         {
           type: "tel",
           id: "homePhone",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Home Phone",
           placeholder: "Enter Home Phone",
-          validation: z.string(),
+          validation: z
+            .string()
+            .min(10, { message: "Phone number must be at least 10 digits" })
+            .max(15, { message: "Phone number cannot exceed 15 digits" })
+            .regex(/^[+]?[\d\s-]+$/, {
+              message: "Please enter a valid phone number",
+            }),
         },
         {
           type: "tel",
           id: "mobile",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Mobile",
           placeholder: "Enter Mobile",
-          validation: z.string(),
+          validation: z
+            .string()
+            .min(10, { message: "Phone number must be at least 10 digits" })
+            .max(15, { message: "Phone number cannot exceed 15 digits" })
+            .regex(/^[+]?[\d\s-]+$/, {
+              message: "Please enter a valid phone number",
+            }),
         },
         {
           type: "email",
           id: "emailAddress",
+          section: "learner",
+          editableBy: ["learner"],
           label: "E-Mail Address",
           placeholder: "Enter Email",
-          validation: z.string().email(),
+          validation: z
+            .string()
+            .email({ message: "Please enter a valid email address" })
+            .max(254, {
+              message: "Email address cannot exceed 254 characters",
+            }),
         },
       ],
     },
@@ -133,37 +222,64 @@ export const enrolmentData = {
         {
           type: "text",
           id: "emergencyContactName",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Emergency Contact Name",
           placeholder: "Enter Emergency Contact Name",
-          validation: z.string().min(2).max(100),
+          validation: z.string().refine((value) => value.trim().length >= 2, {
+            message: "Contact name must be at least 2 characters.",
+          }),
         },
         {
           type: "text",
           id: "relationshipToContact",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Relationship to Contact",
           placeholder: "Enter Relationship",
-          validation: z.string().max(50),
+          validation: z.string().refine((value) => value.trim().length >= 2, {
+            message: "Must be at least 2 characters.",
+          }),
         },
         {
           type: "tel",
           id: "emergencyContactMobile",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Emergency Contact Mobile Number",
           placeholder: "Enter Emergency Contact Mobile",
-          validation: z.string(),
+          validation: z
+            .string()
+            .min(10, { message: "Phone number must be at least 10 digits" })
+            .max(15, { message: "Phone number cannot exceed 15 digits" })
+            .regex(/^[+]?[\d\s-]+$/, {
+              message: "Please enter a valid phone number",
+            }),
         },
         {
           type: "email",
           id: "emergencyContactEmail",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Emergency Contact Email Address",
           placeholder: "Enter Emergency Contact Email",
-          validation: z.string().email().optional(),
+          validation: z
+            .string()
+            .email({ message: "Please enter a valid email address" })
+            .max(254, {
+              message: "Email address cannot exceed 254 characters",
+            }),
         },
         {
           type: "text",
           id: "emergencyContactAddress",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Emergency Contact Address",
           placeholder: "Enter Emergency Contact Address",
-          validation: z.string().max(200),
+          validation: z.string().refine((value) => value.trim().length >= 2, {
+            message: "Must be at least 2 characters.",
+          }),
         },
       ],
     },
@@ -183,6 +299,8 @@ export const enrolmentData = {
           type: "radio",
           id: "ethnicity",
           label: "Ethnicity",
+          section: "learner",
+          editableBy: ["learner"],
           options: [
             { label: "British", value: "british" },
             {
@@ -238,7 +356,7 @@ export const enrolmentData = {
             { label: "Other ethnic group", value: "other_ethnic_group" },
             { label: "Prefer not to say", value: "prefer_not_to_say" },
           ],
-          validation: z.string().optional(),
+          validation: z.string(),
         },
       ],
     },
@@ -250,6 +368,8 @@ export const enrolmentData = {
         {
           type: "radio",
           id: "religion",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Religion",
           options: [
             { label: "Christian", value: "christian" },
@@ -264,7 +384,7 @@ export const enrolmentData = {
             },
             { label: "Prefer not to say", value: "prefer_not_to_say" },
           ],
-          validation: z.string().optional(),
+          validation: z.string(),
         },
       ],
     },
@@ -276,9 +396,13 @@ export const enrolmentData = {
         {
           type: "text",
           id: "firstLanguage",
+          section: "learner",
+          editableBy: ["learner"],
           label: "First Language",
           placeholder: "Enter First Language",
-          validation: z.string().max(50),
+          validation: z.string().refine((value) => value.trim().length >= 2, {
+            message: "Must be at least 2 characters.",
+          }),
         },
       ],
     },
@@ -290,6 +414,8 @@ export const enrolmentData = {
         {
           type: "radio",
           id: "sexualOrientation",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Sexual Orientation",
           options: [
             {
@@ -302,7 +428,7 @@ export const enrolmentData = {
             { label: "Other", value: "other" },
             { label: "Prefer not to say", value: "prefer_not_to_say" },
           ],
-          validation: z.string().optional(),
+          validation: z.string(),
         },
       ],
     },
@@ -314,6 +440,8 @@ export const enrolmentData = {
         {
           type: "checkbox",
           id: "additionalSupportNeeds",
+          section: "learner",
+          editableBy: ["learner"],
           label: "Do you have any additional support needs?",
           options: ["Yes", "No"],
           validation: z.boolean(),
@@ -324,112 +452,58 @@ export const enrolmentData = {
       id: 9,
       title:
         "2.6 Learning Difficulties / Disabilities(LLDD) (Tick (√) where applicable)",
-      p: "Do you consider yourself to a disability, learning difficulty or health problem?",
+      p: "",
       fields: [
         {
-          type: "checkbox",
-          id: "visualImpairment",
-          label: "Visual impairment",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "hearingImpairment",
-          label: "Hearing impairment",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "mobilityDisability",
-          label: "Disability affecting mobility",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "profoundComplexDisability",
-          label: "Profound complex disability",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "socialEmotionalDifficulties",
-          label: "Social and emotional difficulties",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "mentalHealthDifficulty",
-          label: "Mental health difficulty",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "otherMedicalCondition",
-          label: "Other medical condition (e.g. epilepsy, asthma, diabetes)",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "moderateLearningDifficulty",
-          label: "Moderate learning difficulty",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "severeLearningDifficulty",
-          label: "Severe learning difficulty",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "dyslexia",
-          label: "Dyslexia",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "dyscalculia",
-          label: "Dyscalculia",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "autismSpectrumDisorder",
-          label: "Autism Spectrum disorder",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "aspergersSyndrome",
-          label: "Asperger’s Syndrome",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "otherDisability",
-          label: "Other disability",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "preferNotToSay",
-          label: "Prefer not to say",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
+          type: "multiselect",
+          id: "learningDisability",
+          label: "Do you consider yourself to a disability, learning difficulty or health problem?",
+          options: [
+            { value: "visual_impairment", label: "Visual impairment" },
+            { value: "hearing_impairment", label: "Hearing impairment" },
+            {
+              value: "mobility_disability",
+              label: "Disability affecting mobility",
+            },
+            {
+              value: "profound_complex_disability",
+              label: "Profound complex disability",
+            },
+            {
+              value: "social_emotional_difficulties",
+              label: "Social and emotional difficulties",
+            },
+            {
+              value: "mental_health_difficulty",
+              label: "Mental health difficulty",
+            },
+            {
+              value: "other_medical_condition",
+              label:
+                "Other medical condition (e.g. epilepsy, asthma, diabetes)",
+            },
+            {
+              value: "moderate_learning_difficulty",
+              label: "Moderate learning difficulty",
+            },
+            {
+              value: "severe_learning_difficulty",
+              label: "Severe learning difficulty",
+            },
+            { value: "dyslexia", label: "Dyslexia" },
+            { value: "dyscalculia", label: "Dyscalculia" },
+            {
+              value: "autism_spectrum_disorder",
+              label: "Autism Spectrum disorder",
+            },
+            { value: "aspergers_syndrome", label: "Asperger’s Syndrome" },
+            { value: "other_disability", label: "Other disability" },
+            { value: "prefer_not_to_say", label: "Prefer not to say" },
+          ],
+          validation: z
+            .array(z.string())
+            .min(1, { message: "Please select at least one option" }),
+          disabled: false,
         },
         {
           type: "text",
@@ -444,42 +518,32 @@ export const enrolmentData = {
     {
       id: 10,
       title: "",
-      p: "Would you find learning easier with the following support? Please tick if appropriate.",
+      p: "",
       fields: [
         {
-          type: "checkbox",
-          id: "readingWritingSupport",
-          label: "Reading and writing support",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "mathSupport",
-          label: "Math’s support",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "englishLanguageSupport",
-          label: "English language support",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "equipmentSupport",
-          label: "Equipment support",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
-        },
-        {
-          type: "checkbox",
-          id: "otherSpecialistSupport",
-          label: "Other specialist support",
-          options: ["Yes", "No"],
-          validation: z.boolean(),
+          type: "multiselect",
+          id: "preferredLearningSupport",
+          label: "Would you find learning easier with the following support? Please tick if appropriate.",
+          options: [
+            {
+              value: "reading_writing_support",
+              label: "Reading and writing support",
+            },
+            { value: "maths_support", label: "Math’s support" },
+            {
+              value: "english_language_support",
+              label: "English language support",
+            },
+            { value: "equipment_support", label: "Equipment support" },
+            {
+              value: "other_specialist_support",
+              label: "Other specialist support",
+            },
+          ],
+          validation: z
+            .array(z.string())
+            .min(1, { message: "Please select at least one option" }),
+          disabled: false,
         },
       ],
     },

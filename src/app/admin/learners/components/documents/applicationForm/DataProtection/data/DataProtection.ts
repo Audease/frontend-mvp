@@ -114,6 +114,8 @@ export const dataProtectionData = {
     {
       type: "checkbox",
       id: "confirm",
+      section: "learner",
+      editableBy: ["learner"],
       label:
         "I confirm that I have read the summary of Eden college Data Protection policy set out in this form and consent to the Eden college holding and processing the categories of personal data about me in the attached schedule for the specified purposes (summarised therein) in respect of my application(s) for admission, as a learner if successful, and after completion and achievement.",
       validation: z.boolean().refine((value) => value === true, {
@@ -123,6 +125,8 @@ export const dataProtectionData = {
     {
       type: "checkbox",
       id: "altConfirm",
+      section: "learner",
+      editableBy: ["learner"],
       label:
         "In the event that my application to Eden College is unsuccessful I consent to my personal data held on computer and in my files being passed to a not her training organisation for consideration for admission.",
       validation: z.boolean().refine((value) => value === true, {
@@ -132,6 +136,8 @@ export const dataProtectionData = {
     {
       type: "checkbox",
       id: "feedbackConfirm",
+      section: "learner",
+      editableBy: ["learner"],
       label:
         "I have read and understand the statement on the confidentiality of the admissions process as outlined above and I accept this. I am also aware of the feedback arrangements.",
       validation: z.boolean().refine((value) => value === true, {
@@ -141,16 +147,24 @@ export const dataProtectionData = {
     {
       type: "text",
       id: "fullName",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Full Name",
       placeholder: "Full Name",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Candidate Name must be at least 2 characters.",
+      }),
     },
     {
       label: "Subject / Course Applied for",
       type: "text",
+      section: "learner",
+      editableBy: ["learner"],
       id: "CourseAppliedfor",
       placeholder: "Subject / Course Applied for",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Course applied for must be at least 2 characters.",
+      }),
     },
   ],
 };

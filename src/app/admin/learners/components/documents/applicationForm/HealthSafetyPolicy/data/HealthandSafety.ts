@@ -206,6 +206,8 @@ export const healthandSafetyData = {
     {
       type: "checkbox",
       id: "agreement",
+      section: "learner",
+      editableBy: ["learner"],
       label: "I confirm that I have read and understood the above policy.",
       validation: z.boolean().refine((value) => value === true, {
         message: "You must check this box to continue.",
@@ -214,6 +216,8 @@ export const healthandSafetyData = {
     {
       type: "text",
       id: "candidateName",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Candidate Name",
       placeholder: "Candidate Name",
       validation: z.string().min(2).max(100),
@@ -221,6 +225,8 @@ export const healthandSafetyData = {
     {
       type: "text",
       id: "employer",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Employer",
       placeholder: "Employer",
       validation: z.string().min(2).max(100),
@@ -228,6 +234,8 @@ export const healthandSafetyData = {
     {
       type: "text",
       id: "courseDetails",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Course/Project Details",
       placeholder: "Course/Project Details",
       validation: z.string().min(2).max(100),
@@ -235,6 +243,8 @@ export const healthandSafetyData = {
     {
       type: "text",
       id: "candidateSignature",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Candidate Signature",
       placeholder: "Candidate Signature",
       validation: z.string().min(2).max(100),
@@ -242,6 +252,8 @@ export const healthandSafetyData = {
     {
       type: "text",
       id: "ldaName",
+      section: "admin",
+      editableBy: ["accessor"],
       label: "Learning and Development Adviser Name",
       placeholder: "LDA Name",
       validation: z.string().min(2).max(100),
@@ -249,6 +261,8 @@ export const healthandSafetyData = {
     {
       type: "text",
       id: "ldaSignature",
+      section: "admin",
+      editableBy: ["accessor"],
       label: "Learning and Development Adviser Signature",
       placeholder: "LDA Signature",
       validation: z.string().min(2).max(100),

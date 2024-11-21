@@ -7,9 +7,13 @@ export const participantAgreementData = {
     {
       type: "checkbox",
       id: "courseInfoConfirm",
+      section: "learner",
+      editableBy: ["learner"],
       label: "I agree	to	notify	Eden College if: ",
       options: ["Yes", "No"],
-      validation: z.boolean(),
+      validation: z.boolean().refine((value) => value === true, {
+        message: "Chck box to agree.",
+      }),
     },
   ],
   notificationConditions: [
@@ -34,13 +38,19 @@ export const participantAgreementData = {
       {
         type: "text",
         id: "participantAgreementSignature",
+        section: "learner",
+        editableBy: ["learner"],
         label: "Signature",
-        placeholder: "Signature",
-        validation: z.string().optional(),
+        placeholder: "Type in your surname and credentials to append signature",
+        validation: z.string().refine((value) => value.trim().length >= 2, {
+          message: "Signature must be at least 2 characters.",
+        }),
       },
       {
         type: "date",
         id: "dateOfParticipantAgreement",
+        section: "learner",
+        editableBy: ["learner"],
         label: "Date of Agreement",
         placeholder: "Enter Date of Agreement",
         validation: z.string().date(),

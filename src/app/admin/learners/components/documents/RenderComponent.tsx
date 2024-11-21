@@ -122,6 +122,8 @@ const RenderFormComponent = ({
           setFormData={(data) => handleSaveFormData(data, "enrolment")}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
+          isSubmitted={isSubmitted}
+          userRole = {userRole}
         />
       );
     case "PrivacyNotice":
@@ -131,6 +133,8 @@ const RenderFormComponent = ({
           setFormData={(data) => handleSaveFormData(data, "privacynotice")}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
+          isSubmitted={isSubmitted}
+          userRole = {userRole}
         />
       );
     case "AwardAssessment":
@@ -140,6 +144,8 @@ const RenderFormComponent = ({
           setFormData={(data) => handleSaveFormData(data, "awardassessment")}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
+          isSubmitted={isSubmitted}
+          userRole = {userRole}
         />
       );
     case "EmployerAgreement":
@@ -151,6 +157,8 @@ const RenderFormComponent = ({
           }
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
+          isSubmitted={isSubmitted}
+          userRole = {userRole}
         />
       );
     case "ParticipantAgreement":
@@ -162,6 +170,8 @@ const RenderFormComponent = ({
           }
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
+          isSubmitted={isSubmitted}
+          userRole = {userRole}
         />
       );
     case "ExtremismPolicy":
@@ -171,6 +181,8 @@ const RenderFormComponent = ({
           setFormData={(data) => handleSaveFormData(data, "extremismpolicy")}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
+          isSubmitted={isSubmitted}
+          userRole = {userRole}
         />
       );
     case "ChildProtection":
@@ -180,6 +192,8 @@ const RenderFormComponent = ({
           setFormData={(data) => handleSaveFormData(data, "childprotection")}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
+          isSubmitted={isSubmitted}
+          userRole = {userRole}
         />
       );
     case "SkillsAssessment":
@@ -189,6 +203,8 @@ const RenderFormComponent = ({
           setFormData={(data) => handleSaveFormData(data, "skillsassessment")}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
+          isSubmitted={isSubmitted}
+          userRole = {userRole}
         />
       );
     case "SubmissionSuccess":

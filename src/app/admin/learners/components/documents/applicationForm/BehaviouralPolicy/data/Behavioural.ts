@@ -117,7 +117,7 @@ export const behaviouralData = {
       section: "admin",
       editableBy: ["accessor"],
       placeholder: "LDA Name",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
         message: "LDA Name must be at least 2 characters.",
       }),
     },
@@ -128,8 +128,8 @@ export const behaviouralData = {
       editableBy: ["accessor"],
       type: "text",
       placeholder: "Type in your surname and credentials to append signature",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
-        message: "Signature must be at least 2 characters.",
+      validation: z.string().optional().refine((value) => !value || value.trim().length >= 2, {
+        message: "Signature must be at least 2 characters if provided.",
       }),
     },
   ],

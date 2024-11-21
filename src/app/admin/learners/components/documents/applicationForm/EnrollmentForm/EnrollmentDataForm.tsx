@@ -20,6 +20,8 @@ interface EnrolmentFormProps {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
+  isSubmitted?: boolean;
 }
 
 type FormSchema = {
@@ -47,6 +49,8 @@ export default function EnrolmentForm({
   setFormData,
   onPrevClick,
   onNextClick,
+  userRole,
+  isSubmitted
 }: EnrolmentFormProps) {
   const {
     control,
@@ -57,14 +61,18 @@ export default function EnrolmentForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       ...formFields.reduce((acc, field) => {
-        acc[field.id] =
-          formData[field.id] || (field.type === "checkbox" ? false : "");
+        acc[field.id] = 
+          formData[field.id] || 
+          (field.type === "checkbox" ? false : 
+           field.type === "multiselect" ? [] : "");
         return acc;
       }, {}),
       ...sectionFields.reduce((acc, section) => {
         section.fields.forEach((field) => {
-          acc[field.id] =
-            formData[field.id] || (field.type === "checkbox" ? false : "");
+          acc[field.id] = 
+            formData[field.id] || 
+            (field.type === "checkbox" ? false : 
+             field.type === "multiselect" ? [] : "");
         });
         return acc;
       }, {}),
@@ -83,6 +91,8 @@ export default function EnrolmentForm({
     <div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
         {formFields.map((field, index) => {
+          const isEditable =
+          !isSubmitted && field.editableBy.includes(userRole);
           switch (field.type) {
             case "text":
               return (
@@ -95,6 +105,7 @@ export default function EnrolmentForm({
                       id={field.id}
                       className="application-form-input"
                       placeholder={field.placeholder}
+                      disabled={!isEditable}
                       label={field.label}
                       value={value || ""}
                       onChange={(e) => {
@@ -116,6 +127,8 @@ export default function EnrolmentForm({
               <p className="text-base">{field.p}</p>
             </div>
             {field.fields.map((innerField, index) => {
+              const isEditable =
+              !isSubmitted && innerField.editableBy.includes(userRole);
               switch (innerField.type) {
                 case "text":
                   return (
@@ -130,6 +143,7 @@ export default function EnrolmentForm({
                           id={innerField.id}
                           className="application-form-input"
                           placeholder={innerField.placeholder}
+                          disabled={!isEditable}
                           label={innerField.label}
                           value={value || ""}
                           onChange={(e) => {
@@ -154,6 +168,7 @@ export default function EnrolmentForm({
                             onChange(e);
                           }}
                           value={value || ""}
+                          disabled={!isEditable}
                           label={innerField.label}
                           error={errors[innerField.id]?.message as string}
                         />
@@ -174,6 +189,7 @@ export default function EnrolmentForm({
                             onChange(e);
                           }}
                           value={value || ""}
+                          disabled={!isEditable}
                           label={innerField.label}
                           error={errors[innerField.id]?.message as string}
                           id={innerField.id}
@@ -193,6 +209,7 @@ export default function EnrolmentForm({
                         <NumberInput
                           id={innerField.id}
                           label={innerField.label}
+                          disabled={!isEditable}
                           onChange={(e) => onChange(Number(e.target.value))}
                           value={value || ""}
                           error={errors[innerField.id]?.message as string}
@@ -216,6 +233,7 @@ export default function EnrolmentForm({
                       render={({ field: { onChange, value } }) => (
                         <RadioInput
                           id={innerField.id}
+                          disabled={!isEditable}
                           label={innerField.label}
                           options={innerField.options}
                           onChange={(e) => onChange(e.target.value)}
@@ -236,6 +254,7 @@ export default function EnrolmentForm({
                       render={({ field: { onChange, value } }) => (
                         <TelInput
                           id={innerField.id}
+                          disabled={!isEditable}
                           label={innerField.label}
                           onChange={onChange}
                           value={value || ""}
@@ -256,6 +275,7 @@ export default function EnrolmentForm({
                       render={({ field: { onChange, value } }) => (
                         <EmailInput
                           id={innerField.id}
+                          disabled={!isEditable}
                           label={innerField.label}
                           onChange={onChange}
                           value={value || ""}
@@ -265,26 +285,28 @@ export default function EnrolmentForm({
                       )}
                     />
                   );
-                case "multiselect":
-                  return (
-                    <Controller
-                      key={`formField-${field.id || index}`}
-                      name={innerField.id}
-                      control={control}
-                      render={({ field: { onChange, value } }) => (
-                        <MultiSelectInput
-                          id={innerField.id}
-                          className="application-form-input"
-                          label={innerField.label}
-                          options={innerField.options}
-                          onChange={(selectedValues) => {
-                            onChange(selectedValues);
-                          }}
-                          error={errors[field.id]?.message as string}
-                        />
-                      )}
-                    />
-                  );
+                  case "multiselect":
+                    return (
+                      <Controller
+                        key={`formField-${field.id || index}`}
+                        name={innerField.id}
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                          <MultiSelectInput
+                            id={innerField.id}
+                            className="application-form-input"
+                            disabled={!isEditable}
+                            label={innerField.label}
+                            options={innerField.options}
+                            onChange={(selectedValues) => {
+                              onChange(selectedValues);
+                            }}
+                            value={value || []} 
+                            error={errors[innerField.id]?.message as string}
+                          />
+                        )}
+                      />
+                    );
                 default:
                   return null;
               }

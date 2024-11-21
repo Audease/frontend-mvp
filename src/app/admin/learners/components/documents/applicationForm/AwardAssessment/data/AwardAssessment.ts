@@ -9,13 +9,19 @@ export const awardAssessmentData = {
     {
       type: "text",
       id: "nameOfAward",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Name of Award",
       placeholder: "Name of Award",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Name must be at least 2 characters.",
+      }),
     },
     {
       type: "date",
       id: "dateofRegistrationWithEdenCollege:",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Date of registration with Eden College:",
       placeholder: "Enter valid date",
       validation: z.string().date(),
@@ -23,13 +29,19 @@ export const awardAssessmentData = {
     {
       type: "text",
       id: "candidateEnrolmentNo",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Candidate enrolment No",
       placeholder: "Candidate enrolment No",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Enrolment number must be at least 2 characters.",
+      }),
     },
     {
       type: "date",
       id: "targetCompletionDate",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Target completion date (12 months from start date)",
       placeholder: "Enter valid date",
       validation: z.string().date(),
@@ -165,41 +177,63 @@ export const awardAssessmentData = {
       {
         type: "checkbox",
         id: "awardAgreement",
+        section: "learner",
+        editableBy: ["learner"],
         label: "I agree with the terms and condition of this agreement",
         options: ["Yes", "No"],
-        validation: z.boolean(),
+        validation: z.boolean().refine((value) => value === true, {
+          message: "You must agree to the terms and conditions",
+        }),
       },
       {
         type: "text",
         id: "nameOfCandidate",
+        section: "learner",
+        editableBy: ["learner"],
         label: "Name of candidate",
         placeholder: "Name of candidate",
-        validation: z.string().min(2).max(100),
+        validation: z.string().refine((value) => value.trim().length >= 2, {
+          message: "Candidate Name must be at least 2 characters.",
+        }),
       },
       {
         type: "text",
         id: "candidateSignature",
+        section: "learner",
+        editableBy: ["learner"],
         label: "Candidate Signature",
-        placeholder: "Candidate Signature",
-        validation: z.string().min(2).max(100),
+        placeholder: "Type in your surname and credentials to append signature",
+        validation: z.string().refine((value) => value.trim().length >= 2, {
+          message: "Signature must be at least 2 characters.",
+        }),
       },
       {
         type: "text",
         id: "candidateEmployer",
+        section: "learner",
+        editableBy: ["learner"],
         label: "Employer",
         placeholder: "Employer",
-        validation: z.string().min(2).max(100),
+        validation: z.string().refine((value) => value.trim().length >= 2, {
+          message: "Candidate Employer must be at least 2 characters.",
+        }),
       },
       {
         type: "text",
-        id: "currentPosition",
+        id: "learnerCurrentPosition",
+        section: "learner",
+        editableBy: ["learner"],
         label: "Current Position",
         placeholder: "Current Position",
-        validation: z.string().min(2).max(100),
+        validation: z.string().refine((value) => value.trim().length >= 2, {
+          message: "Position must be at least 2 characters.",
+        }),
       },
       {
         type: "date",
-        id: "employerDate",
+        id: "learnerEmployerDate",
+        section: "learner",
+        editableBy: ["learner"],
         label: "Date",
         placeholder: "Enter valid date",
         validation: z.string().date(),
@@ -211,37 +245,63 @@ export const awardAssessmentData = {
         {
           type: "text",
           id: "edenStaffName",
+          section: "admin",
+          editableBy: ["accessor"],
           label: "Name",
           placeholder: "Name",
-          validation: z.string().min(2).max(100),
+          validation: z
+            .string()
+            .refine((value) => !value || value.trim().length >= 2, {
+              message: "Staff Name must be at least 2 characters.",
+            }),
         },
         {
           type: "text",
           id: "edenStaffPosition",
+          section: "admin",
+          editableBy: ["accessor"],
           label: "Position",
           placeholder: "Position",
-          validation: z.string().min(2).max(100),
+          validation: z
+            .string()
+            .refine((value) => !value || value.trim().length >= 2, {
+              message: "Staff Position must be at least 2 characters.",
+            }),
         },
         {
           type: "text",
           id: "edenSignature",
+          section: "admin",
+          editableBy: ["accessor"],
           label: "Signature",
           placeholder: "Signature",
-          validation: z.string().min(2).max(100),
+          validation: z
+            .string()
+            .refine((value) => !value || value.trim().length >= 2, {
+              message: "Signature must be at least 2 characters.",
+            }),
         },
         {
           type: "text",
           id: "currentPosition",
+          section: "admin",
+          editableBy: ["accessor"],
           label: "Current Position",
           placeholder: "Current Position",
-          validation: z.string().min(2).max(100),
+          validation: z
+            .string()
+            .refine((value) => !value || value.trim().length >= 2, {
+              message: "Position must be at least 2 characters.",
+            }),
         },
         {
           type: "date",
           id: "employerDate",
+          section: "admin",
+          editableBy: ["accessor"],
           label: "Date",
           placeholder: "Enter valid date",
-          validation: z.string().date(),
+          validation: z.string().optional(),
         },
       ],
     },

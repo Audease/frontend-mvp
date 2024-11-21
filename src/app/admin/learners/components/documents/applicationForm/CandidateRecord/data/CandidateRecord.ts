@@ -80,7 +80,7 @@ export const candidateRecordData = {
       section: "learner",
       editableBy: ["learner"],
       label: "Do you wish the above name to appear on your certificate?",
-      validation: z.boolean().optional()
+      validation: z.boolean().optional(),
     },
     {
       type: "text",
@@ -89,7 +89,7 @@ export const candidateRecordData = {
       editableBy: ["learner"],
       label: "If no, please specify (in BLOCK CAPITALS)",
       placeholder: "Alternative Name",
-      validation: z.string().optional()
+      validation: z.string().optional(),
     },
     {
       type: "text",
@@ -109,7 +109,11 @@ export const candidateRecordData = {
       editableBy: ["learner"],
       label: "Date",
       placeholder: "YYYY-MM-DD",
-      validation: z.string().date(),
+      validation: z
+        .string()
+        .refine((value) =>  /^\d{4}-\d{2}-\d{2}$/.test(value), {
+          message: "Date must be in the format YYYY-MM-DD",
+        }),
     },
     {
       type: "text",
@@ -118,9 +122,11 @@ export const candidateRecordData = {
       editableBy: ["accessor"],
       label: "Learning and Assessment Data Officer",
       placeholder: "Officer Name",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
-        message: "Officer Name must be at least 2 characters.",
-      }),
+      validation: z
+        .string()
+        .refine((value) => !value || value.trim().length >= 2, {
+          message: "Officer Name must be at least 2 characters.",
+        }),
     },
     {
       type: "date",
@@ -129,7 +135,12 @@ export const candidateRecordData = {
       editableBy: ["accessor"],
       label: "Date",
       placeholder: "YYYY-MM-DD",
-      validation: z.string().date(),
+      validation: z
+        .string()
+        .optional()
+        .refine((value) => !value || /^\d{4}-\d{2}-\d{2}$/.test(value), {
+          message: "Date must be in the format YYYY-MM-DD",
+        }),
     },
   ],
 };

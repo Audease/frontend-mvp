@@ -73,7 +73,11 @@ export const confidentialityData = {
       editableBy: ["learner"],
       label: "Date",
       placeholder: "YYYY-MM-DD",
-      validation: z.string().date(),
+      validation: z
+      .string()
+      .refine((value) =>  /^\d{4}-\d{2}-\d{2}$/.test(value), {
+        message: "Date must be in the format YYYY-MM-DD",
+      }),
     },
     {
       type: "text",
@@ -82,7 +86,7 @@ export const confidentialityData = {
       editableBy: ["accessor"],
       label: "Learning and Development Adviser Name",
       placeholder: "Eden College Allocated LDA",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
         message: "LDA name must be at least 2 characters.",
       }),
     },
@@ -93,7 +97,7 @@ export const confidentialityData = {
       editableBy: ["accessor"],
       label: "Eden College Allocated LDA",
       placeholder: "Eden College Allocated LDA",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
         message: "Eden College Allocated LDA name must be at least 2 characters.",
       }),
     },
@@ -104,7 +108,7 @@ export const confidentialityData = {
       editableBy: ["accessor"],
       label: "Learning and Development Adviser Signature",
       placeholder: "Type in your surname and credentials to append signature",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
         message: "Signature must be at least 2 characters.",
       }),
     },
@@ -115,7 +119,11 @@ export const confidentialityData = {
       editableBy: ["accessor"],
       label: "Date",
       placeholder: "YYYY-MM-DD",
-      validation: z.string().date(),
+      validation: z
+      .string().optional()
+      .refine((value) => !value || /^\d{4}-\d{2}-\d{2}$/.test(value), {
+        message: "Date must be in the format YYYY-MM-DD",
+      }),
     },
   ],
 };

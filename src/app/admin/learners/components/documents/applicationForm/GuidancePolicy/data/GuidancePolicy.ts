@@ -423,7 +423,9 @@ export const guidancePolicyData = {
       editableBy: ["accessor"],
       label: "Learning and Development Adviser Name",
       placeholder: "LDA Name",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
+        message: "LDA name must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
@@ -432,7 +434,9 @@ export const guidancePolicyData = {
       editableBy: ["accessor"],
       label: "Learning and Development Adviser Signature",
       placeholder: "LDA Signature",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
+        message: "LDA signature must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
@@ -440,8 +444,10 @@ export const guidancePolicyData = {
       section: "admin",
       editableBy: ["accessor"],
       label: " Eden College Allocated LDA",
-      placeholder: "LDA Name",
-      validation: z.string().min(2).max(100),
+      placeholder: "ELDA Name",
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
+        message: "ELDA name must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
@@ -450,7 +456,9 @@ export const guidancePolicyData = {
       editableBy: ["accessor"],
       label: " Eden College Allocated LDA Signature",
       placeholder: "LDA Signature",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
+        message: "LDA signature must be at least 2 characters.",
+      }),
     },
   ],
 };

@@ -45,7 +45,7 @@ export const childProtection = {
         "The college ethos which promotes a positive, supportive and secure environment and gives learner a sense of being valued.",
         "The college behaviour policy which is aimed at supporting vulnerable learner in the college. The college will ensure that the learner knows that some behaviour is unacceptable but they are valued and not to be blamed for any abuse which has occurred.",
         "Liaison with other agencies that support the learner such as social services, Child and Adult Mental Health Service, education welfare service and educational psychology service.",
-        "Ensuring that, where a learner on the child protection register leaves, their information is transferred to the new provision immediately and that the child's social worker is informed."
+        "Ensuring that, where a learner on the child protection register leaves, their information is transferred to the new provision immediately and that the child's social worker is informed.",
       ],
     },
   ],
@@ -53,40 +53,62 @@ export const childProtection = {
     {
       type: "checkbox",
       id: "childProtectionPolicyCheck",
+      section: "learner",
+      editableBy: ["learner"],
       label: "I confirm that I have read and understood the above policy.",
-      validation: z.boolean(),
+      validation: z.boolean().refine((value) => value === true, {
+        message: "You must agree to the terms and conditions",
+      }),
     },
     {
       type: "text",
       id: "childProtectionName",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Candidate Name",
       placeholder: "Candidate Name",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Candidate Name must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "childProtectionEmployer",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Employer",
       placeholder: "Employer",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Employer must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "childProtectionCourseDetails",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Course/Project Details",
       placeholder: "Course/Project Details",
-      validation: z.string().optional(),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Course details must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "childProtectionCandidateSignature",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Candidate Signature",
-      placeholder: "Candidate Signature",
-      validation: z.string().optional(),
+      placeholder: "Type in your surname and credentials to append signature",
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Signature must be at least 2 characters.",
+      }),
     },
     {
       type: "date",
       id: "childProtectionDate",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Date",
       placeholder: "Enter Date",
       validation: z.string().date(),
@@ -98,37 +120,63 @@ export const childProtection = {
       {
         type: "text",
         id: "childProtectionLDAName",
+        section: "admin",
+        editableBy: ["accessor"],
         label: "Learning and Development Adviser Name",
         placeholder: "Learning and Development Adviser Name",
-        validation: z.string().optional(),
+        validation: z
+            .string()
+            .refine((value) => !value || value.trim().length >= 2, {
+              message: "Adviser Name must be at least 2 characters.",
+            }),
       },
       {
         type: "text",
         id: "childProtectionECAName",
+        section: "admin",
+        editableBy: ["accessor"],
         label: "Eden College Allocated LDA",
-        placeholder: "Employer",
-        validation: z.string().optional(),
+        placeholder: "Eden College Allocated LDA",
+        validation: z
+            .string()
+            .refine((value) => !value || value.trim().length >= 2, {
+              message: "LDA Name must be at least 2 characters.",
+            }),
       },
       {
         type: "text",
         id: "childProtectionLDASignature",
+        section: "admin",
+        editableBy: ["accessor"],
         label: "Learning and Development Adviser Signature",
         placeholder: "Learning and Development Adviser Signature",
-        validation: z.string().optional(),
+        validation: z
+            .string()
+            .refine((value) => !value || value.trim().length >= 2, {
+              message: "LDA Signature must be at least 2 characters.",
+            }),
       },
       {
         type: "text",
         id: "childProtectionECASignature",
+        section: "admin",
+        editableBy: ["accessor"],
         label: "Eden College Allocated LDA Signature",
         placeholder: "Eden College Allocated LDA Signature",
-        validation: z.string().optional(),
+        validation: z
+            .string()
+            .refine((value) => !value || value.trim().length >= 2, {
+              message: "ELDA Name must be at least 2 characters.",
+            }),
       },
       {
         type: "date",
         id: "childProtectionOficialDate",
+        section: "admin",
+        editableBy: ["accessor"],
         label: "Date",
         placeholder: "Enter Date",
-        validation: z.string().date(),
+        validation: z.string().optional(),
       },
     ],
   },

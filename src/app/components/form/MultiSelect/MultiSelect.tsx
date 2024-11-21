@@ -6,13 +6,17 @@ type Option = {
 };
 
 type Props = {
-  id: string;
-  className?: string;
-  options: Option[];
-  label?: string;
-  error?: string;
-  onChange?: (selectedValues: string[]) => void;
   disabled?: boolean;
+  id?: string;
+  className?: string;
+  label?: string;
+  options: Array<{
+    value: string;
+    label: string;
+  }>;
+  onChange: (selectedValues: string[]) => void;
+  value?: string[];
+  error?: string;
 };
 
 function MultiSelectInput({
@@ -42,14 +46,16 @@ function MultiSelectInput({
           {label}
         </label>
       )}
-      <div className={`
+      <div
+        className={`
         grid grid-cols-2 gap-2 
         ${disabled ? "opacity-50 pointer-events-none" : ""}
         ${className}
-      `}>
+      `}
+      >
         {options.map((option) => (
-          <label 
-            key={option.value} 
+          <label
+            key={option.value}
             className="flex items-center space-x-2 cursor-pointer"
           >
             <input

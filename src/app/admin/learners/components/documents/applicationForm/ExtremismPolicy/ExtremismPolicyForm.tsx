@@ -14,13 +14,19 @@ type ExtremismPolicyProps = {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
+  isSubmitted?: boolean;
+};
+
+type FormSchema = {
+  [key: string]: z.ZodType;
 };
 
 const content = extremismPolicyData;
 const formFieldsA = content.formFields;
 const formFieldsB = content.official.formFields;
 
-const formSchema = z.object({
+const formSchema: z.ZodObject<FormSchema> = z.object({
   ...formFieldsA.reduce((acc, field) => {
     acc[field.id] = field.validation;
     return acc;
@@ -36,22 +42,33 @@ const ExtremismPolicyForm: React.FC<ExtremismPolicyProps> = ({
   onPrevClick,
   formData,
   setFormData,
+  userRole,
+  isSubmitted,
 }) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm({
+  } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      ...formData,
       ...formFieldsA.reduce((acc, field) => {
-        acc[field.id] = field.type === "checkbox" ? false : "";
+        acc[field.id] = formData[field.id] ||
+          (field.type === "checkbox"
+            ? false
+            : field.type === "multiselect"
+            ? []
+            : "");
         return acc;
       }, {}),
       ...formFieldsB.reduce((acc, field) => {
-        acc[field.id] = field.type === "checkbox" ? false : "";
+        acc[field.id] = formData[field.id] ||
+          (field.type === "checkbox"
+            ? false
+            : field.type === "multiselect"
+            ? []
+            : "");
         return acc;
       }, {}),
     },
@@ -66,6 +83,8 @@ const ExtremismPolicyForm: React.FC<ExtremismPolicyProps> = ({
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
         <div>
           {formFieldsA.map((field, index) => {
+            const isEditable =
+              !isSubmitted && field.editableBy.includes(userRole);
             switch (field.type) {
               case "checkbox":
                 return (
@@ -78,6 +97,7 @@ const ExtremismPolicyForm: React.FC<ExtremismPolicyProps> = ({
                         onChange={(e) => {
                           onChange(e);
                         }}
+                        disabled={!isEditable}
                         value={value || ""}
                         label={field.label}
                         error={errors[field.id]?.message as string}
@@ -96,40 +116,7 @@ const ExtremismPolicyForm: React.FC<ExtremismPolicyProps> = ({
                         id={field.id}
                         className="application-form-input"
                         placeholder={field.placeholder}
-                        label={field.label}
-                        value={value || ""}
-                        onChange={(e) => {
-                          onChange(e);
-                        }}
-                        error={errors[field.id]?.message as string}
-                      />
-                    )}
-                  />
-                );
-              default:
-                return null;
-            }
-          })}
-        </div>
-        <div>
-          <h3 className="text-base font-bold text-justify py-2">
-            {content.official.title}
-          </h3>
-        </div>
-        <div>
-          {formFieldsB.map((field, index) => {
-            switch (field.type) {
-              case "text":
-                return (
-                  <Controller
-                    key={`formField-${field.id || index}`}
-                    name={field.id}
-                    control={control}
-                    render={({ field: { onChange, value } }) => (
-                      <TextInput
-                        id={field.id}
-                        className="application-form-input"
-                        placeholder={field.placeholder}
+                        disabled={!isEditable}
                         label={field.label}
                         value={value || ""}
                         onChange={(e) => {
@@ -152,6 +139,64 @@ const ExtremismPolicyForm: React.FC<ExtremismPolicyProps> = ({
                           onChange(e);
                         }}
                         value={value || ""}
+                        disabled={!isEditable}
+                        label={field.label}
+                        error={errors[field.id]?.message as string}
+                        id={field.id}
+                      />
+                    )}
+                  />
+                );
+              default:
+                return null;
+            }
+          })}
+        </div>
+        <div>
+          <h3 className="text-base font-bold text-justify py-2">
+            {content.official.title}
+          </h3>
+        </div>
+        <div>
+          {formFieldsB.map((field, index) => {
+            const isEditable =
+              !isSubmitted && field.editableBy.includes(userRole);
+            switch (field.type) {
+              case "text":
+                return (
+                  <Controller
+                    key={`formField-${field.id || index}`}
+                    name={field.id}
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <TextInput
+                        id={field.id}
+                        className="application-form-input"
+                        placeholder={field.placeholder}
+                        disabled={!isEditable}
+                        label={field.label}
+                        value={value || ""}
+                        onChange={(e) => {
+                          onChange(e);
+                        }}
+                        error={errors[field.id]?.message as string}
+                      />
+                    )}
+                  />
+                );
+              case "date":
+                return (
+                  <Controller
+                    key={`formField-${field.id || index}`}
+                    name={field.id}
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <DatePicker
+                        onChange={(e) => {
+                          onChange(e);
+                        }}
+                        value={value || ""}
+                        disabled={!isEditable}
                         label={field.label}
                         error={errors[field.id]?.message as string}
                         id={field.id}

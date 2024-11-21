@@ -9,6 +9,8 @@ interface EnrolmentProps {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
+  isSubmitted?: boolean;
 }
 
 const content = enrolmentData;
@@ -18,14 +20,24 @@ const Enrolment: React.FC<EnrolmentProps> = ({
   setFormData,
   onPrevClick,
   onNextClick,
+  isSubmitted,
+  userRole,
 }) => {
- 
   return (
     <div>
       <h3 className="text-xl font-bold py-3">{content.title}</h3>
 
       {/* The Form */}
-      <EnrolmentForm {...{ formData, setFormData, onPrevClick, onNextClick }} />
+      <EnrolmentForm
+        {...{
+          formData,
+          setFormData,
+          onPrevClick,
+          onNextClick,
+          isSubmitted,
+          userRole,
+        }}
+      />
     </div>
   );
 };

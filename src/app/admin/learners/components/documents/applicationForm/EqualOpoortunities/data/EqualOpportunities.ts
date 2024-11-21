@@ -142,7 +142,7 @@ export const equalOpportunitiesData = {
       editableBy: ["accessor"],
       label: "Learning and Development Adviser Name",
       placeholder: "LDA Name",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
         message: "LDA Name must be at least 2 characters.",
       }),
     },
@@ -153,7 +153,7 @@ export const equalOpportunitiesData = {
       editableBy: ["accessor"],
       label: "Learning and Development Adviser Signature",
       placeholder: "Type in your surname and credentials to append signature",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
         message: "LDA signature must be at least 2 characters.",
       }),
     },

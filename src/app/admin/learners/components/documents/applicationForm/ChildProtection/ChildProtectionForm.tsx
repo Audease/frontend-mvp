@@ -14,13 +14,19 @@ interface ChildProtectionFormProps {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
+  isSubmitted?: boolean;
 }
+
+type FormSchema = {
+  [key: string]: z.ZodType;
+};
 
 const content = childProtection;
 const formFields = childProtection.formFields;
 const formFieldsB = childProtection.official.formFields;
 
-const formSchema = z.object({
+const formSchema: z.ZodObject<FormSchema> = z.object({
   ...formFields.reduce((acc, field) => {
     acc[field.id] = field.validation;
     return acc;
@@ -36,22 +42,35 @@ const ChildProtectionForm = ({
   setFormData,
   onNextClick,
   onPrevClick,
+  userRole,
+  isSubmitted
 }: ChildProtectionFormProps) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm({
+  } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      ...formData,
       ...formFields.reduce((acc, field) => {
-        acc[field.id] = field.type === "checkbox" ? false : "";
+        acc[field.id] =
+          formData[field.id] ||
+          (field.type === "checkbox"
+            ? false
+            : field.type === "multiselect"
+            ? []
+            : "");
         return acc;
       }, {}),
       ...formFieldsB.reduce((acc, field) => {
-        acc[field.id] = field.type === "checkbox" ? false : "";
+        acc[field.id] =
+          formData[field.id] ||
+          (field.type === "checkbox"
+            ? false
+            : field.type === "multiselect"
+            ? []
+            : "");
         return acc;
       }, {}),
     },
@@ -66,6 +85,8 @@ const ChildProtectionForm = ({
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
       <div>
         {formFields.map((field) => {
+           const isEditable =
+           !isSubmitted && field.editableBy.includes(userRole);
           switch (field.type) {
             case "text":
               return (
@@ -78,6 +99,7 @@ const ChildProtectionForm = ({
                       id={field.id}
                       className="application-form-input"
                       placeholder={field.placeholder}
+                      disabled={!isEditable}
                       label={field.label}
                       value={value || ""}
                       onChange={(e) => {
@@ -100,6 +122,7 @@ const ChildProtectionForm = ({
                         onChange(e);
                       }}
                       value={value || ""}
+                      disabled={!isEditable}
                       label={field.label}
                       error={errors[field.id]?.message as string}
                     />
@@ -118,6 +141,7 @@ const ChildProtectionForm = ({
                         onChange(e);
                       }}
                       value={value || ""}
+                      disabled={!isEditable}
                       label={field.label}
                       error={errors[field.id]?.message as string}
                       id={field.id}
@@ -137,6 +161,8 @@ const ChildProtectionForm = ({
 
       <div>
         {formFieldsB.map((field, index) => {
+           const isEditable =
+           !isSubmitted && field.editableBy.includes(userRole);
           switch (field.type) {
             case "text":
               return (
@@ -149,6 +175,7 @@ const ChildProtectionForm = ({
                       id={field.id}
                       className="application-form-input"
                       placeholder={field.placeholder}
+                      disabled={!isEditable}
                       label={field.label}
                       value={value || ""}
                       onChange={(e) => {
@@ -171,6 +198,7 @@ const ChildProtectionForm = ({
                         onChange(e);
                       }}
                       value={value || ""}
+                      disabled={!isEditable}
                       label={field.label}
                       error={errors[field.id]?.message as string}
                       id={field.id}

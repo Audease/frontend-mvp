@@ -10,6 +10,8 @@ interface BehaviouralPolicyProps {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  isSubmitted?: boolean;
+  userRole?: string;
 }
 
 const BehaviouralPolicy: React.FC<BehaviouralPolicyProps> = ({
@@ -17,6 +19,8 @@ const BehaviouralPolicy: React.FC<BehaviouralPolicyProps> = ({
   setFormData,
   onPrevClick,
   onNextClick,
+  isSubmitted,
+  userRole
 }) => {
   return (
     <div>
@@ -45,7 +49,7 @@ const BehaviouralPolicy: React.FC<BehaviouralPolicyProps> = ({
         </div>
         {/* The Form  */}
         <BehaviouralForm
-          {...{ formData, setFormData, onPrevClick, onNextClick }}
+          {...{ formData, setFormData, onPrevClick, onNextClick, isSubmitted, userRole }}
         />
       </div>
     </div>

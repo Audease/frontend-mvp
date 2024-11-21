@@ -194,16 +194,24 @@ export const skillsAssesment = {
       {
         type: "text",
         id: "strongestPLTS",
+        section: "learner",
+        editableBy: ["learner"],
         label: "My strongest area of the PLTS skills is:",
-        placeholder: "Candidate Name",
-        validation: z.string().min(2).max(100),
+        placeholder: "Strongest area",
+        validation: z.string().refine((value) => value.trim().length >= 2, {
+          message: "Enter response",
+        }),
       },
       {
         type: "text",
         id: "weakPLTS",
+        section: "learner",
+        editableBy: ["learner"],
         label: "The area I most need to develop is:",
-        placeholder: "Candidate Name",
-        validation: z.string().min(2).max(100),
+        placeholder: "Area to develop",
+        validation: z.string().refine((value) => value.trim().length >= 2, {
+          message: "Enter response",
+        }),
       },
     ],
   },

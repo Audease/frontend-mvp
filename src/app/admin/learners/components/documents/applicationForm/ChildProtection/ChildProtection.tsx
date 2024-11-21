@@ -7,6 +7,8 @@ interface ChildProtectionProps {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
+  isSubmitted?: boolean;
 }
 
 const content = childProtection;
@@ -16,6 +18,8 @@ const ChildProtection = ({
   setFormData,
   onNextClick,
   onPrevClick,
+  userRole,
+  isSubmitted,
 }: ChildProtectionProps) => {
   return (
     <div>
@@ -28,7 +32,9 @@ const ChildProtection = ({
           <div key={index}>
             <p className="text-base text-justification">{d.text}</p>
             {d.points.map((dd, index) => (
-              <li key={index} className="text-base text-justification">{dd}</li>
+              <li key={index} className="text-base text-justification">
+                {dd}
+              </li>
             ))}
           </div>
         ))}
@@ -36,7 +42,14 @@ const ChildProtection = ({
       <div>
         {/* The Form  */}
         <ChildProtectionForm
-          {...{ formData, setFormData, onPrevClick, onNextClick }}
+          {...{
+            formData,
+            setFormData,
+            onPrevClick,
+            onNextClick,
+            userRole,
+            isSubmitted,
+          }}
         />
       </div>
     </div>

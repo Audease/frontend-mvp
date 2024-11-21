@@ -9,6 +9,8 @@ interface EqualOpportunitiesPolicyProps {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  isSubmitted?: boolean;
+  userRole?: string;
 }
 
 const content = equalOpportunitiesData;
@@ -18,6 +20,8 @@ const EqualOpportunitiesPolicy: React.FC<EqualOpportunitiesPolicyProps> = ({
   setFormData,
   onPrevClick,
   onNextClick,
+  isSubmitted,
+  userRole,
 }) => {
   return (
     <div>
@@ -47,7 +51,14 @@ const EqualOpportunitiesPolicy: React.FC<EqualOpportunitiesPolicyProps> = ({
 
       {/* The Form */}
       <EqualOpportunitiesForm
-        {...{ formData, setFormData, onPrevClick, onNextClick }}
+        {...{
+          formData,
+          setFormData,
+          onPrevClick,
+          onNextClick,
+          isSubmitted,
+          userRole,
+        }}
       />
     </div>
   );

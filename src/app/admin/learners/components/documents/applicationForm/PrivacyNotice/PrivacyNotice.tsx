@@ -7,7 +7,6 @@ import { TextInput } from "@/app/components/form";
 import { Button } from "@/components/ui/button";
 import Checkbox from "@/app/components/form/Checkbox/Checkbox";
 import { privacyNotice } from "./data/PrivacyNotice";
-import { enrolmentData } from "../EnrollmentForm/data/Enrollment";
 import FootLogos from "../components/FootLogos";
 
 interface PrivacyNoticeProps {
@@ -15,18 +14,26 @@ interface PrivacyNoticeProps {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  isSubmitted?: boolean;
+  userRole?: string;
 }
+
+type FormSchema = {
+  [key: string]: z.ZodType;
+};
 
 const content = privacyNotice;
 const description = content.description;
-const formFields = enrolmentData.fields;
-const sectionFields = content.section;
+const formFields = content.section;
 
-const formSchema = z.object(
-  formFields.reduce((acc, field) => {
-    acc[field.id] = field.validation;
+
+const formSchema: z.ZodObject<FormSchema> = z.object(
+  formFields.reduce((acc, section) => {
+    section.fields.forEach((field) => {
+      acc[field.id] = field.validation;
+    });
     return acc;
-  }, {})
+  }, {}),
 );
 
 export default function PrivacyNotice({
@@ -34,20 +41,26 @@ export default function PrivacyNotice({
   setFormData,
   onPrevClick,
   onNextClick,
+  isSubmitted,
+  userRole,
 }: PrivacyNoticeProps) {
   const {
     control,
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm({
+  } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      ...formFields.reduce((acc, field) => {
-        acc[field.id] = field.type === "checkbox" ? false : "";
+      ...formFields.reduce((acc, section) => {
+        section.fields.forEach((field) => {
+          acc[field.id] = 
+            formData[field.id] || 
+            (field.type === "checkbox" ? false : 
+             field.type === "multiselect" ? [] : "");
+        });
         return acc;
       }, {}),
-      ...formData,
     },
   });
 
@@ -72,7 +85,7 @@ export default function PrivacyNotice({
       </div>
       <div></div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
-        {sectionFields.map((field) => (
+        {formFields.map((field) => (
           <div key={field.title}>
             <div className="flex flex-col">
               <h3 className="text-base font-bold text-justify">
@@ -81,6 +94,8 @@ export default function PrivacyNotice({
               <p className="text-base text-justify">{field.p}</p>
             </div>
             {field.fields.map((innerField) => {
+              const isEditable =
+                !isSubmitted && innerField.editableBy.includes(userRole);
               switch (innerField.type) {
                 case "text":
                   return (
@@ -93,6 +108,7 @@ export default function PrivacyNotice({
                           id={innerField.id}
                           className="application-form-input"
                           placeholder={innerField.placeholder}
+                          disabled={!isEditable}
                           label={innerField.label}
                           value={value || ""}
                           onChange={(e) => {
@@ -115,6 +131,7 @@ export default function PrivacyNotice({
                             onChange(e);
                           }}
                           value={value || ""}
+                          disabled={!isEditable}
                           label={innerField.label}
                           error={errors[innerField.id]?.message as string}
                         />

@@ -7,6 +7,8 @@ type ExtremismPolicyProps = {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
+  isSubmitted?: boolean;
 };
 
 const content = extremismPolicyData;
@@ -16,6 +18,8 @@ const ExtremismPolicy: React.FC<ExtremismPolicyProps> = ({
   onPrevClick,
   formData,
   setFormData,
+  userRole,
+  isSubmitted
 }) => {
   return (
     <div>
@@ -28,14 +32,18 @@ const ExtremismPolicy: React.FC<ExtremismPolicyProps> = ({
           <div key={index}>
             <h3 className="text-base font-bold py-2">{d.title}</h3>
             {d.paragraphs.map((d, index) => (
-              <p key={index} className="text-base text-justify">{d}</p>
+              <p key={index} className="text-base text-justify">
+                {d}
+              </p>
             ))}
             <div>
               <h3 className="text-base font-bold py-2">{d.lists.title}</h3>
               <p className="text-base text-justify">{d.lists.p}</p>
 
               {d.lists.li.map((d, index) => (
-                <li key={index} className="text-base text-justify">{d}</li>
+                <li key={index} className="text-base text-justify">
+                  {d}
+                </li>
               ))}
             </div>
           </div>
@@ -43,7 +51,14 @@ const ExtremismPolicy: React.FC<ExtremismPolicyProps> = ({
       </div>
       <div>
         <ExtremismPolicyForm
-          {...{ FormData, setFormData, onPrevClick, onNextClick }}
+          {...{
+            formData,
+            setFormData,
+            onPrevClick,
+            onNextClick,
+            userRole,
+            isSubmitted,
+          }}
         />
       </div>
     </div>

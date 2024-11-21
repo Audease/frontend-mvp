@@ -14,6 +14,12 @@ type AwardAssessmentProps = {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
+  isSubmitted?: boolean;
+};
+
+type FormSchema = {
+  [key: string]: z.ZodType;
 };
 
 const content = awardAssessmentData;
@@ -21,7 +27,7 @@ const formFieldsA = content.formFields;
 const formFieldsB = content.arrangement.formFields;
 const formFieldsC = content.arrangement.eden.formFields;
 
-const formSchema = z.object({
+const formSchema: z.ZodObject<FormSchema> = z.object({
   ...formFieldsA.reduce((acc, field) => {
     acc[field.id] = field.validation;
     return acc;
@@ -41,26 +47,45 @@ const AwardAssessment = ({
   onPrevClick,
   formData,
   setFormData,
+  userRole,
+  isSubmitted,
 }: AwardAssessmentProps) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm({
+  } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      ...formData,
       ...formFieldsA.reduce((acc, field) => {
-        acc[field.id] = field.type === "checkbox" ? false : "";
+        acc[field.id] =
+          formData[field.id] ||
+          (field.type === "checkbox"
+            ? false
+            : field.type === "multiselect"
+            ? []
+            : "");
         return acc;
       }, {}),
       ...formFieldsB.reduce((acc, field) => {
-        acc[field.id] = field.type === "checkbox" ? false : "";
+        acc[field.id] =
+          formData[field.id] ||
+          (field.type === "checkbox"
+            ? false
+            : field.type === "multiselect"
+            ? []
+            : "");
         return acc;
       }, {}),
       ...formFieldsC.reduce((acc, field) => {
-        acc[field.id] = field.type === "checkbox" ? false : "";
+        acc[field.id] =
+          formData[field.id] ||
+          (field.type === "checkbox"
+            ? false
+            : field.type === "multiselect"
+            ? []
+            : "");
         return acc;
       }, {}),
     },
@@ -80,6 +105,8 @@ const AwardAssessment = ({
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
         <div>
           {formFieldsA.map((field, index) => {
+            const isEditable =
+              !isSubmitted && field.editableBy.includes(userRole);
             switch (field.type) {
               case "text":
                 return (
@@ -92,6 +119,7 @@ const AwardAssessment = ({
                         id={field.id}
                         className="application-form-input"
                         placeholder={field.placeholder}
+                        disabled={!isEditable}
                         label={field.label}
                         value={value || ""}
                         onChange={(e) => {
@@ -114,6 +142,7 @@ const AwardAssessment = ({
                           onChange(e);
                         }}
                         value={value || ""}
+                        disabled={!isEditable}
                         label={field.label}
                         error={errors[field.id]?.message as string}
                         id={field.id}
@@ -142,6 +171,8 @@ const AwardAssessment = ({
 
         <div>
           {formFieldsB.map((field, index) => {
+            const isEditable =
+              !isSubmitted && field.editableBy.includes(userRole);
             switch (field.type) {
               case "text":
                 return (
@@ -154,6 +185,7 @@ const AwardAssessment = ({
                         id={field.id}
                         className="application-form-input"
                         placeholder={field.placeholder}
+                        disabled={!isEditable}
                         label={field.label}
                         value={value || ""}
                         onChange={(e) => {
@@ -176,6 +208,7 @@ const AwardAssessment = ({
                           onChange(e);
                         }}
                         value={value || ""}
+                        disabled={!isEditable}
                         label={field.label}
                         error={errors[field.id]?.message as string}
                         id={field.id}
@@ -195,6 +228,7 @@ const AwardAssessment = ({
                           onChange(e);
                         }}
                         value={value || ""}
+                        disabled={!isEditable}
                         label={field.label}
                         error={errors[field.id]?.message as string}
                       />
@@ -208,8 +242,12 @@ const AwardAssessment = ({
         </div>
 
         <div>
-          <h3 className="text-base py-3 font-bold">{content.arrangement.eden.p}</h3>
+          <h3 className="text-base py-3 font-bold">
+            {content.arrangement.eden.p}
+          </h3>
           {formFieldsC.map((field, index) => {
+            const isEditable =
+              !isSubmitted && field.editableBy.includes(userRole);
             switch (field.type) {
               case "text":
                 return (
@@ -222,6 +260,7 @@ const AwardAssessment = ({
                         id={field.id}
                         className="application-form-input"
                         placeholder={field.placeholder}
+                        disabled={!isEditable}
                         label={field.label}
                         value={value || ""}
                         onChange={(e) => {
@@ -244,6 +283,7 @@ const AwardAssessment = ({
                           onChange(e);
                         }}
                         value={value || ""}
+                        disabled={!isEditable}
                         label={field.label}
                         error={errors[field.id]?.message as string}
                         id={field.id}

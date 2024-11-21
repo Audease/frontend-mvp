@@ -25,65 +25,105 @@ export const confidentialityData = {
     {
       type: "text",
       id: "candidateName",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Candidate Name",
       placeholder: "Candidate Name",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Candidate Name must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "employer",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Employer",
       placeholder: "Employer",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Employer must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "courseDetails",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Course/Project Details",
       placeholder: "Course/Project Details",
-      validation: z.string().min(2).max(250),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Course details must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "candidateSignature",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Candidate Signature",
-      placeholder: "Candidate Signature",
-      validation: z.string().min(1),
+      placeholder: "Type in your surname and credentials to append signature",
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Candidate Signature must be at least 2 characters.",
+      }),
     },
     {
       type: "date",
       id: "candidateSignatureDate",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Date",
       placeholder: "YYYY-MM-DD",
-      validation: z.string().date(),
+      validation: z
+      .string()
+      .refine((value) =>  /^\d{4}-\d{2}-\d{2}$/.test(value), {
+        message: "Date must be in the format YYYY-MM-DD",
+      }),
     },
     {
       type: "text",
       id: "ldaName",
+      section: "admin",
+      editableBy: ["accessor"],
       label: "Learning and Development Adviser Name",
       placeholder: "Eden College Allocated LDA",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
+        message: "LDA name must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "eldaName",
+      section: "admin",
+      editableBy: ["accessor"],
       label: "Eden College Allocated LDA",
       placeholder: "Eden College Allocated LDA",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
+        message: "Eden College Allocated LDA name must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "ldaSignature",
+      section: "admin",
+      editableBy: ["accessor"],
       label: "Learning and Development Adviser Signature",
-      placeholder: "Eden College Allocated LDA Signature",
-      validation: z.string().min(1),
+      placeholder: "Type in your surname and credentials to append signature",
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
+        message: "Signature must be at least 2 characters.",
+      }),
     },
     {
       type: "date",
       id: "ldaSignatureDate",
+      section: "admin",
+      editableBy: ["accessor"],
       label: "Date",
       placeholder: "YYYY-MM-DD",
-      validation: z.string().date(),
+      validation: z
+      .string().optional()
+      .refine((value) => !value || /^\d{4}-\d{2}-\d{2}$/.test(value), {
+        message: "Date must be in the format YYYY-MM-DD",
+      }),
     },
   ],
 };

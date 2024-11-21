@@ -6,9 +6,10 @@ interface DatePickerProps {
   error?: string; 
   value?: Date | string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  disabled?: boolean;
 }
 
-function DatePicker({ id, label, error, onChange, value }: DatePickerProps) {
+function DatePicker({ id, label, error, onChange, value, disabled }: DatePickerProps) {
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
@@ -21,15 +22,14 @@ function DatePicker({ id, label, error, onChange, value }: DatePickerProps) {
       <input
         type="date"
         id={id}
-        onChange={(e) => {
-          onChange?.(e);
-          setIsActive(!!e.target.value);
-        }}
+        onChange={onChange}
         value={value ? new Date(value).toISOString().slice(0, 10) : ''}
+        disabled={disabled}
         className={`
           border rounded-md p-2 
           ${error ? 'border-red-500' : 'border-gray-300'}
           ${isActive ? 'bg-blue-50' : 'bg-white'}
+          ${disabled ? 'bg-gray-100 cursor-not-allowed opacity-75' : ''}
         `}
       />
       {error && <span className="text-red-500 text-sm mt-1">{error}</span>} 

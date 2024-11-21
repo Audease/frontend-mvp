@@ -382,6 +382,8 @@ export const guidancePolicyData = {
     {
       type: "checkbox",
       id: "agreement",
+      section: "learner",
+      editableBy: ["learner"],
       label: "I confirm that I have read and understood the above policy.",
       validation: z.boolean().refine((value) => value === true, {
         message: "You must check this box to continue.",
@@ -390,6 +392,8 @@ export const guidancePolicyData = {
     {
       type: "text",
       id: "candidateName",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Candidate Name",
       placeholder: "Candidate Name",
       validation: z.string().min(2).max(100),
@@ -397,6 +401,8 @@ export const guidancePolicyData = {
     {
       type: "text",
       id: "employer",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Employer",
       placeholder: "Employer",
       validation: z.string().min(2).max(100),
@@ -404,6 +410,8 @@ export const guidancePolicyData = {
     {
       type: "text",
       id: "candidateSignature",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Candidate Signature",
       placeholder: "Candidate Signature",
       validation: z.string().min(2).max(100),
@@ -411,30 +419,46 @@ export const guidancePolicyData = {
     {
       type: "text",
       id: "ldaName",
+      section: "admin",
+      editableBy: ["accessor"],
       label: "Learning and Development Adviser Name",
       placeholder: "LDA Name",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
+        message: "LDA name must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "ldaSignature",
+      section: "admin",
+      editableBy: ["accessor"],
       label: "Learning and Development Adviser Signature",
       placeholder: "LDA Signature",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
+        message: "LDA signature must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "eldaName",
+      section: "admin",
+      editableBy: ["accessor"],
       label: " Eden College Allocated LDA",
-      placeholder: "LDA Name",
-      validation: z.string().min(2).max(100),
+      placeholder: "ELDA Name",
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
+        message: "ELDA name must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "eldaSignature",
+      section: "admin",
+      editableBy: ["accessor"],
       label: " Eden College Allocated LDA Signature",
       placeholder: "LDA Signature",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => !value || value.trim().length >= 2, {
+        message: "LDA signature must be at least 2 characters.",
+      }),
     },
   ],
 };

@@ -20,6 +20,8 @@ interface ChildProtectionFormProps {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
+  isSubmitted?: boolean;
 }
 
 interface Variable {
@@ -53,6 +55,8 @@ const SkillsAssessmentForm = ({
   setFormData,
   onNextClick,
   onPrevClick,
+  userRole,
+  isSubmitted,
 }: ChildProtectionFormProps) => {
   const {
     control,
@@ -100,16 +104,19 @@ const SkillsAssessmentForm = ({
     setFormData && setFormData(data);
     onNextClick && onNextClick();
   };
+  
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 my-4">
       {sections.map((section, index) => (
+        
         <Card key={section.title} className="w-full max-w-2xl">
           <CardHeader>
             <CardTitle>{section.title}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {section.variables.map((variable) => (
+              
               <div key={variable.id} className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium">{variable.name}</span>
@@ -132,7 +139,9 @@ const SkillsAssessmentForm = ({
                   )}
                 />
                 {errors[variable.id] && (
-                  <span className="red">{errors[variable.id]?.message as string}</span>
+                  <span className="red">
+                    {errors[variable.id]?.message as string}
+                  </span>
                 )}
               </div>
             ))}
@@ -173,6 +182,8 @@ const SkillsAssessmentForm = ({
       <div>
         <p className="text-base text-justification">{content.summary.p}</p>
         {formFields.map((field) => {
+          const isEditable =
+            !isSubmitted && field.editableBy.includes(userRole);
           switch (field.type) {
             case "text":
               return (
@@ -185,6 +196,7 @@ const SkillsAssessmentForm = ({
                       id={field.id}
                       className="application-form-input"
                       placeholder={field.placeholder}
+                      disabled={!isEditable}
                       label={field.label}
                       value={value || ""}
                       onChange={(e) => {
@@ -202,17 +214,17 @@ const SkillsAssessmentForm = ({
       </div>
 
       <div>
-          <FootLogos />
-        </div>
+        <FootLogos />
+      </div>
 
       <div className="flex flex-row space-x-5 my-8">
-          {onPrevClick && (
-            <Button type="button" onClick={onPrevClick}>
-              Back
-            </Button>
-          )}
-          <Button type="submit">Save</Button>
-        </div>
+        {onPrevClick && (
+          <Button type="button" onClick={onPrevClick}>
+            Back
+          </Button>
+        )}
+        <Button type="submit">Save</Button>
+      </div>
     </form>
   );
 };

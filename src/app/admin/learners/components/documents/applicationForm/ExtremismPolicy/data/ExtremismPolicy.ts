@@ -131,41 +131,63 @@ export const extremismPolicyData = {
     {
       type: "checkbox",
       id: "extremisimPolicyAgreed",
+      section: "learner",
+      editableBy: ["learner"],
       label: "I confirm that I have read and understood the above policy.",
       options: ["Yes", "No"],
-      validation: z.boolean(),
+      validation: z.boolean().refine((value) => value === true, {
+        message: "You must agree to have read and understood the above policy.",
+      }),
     },
     {
       type: "text",
       id: "extremismCandidateName",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Candidate Name",
       placeholder: "Candidate Name",
-      validation: z.string().optional(),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Candidate Name must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "extremismCandidateEmployer",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Employer",
       placeholder: "Employer",
-      validation: z.string().optional(),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Employer must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "extremismCourseDetails",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Course/Project Details",
       placeholder: "Course/Project Details",
-      validation: z.string().optional(),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Course details must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "extremismCandidateSignature",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Candidate Signature",
-      placeholder: "Candidate Signature",
-      validation: z.string().optional(),
+      placeholder: "Type in your surname and credentials to append signature",
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Signature must be at least 2 characters.",
+      }),
     },
     {
       type: "date",
       id: "extremismDate",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Date",
       placeholder: "Enter Date",
       validation: z.string().date(),
@@ -177,37 +199,63 @@ export const extremismPolicyData = {
       {
         type: "text",
         id: "extremismLDAName",
+        section: "admin",
+        editableBy: ["accessor"],
         label: "Learning and Development Adviser Name",
         placeholder: "Learning and Development Adviser Name",
-        validation: z.string().optional(),
+        validation: z
+          .string()
+          .refine((value) => !value || value.trim().length >= 2, {
+            message: "Name must be at least 2 characters.",
+          }),
       },
       {
         type: "text",
         id: "extremismECAName",
+        section: "admin",
+        editableBy: ["accessor"],
         label: "Eden College Allocated LDA",
         placeholder: "Employer",
-        validation: z.string().optional(),
+        validation: z
+          .string()
+          .refine((value) => !value || value.trim().length >= 2, {
+            message: "Employer must be at least 2 characters.",
+          }),
       },
       {
         type: "text",
         id: "extremismLDASignature",
+        section: "admin",
+        editableBy: ["accessor"],
         label: "Learning and Development Adviser Signature",
         placeholder: "Learning and Development Adviser Signature",
-        validation: z.string().optional(),
+        validation: z
+          .string()
+          .refine((value) => !value || value.trim().length >= 2, {
+            message: "Signature must be at least 2 characters.",
+          }),
       },
       {
         type: "text",
         id: "extremismECASignature",
+        section: "admin",
+        editableBy: ["accessor"],
         label: "Eden College Allocated LDA Signature",
         placeholder: "Eden College Allocated LDA Signature",
-        validation: z.string().optional(),
+        validation: z
+          .string()
+          .refine((value) => !value || value.trim().length >= 2, {
+            message: "Signature must be at least 2 characters.",
+          }),
       },
       {
         type: "date",
         id: "extremismOficialDate",
+        section: "admin",
+        editableBy: ["accessor"],
         label: "Date",
         placeholder: "Enter Date",
-        validation: z.string().date(),
+        validation: z.string().optional(),
       },
     ],
   },

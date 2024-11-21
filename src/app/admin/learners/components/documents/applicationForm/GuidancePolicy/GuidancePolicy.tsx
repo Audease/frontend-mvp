@@ -9,8 +9,9 @@ interface GuidancePolicyProps {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
+  isSubmitted?: boolean;
 }
-
 
 const content = guidancePolicyData;
 
@@ -19,14 +20,14 @@ const GuidancePolicy: React.FC<GuidancePolicyProps> = ({
   setFormData,
   onPrevClick,
   onNextClick,
+  userRole,
+  isSubmitted,
 }) => {
   return (
     <div>
       {/* Policy Title and Commitment */}
       <div className="flex flex-col">
-        <h3 className="text-xl font-bold py-3">
-          {content.title}
-        </h3>
+        <h3 className="text-xl font-bold py-3">{content.title}</h3>
         <p className="text-base text-justify">{content.commitment}</p>
       </div>
 
@@ -34,23 +35,22 @@ const GuidancePolicy: React.FC<GuidancePolicyProps> = ({
       <div>
         {content.body.map((section) => (
           <div key={section.id}>
-            <h3 className="text-base font-bold py-3">
-              {section.title}
-            </h3>
+            <h3 className="text-base font-bold py-3">{section.title}</h3>
             <ul>
               {section.points.map((point) => (
                 <li key={point.id}>
-                  <p className="text-base text-justify py-2">
-                    {point.point}
-                  </p>
+                  <p className="text-base text-justify py-2">{point.point}</p>
                   <p className="text-base text-justify">{point.description}</p>
 
                   {/* Render sub_points if they exist */}
                   {point.sub_points && (
                     <ul>
                       {point.sub_points.map((subPoint) => (
-                        <li key={subPoint.id} className="text-base text-justify py-2 list-disc">
-                            {subPoint.sub_point}
+                        <li
+                          key={subPoint.id}
+                          className="text-base text-justify py-2 list-disc"
+                        >
+                          {subPoint.sub_point}
                         </li>
                       ))}
                     </ul>
@@ -62,9 +62,7 @@ const GuidancePolicy: React.FC<GuidancePolicyProps> = ({
         ))}
         <div>
           <div>
-            <h3 className="text-base py-3 font-bold">
-              {content.table.title}
-            </h3>
+            <h3 className="text-base py-3 font-bold">{content.table.title}</h3>
             <p>
               <p className="text-base text-justify">
                 {content.table.paragraph}
@@ -117,7 +115,14 @@ const GuidancePolicy: React.FC<GuidancePolicyProps> = ({
 
       {/* The Form */}
       <GuidancePolicyForm
-        {...{ formData, setFormData, onPrevClick, onNextClick }}
+        {...{
+          formData,
+          setFormData,
+          onPrevClick,
+          onNextClick,
+          userRole,
+          isSubmitted,
+        }}
       />
     </div>
   );

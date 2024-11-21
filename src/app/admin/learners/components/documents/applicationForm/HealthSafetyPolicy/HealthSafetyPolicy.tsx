@@ -9,6 +9,8 @@ interface HealthAndSafetyPolicyProps {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
+  isSubmitted?: boolean;
 }
 
 const content = healthandSafetyData;
@@ -18,6 +20,8 @@ const HealthSafetyPolicy: React.FC<HealthAndSafetyPolicyProps> = ({
   setFormData,
   onPrevClick,
   onNextClick,
+  userRole,
+  isSubmitted,
 }) => {
   return (
     <div>
@@ -48,7 +52,14 @@ const HealthSafetyPolicy: React.FC<HealthAndSafetyPolicyProps> = ({
 
       {/* The Form */}
       <HealthSafetyPolicyForm
-        {...{ formData, setFormData, onPrevClick, onNextClick }}
+        {...{
+          formData,
+          setFormData,
+          onPrevClick,
+          onNextClick,
+          userRole,
+          isSubmitted,
+        }}
       />
     </div>
   );

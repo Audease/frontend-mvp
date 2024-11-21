@@ -13,18 +13,25 @@ import TelInput from "@/app/components/form/TelInput/TelInput";
 import EmailInput from "@/app/components/form/EmailInput/EmailInput";
 import { enrolmentData } from "./data/Enrollment";
 import FootLogos from "../components/FootLogos";
+import MultiSelectInput from "@/app/components/form/MultiSelect/MultiSelect";
 
 interface EnrolmentFormProps {
   formData?: any;
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
+  isSubmitted?: boolean;
 }
+
+type FormSchema = {
+  [key: string]: z.ZodType;
+};
 
 const formFields = enrolmentData.fields;
 const sectionFields = enrolmentData.section;
 
-const formSchema = z.object({
+const formSchema: z.ZodObject<FormSchema> = z.object({
   ...formFields.reduce((acc, field) => {
     acc[field.id] = field.validation;
     return acc;
@@ -42,23 +49,30 @@ export default function EnrolmentForm({
   setFormData,
   onPrevClick,
   onNextClick,
+  userRole,
+  isSubmitted
 }: EnrolmentFormProps) {
   const {
     control,
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm({
+  } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      ...formData,
       ...formFields.reduce((acc, field) => {
-        acc[field.id] = field.type === "checkbox" ? false : "";
+        acc[field.id] = 
+          formData[field.id] || 
+          (field.type === "checkbox" ? false : 
+           field.type === "multiselect" ? [] : "");
         return acc;
       }, {}),
       ...sectionFields.reduce((acc, section) => {
         section.fields.forEach((field) => {
-          acc[field.id] = field.type === "checkbox" ? false : "";
+          acc[field.id] = 
+            formData[field.id] || 
+            (field.type === "checkbox" ? false : 
+             field.type === "multiselect" ? [] : "");
         });
         return acc;
       }, {}),
@@ -71,10 +85,14 @@ export default function EnrolmentForm({
     onNextClick && onNextClick();
   };
 
+  console.log("Enrolment - Received formData:", formData);
+
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
         {formFields.map((field, index) => {
+          const isEditable =
+          !isSubmitted && field.editableBy.includes(userRole);
           switch (field.type) {
             case "text":
               return (
@@ -87,6 +105,7 @@ export default function EnrolmentForm({
                       id={field.id}
                       className="application-form-input"
                       placeholder={field.placeholder}
+                      disabled={!isEditable}
                       label={field.label}
                       value={value || ""}
                       onChange={(e) => {
@@ -104,10 +123,12 @@ export default function EnrolmentForm({
         {sectionFields.map((field, sectionIndex) => (
           <div key={`section-${field.title || sectionIndex}`}>
             <div className="flex flex-col">
-              <h3 className="text-base font-bold py-3">{field.title}</h3>
+              <h3 className="text-base font-bold py-2">{field.title}</h3>
               <p className="text-base">{field.p}</p>
             </div>
             {field.fields.map((innerField, index) => {
+              const isEditable =
+              !isSubmitted && innerField.editableBy.includes(userRole);
               switch (innerField.type) {
                 case "text":
                   return (
@@ -122,6 +143,7 @@ export default function EnrolmentForm({
                           id={innerField.id}
                           className="application-form-input"
                           placeholder={innerField.placeholder}
+                          disabled={!isEditable}
                           label={innerField.label}
                           value={value || ""}
                           onChange={(e) => {
@@ -146,6 +168,7 @@ export default function EnrolmentForm({
                             onChange(e);
                           }}
                           value={value || ""}
+                          disabled={!isEditable}
                           label={innerField.label}
                           error={errors[innerField.id]?.message as string}
                         />
@@ -166,6 +189,7 @@ export default function EnrolmentForm({
                             onChange(e);
                           }}
                           value={value || ""}
+                          disabled={!isEditable}
                           label={innerField.label}
                           error={errors[innerField.id]?.message as string}
                           id={innerField.id}
@@ -185,7 +209,8 @@ export default function EnrolmentForm({
                         <NumberInput
                           id={innerField.id}
                           label={innerField.label}
-                          onChange={(e) => onChange(e)}
+                          disabled={!isEditable}
+                          onChange={(e) => onChange(Number(e.target.value))}
                           value={value || ""}
                           error={errors[innerField.id]?.message as string}
                           placeholder={
@@ -208,6 +233,7 @@ export default function EnrolmentForm({
                       render={({ field: { onChange, value } }) => (
                         <RadioInput
                           id={innerField.id}
+                          disabled={!isEditable}
                           label={innerField.label}
                           options={innerField.options}
                           onChange={(e) => onChange(e.target.value)}
@@ -228,6 +254,7 @@ export default function EnrolmentForm({
                       render={({ field: { onChange, value } }) => (
                         <TelInput
                           id={innerField.id}
+                          disabled={!isEditable}
                           label={innerField.label}
                           onChange={onChange}
                           value={value || ""}
@@ -248,6 +275,7 @@ export default function EnrolmentForm({
                       render={({ field: { onChange, value } }) => (
                         <EmailInput
                           id={innerField.id}
+                          disabled={!isEditable}
                           label={innerField.label}
                           onChange={onChange}
                           value={value || ""}
@@ -257,6 +285,28 @@ export default function EnrolmentForm({
                       )}
                     />
                   );
+                  case "multiselect":
+                    return (
+                      <Controller
+                        key={`formField-${field.id || index}`}
+                        name={innerField.id}
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                          <MultiSelectInput
+                            id={innerField.id}
+                            className="application-form-input"
+                            disabled={!isEditable}
+                            label={innerField.label}
+                            options={innerField.options}
+                            onChange={(selectedValues) => {
+                              onChange(selectedValues);
+                            }}
+                            value={value || []} 
+                            error={errors[innerField.id]?.message as string}
+                          />
+                        )}
+                      />
+                    );
                 default:
                   return null;
               }

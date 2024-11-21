@@ -14,6 +14,8 @@ interface HealthAndSafetyFormProps {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
+  isSubmitted?: boolean;
 }
 
 const formFields = healthandSafetyData.formFields;
@@ -30,6 +32,8 @@ export default function HealthSafetyPolicyForm({
   setFormData,
   onPrevClick,
   onNextClick,
+  userRole,
+  isSubmitted
 }: HealthAndSafetyFormProps) {
   const {
     control,
@@ -56,6 +60,8 @@ export default function HealthSafetyPolicyForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
       {formFields.map((field) => {
+         const isEditable =
+         !isSubmitted && field.editableBy.includes(userRole);
         switch (field.type) {
           case "text":
             return (
@@ -68,6 +74,7 @@ export default function HealthSafetyPolicyForm({
                     id={field.id}
                     className="application-form-input"
                     placeholder={field.placeholder}
+                    disabled={!isEditable}
                     label={field.label}
                     value={value || ""}
                     onChange={(e) => {
@@ -90,6 +97,7 @@ export default function HealthSafetyPolicyForm({
                       onChange(e);
                     }}
                     value={value || ""}
+                    disabled={!isEditable}
                     label={field.label}
                     error={errors[field.id]?.message as string}
                   />

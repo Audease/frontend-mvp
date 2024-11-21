@@ -9,6 +9,8 @@ interface ConfidentialityPolicyProps {
   setFormData?: (data: any) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
+  isSubmitted?: boolean;
 }
 
 const Confidentiality: React.FC<ConfidentialityPolicyProps> = ({
@@ -16,6 +18,8 @@ const Confidentiality: React.FC<ConfidentialityPolicyProps> = ({
   setFormData,
   onPrevClick,
   onNextClick,
+  isSubmitted,
+  userRole
 }) => {
   return (
     <div>
@@ -23,14 +27,21 @@ const Confidentiality: React.FC<ConfidentialityPolicyProps> = ({
         <h3 className="text-xl font-bold py-3">{confidentialityData.title}</h3>
         <div>
           {confidentialityData.paragraphs.map((list) => (
-            <div key={list.id} >
+            <div key={list.id}>
               <p className="text-base text-justify">{list.p}</p>
             </div>
           ))}
         </div>
         {/* The Form  */}
         <ConfidentialityForm
-          {...{ formData, setFormData, onPrevClick, onNextClick }}
+          {...{
+            formData,
+            setFormData,
+            onPrevClick,
+            onNextClick,
+            isSubmitted,
+            userRole,
+          }}
         />
       </div>
     </div>

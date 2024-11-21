@@ -7,16 +7,24 @@ export const candidateRecordData = {
     {
       type: "text",
       id: "candidateName",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Candidate Name (in BLOCK CAPITALS)",
       placeholder: "Candidate Name",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Candidate Name must be at least 2 characters.",
+      }),
     },
     {
       type: "select",
       id: "gender",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Gender",
       placeholder: "Gender",
-      validation: z.string().min(1).max(50),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Select Gender",
+      }),
       options: [
         { value: "male", label: "Male" },
         { value: "female", label: "Female" },
@@ -27,13 +35,19 @@ export const candidateRecordData = {
     {
       type: "text",
       id: "company",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Company",
       placeholder: "Company",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Company Name must be at least 2 characters.",
+      }),
     },
     {
       type: "date",
       id: "dateOfBirth",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Date of Birth",
       placeholder: "YYYY-MM-DD",
       validation: z.string().date(),
@@ -41,26 +55,38 @@ export const candidateRecordData = {
     {
       type: "text",
       id: "programmeTitle",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Programme Title",
       placeholder: "Programme Title",
-      validation: z.string().min(2).max(100),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Programme Title must be at least 2 characters.",
+      }),
     },
     {
       type: "text",
       id: "level",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Level",
       placeholder: "Level",
-      validation: z.string().min(1).max(50),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Enter Level",
+      }),
     },
     {
       type: "checkbox",
       id: "nameOnCertificate",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Do you wish the above name to appear on your certificate?",
-      validation: z.boolean(),
+      validation: z.boolean().optional(),
     },
     {
       type: "text",
       id: "alternativeName",
+      section: "learner",
+      editableBy: ["learner"],
       label: "If no, please specify (in BLOCK CAPITALS)",
       placeholder: "Alternative Name",
       validation: z.string().optional(),
@@ -68,30 +94,53 @@ export const candidateRecordData = {
     {
       type: "text",
       id: "candidateSignature",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Candidate Signature",
       placeholder: "Type in your surname and credentials to append signature",
-      validation: z.string().min(1),
+      validation: z.string().refine((value) => value.trim().length >= 2, {
+        message: "Type in your signature",
+      }),
     },
     {
       type: "date",
       id: "candidateSignatureDate",
+      section: "learner",
+      editableBy: ["learner"],
       label: "Date",
       placeholder: "YYYY-MM-DD",
-      validation: z.string().date(),
+      validation: z
+        .string()
+        .refine((value) =>  /^\d{4}-\d{2}-\d{2}$/.test(value), {
+          message: "Date must be in the format YYYY-MM-DD",
+        }),
     },
     {
       type: "text",
       id: "learningOfficer",
+      section: "admin",
+      editableBy: ["accessor"],
       label: "Learning and Assessment Data Officer",
       placeholder: "Officer Name",
-      validation: z.string().min(2).max(100),
+      validation: z
+        .string()
+        .refine((value) => !value || value.trim().length >= 2, {
+          message: "Officer Name must be at least 2 characters.",
+        }),
     },
     {
       type: "date",
       id: "learningOfficerDate",
+      section: "admin",
+      editableBy: ["accessor"],
       label: "Date",
       placeholder: "YYYY-MM-DD",
-      validation: z.string().date(),
+      validation: z
+        .string()
+        .optional()
+        .refine((value) => !value || /^\d{4}-\d{2}-\d{2}$/.test(value), {
+          message: "Date must be in the format YYYY-MM-DD",
+        }),
     },
   ],
 };

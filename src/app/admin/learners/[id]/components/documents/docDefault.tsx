@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { CiCalendar } from "react-icons/ci";
 
-const DocDefault = ({onViewClick}) => {
+interface DocDefaultProps {
+  userId: string;
+  onViewClick: () => void;
+}
+
+const DocDefault = ({ onViewClick, userId }: DocDefaultProps) => {
+  // I want to fetch all the available documents per profile and also allow admin to add documents accross profiles
+  const [documents, setDocuments] = useState<any[]>([]);
+
   return (
     <div className="space-y-4 rounded border border-tgrey2 p-4 mb-8 h-[30rem] font-inter shadow-sm">
       <div>
@@ -22,7 +30,10 @@ const DocDefault = ({onViewClick}) => {
           <button className="flex flex-row bg-dashboardButtonsBg text-dashboardButtons text-sm font-semibold py-2 px-6 rounded-lg">
             Download
           </button>
-          <button onClick={onViewClick} className="flex flex-row bg-black text-white text-sm font-semibold py-2 px-6 rounded-lg">
+          <button
+            onClick={onViewClick}
+            className="flex flex-row bg-black text-white text-sm font-semibold py-2 px-6 rounded-lg"
+          >
             View
           </button>
         </div>

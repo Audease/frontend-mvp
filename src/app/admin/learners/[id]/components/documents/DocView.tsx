@@ -9,7 +9,14 @@ import SubmissionSuccess from "./applicationForm/SubmissionSuccess";
 import { SlArrowLeft } from "react-icons/sl";
 import RenderFormComponent from "./RenderComponent";
 
-export default function DocView({ onBackClick }) {
+interface DocViewProps {
+  userId: string;
+  onBackClick: () => void;
+}
+
+export default function DocView({ onBackClick, userId }: DocViewProps) {
+  const USER_DOCS_STORAGE_KEY = `user-docs-${userId}`;
+
   const [formData, setFormData] = useState({
     behavioural: {},
     candidaterecord: {},
@@ -35,7 +42,7 @@ export default function DocView({ onBackClick }) {
   const [showDialog, setShowDialog] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [useRole, setUserRole] = useState("learner")
+  const [useRole, setUserRole] = useState("learner");
 
   // Array of components
   const formComponents = [
@@ -68,9 +75,8 @@ export default function DocView({ onBackClick }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const FORM_STORAGE_KEY = "multi-step-form-data";
   useEffect(() => {
-    const savedData = localStorage.getItem(FORM_STORAGE_KEY);
+    const savedData = localStorage.getItem(USER_DOCS_STORAGE_KEY);
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
@@ -79,11 +85,11 @@ export default function DocView({ onBackClick }) {
         console.error("Error loading saved form data:", error);
       }
     }
-  }, []);
+  }, [USER_DOCS_STORAGE_KEY]);
 
   useEffect(() => {
-    localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formData));
-  }, [formData]);
+    localStorage.setItem(USER_DOCS_STORAGE_KEY, JSON.stringify(formData));
+  }, [formData, USER_DOCS_STORAGE_KEY]);
 
   const handleSaveFormData = (data, formType) => {
     setFormData((prevData) => ({
@@ -115,8 +121,7 @@ export default function DocView({ onBackClick }) {
   };
 
   const handleSubmit = () => {
-    localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formData));
-    console.log("Form submitted:", formData);
+    localStorage.setItem(USER_DOCS_STORAGE_KEY, JSON.stringify(formData));
     setShowDialog(false);
     setIsSubmitted(true);
     setFormContent("SubmissionSuccess");
@@ -124,9 +129,8 @@ export default function DocView({ onBackClick }) {
 
   const openUpForEdit = (e) => {
     e.preventDefault();
-    setIsSubmitted(false)
-  }
-
+    setIsSubmitted(false);
+  };
 
   return (
     <div className="space-y-4 border-tgrey2  p-4 mb-8  rounded-xl border  bg-tgrey4 text-card-foreground shadow">

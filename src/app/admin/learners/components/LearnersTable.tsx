@@ -2,9 +2,9 @@
 import { useEffect, useState, useRef } from "react";
 import LoadingSpinner from "@/app/components/dashboard/Spinner";
 import Pagination from "@/app/components/dashboard/Pagination";
+import {useRouter} from "next/navigation";
 
 export default function LearnersTable({
-  showUserDetailsPage,
   allLearners,
   currentPage,
   totalPages,
@@ -13,6 +13,7 @@ export default function LearnersTable({
   handlePageChange,
 }) {
   const [editOptions, setEditOptions] = useState({});
+  const router = useRouter();
 
   const menuRef = useRef(null);
   const [checkedItems, setCheckedItems] = useState({});
@@ -44,6 +45,10 @@ export default function LearnersTable({
       ...prev,
       [index]: !prev[index],
     }));
+  };
+
+  const handleViewLearner = (learnerId) => {
+    router.push(`/admin/learners/${learnerId}`); 
   };
 
   return (
@@ -136,7 +141,7 @@ export default function LearnersTable({
                     >
                       <p
                         className="hover:text-gold1 cursor-pointer"
-                        onClick={(e) => showUserDetailsPage(e, row.id)}
+                        onClick={() => handleViewLearner(row.id)}
                       >
                         View
                       </p>

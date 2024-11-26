@@ -2,8 +2,10 @@ import { useState } from "react";
 import DocDefault from "./docDefault";
 import DocView from "./DocView";
 
-export default function UserDetailsDocuments() {
-  const [renderComponent, setRenderComponent] = useState<"default" | "view">("default");
+export default function UserDetailsDocuments({ userId }) {
+  const [renderComponent, setRenderComponent] = useState<"default" | "view">(
+    "default"
+  );
 
   // Switch back to DocDefault
   const onBackClick = () => {
@@ -18,9 +20,9 @@ export default function UserDetailsDocuments() {
   return (
     <div className="">
       {renderComponent === "default" ? (
-        <DocDefault onViewClick={onViewClick} />
+        <DocDefault onViewClick={onViewClick} userId={userId} />
       ) : (
-        <DocView onBackClick={onBackClick} />
+        <DocView onBackClick={onBackClick} userId={userId} />
       )}
     </div>
   );

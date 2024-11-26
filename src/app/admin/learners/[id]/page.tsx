@@ -6,51 +6,74 @@ import { IoPerson } from "react-icons/io5";
 import { FaBell } from "react-icons/fa";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
-import UserDetailsDefault from "./userDetailsDefault";
-import UserDetailsPassword from "./userDetailsPassword";
-import UserDetailsDeactivation from "./userDetailsDeactivation";
-import UserDetailsDocuments from "../documents/userDetailsDocuments";
+import UserDetailsDefault from "./UserDetails/userDetailsDefault";
+import UserDetailsDocuments from "./components/documents/userDetailsDocuments";
+import UserDetailsPassword from "./UserDetails/userDetailsPassword";
+import UserDetailsDeactivation from "./UserDetails/userDetailsDeactivation";
+import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
-export default function UserDetails({ userId: initialUserId, onBackClick , backButton = true }) {
+interface Learner {
+  id: string;
+  name: string;
+  date_of_birth: string;
+  mobile_number: string;
+  email: string;
+  NI_number: string;
+  passport_number: string;
+  home_address: string;
+  funding: string;
+  level: number;
+  awarding: string;
+  chosen_course: string;
+  application_mail: string;
+  onboarding_status: string;
+  created_at: string;
+  updated_at: string;
+  application_status: string;
+}
+
+export default function UserDetails({ backButton = true }) {
   const [activeSection, setActiveSection] = useState("userDetails");
-  const [userId, setUserId] = useState(initialUserId);  
+  const router = useRouter();
+  const params = useParams();
+  const userId = params.id as string;
 
-  const [formData, setFormData] = useState({
-    learnerName: "",      
-    learnerUserName: "",
-    email: "",
-    phoneNumber: "",
-  });
+  const [learner, setLearner] = useState<Learner | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState({ type: "", text: "" });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (userId) {
-      setFormData({
-        learnerName: userId.name,
-        learnerUserName: userId.username,
-        email: userId.email,
-        phoneNumber: userId.phoneNumber,
-      });
+    async function fetchLearnerInfo() {
+      if (!userId) {
+        setError("No user ID found");
+        return;
+      }
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(
+          `/api/individualLearner?learnerId=${userId}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch learner info");
+        }
+        const data = await response.json();
+        setLearner(data);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to load user details"
+        );
+        setMessage({ type: "error", text: "Failed to load user details" });
+      } finally {
+        setIsLoading(false);
+      }
     }
+
+    fetchLearnerInfo();
   }, [userId]);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSaveChanges = () => {
-    setUserId((prevUserId) => ({
-      ...prevUserId,
-      name: formData.learnerName,
-      username: formData.learnerUserName,
-      email: formData.email,
-      phoneNumber: formData.phoneNumber,
-    }));
-    console.log("Form Data Saved:", formData);
-  };
 
   const onUserDetailsClick = () => {
     setActiveSection("userDetails");
@@ -72,38 +95,49 @@ export default function UserDetails({ userId: initialUserId, onBackClick , backB
     switch (activeSection) {
       case "userDetails":
       default:
-        return (
-          <UserDetailsDefault
-            formData={formData}
-            onInputChange={handleInputChange}
-            onSaveChanges={handleSaveChanges}
-          />
-        );
+        return <UserDetailsDefault userId={userId} formData={learner} />;
       case "documents":
-        return <UserDetailsDocuments />
+        return <UserDetailsDocuments userId={userId}/>;
       case "password":
-        return <UserDetailsPassword />
+        return <UserDetailsPassword />;
       case "deactivation":
         return <UserDetailsDeactivation />;
     }
   };
 
+  const onBackClick = () => {
+    router.push("/admin/learners");
+  };
+
   return (
     <div className="flex flex-col space-y-4">
       {/* Back Button */}
-      <div >
-        {backButton && <button
-          className="flex flex-row space-x-2 text-tgrey3"
-          type="button"
-          onClick={onBackClick}
-        >
-          <div className="pt-2">
-            <SlArrowLeft className="text-tgrey3 h-[0.6rem]" />
-          </div>
-          <p className="font-medium text-base">Back</p>
-        </button>}
+      <div>
+        {backButton && (
+          <button
+            className="flex flex-row space-x-2 text-tgrey3"
+            type="button"
+            onClick={onBackClick}
+          >
+            <div className="pt-2">
+              <SlArrowLeft className="text-tgrey3 h-[0.6rem]" />
+            </div>
+            <p className="font-medium text-base">Back</p>
+          </button>
+        )}
       </div>
 
+      {message.text && (
+        <div
+          className={`p-4 rounded ${
+            message.type === "success"
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-700"
+          }`}
+        >
+          {message.text}
+        </div>
+      )}
       <div className="flex flex-row w-full h-full min-h-[30rem] border border-tgrey2 rounded p-4 space-x-4">
         <div className="text-tgrey3 font-medium text-sm space-y-4">
           {/* User Details */}

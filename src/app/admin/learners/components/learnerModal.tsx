@@ -2,8 +2,8 @@ import { Modal } from "flowbite-react";
 import Image from "next/image";
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { usePostLearners } from "../../../hooks/usePostLearners";
 import { learnerRevalidation } from "@/app/action";
+import { usePostLearners } from "../hooks/usePostLearners";
 
 
 export default function AddLearnerModal({

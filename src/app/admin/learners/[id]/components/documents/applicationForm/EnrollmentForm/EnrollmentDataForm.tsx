@@ -85,8 +85,6 @@ export default function EnrolmentForm({
     onNextClick && onNextClick();
   };
 
-  console.log("Enrolment - Received formData:", formData);
-
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">

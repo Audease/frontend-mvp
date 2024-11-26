@@ -12,7 +12,8 @@ import Rightside from "./components/Rightside/Rightside";
 
 import { useCreateRole } from "./hooks/useRoleCreate";
 import { learnerRevalidation } from "@/app/action";
-import AddLearnerModal, { LearnerCreated } from "../learners/components/LearnersDefault/components/learnerModal";
+import AddLearnerModal, { LearnerCreated } from "../learners/components/learnerModal";
+
 
 export default function Role() {
   const [currentComponent, setCurrentComponent] = useState("Default");

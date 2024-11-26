@@ -8,7 +8,8 @@ import {
 import ImportLearner from "./ImportLearner";
 import RecruiterStaff from "./RecruiterStaff";
 import FilterLearner from "./Filter";
-import CreateLearner from "@/app/admin/learners/components/LearnersDefault/components/CreateLearner";
+import CreateLearner from "@/app/admin/learners/components/CreateLearner";
+
 
 export default function ActionButtons({
   checkedItems,

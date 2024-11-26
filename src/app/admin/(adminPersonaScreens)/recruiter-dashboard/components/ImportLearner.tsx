@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaPlus, FaCheck } from "react-icons/fa";
 
 import { useLearnerByRecruiter } from "../utils/useLearnerByRecruiter";
-import LearnerImportModal, { LearnerImportSuccessModal } from "@/app/admin/learners/components/LearnersDefault/components/LearnerImportModal";
+import LearnerImportModal, { LearnerImportSuccessModal } from "@/app/admin/learners/components/LearnerImportModal";
 
 const ImportLearner = () => {
   const [learnerImportModalState, setLearnerImportModalState] = useState(false);

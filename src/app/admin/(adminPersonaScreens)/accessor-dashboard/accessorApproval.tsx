@@ -71,7 +71,7 @@ export default function AccessorApproval({ learner, onBack }) {
         )}
         {showFailureToast && <FailureToast text={"Fail to Approve/Reject"} />}
       </div>
-
+        
       <div className="border rounded-md w-full  p-6">
         {loading && <LoadingSpinner />}
         {learner ? (
@@ -82,21 +82,21 @@ export default function AccessorApproval({ learner, onBack }) {
               </div>
               <div className="flex flex-col md:flex-row  my-4 md:mt-0 justify-between md:space-x-6">
                 {/* Approve Button */}
-                <button
+                {/* <button
                   onClick={approve}
                   className="flex flex-row bg-black text-white text-sm font-semibold my-4 md:my-0 py-0 px-3 rounded-lg"
                 >
                   <IoIosCheckmark className="w-10 h-10" />
                   <p className="py-2">Approve</p>
-                </button>
+                </button> */}
                 {/* Reject Button */}
-                <button
+                {/* <button
                   onClick={rejection}
                   className="flex flex-row bg-white text-tred2 text-sm font-semibold py-0 px-3 rounded-lg border border-tred2"
                 >
                   <span className="p-2">x</span>
                   <p className="py-2">Reject</p>
-                </button>
+                </button> */}
               </div>
             </div>
             <div className="mt-5">
@@ -109,6 +109,7 @@ export default function AccessorApproval({ learner, onBack }) {
           </p>
         )}
       </div>
+      
     </div>
   );
 }

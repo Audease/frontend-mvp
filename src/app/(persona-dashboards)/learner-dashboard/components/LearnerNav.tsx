@@ -40,7 +40,7 @@ const LearnerNav = () => {
     <nav className="flex flex-row justify-between mx-10 py-4">
       {/* Logo */}
       <div className="flex flex-row space-x-20">
-        <Link href="/">
+        <Link href="/learner-dashboard">
           <Image
             src="/audease_logo.png"
             width={112}

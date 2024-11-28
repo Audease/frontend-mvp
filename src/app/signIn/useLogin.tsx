@@ -43,6 +43,10 @@ export function useLogin() {
         label: "Certificate",
         route: "/certificate-dashboard"
       },
+      {
+        label: "Student/Learner",
+        route: "/learner-dashboard"
+      },
     ]
 
     if (permissions.length > 3) {
@@ -72,7 +76,6 @@ export function useLogin() {
       });
 
       if (response.status === 200) {
-        console.log(response.data)
         setPermissions(response.data.permissions)
 
         dispatch(setUserEmail(email));

@@ -17,8 +17,10 @@ import ParticipantAgreement from "./applicationForm/ParticipantAgreement/Partici
 import ExtremismPolicy from "./applicationForm/ExtremismPolicy/ExtremismPolicy";
 import ChildProtection from "./applicationForm/ChildProtection/ChildProtection";
 import SkillsAssessment from "./applicationForm/SkillSelfAssessment/Assessment";
-import SubmissionSuccess from "./applicationForm/SubmissionSuccess";
 import AwardAssessment from "./applicationForm/AwardAssessment/AwardAssessment.tsx";
+import SubmissionSuccess from "./applicationForm/components/SubmissionSuccess";
+import AccessorSuccessPage from "./applicationForm/components/AccessorSuccessPage";
+import AccessorRejectPage from "./applicationForm/components/AccessorRejectPAge";
 
 const RenderFormComponent = ({
   formContent,
@@ -27,7 +29,7 @@ const RenderFormComponent = ({
   onPrevClick,
   onNextClick,
   isSubmitted,
-  userRole
+  userRole,
 }) => {
   switch (formContent) {
     case "Appeal":
@@ -42,7 +44,7 @@ const RenderFormComponent = ({
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
-          userRole = {userRole}
+          userRole={userRole}
         />
       );
     case "CandidateRecord":
@@ -53,7 +55,7 @@ const RenderFormComponent = ({
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
-          userRole = {userRole}
+          userRole={userRole}
         />
       );
     case "Confidentiality":
@@ -64,7 +66,7 @@ const RenderFormComponent = ({
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
-          userRole = {userRole}
+          userRole={userRole}
         />
       );
     case "DataProtection":
@@ -75,20 +77,18 @@ const RenderFormComponent = ({
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
-          userRole = {userRole}
+          userRole={userRole}
         />
       );
     case "EqualOpportunities":
       return (
         <EqualOpportunitiesPolicy
           formData={formData.equalopportunities}
-          setFormData={(data) =>
-            handleSaveFormData(data, "equalopportunities")
-          }
+          setFormData={(data) => handleSaveFormData(data, "equalopportunities")}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
-          userRole = {userRole}
+          userRole={userRole}
         />
       );
     case "HealthSafetyPolicy":
@@ -101,7 +101,7 @@ const RenderFormComponent = ({
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
-          userRole = {userRole}
+          userRole={userRole}
         />
       );
     case "GuidancePolicy":
@@ -112,7 +112,7 @@ const RenderFormComponent = ({
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
-          userRole = {userRole}
+          userRole={userRole}
         />
       );
     case "Enrolment":
@@ -123,7 +123,7 @@ const RenderFormComponent = ({
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
-          userRole = {userRole}
+          userRole={userRole}
         />
       );
     case "PrivacyNotice":
@@ -134,7 +134,7 @@ const RenderFormComponent = ({
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
-          userRole = {userRole}
+          userRole={userRole}
         />
       );
     case "AwardAssessment":
@@ -145,20 +145,18 @@ const RenderFormComponent = ({
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
-          userRole = {userRole}
+          userRole={userRole}
         />
       );
     case "EmployerAgreement":
       return (
         <EmployerAgreement
           formData={formData.employeragreement}
-          setFormData={(data) =>
-            handleSaveFormData(data, "employeragreement")
-          }
+          setFormData={(data) => handleSaveFormData(data, "employeragreement")}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
-          userRole = {userRole}
+          userRole={userRole}
         />
       );
     case "ParticipantAgreement":
@@ -171,7 +169,7 @@ const RenderFormComponent = ({
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
-          userRole = {userRole}
+          userRole={userRole}
         />
       );
     case "ExtremismPolicy":
@@ -182,7 +180,7 @@ const RenderFormComponent = ({
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
-          userRole = {userRole}
+          userRole={userRole}
         />
       );
     case "ChildProtection":
@@ -193,7 +191,7 @@ const RenderFormComponent = ({
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
-          userRole = {userRole}
+          userRole={userRole}
         />
       );
     case "SkillsAssessment":
@@ -204,11 +202,15 @@ const RenderFormComponent = ({
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
-          userRole = {userRole}
+          userRole={userRole}
         />
       );
     case "SubmissionSuccess":
       return <SubmissionSuccess />;
+    case "AccessorSuccessPage":
+      return <AccessorSuccessPage />;
+    case "AccessorRejectPage":
+      return <AccessorRejectPage />;
     default:
       return <Appeal {...{ onNextClick }} />;
   }

@@ -5,9 +5,18 @@ import { applicationForm } from "./dummyForm";
 import Image from "next/image";
 import Pagination from "./applicationForm/components/Pagination";
 import { FinalSubmissionAlert } from "./applicationForm/components/DialogueBox";
-import SubmissionSuccess from "./applicationForm/SubmissionSuccess";
 import { SlArrowLeft } from "react-icons/sl";
 import RenderFormComponent from "./RenderComponent";
+import { useAppSelector } from "@/redux/store";
+import { usePathname } from "next/navigation";
+import { AccessorDialogueBox } from "./applicationForm/components/AccessorDialogueBox";
+import {
+  ApproveLearner,
+  RejectLearner,
+} from "@/app/admin/(adminPersonaScreens)/accessor-dashboard/utils/action";
+import LoadingSpinner, {
+  LoadingSpinner2,
+} from "@/app/components/dashboard/Spinner";
 
 interface DocViewProps {
   userId: string;
@@ -16,6 +25,7 @@ interface DocViewProps {
 
 export default function DocView({ onBackClick, userId }: DocViewProps) {
   const USER_DOCS_STORAGE_KEY = `user-docs-${userId}`;
+  const pathname = usePathname();
 
   const [formData, setFormData] = useState({
     behavioural: {},
@@ -41,8 +51,30 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
   const [sectionNumber, setSectionNumber] = useState<number>(1);
   const [showDialog, setShowDialog] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [useRole, setUserRole] = useState("learner");
+  const [useRole, setUserRole] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const userPermissions = useAppSelector(
+    (state) => state.authReducer.value.userPermission
+  );
+
+  useEffect(() => {
+    if (
+      userPermissions.length > 4 &&
+      pathname === "/admin/accessor-dashboard"
+    ) {
+      setUserRole("accessor");
+    } else if (
+      userPermissions.length > 4 &&
+      pathname !== "/admin/accessor-dashboard"
+    ) {
+      setUserRole("Admin");
+    } else if (userPermissions === "Student/Learner") {
+      setUserRole("learner");
+    } else if (userPermissions === "Approve/reject application") {
+      setUserRole("accessor");
+    }
+  }, [userPermissions, pathname]);
 
   // Array of components
   const formComponents = [
@@ -64,6 +96,8 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
     "ChildProtection",
     "SkillsAssessment",
     "SubmissionSuccess",
+    "AccessorSuccessPage",
+    "AccessorRejectPage",
   ];
 
   useEffect(() => {
@@ -102,7 +136,7 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
   };
 
   const onNextClick = () => {
-    if (sectionNumber >= totalSectionNumber - 1) {
+    if (sectionNumber >= totalSectionNumber - 3) {
       setShowDialog(true);
     } else {
       setSectionNumber((prev) => Math.min(prev + 1, totalSectionNumber));
@@ -112,7 +146,7 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
 
   const onPrevClick = () => {
     setSectionNumber((prev) => Math.max(prev - 1, 1));
-    setFormContent(formComponents[sectionNumber - 2] || "Appeal");
+    setFormContent(formComponents[sectionNumber - 1] || "Appeal");
   };
 
   const handlePageClick = (pageNumber) => {
@@ -124,12 +158,45 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
     localStorage.setItem(USER_DOCS_STORAGE_KEY, JSON.stringify(formData));
     setShowDialog(false);
     setIsSubmitted(true);
-    setFormContent("SubmissionSuccess");
+    if (useRole === "learner") {
+      setFormContent("SubmissionSuccess");
+    } else {
+      setFormContent("AccessorSuccessPage");
+    }
   };
 
-  const openUpForEdit = (e) => {
-    e.preventDefault();
+  const accessorReject = async () => {
+    setLoading(true);
+    try {
+      const success = await RejectLearner(userId);
+      setShowDialog(false);
+      setIsSubmitted(false);
+
+      if (success) {
+        setFormContent("AccessorRejectPage");
+      } else {
+        alert("Failed to reject learner.");
+      }
+    } catch (error) {
+      console.error("Error during rejection:", error);
+      alert("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const accesssorApprove = async () => {
+    localStorage.setItem(USER_DOCS_STORAGE_KEY, JSON.stringify(formData));
+    setLoading(true);
+    const success = await ApproveLearner(userId);
+    setShowDialog(false);
     setIsSubmitted(false);
+    if (success) {
+      setFormContent("AccessorSuccessPage");
+    } else if (!success) {
+      alert("An unexpected error occurred. Please try again.");
+    }
+    setLoading(false);
   };
 
   return (
@@ -147,7 +214,7 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
             <p className="font-medium text-base">Back</p>
           </button>
         </div>
-        <h3>{`Page ${sectionNumber} of  ${totalSectionNumber - 1}`}</h3>
+        <h3>{`Page ${sectionNumber} of  ${totalSectionNumber - 3}`}</h3>
       </div>
       <div className="flex flex-row px-4 justify-between ">
         <div></div>
@@ -162,31 +229,45 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
         ></Image>
       </div>
       <div>
-        <div className="px-4">
-          <RenderFormComponent
-            formContent={formContent}
-            formData={formData}
-            handleSaveFormData={handleSaveFormData}
-            onPrevClick={onPrevClick}
-            onNextClick={onNextClick}
-            isSubmitted={isSubmitted}
-            userRole={useRole}
-          />
+        <div className="relative">
+          {loading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 z-10">
+              <LoadingSpinner />
+            </div>
+          )}
+          <div className="px-4">
+            <RenderFormComponent
+              formContent={formContent}
+              formData={formData}
+              handleSaveFormData={handleSaveFormData}
+              onPrevClick={onPrevClick}
+              onNextClick={onNextClick}
+              isSubmitted={isSubmitted}
+              userRole={useRole}
+            />
+          </div>
         </div>
-        {showDialog && (
-          <FinalSubmissionAlert
-            isOpen={showDialog}
-            onClose={() => setShowDialog(false)}
-            handleSubmit={handleSubmit}
-          />
-        )}
 
-        <button onClick={openUpForEdit}>Open Up</button>
-        {showSuccessMessage && <SubmissionSuccess />}
+        {useRole !== "Admin" &&
+          showDialog &&
+          (useRole === "accessor" ? (
+            <AccessorDialogueBox
+              isOpen={showDialog}
+              onClose={() => setShowDialog(false)}
+              approve={accesssorApprove}
+              reject={accessorReject}
+            />
+          ) : (
+            <FinalSubmissionAlert
+              isOpen={showDialog}
+              onClose={() => setShowDialog(false)}
+              handleSubmit={handleSubmit}
+            />
+          ))}
         <div>
           <Pagination
             currentPage={sectionNumber}
-            totalPages={totalSectionNumber - 1}
+            totalPages={totalSectionNumber - 3}
             onPageClick={handlePageClick}
           />
         </div>

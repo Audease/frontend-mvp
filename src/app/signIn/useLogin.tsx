@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setUserEmail, setUserPackage, setUserPermissions } from "../../redux/features/login/auth-slice";
 import { AppDispatch } from "../../redux/store";
+import { encodeId } from "../admin/learners/utils/id-encoded";
 
 
 export function useLogin() {
@@ -13,6 +14,9 @@ export function useLogin() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const [permissions, setPermissions] = useState([])
+  const [learnerId, setLearnerId] = useState("7cfd5785-1fd0-4dea-ae9b-54b41e018159")
+
+
 
   useEffect(() => {
     const permissionsMap = [
@@ -45,7 +49,7 @@ export function useLogin() {
       },
       {
         label: "Student/Learner",
-        route: "/learner-dashboard"
+        route: `/learner-dashboard/${encodeId(learnerId)}`
       },
     ]
 
@@ -57,7 +61,7 @@ export function useLogin() {
           return router.push(permission.route)
       }
     }
-  }, [permissions, router])
+  }, [permissions, router, learnerId])
 
   const handleLogin = async (email: string, password: string) => {
     setLoading(true);

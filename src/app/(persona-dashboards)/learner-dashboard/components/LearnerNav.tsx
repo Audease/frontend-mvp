@@ -4,11 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import Notifications from "../../../components/dashboard/Notifications";
+import { useRouter } from "next/navigation";
 
 const LearnerNav = () => {
   const [notifications, setNotifications] = useState(false);
   const [profileOptions, setProfileOptions] = useState(false);
   const menuRef = useRef(null);
+  const router = useRouter();
 
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -32,22 +34,27 @@ const LearnerNav = () => {
     setProfileOptions((prevState) => !prevState);
   };
 
-  const logout = () => {
-    console.log("Logout");
-  };
+  const logout = async () => {
+    const response = await fetch("/api/logout", {
+      method: "POST",
+    });
 
+    if (response.ok) {
+      router.push("/signIn");
+    } else {
+      console.error("Failed to log out");
+    }
+  };
   return (
     <nav className="flex flex-row justify-between mx-10 py-4">
       {/* Logo */}
       <div className="flex flex-row space-x-20">
-        <Link href="/learner-dashboard">
-          <Image
-            src="/audease_logo.png"
-            width={112}
-            height={30}
-            alt="Audease logo"
-          />
-        </Link>
+        <Image
+          src="/audease_logo.png"
+          width={112}
+          height={30}
+          alt="Audease logo"
+        />
 
         <div></div>
       </div>

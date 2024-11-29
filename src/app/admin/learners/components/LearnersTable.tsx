@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import LoadingSpinner from "@/app/components/dashboard/Spinner";
 import Pagination from "@/app/components/dashboard/Pagination";
 import {useRouter} from "next/navigation";
+import { encodeId } from "../utils/id-encoded";
 
 export default function LearnersTable({
   allLearners,
@@ -48,7 +49,7 @@ export default function LearnersTable({
   };
 
   const handleViewLearner = (learnerId) => {
-    router.push(`/admin/learners/${learnerId}`); 
+    router.push(`/admin/learners/${encodeId(learnerId)}`); 
   };
 
   return (

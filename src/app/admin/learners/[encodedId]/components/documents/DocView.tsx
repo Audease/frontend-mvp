@@ -69,7 +69,7 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
       pathname !== "/admin/accessor-dashboard"
     ) {
       setUserRole("Admin");
-    } else if (userPermissions === "Student/Learner") {
+    } else if (userPermissions.includes("Student/Learner")) {
       setUserRole("learner");
     } else if (userPermissions === "Approve/reject application") {
       setUserRole("accessor");

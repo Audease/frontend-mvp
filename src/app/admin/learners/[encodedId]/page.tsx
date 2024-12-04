@@ -7,7 +7,7 @@ import { FaBell } from "react-icons/fa";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
 import UserDetailsDefault from "./UserDetails/userDetailsDefault";
-import UserDetailsDocuments from "./components/documents/userDetailsDocuments";
+import UserDetailsDocuments from "./UserDetails/documents/userDetailsDocuments";
 import UserDetailsPassword from "./UserDetails/userDetailsPassword";
 import UserDetailsDeactivation from "./UserDetails/userDetailsDeactivation";
 import { useRouter } from "next/navigation";

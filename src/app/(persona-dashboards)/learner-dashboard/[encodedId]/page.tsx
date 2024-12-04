@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import WelcomeModal from "./components/WelcomeModal";
+import WelcomeModal from "../components/WelcomeModal";
+import UserDetails from "@/app/admin/learners/[encodedId]/page";
 
 const Learner = () => {
   const [openModal, setOpenModal] = useState(true);
@@ -11,7 +12,7 @@ const Learner = () => {
 
   return (
     <div>
-      {/* <UserDetails userId={"1213232"} onBackClick={false} backButton={false} /> */}
+      <UserDetails backButton={false} />
       <WelcomeModal {...{ openModal, closeModal }} />
     </div>
   );

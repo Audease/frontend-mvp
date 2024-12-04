@@ -1,5 +1,5 @@
 import React from "react";
-import UserDetailsDocuments from "../../learners/[id]/components/documents/userDetailsDocuments";
+import UserDetailsDocuments from "../../learners/[encodedId]/UserDetails/documents/userDetailsDocuments";
 
 type Props = {
   userId: string;

@@ -13,7 +13,7 @@ import { Navbar } from "flowbite-react";
 
 const links = [
   { name: "Apps", href: "/admin" },
-  { name: "Resources", href: "#" },
+  { name: "Resources", href: "/admin/resources" },
   { name: "Messenger", href: "/admin/messenger" },
   { name: "Learners", href: "/admin/learners" },
   { name: "Staff", href: "/admin/staff" },
@@ -214,7 +214,7 @@ export function Navbarr() {
 
   const links = [
     { name: "Apps", href: "/admin" },
-    { name: "Resources", href: "#" },
+    { name: "Resources", href: "/admin/resources" },
     { name: "Messenger", href: "/admin/messenger" },
     { name: "Learners", href: "/admin/learners" },
     { name: "Staff", href: "/admin/staff" },

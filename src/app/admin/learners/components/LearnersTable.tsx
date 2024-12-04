@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import LoadingSpinner from "@/app/components/dashboard/Spinner";
 import Pagination from "@/app/components/dashboard/Pagination";
 import {useRouter} from "next/navigation";
+import { encodeId } from "../utils/id-encoded";
 
 export default function LearnersTable({
   allLearners,
@@ -48,7 +49,7 @@ export default function LearnersTable({
   };
 
   const handleViewLearner = (learnerId) => {
-    router.push(`/admin/learners/${learnerId}`); 
+    router.push(`/admin/learners/${encodeId(learnerId)}`); 
   };
 
   return (
@@ -56,7 +57,7 @@ export default function LearnersTable({
       <table className="min-w-full divide-y divide-gray-200 font-inter table-auto rounded-t-lg h-full">
         <thead className="bg-tgrey-6 border border-tgrey6 ">
           <tr>
-            <th className="px-4 pl-12 py-3 text-left text-sm font-normal text-tableText tracking-wider">
+            <th className="px-4 py-3 text-left text-sm font-normal text-tableText tracking-wider">
               Name
             </th>
             <th className="px-4 py-3 text-left text-sm text-tableText font-normal tracking-wider">
@@ -100,14 +101,7 @@ export default function LearnersTable({
             allLearners.map((row) => (
               <tr key={row.id} className="group">
                 <td className="px-2 py-4 whitespace-nowrap text-sm  text-tableText2 font-medium flex flex-row ">
-                  <span className="pr-4">
-                    {/* checkBox  */}
-                    <input
-                      type="checkbox"
-                      className="staff-checkbox h-4 w-4 text-tableText2 rounded-md focus:ring-tgrey2"
-                      onChange={handleCheckboxChange}
-                    />
-                  </span>
+                  
                   {row.name}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium " >

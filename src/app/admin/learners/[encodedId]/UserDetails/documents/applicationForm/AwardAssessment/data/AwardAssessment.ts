@@ -178,7 +178,7 @@ export const awardAssessmentData = {
         type: "checkbox",
         id: "awardAgreement",
         section: "learner",
-        editableBy: ["learner"],
+        editableBy: ["learner", "accessor"],
         label: "I agree with the terms and condition of this agreement",
         options: ["Yes", "No"],
         validation: z.boolean().refine((value) => value === true, {

@@ -16,10 +16,10 @@ export async function POST(req: NextRequest) {
     if (response.status === 200) {
       const {
         token: { access, refresh },
-        permissions,
+        permissions, user_id,
       } = response.data;
 
-      const res = new NextResponse(JSON.stringify({ permissions }), {
+      const res = new NextResponse(JSON.stringify({ permissions, user_id }), {
         status: 200,
       });
 

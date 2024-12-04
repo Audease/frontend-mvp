@@ -7,11 +7,12 @@ import { FaBell } from "react-icons/fa";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
 import UserDetailsDefault from "./UserDetails/userDetailsDefault";
-import UserDetailsDocuments from "./components/documents/userDetailsDocuments";
+import UserDetailsDocuments from "./UserDetails/documents/userDetailsDocuments";
 import UserDetailsPassword from "./UserDetails/userDetailsPassword";
 import UserDetailsDeactivation from "./UserDetails/userDetailsDeactivation";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
+import { decodeId } from "../utils/id-encoded";
 
 interface Learner {
   id: string;
@@ -37,7 +38,7 @@ export default function UserDetails({ backButton = true }) {
   const [activeSection, setActiveSection] = useState("userDetails");
   const router = useRouter();
   const params = useParams();
-  const userId = params.id as string;
+  const userId = decodeId(params.encodedId as string);
 
   const [learner, setLearner] = useState<Learner | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -109,6 +110,7 @@ export default function UserDetails({ backButton = true }) {
     router.push("/admin/learners");
   };
 
+  
   return (
     <div className="flex flex-col space-y-4">
       {/* Back Button */}

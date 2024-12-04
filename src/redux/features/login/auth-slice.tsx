@@ -8,6 +8,7 @@ type authState = {
   userPermission: string;
   userEmail: string;
   userPackage: string;
+  userId: string;
 };
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
     userPermission:"",
     userEmail: "",
     userPackage: "",
+    userId: "",
   } as authState,
 } as InitialState;
 
@@ -31,9 +33,12 @@ export const auth = createSlice({
     setUserPermissions: (state, action: PayloadAction<string>) => {
       state.value.userPermission = action.payload;
     },
+    setUserId: (state, action: PayloadAction<string>) => {
+      state.value.userId = action.payload;
+    },
     logOut: () => initialState,
   },
 });
 
-export const { setUserEmail, setUserPackage, setUserPermissions, logOut } = auth.actions;
+export const { setUserEmail, setUserPackage, setUserPermissions,setUserId, logOut } = auth.actions;
 export default auth.reducer;

@@ -40,7 +40,7 @@ const RenderFormComponent = ({
       return (
         <BehaviouralPolicy
           formData={formData.behavioural}
-          setFormData={async (data) => await (handleSaveFormData("behavioural", data  ))}
+          setFormData={async (data) => await (handleSaveFormData("behavioral", data  ))}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -51,7 +51,7 @@ const RenderFormComponent = ({
       return (
         <CandidateRecordForm
           formData={formData.candidaterecord}
-          setFormData={(data) => handleSaveFormData("candidaterecord", data)}
+          setFormData={(data) => handleSaveFormData("candidate_record", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -73,7 +73,7 @@ const RenderFormComponent = ({
       return (
         <DataProtection
           formData={formData.dataprotection}
-          setFormData={(data) => handleSaveFormData("dataprotection", data)}
+          setFormData={(data) => handleSaveFormData("data_protection", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -84,7 +84,7 @@ const RenderFormComponent = ({
       return (
         <EqualOpportunitiesPolicy
           formData={formData.equalopportunities}
-          setFormData={(data) => handleSaveFormData("equalopportunities", data)}
+          setFormData={(data) => handleSaveFormData("equal_opportunities", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -96,7 +96,7 @@ const RenderFormComponent = ({
         <HealthSafetyPolicy
           formData={formData.healthandsafetypolicy}
           setFormData={(data) =>
-            handleSaveFormData("healthAndSafetyPolicy", data)
+            handleSaveFormData("health_and_safety", data)
           }
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
@@ -108,7 +108,7 @@ const RenderFormComponent = ({
       return (
         <GuidancePolicy
           formData={formData.guidancepolicy}
-          setFormData={(data) => handleSaveFormData("guidancepolicy", data)}
+          setFormData={(data) => handleSaveFormData("guidance_policy", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -130,7 +130,7 @@ const RenderFormComponent = ({
       return (
         <PrivacyNotice
           formData={formData.privacynotice}
-          setFormData={(data) => handleSaveFormData("privacynotice", data)}
+          setFormData={(data) => handleSaveFormData("privacy_notice", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -141,7 +141,7 @@ const RenderFormComponent = ({
       return (
         <AwardAssessment
           formData={formData.awardassessment}
-          setFormData={(data) => handleSaveFormData("awardassessment", data)}
+          setFormData={(data) => handleSaveFormData("award_assessment", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -152,7 +152,7 @@ const RenderFormComponent = ({
       return (
         <EmployerAgreement
           formData={formData.employeragreement}
-          setFormData={(data) => handleSaveFormData("employeragreement", data)}
+          setFormData={(data) => handleSaveFormData("employer_agreement", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -164,7 +164,7 @@ const RenderFormComponent = ({
         <ParticipantAgreement
           formData={formData.participantagreement}
           setFormData={(data) =>
-            handleSaveFormData("participantagreement", data)
+            handleSaveFormData("participant_agreement", data)
           }
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
@@ -176,7 +176,7 @@ const RenderFormComponent = ({
       return (
         <ExtremismPolicy
           formData={formData.extremismpolicy}
-          setFormData={(data) => handleSaveFormData("extremismpolicy", data)}
+          setFormData={(data) => handleSaveFormData("extremism_policy", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -187,7 +187,7 @@ const RenderFormComponent = ({
       return (
         <ChildProtection
           formData={formData.childprotection}
-          setFormData={(data) => handleSaveFormData("childprotection", data)}
+          setFormData={(data) => handleSaveFormData("child_protection", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -198,7 +198,7 @@ const RenderFormComponent = ({
       return (
         <SkillsAssessment
           formData={formData.skillsassessment}
-          setFormData={(data) => handleSaveFormData("skillsassessment", data)}
+          setFormData={(data) => handleSaveFormData("skills_assessment", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}

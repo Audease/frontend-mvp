@@ -11,7 +11,7 @@ export default function StaffTable({
   onRoleSelect,
 }) {
   const [editOptions, setEditOptions] = useState({});
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true); 
   const menuRef = useRef(null);
   const [selectedRole, setSelectedRole] = useState({});
   const [fullDropdownResponseData, setFullDropdownResponseData] = useState([]);
@@ -93,7 +93,7 @@ export default function StaffTable({
 
  
   useEffect(() => {
-    if (staffData.length > 0) {
+    if (staffData.length >= 0) {
       setLoading(false);
     }
   }, [staffData]);
@@ -103,7 +103,7 @@ export default function StaffTable({
       {loading ? (
         <LoadingSpinner />
       ) : (
-        <table className="min-w-full divide-y divide-gray-200 font-inter table-auto rounded-t-lg min-h-[22rem]">
+        <table className="min-w-full divide-y divide-gray-200 font-inter table-auto rounded-t-lg ">
           <thead className="bg-tgrey-6 border border-tgrey6 ">
             <tr>
               <th className="px-4 py-3 text-left text-sm font-normal text-tableText tracking-wider">

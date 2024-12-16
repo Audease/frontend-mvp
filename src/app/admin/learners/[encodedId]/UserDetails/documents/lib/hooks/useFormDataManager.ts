@@ -21,19 +21,33 @@ export const INITIAL_FORM_DATA = {
 export const useFormDataManager = (userId: string) => {
   const USER_DOCS_STORAGE_KEY = `user-docs-${userId}`;
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+  const learnerIdd = "75630d1a-048c-41b2-ad0b-06e4902b4532";
 
-  // Load form data from localStorage on mount
+  // Load form data  on mount
   useEffect(() => {
-    const savedData = localStorage.getItem(USER_DOCS_STORAGE_KEY);
-    if (savedData) {
+    const fetchData = async () => {
       try {
-        const parsedData = JSON.parse(savedData);
-        setFormData(parsedData);
+        const response = await fetch(
+          `/api/enrolmentForm/getSubmission/?learnerId=${learnerIdd}`,
+          {
+            method: "GET",
+          }
+        );
+    
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data.data)
+          setFormData(data.data);
+        } else {
+          throw new Error("Failed to fetch submissions");
+        }
       } catch (error) {
-        console.error('Error loading saved form data:', error);
+        console.error("Error fetching submissions:", error);
       }
-    }
-  }, [USER_DOCS_STORAGE_KEY]);
+    };
+   
+    fetchData();
+   }, [userId]);
 
   // Save form data to localStorage whenever it changes
   useEffect(() => {
@@ -59,7 +73,7 @@ export const useFormDataManager = (userId: string) => {
             "Content-Type": "applicatio/json",
           },
           body: JSON.stringify({
-            formType: "award_assessment",
+            formType: "behavioral",
             data: {
               data,
             },

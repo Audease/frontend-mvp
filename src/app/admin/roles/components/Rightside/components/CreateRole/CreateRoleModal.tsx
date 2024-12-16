@@ -113,7 +113,7 @@ export default function CreateRoleModal({ isRoleModalOpen, closeRoleModal, setSu
                 Permission (You can only select one permission)
               </label>
               {/* Tag Input Field */}
-              <div className="flex flex-wrap items-center border p-2 border-1 rounded-lg border-tgrey2 py-1 text-h2 h-16 gap-2">
+              <div className="flex flex-wrap items-center border p-2 border-1 rounded-lg border-tgrey2 py-1 text-h2 min-h-16 gap-2">
                 {tags.map((tag, index) => (
                   <div
                     key={index}

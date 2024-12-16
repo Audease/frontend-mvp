@@ -1,74 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server';
-import axios from 'axios';
 import { cookies } from 'next/headers';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export async function POST(req: NextRequest) {
-  const { formType, data } = await req.json();
-
-  // Get the access token from cookies
+export async function GET(req: NextRequest) {
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
-  // Check if access token exists
   if (!accessToken) {
-    return new NextResponse(
-      JSON.stringify({ message: 'Unauthorized' }),
-      { status: 401 }
-    );
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  // Validate input
-  if (!formType || !data) {
-    return new NextResponse(
-      JSON.stringify({ message: 'Invalid input: formType and data are required' }),
-      { status: 400 }
-    );
+  const { searchParams } = new URL(req.url);
+  const learnerId = searchParams.get('learnerId'); 
+
+  if (!learnerId) {
+    return NextResponse.json({ message: 'learnerId is required' }, { status: 400 });
   }
 
   try {
-    // Make the API call to form submissions endpoint
-    const response = await axios.post(
-      `${apiUrl}/v1/forms/submissions`,
-      { formType, data }, 
+    const response = await fetch(
+      `${apiUrl}/v1/forms/submissions/${learnerId}`,
       {
+        method: 'GET',
         headers: {
           'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
-        },
+        }
       }
     );
 
-    // Handle successful response
-    if (response.status === 201) {
-      return new NextResponse(
-        JSON.stringify({ 
-          message: 'Form submitted successfully',
-          data: response.data 
-        }),
-        { status: 201 }
-      );
+    if (response.ok) {
+      const data = await response.json();
+      console.log("This response is okay")
+      return NextResponse.json(data);
     } else {
-      // Handle other successful status codes
-      return new NextResponse(
-        JSON.stringify({ 
-          message: response.data.message || 'Form submission partially successful',
-          data: response.data 
-        }),
-        { status: response.status },
-      );
+      const errorData = await response.json();
+      console.log("This response is not okay")
+      return NextResponse.json({ message: 'Failed to fetch submissions', error: errorData }, { status: response.status });
     }
   } catch (error) {
-    // Handle axios error
-    console.error('Form submission error:', error);
-
-    return new NextResponse(
-      JSON.stringify({ 
-        message: error.response?.data?.message || 'Failed to submit form',
-        error: error.response?.data || null
-      }),
-      { status: error.response?.status || 500 },
-    );
+    return NextResponse.json({ message: 'Failed to fetch submissions', error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
   }
 }

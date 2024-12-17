@@ -39,8 +39,8 @@ const RenderFormComponent = ({
     case "BehaviouralPolicy":
       return (
         <BehaviouralPolicy
-          formData={formData.behavioural}
-          setFormData={async (data) => await (handleSaveFormData("behavioural", data  ))}
+          formData={formData.behavioral}
+          setFormData={async (data) => await (handleSaveFormData("behavioral", data  ))}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -50,8 +50,8 @@ const RenderFormComponent = ({
     case "CandidateRecord":
       return (
         <CandidateRecordForm
-          formData={formData.candidaterecord}
-          setFormData={(data) => handleSaveFormData("candidaterecord", data)}
+          formData={formData.candidate_record}
+          setFormData={(data) => handleSaveFormData("candidate_record", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -72,8 +72,8 @@ const RenderFormComponent = ({
     case "DataProtection":
       return (
         <DataProtection
-          formData={formData.dataprotection}
-          setFormData={(data) => handleSaveFormData("dataprotection", data)}
+          formData={formData.data_protection}
+          setFormData={(data) => handleSaveFormData("data_protection", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -83,8 +83,8 @@ const RenderFormComponent = ({
     case "EqualOpportunities":
       return (
         <EqualOpportunitiesPolicy
-          formData={formData.equalopportunities}
-          setFormData={(data) => handleSaveFormData("equalopportunities", data)}
+          formData={formData.equal_opportunities}
+          setFormData={(data) => handleSaveFormData("equal_opportunities", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -94,9 +94,9 @@ const RenderFormComponent = ({
     case "HealthSafetyPolicy":
       return (
         <HealthSafetyPolicy
-          formData={formData.healthandsafetypolicy}
+          formData={formData.health_and_safety}
           setFormData={(data) =>
-            handleSaveFormData("healthAndSafetyPolicy", data)
+            handleSaveFormData("health_and_safety", data)
           }
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
@@ -107,8 +107,8 @@ const RenderFormComponent = ({
     case "GuidancePolicy":
       return (
         <GuidancePolicy
-          formData={formData.guidancepolicy}
-          setFormData={(data) => handleSaveFormData("guidancepolicy", data)}
+          formData={formData.guidance_policy}
+          setFormData={(data) => handleSaveFormData("guidance_policy", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -118,8 +118,8 @@ const RenderFormComponent = ({
     case "Enrolment":
       return (
         <Enrolment
-          formData={formData.enrolment}
-          setFormData={(data) => handleSaveFormData("enrolment", data)}
+          formData={formData.complaint}
+          setFormData={(data) => handleSaveFormData("complaint", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -129,8 +129,8 @@ const RenderFormComponent = ({
     case "PrivacyNotice":
       return (
         <PrivacyNotice
-          formData={formData.privacynotice}
-          setFormData={(data) => handleSaveFormData("privacynotice", data)}
+          formData={formData.privacy_notice}
+          setFormData={(data) => handleSaveFormData("privacy_notice", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -140,8 +140,8 @@ const RenderFormComponent = ({
     case "AwardAssessment":
       return (
         <AwardAssessment
-          formData={formData.awardassessment}
-          setFormData={(data) => handleSaveFormData("awardassessment", data)}
+          formData={formData.award_assessment}
+          setFormData={(data) => handleSaveFormData("award_assessment", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -151,8 +151,8 @@ const RenderFormComponent = ({
     case "EmployerAgreement":
       return (
         <EmployerAgreement
-          formData={formData.employeragreement}
-          setFormData={(data) => handleSaveFormData("employeragreement", data)}
+          formData={formData.employer_agreement}
+          setFormData={(data) => handleSaveFormData("employer_agreement", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -162,9 +162,9 @@ const RenderFormComponent = ({
     case "ParticipantAgreement":
       return (
         <ParticipantAgreement
-          formData={formData.participantagreement}
+          formData={formData.participant_agreement}
           setFormData={(data) =>
-            handleSaveFormData("participantagreement", data)
+            handleSaveFormData("participant_agreement", data)
           }
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
@@ -175,8 +175,8 @@ const RenderFormComponent = ({
     case "ExtremismPolicy":
       return (
         <ExtremismPolicy
-          formData={formData.extremismpolicy}
-          setFormData={(data) => handleSaveFormData("extremismpolicy", data)}
+          formData={formData.extremism_policy}
+          setFormData={(data) => handleSaveFormData("extremism_policy", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -186,8 +186,8 @@ const RenderFormComponent = ({
     case "ChildProtection":
       return (
         <ChildProtection
-          formData={formData.childprotection}
-          setFormData={(data) => handleSaveFormData("childprotection", data)}
+          formData={formData.child_protection}
+          setFormData={(data) => handleSaveFormData("child_protection", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}
@@ -197,8 +197,8 @@ const RenderFormComponent = ({
     case "SkillsAssessment":
       return (
         <SkillsAssessment
-          formData={formData.skillsassessment}
-          setFormData={(data) => handleSaveFormData("skillsassessment", data)}
+          formData={formData.skills_assessment}
+          setFormData={(data) => handleSaveFormData("skills_assessment", data)}
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
           isSubmitted={isSubmitted}

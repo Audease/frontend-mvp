@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function POST(req: NextRequest) {
-  const { formType, data } = await req.json();
+  const { formType, data, studentId } = await req.json();
 
   // Get the access token from cookies
   const cookieStore = cookies();
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     // Make the API call to form submissions endpoint
     const response = await axios.post(
       `${apiUrl}/v1/forms/submissions`,
-      { formType, data }, 
+      { formType, data, studentId }, 
       {
         headers: {
           'Authorization': `Bearer ${accessToken}`,

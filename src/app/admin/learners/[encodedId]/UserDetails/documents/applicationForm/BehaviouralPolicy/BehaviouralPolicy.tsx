@@ -3,7 +3,7 @@
 import React from "react";
 import BehaviouralForm from "./BehaviouralForm";
 import { behaviouralData } from "./data/Behavioural";
-import FootLogos from "../components/FootLogos";
+
 
 interface BehaviouralPolicyProps {
   formData?: any;

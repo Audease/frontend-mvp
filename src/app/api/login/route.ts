@@ -27,29 +27,32 @@ export async function POST(req: NextRequest) {
       cookies().set({
         name: 'accessToken',
         value: access.token,
-        secure: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV === "production" || process.env.NODE_ENV as string === "staging",
         httpOnly: true,
         maxAge: access.expires,
         path: '/',
+        sameSite: "strict",
       });
 
       // Set refreshToken cookie
       cookies().set({
         name: 'refreshToken',
         value: refresh.token,
-        secure: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV === "production" || process.env.NODE_ENV as string === "staging",
         httpOnly: true,
         maxAge: refresh.expires,
         path: '/',
+        sameSite: "strict",
       });
 
       // Set permissions cookie
       cookies().set({
         name: 'permissions',
         value: JSON.stringify(permissions),
-        secure: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV === "production" || process.env.NODE_ENV as string === "staging",
         httpOnly: true,
         path: '/',
+        sameSite: "strict",
       });
 
 

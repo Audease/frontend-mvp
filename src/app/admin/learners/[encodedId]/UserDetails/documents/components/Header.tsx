@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => (
   <>
     <div className="flex flex-row justify-between m-4">
-      <button className="flex flex-row space-x-2" type="button" onClick={onBackClick}>
+      <button className="flex flex-row space-x-2 justify-center items-center" type="button" onClick={onBackClick}>
         <SlArrowLeft className="h-[0.6rem]"/>
         <p className="font-medium text-base">Back</p>
       </button>

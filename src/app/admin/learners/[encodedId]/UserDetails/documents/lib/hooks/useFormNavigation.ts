@@ -4,13 +4,19 @@ export const useFormNavigation = (formComponents: string[]) => {
   const [formContent, setFormContent] = useState('Appeal');
   const [sectionNumber, setSectionNumber] = useState(1);
   const totalSectionNumber = formComponents.length;
+  const [ShowDialog, setShowDialog] = useState(false)
 
   const goToNextSection = () => {
-    setSectionNumber((prev) => {
-      const nextSection = Math.min(prev + 1, totalSectionNumber);
-      setFormContent(formComponents[nextSection - 1] || 'Appeal');
-      return nextSection;
-    });
+    if (sectionNumber >= totalSectionNumber - 3) {
+      setShowDialog(true);
+    } else {
+      setSectionNumber((prev) => {
+        const nextSection = Math.min(prev + 1, totalSectionNumber);
+        setFormContent(formComponents[nextSection - 1] || "Appeal");
+        return nextSection;
+      });
+    }
+    
   };
 
   const goToPreviousSection = () => {
@@ -32,9 +38,11 @@ export const useFormNavigation = (formComponents: string[]) => {
     formContent,
     sectionNumber,
     totalSectionNumber,
+    setShowDialog,
+    ShowDialog,
     goToNextSection,
     goToPreviousSection,
     goToSpecificSection,
-    setFormContent
+    setFormContent,
   };
 };

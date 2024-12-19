@@ -6,13 +6,8 @@ import { useAccessorLearners } from "../utils/useAccessorLearners";
 import LoadingSpinner from "../../../../components/dashboard/Spinner";
 import { accessorLearnerRevalidation } from "@/app/action";
 
-export default function AccessorDashboardTable({
-  checkedItems,
-  handleCheckboxChange,
-  onViewChange
-}) {
+export default function AccessorDashboardTable({ onViewChange }) {
   const { fetchAccessorLearnersData } = useAccessorLearners();
-
   const [allLearners, setallLearners] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalpages] = useState(1);
@@ -21,9 +16,8 @@ export default function AccessorDashboardTable({
 
   const handleFetchAccessorLearnersData = async (page) => {
     setLoading(true);
-    const { totalPages, totalItems, allLearners } = await fetchAccessorLearnersData(
-      page
-    );
+    const { totalPages, totalItems, allLearners } =
+      await fetchAccessorLearnersData(page);
     setTotalpages(totalPages);
     setTotalItems(totalItems);
     setallLearners(allLearners);
@@ -33,7 +27,7 @@ export default function AccessorDashboardTable({
   useEffect(() => {
     handleFetchAccessorLearnersData(currentPage);
     accessorLearnerRevalidation();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handlePageChange = async (page) => {
@@ -41,20 +35,16 @@ export default function AccessorDashboardTable({
     handleFetchAccessorLearnersData(page);
   };
 
-  const [editOptionsVisible, setEditOptionsVisible] = useState(null); 
+  const [editOptionsVisible, setEditOptionsVisible] = useState(null);
   const menuRef = useRef(null);
 
   const toggleVisibility = (index, rowId) => {
-    if (checkedItems[rowId]) {
-      setEditOptionsVisible((prev) => (prev === index ? null : index)); 
-    } else {
-      setEditOptionsVisible(null);
-    }
+    setEditOptionsVisible((prev) => (prev === index ? null : index));
   };
 
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
-      setEditOptionsVisible(null); 
+      setEditOptionsVisible(null);
     }
   };
 
@@ -112,16 +102,16 @@ export default function AccessorDashboardTable({
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          { loading ? (
+          {loading ? (
             <tr className="border-b">
-            <td
-              colSpan={12}
-              className="px-4 py-4 text-center text-sm text-tableText2 font-medium"
-            >
-              <LoadingSpinner />
-            </td>
-          </tr>
-        ) : allLearners.length === 0 ? (
+              <td
+                colSpan={12}
+                className="px-4 py-4 text-center text-sm text-tableText2 font-medium"
+              >
+                <LoadingSpinner />
+              </td>
+            </tr>
+          ) : allLearners.length === 0 ? (
             <tr className="border-b">
               <td
                 colSpan={13}
@@ -134,14 +124,6 @@ export default function AccessorDashboardTable({
             allLearners.map((row, index) => (
               <tr key={row.id}>
                 <td className="px-2 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium flex flex-row">
-                  <span className="pr-4">
-                    <input
-                      type="checkbox"
-                      className="staff-checkbox h-3 w-3 text-tableText2 rounded-sm focus:ring-tgrey2"
-                      onChange={() => handleCheckboxChange(row.id)}
-                      checked={!!checkedItems[row.id]}
-                    />
-                  </span>
                   {row.name}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
@@ -177,9 +159,12 @@ export default function AccessorDashboardTable({
                 <td className="px-2 py-2 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   <p
                     className={clsx("text-center p-1 rounded-lg", {
-                      "bg-green4 text-green3": row.application_status === "Approved",
-                      "bg-tgrey8 text-tblack4": row.application_status === "Pending",
-                      "bg-red-200 text-red-600": row.application_status === "Rejected",
+                      "bg-green4 text-green3":
+                        row.application_status === "Approved",
+                      "bg-tgrey8 text-tblack4":
+                        row.application_status === "Pending",
+                      "bg-red-200 text-red-600":
+                        row.application_status === "Rejected",
                     })}
                   >
                     {row.application_status}
@@ -187,14 +172,14 @@ export default function AccessorDashboardTable({
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-bold text-center relative">
                   <p
-                    onClick={() => toggleVisibility(index, row.id)} 
+                    onClick={() => toggleVisibility(index, row.id)}
                     aria-expanded={editOptionsVisible === index}
                     aria-haspopup="true"
                     className="cursor-pointer font-bold"
                   >
                     ...
                   </p>
-                  {editOptionsVisible === index && checkedItems[row.id] && (
+                  {editOptionsVisible === index && (
                     <div
                       ref={menuRef}
                       className="bg-white shadow-lg rounded-lg p-2 font-medium w-24 absolute left-[-60px] border-2 right-0 text-tblack3 space-y-4 z-10 top-10"
@@ -202,9 +187,7 @@ export default function AccessorDashboardTable({
                       <p
                         className="hover:text-gold1 cursor-pointer text-black text-left"
                         onClick={() => {
-                          if (checkedItems[row.id]) {
-                            onViewChange(row);
-                          }
+                          onViewChange(row);
                         }}
                       >
                         View

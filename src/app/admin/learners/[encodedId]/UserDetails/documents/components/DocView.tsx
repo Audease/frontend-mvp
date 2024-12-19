@@ -25,7 +25,6 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
 
   // Local state
   const [CollegeName, setCollegeName] = useState<string>("");
-  const [showDialog, setShowDialog] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -35,6 +34,8 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
     formContent,
     sectionNumber,
     totalSectionNumber,
+    setShowDialog,
+    ShowDialog,
     goToNextSection,
     goToPreviousSection,
     goToSpecificSection,
@@ -122,7 +123,7 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
         {/* Dialog Render */}
         <DialogRender
           useRole={userRole}
-          showDialog={showDialog}
+          showDialog={ShowDialog}
           setShowDialog={setShowDialog}
           handleSubmit={handleSubmit}
           accessorApprove={async () => handleApprove()}

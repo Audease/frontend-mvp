@@ -1,28 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from "next/server";
+import { TokenManager } from "../utils/checkAndRefreshToken";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function GET(req: NextRequest) {
-  const cookieStore = cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
+  const accessToken = await TokenManager();
 
   if (!accessToken) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const response = await fetch(
-      apiUrl + '/v1/admin/roles',
-      {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        cache: 'force-cache',
-        next: {tags: ['roles'] }
-      }
-    );
+    const response = await fetch(apiUrl + "/v1/admin/roles", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      cache: "force-cache",
+      next: { tags: ["roles"] },
+    });
 
     if (response.ok) {
       const data = await response.json();
@@ -30,13 +26,13 @@ export async function GET(req: NextRequest) {
     } else {
       const errorData = await response.json().catch(() => ({}));
       return NextResponse.json(
-        { message: errorData.message || 'Failed to get role options' },
+        { message: errorData.message || "Failed to get role options" },
         { status: response.status }
       );
     }
   } catch (error: any) {
     return NextResponse.json(
-      { message: 'Failed to get role options' },
+      { message: "Failed to get role options" },
       { status: 500 }
     );
   }

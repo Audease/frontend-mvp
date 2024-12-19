@@ -1,16 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
-import { cookies } from 'next/headers';
+import { TokenManager } from '../utils/checkAndRefreshToken';
+
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function POST(req: NextRequest) {
-  const cookieStore = cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
+  const accessToken = await TokenManager()
   const payload = await req.json();
-
-  // console.log(payload)
-
   
   if (!accessToken) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });

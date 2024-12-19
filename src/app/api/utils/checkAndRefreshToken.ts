@@ -1,7 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 
-export const useTokenManager = async () => {
+export const TokenManager = async () => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const cookieStore = cookies();
   const accessToken = cookieStore.get("accessToken")?.value;
@@ -46,7 +46,6 @@ export const useTokenManager = async () => {
 
     if (remainingTimeSeconds < 300) {
       const response = await refreshAccessToken(refreshToken);
-      console.log(`This is from CheckandRefresh: ${response}`);
       return response;
     }
     return accessToken;

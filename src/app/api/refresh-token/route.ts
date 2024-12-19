@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -21,7 +20,6 @@ export async function POST(req: NextRequest) {
     if (fetchResponse.ok) {
       const responseData = await fetchResponse.json();
       const newAccessToken = responseData.token;
-      console.log(`This is from refreshTokenEndpoint: ${newAccessToken}`)
       return NextResponse.json({ token: newAccessToken }, { status: 200 });
     } else {
       const errorData = await fetchResponse.json();

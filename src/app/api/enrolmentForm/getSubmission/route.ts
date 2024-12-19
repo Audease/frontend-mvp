@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { useTokenManager } from "../../utils/checkAndRefreshToken";
+import { TokenManager } from "../../utils/checkAndRefreshToken";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function GET(req: NextRequest) {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const accessToken = await useTokenManager();
-  console.log(`This is from getSubmission: ${accessToken}`)
-
+  const accessToken = await TokenManager();
+  
   if (!accessToken) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }

@@ -42,7 +42,7 @@ const middleware = async (request: NextRequest) => {
       return NextResponse.next();
     }
 
-    // Updated admin access check
+    
     if ((pathname === "/admin" || pathname.startsWith("/admin/")) && userPermissions.length <= 4) {
       return NextResponse.redirect(new URL("/no-access", request.url));
     }

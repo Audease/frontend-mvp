@@ -40,7 +40,7 @@ const formSchema: z.ZodObject<FormSchema> = z.object({
 const ParticipantAgreement: React.FC<ParticipantAgreementProps> = ({
   onNextClick,
   onPrevClick,
-  formData,
+  formData = {},
   setFormData,
   userRole,
   isSubmitted,
@@ -210,11 +210,11 @@ const ParticipantAgreement: React.FC<ParticipantAgreementProps> = ({
 
           <div className="flex flex-row space-x-5 my-8">
             {onPrevClick && (
-              <Button type="button" onClick={onPrevClick}>
+              <Button type="button" onClick={onPrevClick} disabled={userRole === "Admin"}>
                 Back
               </Button>
             )}
-            <Button type="submit">Save and Continue</Button>
+            <Button type="submit" disabled={userRole === "Admin"}>Save and Continue</Button>
           </div>
         </form>
       </div>

@@ -10,6 +10,7 @@ interface BackendData {
 
 export const useFormDataManager = (userId: string) => {
   const [formData, setFormData] = useState({});
+  const [formLoading, setFormLoading] = useState(false);
 
   const transformFormData = (backendData: BackendData) => {
     const usableData = Object.entries(backendData).reduce(
@@ -25,6 +26,7 @@ export const useFormDataManager = (userId: string) => {
   useEffect(() => {
     const fetchFormSubmissions = async () => {
       try {
+        setFormLoading(true);
         const response = await fetch(
           `/api/enrolmentForm/getSubmission?studentId=${userId}`,
           {
@@ -41,9 +43,11 @@ export const useFormDataManager = (userId: string) => {
 
         const backendData = await response.json();
         transformFormData(backendData);
+        
       } catch (error) {
         // console.error("Error fetching form submissions:", error);
       }
+      setFormLoading(false);
     };
 
     fetchFormSubmissions();
@@ -59,6 +63,7 @@ export const useFormDataManager = (userId: string) => {
     }));
 
     try {
+      setFormLoading(true);
       const response = await fetch("/api/enrolmentForm/submissionDraft", {
         method: "POST",
         headers: {
@@ -73,8 +78,10 @@ export const useFormDataManager = (userId: string) => {
         }),
       });
       const responseData = await response.json();
+      
     } catch {}
+    setFormLoading(false);
   };
 
-  return { formData, updateFormData };
+  return { formData, formLoading, updateFormData };
 };

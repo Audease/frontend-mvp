@@ -51,7 +51,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 const SkillsAssessmentForm = ({
-  formData,
+  formData = {},
   setFormData,
   onNextClick,
   onPrevClick,
@@ -219,11 +219,11 @@ const SkillsAssessmentForm = ({
 
       <div className="flex flex-row space-x-5 my-8">
         {onPrevClick && (
-          <Button type="button" onClick={onPrevClick}>
+          <Button type="button" onClick={onPrevClick} disabled={userRole === "Admin"}>
             Back
           </Button>
         )}
-        <Button type="submit">Save</Button>
+        <Button type="submit" disabled={userRole === "Admin"}>Save</Button>
       </div>
     </form>
   );

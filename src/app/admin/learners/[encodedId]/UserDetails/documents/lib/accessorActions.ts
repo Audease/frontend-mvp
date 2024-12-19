@@ -1,10 +1,10 @@
-// accessorActions.ts
-
-import { ApproveLearner, RejectLearner } from "@/app/admin/(adminPersonaScreens)/accessor-dashboard/utils/action";
-
+import {
+  ApproveLearner,
+  RejectLearner,
+} from "@/app/admin/(adminPersonaScreens)/accessor-dashboard/utils/action";
 
 export const accessorReject = async (
-  userId: string, 
+  userId: string,
   setLoading: (loading: boolean) => void,
   setShowDialog: (show: boolean) => void,
   setIsSubmitted: (submitted: boolean) => void,
@@ -31,21 +31,19 @@ export const accessorReject = async (
 
 export const accessorApprove = async (
   userId: string,
-  formData: any, 
+  formData: any,
   USER_DOCS_STORAGE_KEY: string,
   setLoading: (loading: boolean) => void,
   setShowDialog: (show: boolean) => void,
   setIsSubmitted: (submitted: boolean) => void,
   setFormContent: (content: string) => void
 ) => {
-  localStorage.setItem(USER_DOCS_STORAGE_KEY, JSON.stringify(formData));
   setLoading(true);
-  
+
   try {
     const success = await ApproveLearner(userId);
     setShowDialog(false);
-    setIsSubmitted(false);
-    
+    setIsSubmitted(true);
     if (success) {
       setFormContent("AccessorSuccessPage");
     } else {

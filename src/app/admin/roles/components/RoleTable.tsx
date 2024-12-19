@@ -2,13 +2,17 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { fetchRoles } from "../../utils/fetchRoles";
 import { useRouter } from "next/navigation";
-import LoadingSpinner from "../../../components/dashboard/Spinner";
+import LoadingSpinner, {
+  LoadingSpinner2,
+} from "../../../components/dashboard/Spinner";
 import { Tooltip } from "flowbite-react";
+import NextTopLoader from "nextjs-toploader";
 
 export default function RoleTable() {
   const [availableRoles, setAvailableRoles] = useState([]);
   const [editOptions, setEditOptions] = useState({});
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const menuRef = useRef(null);
   const router = useRouter();
 
@@ -97,17 +101,17 @@ export default function RoleTable() {
   ];
 
   const handleRoleClick = (permissions) => {
-    console.log(permissions);
-
+    setLoading2(true);
     for (const permissionMap of permissionsMap) {
       if (permissions === permissionMap.label) {
         return router.push(permissionMap.route);
       }
     }
+    setLoading2(true);
   };
 
   return (
-    <table className="min-w-full divide-y divide-gray-200 font-inter">
+    <table className="min-w-full divide-y divide-gray-200 font-inter relative">
       <thead className="bg-tgrey5 border border-tgrey6 rounded-full">
         <tr>
           <th className="px-6 py-3 text-left text-sm font-normal text-tableText tracking-wider">
@@ -123,6 +127,11 @@ export default function RoleTable() {
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">
+        {loading2 && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 backdrop-blur-sm z-10">
+            <LoadingSpinner2 />
+          </div>
+        )}
         {loading ? (
           <tr className="border-b">
             <td

@@ -37,23 +37,19 @@ export const confidentialityData = {
       type: "text",
       id: "employer",
       section: "learner",
-      editableBy: ["learner"],
+      editableBy: ["learner", "accessor"],
       label: "Employer",
       placeholder: "Employer",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
-        message: "Employer must be at least 2 characters.",
-      }),
+      validation: z.string().optional()
     },
     {
       type: "text",
       id: "courseDetails",
       section: "learner",
-      editableBy: ["learner"],
+      editableBy: ["learner", "accessor"],
       label: "Course/Project Details",
       placeholder: "Course/Project Details",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
-        message: "Course details must be at least 2 characters.",
-      }),
+      validation: z.string().optional()
     },
     {
       type: "text",

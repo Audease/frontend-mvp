@@ -402,10 +402,10 @@ export const guidancePolicyData = {
       type: "text",
       id: "employer",
       section: "learner",
-      editableBy: ["learner"],
+      editableBy: ["learner", "accessor"],
       label: "Employer",
       placeholder: "Employer",
-      validation: z.string().min(2).max(100),
+      validation: z.string().optional(),
     },
     {
       type: "text",

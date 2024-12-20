@@ -10,6 +10,7 @@ import DatePicker from "@/app/components/form/DatePicker/DatePicker";
 import Dropdown from "@/app/components/form/SelectInput/SelectInput";
 import { candidateRecordData } from "./data/CandidateRecord";
 import FootLogos from "../components/FootLogos";
+import NumberInput from "@/app/components/form/NumberInput/NumberInput";
 
 interface CandidateRecordFormProps {
   formData?: any;
@@ -116,6 +117,30 @@ export default function CandidateRecordForm({
                   )}
                 />
               );
+              case "number":
+                  return (
+                    <Controller
+                      key={`sectionField-${
+                        field.id }`}
+                      name={field.id}
+                      control={control}
+                      render={({ field: { onChange, value } }) => (
+                        <NumberInput
+                          id={field.id}
+                          label={field.label}
+                          disabled={!isEditable}
+                          onChange={(e) => onChange(Number(e.target.value))}
+                          value={value || ""}
+                          error={errors[field.id]?.message as string}
+                          placeholder={
+                            field.placeholder || "Enter a number"
+                          }
+                          min={field.min || 0}
+                          max={field.max || 10}
+                        />
+                      )}
+                    />
+                  );
             case "date":
               return (
                 <Controller

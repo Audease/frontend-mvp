@@ -10,41 +10,37 @@ export const awardAssessmentData = {
       type: "text",
       id: "nameOfAward",
       section: "learner",
-      editableBy: ["learner"],
-      label: "Name of Award",
+      editableBy: ["accessor"],
+      label: "Name of Award (For Officials Only)",
       placeholder: "Name of Award",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
-        message: "Name must be at least 2 characters.",
-      }),
+      validation: z.string().optional()
     },
     {
       type: "date",
       id: "dateofRegistrationWithEdenCollege:",
       section: "learner",
-      editableBy: ["learner"],
-      label: "Date of registration with Eden College:",
+      editableBy: ["accessor"],
+      label: "Date of registration with Eden College (For Officials Only): ",
       placeholder: "Enter valid date",
-      validation: z.string().date(),
+      validation: z.string().optional(),
     },
     {
       type: "text",
       id: "candidateEnrolmentNo",
       section: "learner",
-      editableBy: ["learner"],
-      label: "Candidate enrolment No",
+      editableBy: ["accessor"],
+      label: "Candidate enrolment No (For Officials Only)",
       placeholder: "Candidate enrolment No",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
-        message: "Enrolment number must be at least 2 characters.",
-      }),
+      validation: z.string().optional()
     },
     {
       type: "date",
       id: "targetCompletionDate",
       section: "learner",
-      editableBy: ["learner"],
-      label: "Target completion date (12 months from start date)",
+      editableBy: ["accessor"],
+      label: "Target completion date (12 months from start date) (For Officials Only)",
       placeholder: "Enter valid date",
-      validation: z.string().date(),
+      validation: z.string().optional(),
     },
   ],
   arrangement: {
@@ -211,23 +207,19 @@ export const awardAssessmentData = {
         type: "text",
         id: "candidateEmployer",
         section: "learner",
-        editableBy: ["learner"],
+        editableBy: ["learner", "accessor"],
         label: "Employer",
         placeholder: "Employer",
-        validation: z.string().refine((value) => value.trim().length >= 2, {
-          message: "Candidate Employer must be at least 2 characters.",
-        }),
+        validation: z.string().optional()
       },
       {
         type: "text",
         id: "learnerCurrentPosition",
         section: "learner",
-        editableBy: ["learner"],
+        editableBy: ["learner", "accessor"],
         label: "Current Position",
         placeholder: "Current Position",
-        validation: z.string().refine((value) => value.trim().length >= 2, {
-          message: "Position must be at least 2 characters.",
-        }),
+        validation: z.string().optional()
       },
       {
         type: "date",

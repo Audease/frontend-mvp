@@ -1,28 +1,28 @@
-import { NextRequest, NextResponse } from 'next/server';
-import axios from 'axios';
-import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from "next/server";
+import axios from "axios";
+import { TokenManager } from "../../utils/checkAndRefreshToken";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function POST(req: NextRequest) {
-  const { formType, data } = await req.json();
+  const { formType, data, studentId } = await req.json();
 
   // Get the access token from cookies
-  const cookieStore = cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
+  const accessToken = await TokenManager();
 
   // Check if access token exists
   if (!accessToken) {
-    return new NextResponse(
-      JSON.stringify({ message: 'Unauthorized' }),
-      { status: 401 }
-    );
+    return new NextResponse(JSON.stringify({ message: "Unauthorized" }), {
+      status: 401,
+    });
   }
 
   // Validate input
   if (!formType || !data) {
     return new NextResponse(
-      JSON.stringify({ message: 'Invalid input: formType and data are required' }),
+      JSON.stringify({
+        message: "Invalid input: formType and data are required",
+      }),
       { status: 400 }
     );
   }
@@ -31,11 +31,11 @@ export async function POST(req: NextRequest) {
     // Make the API call to form submissions endpoint
     const response = await axios.post(
       `${apiUrl}/v1/forms/submissions`,
-      { formType, data }, 
+      { formType, data, studentId },
       {
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
         },
       }
     );
@@ -43,32 +43,33 @@ export async function POST(req: NextRequest) {
     // Handle successful response
     if (response.status === 201) {
       return new NextResponse(
-        JSON.stringify({ 
-          message: 'Form submitted successfully',
-          data: response.data 
+        JSON.stringify({
+          message: "Form submitted successfully",
+          data: response.data,
         }),
         { status: 201 }
       );
     } else {
       // Handle other successful status codes
       return new NextResponse(
-        JSON.stringify({ 
-          message: response.data.message || 'Form submission partially successful',
-          data: response.data 
+        JSON.stringify({
+          message:
+            response.data.message || "Form submission partially successful",
+          data: response.data,
         }),
-        { status: response.status },
+        { status: response.status }
       );
     }
   } catch (error) {
     // Handle axios error
-    console.error('Form submission error:', error);
+    console.error("Form submission error:", error);
 
     return new NextResponse(
-      JSON.stringify({ 
-        message: error.response?.data?.message || 'Failed to submit form',
-        error: error.response?.data || null
+      JSON.stringify({
+        message: error.response?.data?.message || "Failed to submit form",
+        error: error.response?.data || null,
       }),
-      { status: error.response?.status || 500 },
+      { status: error.response?.status || 500 }
     );
   }
 }

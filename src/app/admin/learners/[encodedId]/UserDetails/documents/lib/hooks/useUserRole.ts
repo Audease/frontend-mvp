@@ -15,7 +15,7 @@ export const useUserRole = () => {
         return pathname === '/admin/accessor-dashboard' ? 'learner' : 'Admin';
       }
       if (userPermissions.includes('Student/Learner')) return 'learner';
-      if (userPermissions === 'Approve/reject application') return 'accessor';
+      if (userPermissions.includes('Approve/reject application')) return 'accessor';
       return '';
     };
 

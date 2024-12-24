@@ -7,7 +7,9 @@ import {
 } from "../applicationForm/mainForm";
 import Pagination from "../applicationForm/components/Pagination";
 import RenderFormComponent from "./RenderComponent";
-import LoadingSpinner from "@/app/components/dashboard/Spinner";
+import LoadingSpinner, {
+  LoadingSpinner2,
+} from "@/app/components/dashboard/Spinner";
 import DialogRender from "./DialogueRender";
 import Header from "./Header";
 import { accessorApprove, accessorReject } from "../lib/accessorActions";
@@ -25,7 +27,6 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
 
   // Local state
   const [CollegeName, setCollegeName] = useState<string>("");
-  const [showDialog, setShowDialog] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -35,13 +36,15 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
     formContent,
     sectionNumber,
     totalSectionNumber,
+    setShowDialog,
+    ShowDialog,
     goToNextSection,
     goToPreviousSection,
     goToSpecificSection,
     setFormContent,
   } = useFormNavigation(formComponentsArray);
 
-  const { formData, updateFormData } = useFormDataManager(userId);
+  const { formData, formLoading, updateFormData } = useFormDataManager(userId);
 
   // Load college name on mount
   useEffect(() => {
@@ -53,7 +56,6 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
 
   // Handlers
   const handleSubmit = () => {
-    localStorage.setItem(USER_DOCS_STORAGE_KEY, JSON.stringify(formData));
     setShowDialog(false);
     setIsSubmitted(true);
     if (userRole === "learner") {
@@ -106,7 +108,12 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
             </div>
           )}
 
-          <div className="px-4">
+          <div className="px-4 relative">
+            {formLoading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 backdrop-blur-sm z-10">
+                <LoadingSpinner2 />
+              </div>
+            )}
             <RenderFormComponent
               formContent={formContent}
               formData={formData}
@@ -122,7 +129,7 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
         {/* Dialog Render */}
         <DialogRender
           useRole={userRole}
-          showDialog={showDialog}
+          showDialog={ShowDialog}
           setShowDialog={setShowDialog}
           handleSubmit={handleSubmit}
           accessorApprove={async () => handleApprove()}

@@ -1,7 +1,7 @@
-import { useState, useEffect, useMemo } from "react";
-import axios from "axios";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
+import axios, { AxiosError } from "axios";
 import {
   setUserEmail,
   setUserId,
@@ -11,16 +11,27 @@ import {
 import { AppDispatch } from "../../redux/store";
 import { encodeId } from "../admin/learners/utils/id-encoded";
 
+type Permission = {
+  label: string;
+  route: string;
+};
+
+type LoginResponse = {
+  user_id: string;
+  permissions: string[];
+  message?: string;
+};
+
 export function useLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const [permissions, setPermissions] = useState([]);
-  const [loggedUserId, setloggedUserId] = useState("");
 
-  const permissionsMap = useMemo(
-    () => [
+  const getRedirectRoute = useCallback((permissions: string[], userId: string): string => {
+    if (permissions.length > 3) return "/admin";
+
+    const permissionsMap: Permission[] = [
       { label: "Add student", route: "/recruiter-dashboard" },
       { label: "Send Application", route: "/bksd-dashboard" },
       { label: "Approve/reject application", route: "/accessor-dashboard" },
@@ -28,58 +39,35 @@ export function useLogin() {
       { label: "Learning Platform", route: "/lazer-dashboard" },
       { label: "Audit", route: "/auditor-dashboard" },
       { label: "Certificate", route: "/certificate-dashboard" },
-      {
-        label: "Student/Learner",
-        route: `/learner-dashboard/${encodeId(loggedUserId)}`,
-      },
-    ],
-    [loggedUserId]
-  );
+      { label: "Student/Learner", route: `/learner-dashboard/${encodeId(userId)}` },
+    ];
 
-  useEffect(() => {
-    if (permissions.length > 3) {
-      return router.push("/admin");
-    } else {
-      for (const permission of permissionsMap) {
-        if (permissions.includes(permission.label))
-          return router.push(permission.route);
-      }
-    }
-  }, [permissions, permissionsMap, router]);
+    const matchedPermission = permissionsMap.find(p => permissions.includes(p.label));
+    return matchedPermission?.route ?? "/";
+  }, []);
 
   const handleLogin = async (email: string, password: string) => {
-    setLoading(true);
-    setError(null);
-
-    const payload = {
-      username: email,
-      password: password,
-    };
-
     try {
-      const response = await axios.post("/api/login", payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      setLoading(true);
+      setError(null);
 
-      if (response.status === 200) {
-        setPermissions(response.data.permissions);
-        setloggedUserId(response.data.user_id);
-      
-        
-        dispatch(setUserEmail(email));
-        dispatch(setUserId(response.data.user_id));
-        dispatch(setUserPackage("Free"));
-        dispatch(setUserPermissions(response.data.permissions));
-      } else {
-        console.error("Login failed:", response.data);
-        setError(response.data.message || "Login failed");
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-      setError("Invalid email or password");
-      setLoading(false);
+      const response = await axios.post<LoginResponse>("/api/login", 
+        { username: email, password },
+        { headers: { "Content-Type": "application/json" }}
+      );
+
+      const { user_id, permissions } = response.data;
+
+      dispatch(setUserEmail(email));
+      dispatch(setUserId(user_id));
+      dispatch(setUserPackage("Free"));
+      dispatch(setUserPermissions(permissions));
+
+      router.push(getRedirectRoute(permissions, user_id));
+    } catch (err) {
+      const error = err as AxiosError<LoginResponse>;
+      setError(error.response?.data?.message ?? "Invalid email or password");
+      console.error("Login error:", error);
     } finally {
       setLoading(false);
     }

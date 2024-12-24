@@ -9,7 +9,7 @@ import FilterLazer from "./components/LazerInduction";
 import SendBtn from "./components/SendBtn";
 import { SendEmail } from "./utils/action";
 import { learnerRevalidation } from "@/app/action";
-import { useInductionLearners } from "./utils/useInductionLearners";
+import { useLazerLearners } from "./utils/useLazerLearners";
 
 export default function AdminLazerDashboard({
   showHeader = true,
@@ -31,7 +31,7 @@ export default function AdminLazerDashboard({
   const [totalItems, setTotalItems] = useState(1);
   const [allLearners, setAllLearners] = useState([]);
 
-  const { fetchInductionLearnersData } = useInductionLearners();
+  const { fetchLazerLearnersData } = useLazerLearners();
 
   const isDisabled = checkedIds.length <= 1;
 
@@ -101,7 +101,7 @@ export default function AdminLazerDashboard({
   // Function to fetch learner data
   const handleFetchLearnersData = async (page) => {
     setLoading(true);
-    const { totalPages, totalItems, allLearners } = await fetchInductionLearnersData(
+    const { totalPages, totalItems, allLearners } = await fetchLazerLearnersData(
       page
     );
     setTotalPages(totalPages);

@@ -5,7 +5,7 @@ type InitialState = {
 };
 
 type authState = {
-  userPermission: string;
+  userPermission: string[];
   userEmail: string;
   userPackage: string;
   userId: string;
@@ -13,7 +13,7 @@ type authState = {
 
 const initialState = {
   value: {
-    userPermission:"",
+    userPermission:[""],
     userEmail: "",
     userPackage: "",
     userId: "",
@@ -30,7 +30,7 @@ export const auth = createSlice({
     setUserPackage: (state, action: PayloadAction<string>) => {
       state.value.userPackage = action.payload;
     },
-    setUserPermissions: (state, action: PayloadAction<string>) => {
+    setUserPermissions: (state, action: PayloadAction<string[]>) => {
       state.value.userPermission = action.payload;
     },
     setUserId: (state, action: PayloadAction<string>) => {

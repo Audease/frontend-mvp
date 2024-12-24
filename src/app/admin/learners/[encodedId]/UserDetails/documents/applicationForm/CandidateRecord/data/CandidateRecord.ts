@@ -36,12 +36,10 @@ export const candidateRecordData = {
       type: "text",
       id: "company",
       section: "learner",
-      editableBy: ["learner"],
+      editableBy: ["learner", "accessor"],
       label: "Company",
       placeholder: "Company",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
-        message: "Company Name must be at least 2 characters.",
-      }),
+      validation: z.string().optional()
     },
     {
       type: "date",
@@ -56,23 +54,21 @@ export const candidateRecordData = {
       type: "text",
       id: "programmeTitle",
       section: "learner",
-      editableBy: ["learner"],
+      editableBy: ["learner", "accessor"],
       label: "Programme Title",
       placeholder: "Programme Title",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
-        message: "Programme Title must be at least 2 characters.",
-      }),
+      validation: z.string().optional()
     },
     {
-      type: "text",
+      type: "number",
       id: "level",
       section: "learner",
-      editableBy: ["learner"],
+      editableBy: ["learner", "accessor"],
       label: "Level",
       placeholder: "Level",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
-        message: "Enter Level",
-      }),
+      validation: z.number().optional(),
+      min: 0,
+      max: 10,
     },
     {
       type: "checkbox",
@@ -111,9 +107,7 @@ export const candidateRecordData = {
       placeholder: "YYYY-MM-DD",
       validation: z
         .string()
-        .refine((value) =>  /^\d{4}-\d{2}-\d{2}$/.test(value), {
-          message: "Date must be in the format YYYY-MM-DD",
-        }),
+        .optional()
     },
     {
       type: "text",
@@ -138,9 +132,7 @@ export const candidateRecordData = {
       validation: z
         .string()
         .optional()
-        .refine((value) => !value || /^\d{4}-\d{2}-\d{2}$/.test(value), {
-          message: "Date must be in the format YYYY-MM-DD",
-        }),
+        .optional(),
     },
   ],
 };

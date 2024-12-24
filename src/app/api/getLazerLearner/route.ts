@@ -10,29 +10,37 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
+  // Extract the page and limit from the request query parameters
+  const { searchParams } = new URL(req.url);
+  const page = searchParams.get("page") || "1";
+  const limit = searchParams.get("limit") || "10";
+
   try {
-    const response = await fetch(apiUrl + "/v1/admin/roles", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-      cache: "force-cache",
-      next: { tags: ["roles"] },
-    });
+    // Pass the page and limit in the request URL
+    const response = await fetch(
+      apiUrl + `/v1/lazer/students?page=${page}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        cache: "force-cache",
+        next: { tags: ["learnersList"] },
+      }
+    );
 
     if (response.ok) {
       const data = await response.json();
       return NextResponse.json(data, { status: 200 });
     } else {
-      const errorData = await response.json().catch(() => ({}));
       return NextResponse.json(
-        { message: errorData.message || "Failed to get role options" },
+        { message: "Failed to list learners" },
         { status: response.status }
       );
     }
   } catch (error: any) {
     return NextResponse.json(
-      { message: "Failed to get role options" },
+      { message: "Failed to list learners" },
       { status: 500 }
     );
   }

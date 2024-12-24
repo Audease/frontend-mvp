@@ -10,6 +10,7 @@ import DatePicker from "@/app/components/form/DatePicker/DatePicker";
 import Dropdown from "@/app/components/form/SelectInput/SelectInput";
 import { candidateRecordData } from "./data/CandidateRecord";
 import FootLogos from "../components/FootLogos";
+import NumberInput from "@/app/components/form/NumberInput/NumberInput";
 
 interface CandidateRecordFormProps {
   formData?: any;
@@ -30,7 +31,7 @@ const formSchema = z.object(
 );
 
 export default function CandidateRecordForm({
-  formData,
+  formData = {},
   setFormData,
   onPrevClick,
   onNextClick,
@@ -116,6 +117,30 @@ export default function CandidateRecordForm({
                   )}
                 />
               );
+              case "number":
+                  return (
+                    <Controller
+                      key={`sectionField-${
+                        field.id }`}
+                      name={field.id}
+                      control={control}
+                      render={({ field: { onChange, value } }) => (
+                        <NumberInput
+                          id={field.id}
+                          label={field.label}
+                          disabled={!isEditable}
+                          onChange={(e) => onChange(Number(e.target.value))}
+                          value={value || ""}
+                          error={errors[field.id]?.message as string}
+                          placeholder={
+                            field.placeholder || "Enter a number"
+                          }
+                          min={field.min || 0}
+                          max={field.max || 10}
+                        />
+                      )}
+                    />
+                  );
             case "date":
               return (
                 <Controller
@@ -166,11 +191,11 @@ export default function CandidateRecordForm({
         </div>
         <div className="flex flex-row space-x-5 my-8">
           {onPrevClick && (
-            <Button type="button" onClick={onPrevClick}>
+            <Button type="button" onClick={onPrevClick} disabled={userRole === "Admin"}>
               Back
             </Button>
           )}
-          <Button type="submit">Save and Continue</Button>
+          <Button type="submit" disabled={userRole === "Admin"}>Save and Continue</Button>
         </div>
       </form>
     </div>

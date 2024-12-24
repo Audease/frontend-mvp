@@ -159,12 +159,10 @@ export const dataProtectionData = {
       label: "Subject / Course Applied for",
       type: "text",
       section: "learner",
-      editableBy: ["learner"],
+      editableBy: ["learner", "accessor"],
       id: "CourseAppliedfor",
       placeholder: "Subject / Course Applied for",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
-        message: "Course applied for must be at least 2 characters.",
-      }),
+      validation: z.string().optional()
     },
   ],
 };

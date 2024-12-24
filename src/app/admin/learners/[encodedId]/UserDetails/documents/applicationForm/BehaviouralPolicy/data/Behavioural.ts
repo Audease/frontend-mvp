@@ -81,11 +81,9 @@ export const behaviouralData = {
       id: "employerName",
       label: "Employer",
       section: "learner",
-      editableBy: ["learner"],
+      editableBy: ["learner", "accessor"],
       placeholder: "Employer",
-      validation: z.string().refine((value) => value.trim().length >= 2, {
-        message: "Employer Name must be at least 2 characters.",
-      }),
+      validation: z.string().optional()
     },
 
     {

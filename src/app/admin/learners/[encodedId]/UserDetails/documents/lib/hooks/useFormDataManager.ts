@@ -1,47 +1,59 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-export const INITIAL_FORM_DATA = {
-  behavioural: {},
-  candidaterecord: {},
-  confidentiality: {},
-  dataprotection: {},
-  equalopportunities: {},
-  healthandsafetypolicy: {},
-  guidancepolicy: {},
-  enrolment: {},
-  privacynotice: {},
-  awardassessment: {},
-  employeragreement: {},
-  participantagreement: {},
-  extremismpolicy: {},
-  childprotection: {},
-  skillsassessment: {},
-};
+interface BackendData {
+  [key: string]: {
+    data: {
+      data: any;
+    };
+  };
+}
 
 export const useFormDataManager = (userId: string) => {
-  const USER_DOCS_STORAGE_KEY = `user-docs-${userId}`;
-  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+  const [formData, setFormData] = useState({});
+  const [formLoading, setFormLoading] = useState(false);
 
-  // Load form data from localStorage on mount
+  const transformFormData = (backendData: BackendData) => {
+    const usableData = Object.entries(backendData).reduce(
+      (acc, [key, value]) => {
+        acc[key] = value?.data?.data || null;
+        return acc;
+      },
+      {} as Record<string, any>
+    );
+    setFormData(usableData);
+  };
+
   useEffect(() => {
-    const savedData = localStorage.getItem(USER_DOCS_STORAGE_KEY);
-    if (savedData) {
+    const fetchFormSubmissions = async () => {
       try {
-        const parsedData = JSON.parse(savedData);
-        setFormData(parsedData);
+        setFormLoading(true);
+        const response = await fetch(
+          `/api/enrolmentForm/getSubmission?studentId=${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch form submissions");
+        }
+
+        const backendData = await response.json();
+        transformFormData(backendData);
+        
       } catch (error) {
-        console.error('Error loading saved form data:', error);
+        // console.error("Error fetching form submissions:", error);
       }
-    }
-  }, [USER_DOCS_STORAGE_KEY]);
+      setFormLoading(false);
+    };
 
-  // Save form data to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem(USER_DOCS_STORAGE_KEY, JSON.stringify(formData));
-  }, [formData, USER_DOCS_STORAGE_KEY]);
+    fetchFormSubmissions();
+  }, [userId]);
 
-  // Method to update specific form section
-  const updateFormData = async(formType: string, data: any) => {
+  const updateFormData = async (formType: string, data: any) => {
     setFormData((prevData) => ({
       ...prevData,
       [formType.toLowerCase()]: {
@@ -50,26 +62,26 @@ export const useFormDataManager = (userId: string) => {
       },
     }));
 
-    console.log(formType, ":", data);
-
     try {
-        const response = await fetch("/api/enrolmentForm/submissionDraft", {
-          method: "POST",
-          headers: {
-            "Content-Type": "applicatio/json",
+      setFormLoading(true);
+      const response = await fetch("/api/enrolmentForm/submissionDraft", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          studentId: userId,
+          formType: formType,
+          data: {
+            data,
           },
-          body: JSON.stringify({
-            formType: "award_assessment",
-            data: {
-              data,
-            },
-          }),
-        });
-  
-        const responseData = await response.json();
-        console.log(userId, ":", responseData);
-      } catch {}
+        }),
+      });
+      const responseData = await response.json();
+      
+    } catch {}
+    setFormLoading(false);
   };
 
-  return { formData, updateFormData };
+  return { formData, formLoading, updateFormData };
 };

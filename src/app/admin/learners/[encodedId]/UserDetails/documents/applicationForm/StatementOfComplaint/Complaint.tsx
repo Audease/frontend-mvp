@@ -6,9 +6,10 @@ import FootLogos from "../components/FootLogos";
 type ComplaintProps = {
   onNextClick?: () => void;
   onPrevClick?: () => void;
+  userRole?: string;
 };
 
-const Complaint: React.FC<ComplaintProps> = ({ onPrevClick, onNextClick }) => {
+const Complaint: React.FC<ComplaintProps> = ({ onPrevClick, onNextClick, userRole }) => {
   return (
     <div>
       <div key={complaintData.id}>
@@ -28,8 +29,8 @@ const Complaint: React.FC<ComplaintProps> = ({ onPrevClick, onNextClick }) => {
       </div>
 
       <div className="flex flex-row space-x-5 my-8">
-        <Button onClick={onPrevClick}>Back</Button>
-        <Button onClick={onNextClick}>Proceed</Button>
+        <Button onClick={onPrevClick} disabled={userRole === "Admin"}>Back</Button>
+        <Button onClick={onNextClick} disabled={userRole === "Admin"}>Proceed</Button>
       </div>
     </div>
   );

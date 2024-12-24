@@ -28,7 +28,7 @@ export const useStaff = () => {
         roleId: selectedRoles[staff.id],
       };
     });
-    console.log(formattedStaffArray)
+    // console.log(formattedStaffArray)
     try {
       const response = await axios.post(
         "/api/assignRole",
@@ -39,8 +39,7 @@ export const useStaff = () => {
           headers: { "Content-Type": "application/json" },
         }
       );
-
-      alert("Role(s) assigned successfully");
+      // alert("Role(s) assigned successfully");
       await staffRevalidation();
       await rolesRevalidation();
     } catch (error) {

@@ -97,6 +97,7 @@ const RenderFormComponent = ({
           formData={formData.health_and_safety}
           setFormData={(data) =>
             handleSaveFormData("health_and_safety", data)
+            handleSaveFormData("health_and_safety", data)
           }
           onPrevClick={onPrevClick}
           onNextClick={onNextClick}
@@ -164,6 +165,7 @@ const RenderFormComponent = ({
         <ParticipantAgreement
           formData={formData.participant_agreement}
           setFormData={(data) =>
+            handleSaveFormData("participant_agreement", data)
             handleSaveFormData("participant_agreement", data)
           }
           onPrevClick={onPrevClick}

@@ -6,7 +6,10 @@ import FilterButton from "../../components/dashboard/FilterButton";
 import StaffTable from "./StaffTable";
 import Pagination from "../../components/dashboard/Pagination";
 import { staffRevalidation } from "../../action";
-import LoadingSpinner, { LoadingSpinner2 } from "../../components/dashboard/Spinner";
+import LoadingSpinner, {
+  LoadingSpinner2,
+} from "../../components/dashboard/Spinner";
+import SuccessToast, { FailureToast } from "@/app/components/NotificationToast";
 
 type CheckedItems = {
   [key: number]: any;
@@ -23,6 +26,8 @@ export default function Staff() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalpages] = useState(1);
   const [totalItems, setTotalItems] = useState(1);
+  const [successToast, setSuccessToast] = useState(false);
+  const [errorToast, setErrorToast] = useState(false);
 
   const { assignStaffRole, fetchStaffData } = useStaff();
 
@@ -36,12 +41,29 @@ export default function Staff() {
   };
 
   const handleAssignRole = async () => {
-    setLoading(true);
-    const newStaffData = await assignStaffRole(checkedItems, selectedRole);
-    staffRevalidation();
-    handleFetchStaffData(1);
-    setCheckedItems({});
-    setLoading(false);
+    try {
+      setLoading(true);
+
+      // Assign staff role
+      const newStaffData = await assignStaffRole(checkedItems, selectedRole);
+
+      // Revalidate and fetch updated staff data
+      staffRevalidation();
+      handleFetchStaffData(1);
+
+      // Reset checked items
+      setCheckedItems({});
+      setSuccessToast(true);
+
+      // Auto-hide success toast after 5 seconds
+      setTimeout(() => setSuccessToast(false), 5000);
+    } catch (error) {
+      console.error("Error assigning role:", error);
+      setErrorToast(true);
+      setTimeout(() => setErrorToast(false), 5000);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleFetchStaffData = async (page) => {
@@ -61,7 +83,7 @@ export default function Staff() {
 
   useEffect(() => {
     handleFetchStaffData(currentPage);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -116,18 +138,29 @@ export default function Staff() {
 
       {/* The main body, which is the table list */}
       <div className="w-full overflow-x-auto">
-        <div className="flex justify-center">{loading && <LoadingSpinner2 />}</div>
-        <StaffTable
-          {...{
-            staffData,
-            setStaffData,
-            currentPage,
-            setCurrentPage,
-            checkedItems,
-            setCheckedItems,
-          }}
-          onRoleSelect={handleRoleSelect}
-        />
+        <div className="flex justify-center">
+          {loading && <LoadingSpinner2 />}
+          <div className="fixed z-50 items-center animate-bounce">
+            {successToast && (
+              <SuccessToast text={"Role assigned successfully"} />
+            )}
+            {errorToast && <FailureToast text={"Failed to assign role"} />}
+          </div>
+        </div>
+        <div className="min-h-[22rem]">
+          <StaffTable
+            {...{
+              staffData,
+              setStaffData,
+              currentPage,
+              setCurrentPage,
+              checkedItems,
+              setCheckedItems,
+            }}
+            onRoleSelect={handleRoleSelect}
+          />
+        </div>
+
         <div>
           <Pagination
             currentPage={currentPage}

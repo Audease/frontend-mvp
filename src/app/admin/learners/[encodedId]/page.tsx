@@ -39,6 +39,7 @@ export default function UserDetails({ backButton = true }) {
   const router = useRouter();
   const params = useParams();
   const userId = decodeId(params.encodedId as string);
+  // console.log(userId)
 
   const [learner, setLearner] = useState<Learner | null>(null);
   const [error, setError] = useState<string | null>(null);

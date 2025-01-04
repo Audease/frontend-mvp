@@ -18,6 +18,7 @@ type Permission = {
 
 type LoginResponse = {
   user_id: string;
+  learner_id: string;
   permissions: string[];
   message?: string;
 };
@@ -28,7 +29,7 @@ export function useLogin() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
-  const getRedirectRoute = useCallback((permissions: string[], userId: string): string => {
+  const getRedirectRoute = useCallback((permissions: string[], learner_id: string): string => {
     if (permissions.length > 3) return "/admin";
 
     const permissionsMap: Permission[] = [
@@ -39,7 +40,7 @@ export function useLogin() {
       { label: "Learning Platform", route: "/lazer-dashboard" },
       { label: "Audit", route: "/auditor-dashboard" },
       { label: "Certificate", route: "/certificate-dashboard" },
-      { label: "Student/Learner", route: `/learner-dashboard/${encodeId(userId)}` },
+      { label: "Student/Learner", route: `/learner-dashboard/${encodeId(learner_id)}` },
     ];
 
     const matchedPermission = permissionsMap.find(p => permissions.includes(p.label));
@@ -56,14 +57,14 @@ export function useLogin() {
         { headers: { "Content-Type": "application/json" }}
       );
 
-      const { user_id, permissions } = response.data;
+      const { user_id, permissions, learner_id } = response.data;
 
       dispatch(setUserEmail(email));
-      dispatch(setUserId(user_id));
+      dispatch(setUserId(learner_id));
       dispatch(setUserPackage("Free"));
       dispatch(setUserPermissions(permissions));
 
-      router.push(getRedirectRoute(permissions, user_id));
+      router.push(getRedirectRoute(permissions,learner_id ));
     } catch (err) {
       const error = err as AxiosError<LoginResponse>;
       setError(error.response?.data?.message ?? "Invalid email or password");

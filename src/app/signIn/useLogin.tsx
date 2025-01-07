@@ -40,7 +40,7 @@ export function useLogin() {
       { label: "Learning Platform", route: "/lazer-dashboard" },
       { label: "Audit", route: "/auditor-dashboard" },
       { label: "Certificate", route: "/certificate-dashboard" },
-      { label: "Student/Learner", route: `/learner-dashboard/${encodeId(learner_id)}` },
+      { label: "Student/Learner", route: learner_id ? `/learner-dashboard/${encodeId(learner_id)}` : "/" },
     ];
 
     const matchedPermission = permissionsMap.find(p => permissions.includes(p.label));
@@ -57,7 +57,8 @@ export function useLogin() {
         { headers: { "Content-Type": "application/json" }}
       );
 
-      const { user_id, permissions, learner_id } = response.data;
+      const {  permissions, learner_id } = response.data;
+      
 
       dispatch(setUserEmail(email));
       dispatch(setUserId(learner_id));

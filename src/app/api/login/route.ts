@@ -19,7 +19,12 @@ export async function POST(req: NextRequest) {
         permissions, user_id, learner_id
       } = response.data;
 
-      const res = new NextResponse(JSON.stringify({ permissions, user_id, learner_id }), {
+      const responseData = { permissions, user_id };
+      if (learner_id) {
+        responseData['learner_id'] = learner_id;
+      }
+
+      const res = new NextResponse(JSON.stringify(responseData), {
         status: 200,
       });
 

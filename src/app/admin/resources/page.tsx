@@ -1,24 +1,38 @@
 "use client";
 
-import React, { useState } from "react";
-import EmptyScreen from "./components/EmptyScreen";
+import React, { useEffect, useState } from "react";
 import FolderHead from "./components/FolderHead";
 import CreateFolderModal from "./components/CreateFolderModal";
 import useFolderModal from "./utils/useFolderModal";
 import FolderTableList from "./components/FolderTableList";
+import useGetFolders from "./utils/useGetFolders";
+import EmptyScreen from "./components/EmptyScreen";
+import LoadingSpinner from "@/app/components/dashboard/Spinner";
 
-type Props = {};
-
-const Page = (props: Props) => {
+const Page = () => {
   const {
     showModal,
     folderCreationSuccess,
     folderCreationError,
-    loading,
+    loading: modalLoading,
     createFolder,
     folderCreate,
-    onClose,
+    OnClose,
   } = useFolderModal();
+
+  const { folderData, loading2, error, getFolders } = useGetFolders();
+  const [key, setKey] = useState(0);
+
+  const handleClose = () => {
+    OnClose();
+    setKey((prevKey) => prevKey + 1); 
+  };
+
+  useEffect(() => {
+    getFolders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key]);
+
   return (
     <div>
       <FolderHead createFolder={createFolder} />
@@ -26,14 +40,27 @@ const Page = (props: Props) => {
         <h3 className="font-medium text-lg">Folders</h3>
       </div>
       <div className="h-min-[40rem] bg-white">
-        <FolderTableList />
-        <EmptyScreen createFolder={createFolder} />
+        {loading2 ? (
+          <div className="flex justify-center items-center">
+            <LoadingSpinner />
+          </div>
+        ) : error ? (
+          <div>Error: {error}</div>
+        ) : folderData && folderData.length > 0 ? (
+          <FolderTableList
+            folderData={folderData}
+            onDeleteClick={(folderId) => console.log(`Deleting folder: ${folderId}`)}
+          />
+        ) : (
+          <EmptyScreen createFolder={createFolder} />
+        )}
+
         <CreateFolderModal
           show={showModal}
-          loading = {loading}
+          loading={modalLoading}
           folderCreationSuccess={folderCreationSuccess}
           folderCreationError={folderCreationError}
-          onClose={onClose}
+          onClose={handleClose}
           onCreate={folderCreate}
         />
       </div>

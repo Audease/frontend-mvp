@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   // Extract the page and limit from the request query parameters
   const { searchParams } = new URL(req.url);
   const page = searchParams.get("page") || "1";
-  const limit = searchParams.get("limit") || "10";
+  const limit = searchParams.get("limit") || "20";
 
   try {
     // Pass the page and limit in the request URL

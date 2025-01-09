@@ -26,4 +26,8 @@ export async function accessorLearnerRevalidation() {
   revalidateTag("accessorLearnersList");
 }
 
+export async function adminFolderListRevalidation() {
+  revalidateTag("adminFolderList");
+}
+
 

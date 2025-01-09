@@ -1,4 +1,6 @@
+import { adminFolderListRevalidation } from "@/app/action";
 import { useState } from "react";
+
 
 const useFolderModal = () => {
   const [showModal, setShowModal] = useState(false);
@@ -11,6 +13,7 @@ const useFolderModal = () => {
   const [folderCreationSuccess, setFolderCreationSuccess] = useState(false);
   const [folderCreationError, setFolderCreationError] = useState(false);
   const [loading, setLoading] = useState(false);
+
 
   const folderCreate = async (folderName: string) => {
     try {
@@ -30,16 +33,16 @@ const useFolderModal = () => {
         setTimeout(() => setFolderCreationError(false), 5000);
       }
       setLoading(false);
+      adminFolderListRevalidation();
       setFolderCreationSuccess(true);
       setTimeout(() => setFolderCreationSuccess(false), 5000);
-      //   console.log("Folder created successfully:", folderName);
     } catch (error) {
       console.error("Error creating folder:", error);
       setError("Failed to create folder. Please try again.");
     }
   };
 
-  const onClose = () => {
+  const OnClose = () => {
     setShowModal(false);
   };
 
@@ -50,7 +53,7 @@ const useFolderModal = () => {
     loading,
     createFolder,
     folderCreate,
-    onClose,
+    OnClose,
   };
 };
 

@@ -7,6 +7,8 @@ import {
 import convertDate from "../utils/convertDate";
 import { DeleteLearnerButton } from "../../(adminPersonaScreens)/recruiter-dashboard/components/RecruiterButtons";
 import FilesInFolder from "./FilesInFolder";
+import useGetFileInFolders from "../utils/useGetFileInFolders";
+import LoadingSpinner from "@/app/components/dashboard/Spinner";
 
 type Props = {
   folderData: any[];
@@ -15,6 +17,7 @@ type Props = {
 
 const FolderTableList = ({ folderData, onDeleteClick }: Props) => {
   const [openFolders, setOpenFolders] = useState<Set<string>>(new Set());
+  const {fetchFilesInFolder, files, loading, error} = useGetFileInFolders();
 
   const toggleFolder = (folderId: string) => {
     setOpenFolders((prev) => {
@@ -26,6 +29,10 @@ const FolderTableList = ({ folderData, onDeleteClick }: Props) => {
       }
       return newOpenFolders;
     });
+
+    if (!openFolders.has(folderId)){
+      fetchFilesInFolder(folderId)
+    }
   };
 
   return (
@@ -70,7 +77,7 @@ const FolderTableList = ({ folderData, onDeleteClick }: Props) => {
           <div>
             {openFolders.has(folder.id) && (
               <div className="mt-4">
-                <FilesInFolder folderId={folder.id} />
+                <FilesInFolder folderId={folder.id} files={files} loading={loading} error={error} />
               </div>
             )}
           </div>

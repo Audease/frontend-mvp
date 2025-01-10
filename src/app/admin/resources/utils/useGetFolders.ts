@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function useGetFolders() {
   const [folderData, setFolderData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const getFolders = async () => {
     try {
-      setLoading(true);
+      setLoading2(true);
       const response = await fetch("/api/adminFolders/viewFolders", {
         method: "GET",
         headers: {
@@ -17,7 +17,6 @@ export default function useGetFolders() {
       if (response.ok) {
         const data = await response.json();
         setFolderData(data);
-        console.log(data);
       } else {
         setError("Failed to fetch folders");
         console.error("Failed to fetch folders:", response.statusText);
@@ -26,17 +25,14 @@ export default function useGetFolders() {
       setError("Error fetching folders");
       console.error("Error fetching folders:", error);
     } finally {
-      setLoading(false);
+      setLoading2(false);
     }
   };
 
-  useEffect(() => {
-    getFolders();
-  }, []);
-
   return {
     folderData,
-    loading,
+    getFolders,
+    loading2,
     error,
   };
 }

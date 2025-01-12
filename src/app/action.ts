@@ -30,4 +30,8 @@ export async function adminFolderListRevalidation() {
   revalidateTag("adminFolderList");
 }
 
+export async function lazerLearnerRevalidation() {
+  revalidateTag("lazerLearnersList");
+}
+
 

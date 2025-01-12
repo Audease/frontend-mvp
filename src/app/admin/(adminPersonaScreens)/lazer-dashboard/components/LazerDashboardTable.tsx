@@ -13,10 +13,10 @@ import SuccessToast, {
 
 // State handling
 export default function LazerDashboardTable({
-  sendApplication,
+  approveLazer,
   loading2,
-  successfulEmail,
-  failedEmail,
+  success,
+  failed,
   showSuccessToast,
   showFailureToast,
   checkedItems,
@@ -71,10 +71,10 @@ export default function LazerDashboardTable({
     <div className="flex flex-col justify-between  w-full overflow-x-auto">
       <div className="fixed z-50 right-8 animate-bounce">
         {showSuccessToast && (
-          <SuccessToast text={`${successfulEmail} sent successfully. ${failedEmail} failed`} />
+          <SuccessToast text={`${success} sent successfully. ${failed} failed`} />
         )}
         {showFailureToast && (
-          <FailureToast text={`${failedEmail} failed. ${successfulEmail} sent successfully. `} />
+          <FailureToast text={`${failed} failed. ${success} sent successfully. `} />
         )}
       </div>
       {loading2 && (
@@ -148,7 +148,7 @@ export default function LazerDashboardTable({
           ) : (
             allLearners.map((row, index) => (
               <tr key={row.id}>
-                <td className="px-2 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium flex flex-row cursor-pointer">
+                <td className="px-2 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium flex flex-row cursor-pointer" >
                   <span className="pr-4">
                     <input
                       type="checkbox"
@@ -157,6 +157,7 @@ export default function LazerDashboardTable({
                       checked={!!checkedItems[row.id]}
                     />
                   </span>
+                  
                   {row.name}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
@@ -192,7 +193,7 @@ export default function LazerDashboardTable({
                 <td className="px-2 py-2 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   <p
                     className={clsx("text-center p-1 rounded-lg", {
-                      "bg-green4 text-green3": row.lazer_status === "Sent",
+                      "bg-green4 text-green3": row.lazer_status === "Approved",
                       "bg-tgrey8 text-tblack4":
                         row.lazer_status === "Pending",
                     })}
@@ -216,9 +217,9 @@ export default function LazerDashboardTable({
                     >
                       <p
                         className="hover:text-gold1 cursor-pointer"
-                        onClick={sendApplication}
+                        onClick={approveLazer}
                       >
-                        Send Application
+                        Approve
                       </p>
                     </div>
                   )}

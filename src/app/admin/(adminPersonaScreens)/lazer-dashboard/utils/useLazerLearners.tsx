@@ -2,7 +2,7 @@ export const useLazerLearners = () => {
   const fetchLazerLearnersData = async (page: number) => {
     try {
       const response = await fetch(
-        `/api/getLazerLearner?page=${page}&limit=${10}`
+        `/api/Lazer/getLazerLearner?page=${page}&limit=${10}`
       );
       const data = await response.json();
       if (response.ok) {

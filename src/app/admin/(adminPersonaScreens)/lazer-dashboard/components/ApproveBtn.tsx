@@ -1,6 +1,6 @@
 import React from "react";
 
-const SendBtn = ({ onSendClick, disabled }) => {
+const ApproveBtn = ({ onSendClick, disabled }) => {
   return (
     <div>
       <button
@@ -14,4 +14,4 @@ const SendBtn = ({ onSendClick, disabled }) => {
   );
 };
 
-export default SendBtn;
+export default ApproveBtn;

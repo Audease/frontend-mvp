@@ -1,8 +1,9 @@
-export const useInductionLearners = () => {
-  const fetchInductionLearnersData = async (page: number) => {
+export const useCertificateLearners = () => {
+  const fetchCertificateLearnersData = async (page: number) => {
     try {
       const response = await fetch(
-        `/api/getInductionLearners?page=${page}&limit=${10}`
+        `/api/Certificate/getCertificateLearners?page=${page}&limit=${10}`
+  
       );
       const data = await response.json();
       if (response.ok) {
@@ -20,6 +21,6 @@ export const useInductionLearners = () => {
   };
 
   return {
-    fetchInductionLearnersData,
+    fetchCertificateLearnersData,
   };
 };

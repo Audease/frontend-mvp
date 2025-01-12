@@ -6,9 +6,9 @@ import CertificateDashboardHeader from "./components/CertificateDashboardHeader"
 import StaffButton from "./components/StaffButton";
 import FilterCertificate from "./components/FilterCertificate";
 import SendBtn from "./components/SendBtn";
-import { SendEmail } from "./utils/action";
-import { learnerRevalidation } from "@/app/action";
-import { useInductionLearners } from "./utils/useInductionLearners";
+import { certificateApproveLearner } from "./utils/action";
+import { certificateLearnerRevalidation } from "@/app/action";
+import { useCertificateLearners } from "./utils/useCertificateLearners";
 import CertificateStaffModal from "./components/CertificateStaffModal";
 
 export default function AdminCertificateDashboard({
@@ -25,13 +25,12 @@ export default function AdminCertificateDashboard({
   const [failedEmail, setFailedEmail] = useState<number>();
   const [showFailureToast, setShowFailureToast] = useState(false);
   const [checkedItems, setCheckedItems] = useState({});
-
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(1);
   const [allLearners, setAllLearners] = useState([]);
 
-  const { fetchInductionLearnersData } = useInductionLearners();
+  const { fetchCertificateLearnersData } = useCertificateLearners();
 
   const isDisabled = checkedIds.length <= 1;
 
@@ -44,13 +43,24 @@ export default function AdminCertificateDashboard({
     setShowInductionStaffModal(false);
   };
 
+  // Function to fetch learner data
+  const handleFetchLearnersData = async (page) => {
+    setLoading(true);
+    const { totalPages, totalItems, allLearners } =
+      await fetchCertificateLearnersData(page);
+    setTotalPages(totalPages);
+    setTotalItems(totalItems);
+    setAllLearners(allLearners);
+    setLoading(false);
+  };
+
   // Function for sending applications
-  const sendApplication = async () => {
+  const approveCertificate = async () => {
     setLoading2(true);
     const results = await Promise.all(
       checkedIds.map(async (id) => {
         try {
-          const success = await SendEmail(id);
+          const success = await certificateApproveLearner(id);
           return { id, success };
         } catch (error) {
           return { id, success: false, error };
@@ -65,7 +75,7 @@ export default function AdminCertificateDashboard({
       .filter((result) => !result.success)
       .map((result) => result.id);
 
-    learnerRevalidation();
+    certificateLearnerRevalidation();
     handleFetchLearnersData(1);
     setCheckedItems({});
 
@@ -98,27 +108,14 @@ export default function AdminCertificateDashboard({
     });
   };
 
-  // Function to fetch learner data
-  const handleFetchLearnersData = async (page) => {
-    setLoading(true);
-    const { totalPages, totalItems, allLearners } = await fetchInductionLearnersData(
-      page
-    );
-    setTotalPages(totalPages);
-    setTotalItems(totalItems);
-    setAllLearners(allLearners);
-    setLoading(false);
-  };
-
   return (
     <div>
       {/* Header Section */}
       <div className="flex flex-col xl:flex-row justify-between">
         {showHeader && <CertificateDashboardHeader {...{ roleName }} />}
-
         {/* Button Section */}
         <div className="flex flex-row space-x-4 my-3 xl:my-0">
-          <SendBtn onSendClick={sendApplication} disabled={isDisabled} />
+          <SendBtn onSendClick={approveCertificate} disabled={isDisabled} />
           {showStaffButton && <StaffButton {...{ onViewStaffClick }} />}
           <div className="hidden xl:flex">
             {showStaffButton && <FilterCertificate />}
@@ -130,7 +127,7 @@ export default function AdminCertificateDashboard({
       <div className="mt-6">
         <CertificateDashboardTable
           {...{
-            sendApplication,
+            approveCertificate,
             successfulEmail,
             failedEmail,
             loading2,
@@ -148,7 +145,10 @@ export default function AdminCertificateDashboard({
       </div>
 
       {/* Staff Modal Section */}
-      <CertificateStaffModal show={showInductionStaffModal} onClose={closeInductionStaffModal} />
+      <CertificateStaffModal
+        show={showInductionStaffModal}
+        onClose={closeInductionStaffModal}
+      />
     </div>
   );
 }

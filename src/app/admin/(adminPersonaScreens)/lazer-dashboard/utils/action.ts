@@ -1,8 +1,8 @@
-export const SendEmail = async (studentId) => {
+export const LazerApproveLearner = async (studentId) => {
     const encodedStudentId = encodeURIComponent(studentId);
     try {
       const response = await fetch(
-        `/api/sendBKSDMail/?studentId=${encodedStudentId}`,
+        `/api/Lazer/approveLazerLearner?studentId=${encodedStudentId}`,
         {
           method: "POST",
           headers: {
@@ -18,7 +18,6 @@ export const SendEmail = async (studentId) => {
       if (!response.ok) {
         return false;
       }
-      console.log("Application sent successfully");
     } catch (error) {
       console.error("Error sending application:", error);
     }

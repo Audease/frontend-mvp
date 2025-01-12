@@ -6,10 +6,10 @@ import LazerStaffModal from "./components/LazerStaffModal";
 import LazerDashboardHeader from "./components/LazerDashboardHeader";
 import StaffButton from "./components/StaffButton";
 import FilterLazer from "./components/LazerInduction";
-import SendBtn from "./components/SendBtn";
-import { SendEmail } from "./utils/action";
-import { learnerRevalidation } from "@/app/action";
+import { LazerApproveLearner } from "./utils/action";
+import { lazerLearnerRevalidation } from "@/app/action";
 import { useLazerLearners } from "./utils/useLazerLearners";
+import ApproveBtn from "./components/ApproveBtn";
 
 export default function AdminLazerDashboard({
   showHeader = true,
@@ -21,8 +21,8 @@ export default function AdminLazerDashboard({
   const [loading2, setLoading2] = useState(false);
   const [checkedIds, setCheckedIds] = useState([]);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
-  const [successfulEmail, setSuccessfulEmail] = useState<number>();
-  const [failedEmail, setFailedEmail] = useState<number>();
+  const [success, setSuccess] = useState<number>();
+  const [failed, setFailed] = useState<number>();
   const [showFailureToast, setShowFailureToast] = useState(false);
   const [checkedItems, setCheckedItems] = useState({});
 
@@ -45,12 +45,12 @@ export default function AdminLazerDashboard({
   };
 
   // Function for sending applications
-  const sendApplication = async () => {
+  const approveLazer = async () => {
     setLoading2(true);
     const results = await Promise.all(
       checkedIds.map(async (id) => {
         try {
-          const success = await SendEmail(id);
+          const success = await LazerApproveLearner(id);
           return { id, success };
         } catch (error) {
           return { id, success: false, error };
@@ -65,18 +65,18 @@ export default function AdminLazerDashboard({
       .filter((result) => !result.success)
       .map((result) => result.id);
 
-    learnerRevalidation();
+    lazerLearnerRevalidation();
     handleFetchLearnersData(1);
     setCheckedItems({});
 
     if (successfulIds.length > failedIds.length) {
-      setSuccessfulEmail(successfulIds.length);
-      setFailedEmail(failedIds.length);
+      setSuccess(successfulIds.length);
+      setFailed(failedIds.length);
       setShowSuccessToast(true);
       setTimeout(() => setShowSuccessToast(false), 5000);
     } else {
-      setSuccessfulEmail(successfulIds.length);
-      setFailedEmail(failedIds.length);
+      setSuccess(successfulIds.length);
+      setFailed(failedIds.length);
       setShowFailureToast(true);
       setTimeout(() => setShowFailureToast(false), 5000);
     }
@@ -85,6 +85,7 @@ export default function AdminLazerDashboard({
 
     return { successfulIds, failedIds };
   };
+
 
   // Function to handle checkbox changes
   const handleCheckboxChange = (id) => {
@@ -118,7 +119,7 @@ export default function AdminLazerDashboard({
 
         {/* Button Section */}
         <div className="flex flex-row space-x-4 my-3 xl:my-0">
-          <SendBtn onSendClick={sendApplication} disabled={isDisabled} />
+          <ApproveBtn onSendClick={approveLazer} disabled={isDisabled} />
           {showStaffButton && <StaffButton {...{ onViewStaffClick }} />}
           <div className="hidden xl:flex">
             {showStaffButton && <FilterLazer />}
@@ -130,9 +131,9 @@ export default function AdminLazerDashboard({
       <div className="mt-6">
         <LazerDashboardTable
           {...{
-            sendApplication,
-            successfulEmail,
-            failedEmail,
+            approveLazer,
+            success,
+            failed,
             loading2,
             showSuccessToast,
             showFailureToast,

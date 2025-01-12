@@ -19,6 +19,7 @@ export default function Staff() {
   const [activeTab, setActiveTab] = useState("All");
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [staffData, setStaffData] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [checkedItems, setCheckedItems] = useState<CheckedItems>({});
@@ -67,18 +68,18 @@ export default function Staff() {
   };
 
   const handleFetchStaffData = async (page) => {
+    setLoading2(true);
     const { totalPages, totalItems, result } = await fetchStaffData(page);
     setTotalpages(totalPages);
     setTotalItems(totalItems);
     setStaffData(result);
+    setLoading2(false);
   };
 
   const handlePageChange = async (page) => {
-    setLoading(true);
     setCurrentPage(page);
     await handleFetchStaffData(page);
     setCheckedItems({});
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -156,6 +157,7 @@ export default function Staff() {
               setCurrentPage,
               checkedItems,
               setCheckedItems,
+              loading2
             }}
             onRoleSelect={handleRoleSelect}
           />

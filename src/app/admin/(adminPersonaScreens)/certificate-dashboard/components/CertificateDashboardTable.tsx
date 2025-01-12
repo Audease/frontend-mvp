@@ -13,7 +13,7 @@ import SuccessToast, {
 
 // State handling
 export default function CertificateDashboardTable({
-  sendApplication,
+  approveCertificate,
   loading2,
   successfulEmail,
   failedEmail,
@@ -192,12 +192,12 @@ export default function CertificateDashboardTable({
                 <td className="px-2 py-2 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   <p
                     className={clsx("text-center p-1 rounded-lg", {
-                      "bg-green4 text-green3": row.application_mail === "Sent",
+                      "bg-green4 text-green3": row.certificate_status === "Approved",
                       "bg-tgrey8 text-tblack4":
-                        row.application_mail === "Not sent",
+                        row.certificate_status === "Pending",
                     })}
                   >
-                    {row.application_mail}
+                    {row.certificate_status}
                   </p>
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-bold text-center relative">
@@ -216,7 +216,7 @@ export default function CertificateDashboardTable({
                     >
                       <p
                         className="hover:text-gold1 cursor-pointer"
-                        onClick={sendApplication}
+                        onClick={approveCertificate}
                       >
                         Send Application
                       </p>

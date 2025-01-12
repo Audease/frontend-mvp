@@ -34,4 +34,8 @@ export async function lazerLearnerRevalidation() {
   revalidateTag("lazerLearnersList");
 }
 
+export async function certificateLearnerRevalidation() {
+  revalidateTag("certificateLearnersList");
+}
+
 

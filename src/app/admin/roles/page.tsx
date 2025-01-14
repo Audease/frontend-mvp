@@ -5,13 +5,13 @@ import { useState } from "react";
 import DefaultLeft from "./components/DefaultLeft";
 import Staff from "./components/Staff";
 import SetUpAccount from "./components/SetUpAccount";
-import { AddAuditLearnerModal } from "./components/Rightside/components/CreateRole/CreateRoleModal";
 import Workflow from "../workflows/Workflow";
 import CreateWorkflow, { WorkflowCreated } from "../workflows/CreateWorkflow";
 import Rightside from "./components/Rightside/Rightside";
 import { useCreateRole } from "./hooks/useRoleCreate";
 import { learnerRevalidation } from "@/app/action";
 import AddLearnerModal, { LearnerCreated } from "../learners/components/learnerModal";
+import { AddAuditLearnerModal } from "./components/Rightside/components/CreateRole/AddAuditModal";
 
 
 export default function Role() {

@@ -1,29 +1,24 @@
-'use client';
+"use client";
 
 import { Modal } from "flowbite-react";
 import { IoClose } from "react-icons/io5";
 import { PlainButton } from "../../../../../../components/dashboard/Button";
 import { useState } from "react";
-import Image from "next/image";
-import learnersData from "../../../../../../data/learnersData.json";
-import { Avatar } from "flowbite-react";
-import FilterButton, {
-  RecruiterFilterButton,
-} from "../../../../../../components/dashboard/FilterButton";
-  import { useCreateRole } from "../../../../hooks/useRoleCreate";
+import { useCreateRole } from "../../../../hooks/useRoleCreate";
 import { rolesRevalidation } from "../../../../../../action";
 import LoadingSpinner from "../../../../../../components/dashboard/Spinner";
 
-export default function CreateRoleModal({ isRoleModalOpen, closeRoleModal, setSuccess }) {
+export default function CreateRoleModal({
+  isRoleModalOpen,
+  closeRoleModal,
+  setSuccess,
+}) {
   const [inputedPermission, setInputedPermission] = useState([]);
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
-  
-  const {
-    roleFormData,
-    setRoleFormData,
-    roleCreate,
-  } = useCreateRole();
+  const [roleCreationError, setRoleCreationError] = useState(false)
+
+  const { roleFormData, setRoleFormData, roleCreate, errorMessage } = useCreateRole();
 
   const clearPermission = () => {
     setInputedPermission([]);
@@ -38,11 +33,19 @@ export default function CreateRoleModal({ isRoleModalOpen, closeRoleModal, setSu
   };
 
   const removeTag = (indexToRemove) => {
-    setTags(tags.filter((_, index) => index !== indexToRemove));
+    const updatedTags = tags.filter((_, index) => index !== indexToRemove);
+    setTags(updatedTags);
+  
+    setRoleFormData((prevData) => ({
+      ...prevData,
+      permission: updatedTags,
+    }));
+  
     if (indexToRemove === 0) {
       clearPermission();
     }
   };
+  
 
   const addPermissions = (permission: string) => (e) => {
     e.preventDefault();
@@ -50,7 +53,7 @@ export default function CreateRoleModal({ isRoleModalOpen, closeRoleModal, setSu
       setTags((prevData) => [...prevData, permission]);
       setRoleFormData((prevData) => ({
         ...prevData,
-        permission: [...prevData.permission || [], permission], 
+        permission: [...(prevData.permission || []), permission],
       }));
     }
   };
@@ -63,14 +66,22 @@ export default function CreateRoleModal({ isRoleModalOpen, closeRoleModal, setSu
     if (roleCreated) {
       rolesRevalidation();
       setSuccess(true);
+    } else {
+      setRoleCreationError(true)
+      setTimeout(() => {
+        setRoleCreationError(false)
+      }, 10000)
     }
   };
 
-
-
   return (
     <div>
-      <Modal show={isRoleModalOpen} onClose={closeRoleModal} className="modal" size={"md"}>
+      <Modal
+        show={isRoleModalOpen}
+        onClose={closeRoleModal}
+        className="modal"
+        size={"md"}
+      >
         <div className="flex flex-col p-4">
           <div className="flex flex-row justify-between items-center">
             <h2 className="font-medium text-lg text-tblack3">Create Role</h2>
@@ -78,9 +89,9 @@ export default function CreateRoleModal({ isRoleModalOpen, closeRoleModal, setSu
               className="text-tgrey3 cursor-pointer"
               width={14}
               height={14}
-              onClick={ () => {
+              onClick={() => {
                 closeRoleModal();
-                setRoleFormData({ roleName: "", permission: []});
+                setRoleFormData({ roleName: "", permission: [] });
               }}
             />
           </div>
@@ -121,6 +132,7 @@ export default function CreateRoleModal({ isRoleModalOpen, closeRoleModal, setSu
                   >
                     <span className="text-gray-700 mr-2">{tag}</span>
                     <button
+                      type="button"
                       className="text-gray-500 hover:text-gray-700"
                       onClick={() => removeTag(index)}
                     >
@@ -181,9 +193,8 @@ export default function CreateRoleModal({ isRoleModalOpen, closeRoleModal, setSu
                 </div>
               </div>
             </div>
-            {loading && (
-         <LoadingSpinner />
-        )}
+            {loading && <LoadingSpinner />}
+            {roleCreationError && <div className="text-red-500">Failed to create role: {errorMessage}</div>}
             <div className="flex items-center justify-between">
               <button
                 type="submit"
@@ -193,112 +204,6 @@ export default function CreateRoleModal({ isRoleModalOpen, closeRoleModal, setSu
               </button>
             </div>
           </form>
-        </div>
-      </Modal>
-    </div>
-  );
-}
-
-export function AddAuditLearnerModal({ show, onClose }) {
-
-  const filterOptions = ["Option 1", "Option 2", "Option 3"];
-  const categoriesDropdownOptions = ["Category 1", "Category 2", "Category 3"];
-  const courseDropdownOptions = ["Course 1", "Course 2", "Course 3"];
-
-  const handleFilterSelect = (filter) => {
-    console.log("Selected filter:", filter);
-  };
-
-  const handleCategorySelect = (category) => {
-    console.log("Selected category:", category);
-  };
-
-  const handleCourseSelect = (course) => {
-    console.log("Selected course:", course);
-  };
-
-  const onFilterClick = () => {};
-  const handleLearnerAdd = () => {};
-  return (
-    <div>
-      <Modal {...{show, onClose}} className="modal p-12" size={"xl"}>
-        <div className="flex flex-row justify-between items-center p-4">
-          <div className="flex flex-col">
-            <h2 className="font-medium text-lg text-tblack3">Learners</h2>
-            <p className="font-normal text-sm text-tgrey3">
-              Staff under the recruiter role
-            </p>
-          </div>
-          <IoClose
-            className="text-tgrey3 cursor-pointer"
-            width={14}
-            height={14}
-            onClick={onClose}
-          />
-        </div>
-
-        {/* Search Bar */}
-        <div className="flex flex-col space-y-2 px-4">
-          <label htmlFor="" className="font-normal text-sm text-tgrey3">
-            Search
-          </label>
-          <div className="flex flex-row justify-between space-x-2">
-            <input
-              type="text"
-              placeholder="Enter staff name"
-              className="border-1 border-tgrey2 rounded py-1 focus:ring-gold1 w-full focus:border-none focus:ring"
-            />
-
-            {/* Filter Button  */}
-            <RecruiterFilterButton
-              label={"Filters"}
-              options={filterOptions}
-              onSelect={handleFilterSelect}
-              categoriesDropdownOptions={categoriesDropdownOptions}
-              onCategorySelect={handleCategorySelect}
-              courseDropdownOptions={courseDropdownOptions}
-              onCourseSelect={handleCourseSelect}
-              onFilterClick={onFilterClick}
-            />
-          </div>
-        </div>
-
-        {/* Line Break */}
-        <hr className="my-2 mx-4" />
-
-        {/* Search Results */}
-        <div className="flex flex-col px-4 space-y-4 h-80 overflow-y-auto">
-          {learnersData.learners.map((learner) => (
-            <div
-              key={learner.id}
-              className="flex flex-row justify-between space-x-2 items-center"
-            >
-              <div className="flex flex-row space-x-2">
-                <div>
-                  <Avatar
-                    img={"/avatar.img"}
-                    alt={`Image of ${learner.name}`}
-                    rounded
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <h4 className="font-medium text-sm">{learner.name}</h4>
-                  <p className="font-normal text-xs text-tgrey3">
-                    {learner.email}
-                  </p>
-                </div>
-              </div>
-              {/* Remove Button */}
-              <div>
-                <button
-                  onClick={() => handleLearnerAdd()}
-                  className="py-1 px-2 text-[#23AB0D] bg-[#F3FDE9] rounded-md text-sm"
-                >
-                  Add
-                </button>
-              </div>
-            </div>
-          ))}
         </div>
       </Modal>
     </div>

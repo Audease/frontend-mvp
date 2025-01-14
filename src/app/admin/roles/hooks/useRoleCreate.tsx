@@ -8,7 +8,7 @@ export const useCreateRole = () => {
     permission: [],
   });
   const [endPointPermissions, setEndPointPermissions] = useState([]);
-
+  const [errorMessage, setErrorMessage] = useState("");
   // Fetch and cache permissions
   useEffect(() => {
     const fetchPermissions = async () => {
@@ -53,8 +53,19 @@ export const useCreateRole = () => {
       );
       // console.log(selectedPermission);
 
-      if (!selectedPermission) {
-        console.error("Permission not found for the selected role.");
+      if (!roleFormData.roleName) {
+        setErrorMessage("Role name is required.");
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 10000);
+        return;
+      }
+
+      if (selectedPermission.length === 0) {
+        setErrorMessage("Select / Reselect roles.");
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 10000);
         return;
       }
 
@@ -78,6 +89,7 @@ export const useCreateRole = () => {
       if (assignResponse.ok) {
         return true
       } else {
+        setErrorMessage("Failed to create role. Please refresh and try again.");
         return false
       }
     } catch (error) {
@@ -95,5 +107,6 @@ export const useCreateRole = () => {
     closeRoleSuccessModal,
     roleCreate,
     endPointPermissions, 
+    errorMessage
   };
 };

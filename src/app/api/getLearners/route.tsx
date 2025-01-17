@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
   try {
     // Pass the page and limit in the request URL
     const response = await fetch(
-      apiUrl + `/v1/admin/learners?page=${page}&limit=${limit}`,
+      apiUrl + `/v1/recruitment/students?page=${page}&limit=${limit}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

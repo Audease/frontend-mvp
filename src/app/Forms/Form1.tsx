@@ -95,7 +95,7 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
               college ? "bg-gray-100" : ""
             }`}
             value={college}
-            placeholder="College"
+            placeholder="College (One Word)"
             onChange={handleChange}
             required
           />
@@ -126,8 +126,8 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
               >
                 <option value="Country">Country</option>
                 {countries.map((country) => (
-                  <option key={country.cca2} value={country.name.common}>
-                    {country.name.common}
+                  <option key={country} value={country.name.common}>
+                    {country.name.common || "United Kingdom"}
                   </option>
                 ))}
               </select>

@@ -32,7 +32,6 @@ export const accessorReject = async (
 export const accessorApprove = async (
   userId: string,
   formData: any,
-  USER_DOCS_STORAGE_KEY: string,
   setLoading: (loading: boolean) => void,
   setShowDialog: (show: boolean) => void,
   setIsSubmitted: (submitted: boolean) => void,

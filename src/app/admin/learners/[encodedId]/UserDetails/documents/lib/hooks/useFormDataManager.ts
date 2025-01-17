@@ -11,6 +11,7 @@ interface BackendData {
 export const useFormDataManager = (userId: string) => {
   const [formData, setFormData] = useState({});
   const [formLoading, setFormLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const transformFormData = (backendData: BackendData) => {
     const usableData = Object.entries(backendData).reduce(
@@ -42,6 +43,7 @@ export const useFormDataManager = (userId: string) => {
         }
 
         const backendData = await response.json();
+        setIsSubmitted(backendData.is_submitted)
         transformFormData(backendData);
         
       } catch (error) {
@@ -83,5 +85,5 @@ export const useFormDataManager = (userId: string) => {
     setFormLoading(false);
   };
 
-  return { formData, formLoading, updateFormData };
+  return { formData, formLoading,isSubmitted, setIsSubmitted, updateFormData };
 };

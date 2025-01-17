@@ -23,11 +23,8 @@ interface DocViewProps {
 }
 
 export default function DocView({ onBackClick, userId }: DocViewProps) {
-  const USER_DOCS_STORAGE_KEY = `user-docs-${userId}`;
-
   // Local state
   const [CollegeName, setCollegeName] = useState<string>("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
   // Hooks for user role and navigation
@@ -44,7 +41,8 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
     setFormContent,
   } = useFormNavigation(formComponentsArray);
 
-  const { formData, formLoading, updateFormData } = useFormDataManager(userId);
+  const { formData, formLoading, isSubmitted, setIsSubmitted, updateFormData } =
+    useFormDataManager(userId);
 
   // Load college name on mount
   useEffect(() => {
@@ -79,7 +77,6 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
     accessorApprove(
       userId,
       formData,
-      USER_DOCS_STORAGE_KEY,
       setLoading,
       setShowDialog,
       setIsSubmitted,

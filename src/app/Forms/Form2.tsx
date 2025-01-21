@@ -71,7 +71,7 @@ export default function Form2({
           postCode: postcode,
           streetAddress: data.result.thoroughfare || "",
           city: data.result.nhs_ha || "",
-          selectedCounty: data.result.admin_district || "",
+          selectedCounty: data.result.primary_care_trust || "",
         }));
         setError("");
       } else {

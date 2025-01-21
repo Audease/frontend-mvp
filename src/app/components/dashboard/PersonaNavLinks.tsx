@@ -54,7 +54,7 @@ export default function PersonaNavLinks() {
   links.push({ name: "Messenger", href: "#" });
 
   return (
-    <div className="flex flex-row p-0 space-x-8">
+    <div className="flex flex-col md:flex-row p-0 md:space-x-8">
       {links.map((link) => {
         return (
           <Link

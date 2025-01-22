@@ -1,4 +1,7 @@
+import { rolesRevalidation } from "@/app/action";
+
 export const fetchRoles = async () => {
+    rolesRevalidation()
     try {
         const response = await fetch("/api/getRoles", {
             method: "GET",

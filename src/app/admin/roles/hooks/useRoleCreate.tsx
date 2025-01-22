@@ -1,3 +1,4 @@
+import { rolesRevalidation } from "@/app/action";
 import { useState, useEffect } from "react";
 
 export const useCreateRole = () => {
@@ -9,6 +10,7 @@ export const useCreateRole = () => {
   });
   const [endPointPermissions, setEndPointPermissions] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [roleDataKey, setRoleDataKey] = useState(0); 
   // Fetch and cache permissions
   useEffect(() => {
     const fetchPermissions = async () => {
@@ -43,6 +45,8 @@ export const useCreateRole = () => {
   const closeRoleSuccessModal = () => {
     setIsRoleSuccessModal(false);
     setRoleFormData({ roleName: "", permission: []});
+    console.log("Succesfully closed")
+    setRoleDataKey(prevKey => prevKey + 1); 
   };
 
   const roleCreate = async () => {
@@ -84,6 +88,8 @@ export const useCreateRole = () => {
         body: JSON.stringify(payload),
       });
 
+      rolesRevalidation()
+
       // console.log(assignResponse)
 
       if (assignResponse.ok) {
@@ -101,6 +107,7 @@ export const useCreateRole = () => {
     isModalOpen,
     isRoleSuccessModal,
     roleFormData,
+    roleDataKey,
     setRoleFormData,
     openModal,
     closeModal,

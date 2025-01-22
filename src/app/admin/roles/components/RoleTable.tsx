@@ -7,6 +7,7 @@ import LoadingSpinner, {
 } from "../../../components/dashboard/Spinner";
 import { Tooltip } from "flowbite-react";
 import NextTopLoader from "nextjs-toploader";
+import { useCreateRole } from "../hooks/useRoleCreate";
 
 export default function RoleTable() {
   const [availableRoles, setAvailableRoles] = useState([]);
@@ -15,6 +16,8 @@ export default function RoleTable() {
   const [loading2, setLoading2] = useState(false);
   const menuRef = useRef(null);
   const router = useRouter();
+ 
+
 
   const toggleVisibility = (rowId) => {
     setEditOptions((prevState) => ({
@@ -36,6 +39,8 @@ export default function RoleTable() {
     };
   }, []);
 
+  const { roleDataKey } = useCreateRole();
+
   useEffect(() => {
     const roleData = async () => {
       setLoading(true);
@@ -47,7 +52,9 @@ export default function RoleTable() {
     };
 
     roleData();
-  }, []);
+  }, [roleDataKey]);
+
+ 
 
   // const dataIcons = [
   //   { rolePermision: "Add student", roleIcon: "/role.svg" },
@@ -98,7 +105,7 @@ export default function RoleTable() {
       title: "Certificate dashboard",
       route: "/admin/certificate-dashboard",
     },
-  ];
+  ]
 
   const handleRoleClick = (permissions) => {
     setLoading2(true);

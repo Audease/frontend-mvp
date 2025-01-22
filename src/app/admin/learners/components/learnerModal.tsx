@@ -1,10 +1,7 @@
 import { Modal } from "flowbite-react";
 import Image from "next/image";
-import { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { learnerRevalidation } from "@/app/action";
-import { usePostLearners } from "../hooks/usePostLearners";
-
+import RegistrationForm from "./CreateLearnerForm";
 
 export default function AddLearnerModal({
   show,
@@ -12,18 +9,6 @@ export default function AddLearnerModal({
   setLearnerSuccessModal,
   onLearnerCreated,
 }) {
-  const { formData, handleChange, createLearner, error } = usePostLearners();
-
-  const handleCreateClick = async () => {
-    const success = await createLearner();
-    if (success) {
-      onClose();
-      onLearnerCreated();
-      learnerRevalidation();
-      setLearnerSuccessModal(true);
-    }
-  };
-
   return (
     <div className="font-inter">
       <Modal {...{ show, onClose }} className="modal" size={"3xl"}>
@@ -40,191 +25,11 @@ export default function AddLearnerModal({
             />
           </div>
           <hr className="my-4" />
-          <form action="">
-            <div className="grid grid-cols-2 gap-4">
-              {/* Name  */}
-              <div className="flex flex-col font-normal text-sm">
-                <label htmlFor="" className="text-tgrey3 pb-2">
-                  Name(First,Surname and Middle name)
-                </label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  name="name"
-                  onChange={handleChange}
-                  className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 "
-                  placeholder="Enter your name"
-                  required
-                />
-              </div>
-              {/* DOB  */}
-              <div className="flex flex-col font-normal text-sm">
-                <label htmlFor="" className="text-tgrey3 pb-2">
-                  Date of Birth
-                </label>
-                <input
-                  type="date"
-                  onChange={handleChange}
-                  value={formData.date_of_birth}
-                  name="date_of_birth"
-                  className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 "
-                  placeholder="Date of Birth"
-                  required
-                />
-              </div>
-              {/* Mobile Number */}
-              <div className="flex flex-col font-normal text-sm">
-                <label htmlFor="" className="text-tgrey3 pb-2">
-                  Mobile number
-                </label>
-                <input
-                  type="text"
-                  value={formData.mobile_number}
-                  name="mobile_number"
-                  onChange={handleChange}
-                  className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 "
-                  placeholder="Enter mobile number"
-                  required
-                />
-              </div>
-              {/* Email */}
-              <div className="flex flex-col font-normal text-sm">
-                <label htmlFor="" className="text-tgrey3 pb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  name="email"
-                  onChange={handleChange}
-                  className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 "
-                  placeholder="Enter Email"
-                  required
-                />
-              </div>
-              {/* NI Number  */}
-              <div className="flex flex-col font-normal text-sm">
-                <label htmlFor="" className="text-tgrey3 pb-2">
-                  NI Number
-                </label>
-                <input
-                  type="text"
-                  value={formData.NI_number}
-                  name="NI_number"
-                  onChange={handleChange}
-                  className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 "
-                  placeholder="Enter NI Number"
-                  required
-                />
-              </div>
-              {/* Passport Number  */}
-              <div className="flex flex-col font-normal text-sm">
-                <label htmlFor="" className="text-tgrey3 pb-2">
-                  Passport Number
-                </label>
-                <input
-                  type="text"
-                  value={formData.passport_number}
-                  name="passport_number"
-                  onChange={handleChange}
-                  className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 "
-                  placeholder="Enter Passport Number"
-                  required
-                />
-              </div>
-              {/* Home Address */}
-              <div className="flex flex-col font-normal text-sm">
-                <label htmlFor="" className="text-tgrey3 pb-2">
-                  Home address
-                </label>
-                <input
-                  type="text"
-                  value={formData.home_address}
-                  onChange={handleChange}
-                  name="home_address"
-                  className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 "
-                  placeholder="Enter Home address"
-                  required
-                />
-              </div>
-              {/* Funding  */}
-              <div className="flex flex-col font-normal text-sm">
-                <label htmlFor="" className="text-tgrey3 pb-2">
-                  Funding
-                </label>
-                <input
-                  type="text"
-                  value={formData.funding}
-                  name="funding"
-                  onChange={handleChange}
-                  className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1"
-                  placeholder="Input"
-                  required
-                />
-              </div>
-              {/* Awarding  */}
-              <div className="flex flex-col font-normal text-sm">
-                <label htmlFor="" className="text-tgrey3 pb-2">
-                  Awarding
-                </label>
-                <input
-                  type="text"
-                  value={formData.awarding}
-                  name="awarding"
-                  onChange={handleChange}
-                  className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 "
-                  placeholder="Input"
-                  required
-                />
-              </div>
-              {/* Chose course  */}
-              <div className="flex flex-col font-normal text-sm">
-                <label htmlFor="" className="text-tgrey3 pb-2">
-                  Chosen course
-                </label>
-                <select
-                  name="chosen_course" // Added name attribute
-                  value={formData.chosen_course}
-                  onChange={handleChange}
-                  className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1"
-                >
-                  <option value="Adult Care">Adult Care</option>
-                  <option value="Youth Plus">Youth Plus</option>
-                  <option value="Children Care">Children Care</option>
-                </select>
-              </div>
-              {/* Level  */}
-              <div className="flex flex-col font-normal text-sm">
-                <label htmlFor="" className="text-tgrey3 pb-2">
-                  Level
-                </label>
-                <input
-                  type="number"
-                  value={formData.level}
-                  name="level"
-                  onChange={handleChange}
-                  className="p-1 border border-tgrey2 rounded text-tableText2 text-sm font-normal focus:border-tgrey2 focus:outline-none focus:ring focus:ring-tgrey1 w-1/2"
-                  placeholder="Input"
-                  min="0"
-                  required
-                />
-              </div>
-            </div>
-            {error && (
-              <p className="text-red-500 mt-2">
-                {error.message || "An error occurred"}
-              </p>
-            )}
-            <div className="flex items-center justify-center mt-4">
-              <button
-                type="button"
-                className="bg-dashboardButtons hover:bg-tgrey1 text-white w-96 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                onClick={handleCreateClick}
-              >
-                Create
-              </button>
-            </div>
-          </form>
+          <RegistrationForm
+            onLearnerCreated={onLearnerCreated}
+            onClose={onClose}
+            setLearnerSuccessModal={setLearnerSuccessModal}
+          />
         </div>
       </Modal>
     </div>

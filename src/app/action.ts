@@ -7,6 +7,7 @@ export async function staffRevalidation() {
 }
 
 export async function rolesRevalidation() {
+  console.log("I am revalidating roles")
   revalidateTag("roles");
 }
 

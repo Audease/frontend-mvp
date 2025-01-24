@@ -11,7 +11,8 @@ interface BackendData {
 export const useFormDataManager = (userId: string) => {
   const [formData, setFormData] = useState({});
   const [formLoading, setFormLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  // const [isSubmitted, setIsSubmitted] = useState(false);
+  let isSubmitted = false;
 
   const transformFormData = (backendData: BackendData) => {
     const usableData = Object.entries(backendData).reduce(
@@ -43,7 +44,9 @@ export const useFormDataManager = (userId: string) => {
         }
 
         const backendData = await response.json();
-        setIsSubmitted(backendData.is_submitted)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        isSubmitted = backendData.is_submitted
+        // setIsSubmitted(backendData.is_submitted);
         transformFormData(backendData);
         
       } catch (error) {
@@ -85,5 +88,5 @@ export const useFormDataManager = (userId: string) => {
     setFormLoading(false);
   };
 
-  return { formData, formLoading,isSubmitted, setIsSubmitted, updateFormData };
+  return { formData, formLoading, isSubmitted, updateFormData };
 };

@@ -7,14 +7,12 @@ export const accessorReject = async (
   userId: string,
   setLoading: (loading: boolean) => void,
   setShowDialog: (show: boolean) => void,
-  setIsSubmitted: (submitted: boolean) => void,
   setFormContent: (content: string) => void
 ) => {
   setLoading(true);
   try {
     const success = await RejectLearner(userId);
     setShowDialog(false);
-    // setIsSubmitted(false);
 
     if (success) {
       setFormContent("AccessorRejectPage");
@@ -31,10 +29,8 @@ export const accessorReject = async (
 
 export const accessorApprove = async (
   userId: string,
-  formData: any,
   setLoading: (loading: boolean) => void,
   setShowDialog: (show: boolean) => void,
-  setIsSubmitted: (submitted: boolean) => void,
   setFormContent: (content: string) => void
 ) => {
   setLoading(true);
@@ -42,7 +38,6 @@ export const accessorApprove = async (
   try {
     const success = await ApproveLearner(userId);
     setShowDialog(false);
-    // setIsSubmitted(true);
     if (success) {
       setFormContent("AccessorSuccessPage");
     } else {

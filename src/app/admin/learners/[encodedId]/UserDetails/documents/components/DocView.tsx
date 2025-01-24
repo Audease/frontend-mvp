@@ -42,7 +42,7 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
     setFormContent,
   } = useFormNavigation(formComponentsArray);
 
-  const { formData, formLoading, isSubmitted, setIsSubmitted, updateFormData } =
+  const { formData, formLoading, isSubmitted, updateFormData } =
     useFormDataManager(userId);
 
   // Load college name on mount
@@ -69,7 +69,6 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
       userId,
       setLoading,
       setShowDialog,
-      setIsSubmitted,
       setFormContent
     );
   };
@@ -77,10 +76,8 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
   const handleApprove = () => {
     accessorApprove(
       userId,
-      formData,
       setLoading,
       setShowDialog,
-      setIsSubmitted,
       setFormContent
     );
   };

@@ -112,7 +112,7 @@ export const behaviouralData = {
       id: "ldaName",
       label: "Learning and Development Adviser Name",
       type: "text",
-      section: "admin",
+      section: "accessor",
       editableBy: ["accessor"],
       placeholder: "LDA Name",
       validation: z.string().refine((value) => !value || value.trim().length >= 2, {

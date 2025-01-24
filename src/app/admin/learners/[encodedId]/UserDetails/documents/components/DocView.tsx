@@ -16,6 +16,7 @@ import { accessorApprove, accessorReject } from "../lib/accessorActions";
 import { useUserRole } from "../lib/hooks/useUserRole";
 import { useFormNavigation } from "../lib/hooks/useFormNavigation";
 import { useFormDataManager } from "../lib/hooks/useFormDataManager";
+import { SubmitFinal } from "../lib/learnerFinalSubmission";
 
 interface DocViewProps {
   userId: string;
@@ -53,9 +54,9 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
   }, []);
 
   // Handlers
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    await submitFinall();
     setShowDialog(false);
-    setIsSubmitted(true);
     if (userRole === "learner") {
       setFormContent("SubmissionSuccess");
     } else {
@@ -82,6 +83,15 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
       setIsSubmitted,
       setFormContent
     );
+  };
+
+  const submitFinall = async () => {
+    try {
+      const success = await SubmitFinal(userId);
+      return {  success };
+    } catch (error) {
+      return { success: false, error };
+    }
   };
 
   // Render
@@ -132,7 +142,6 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
           accessorApprove={async () => handleApprove()}
           accessorReject={async () => handleReject()}
         />
-
         {/* Pagination */}
         <div>
           <Pagination

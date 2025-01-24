@@ -14,7 +14,7 @@ export const accessorReject = async (
   try {
     const success = await RejectLearner(userId);
     setShowDialog(false);
-    setIsSubmitted(false);
+    // setIsSubmitted(false);
 
     if (success) {
       setFormContent("AccessorRejectPage");
@@ -42,7 +42,7 @@ export const accessorApprove = async (
   try {
     const success = await ApproveLearner(userId);
     setShowDialog(false);
-    setIsSubmitted(true);
+    // setIsSubmitted(true);
     if (success) {
       setFormContent("AccessorSuccessPage");
     } else {

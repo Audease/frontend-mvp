@@ -5,7 +5,7 @@ import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
 
 export default function WelcomeModal({openModal, closeModal} ) {
-    const [userName, setUserName] = useState("Nyekachi");
+    const [userName, setUserName] = useState("Learner");
 
   return (
     <>

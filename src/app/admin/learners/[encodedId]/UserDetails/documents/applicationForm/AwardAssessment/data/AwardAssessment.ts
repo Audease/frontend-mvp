@@ -241,11 +241,7 @@ export const awardAssessmentData = {
           editableBy: ["accessor"],
           label: "Name",
           placeholder: "Name",
-          validation: z
-            .string()
-            .refine((value) => !value || value.trim().length >= 2, {
-              message: "Staff Name must be at least 2 characters.",
-            }),
+          validation: z.string().optional()
         },
         {
           type: "text",
@@ -254,11 +250,7 @@ export const awardAssessmentData = {
           editableBy: ["accessor"],
           label: "Position",
           placeholder: "Position",
-          validation: z
-            .string()
-            .refine((value) => !value || value.trim().length >= 2, {
-              message: "Staff Position must be at least 2 characters.",
-            }),
+          validation: z.string().optional()
         },
         {
           type: "text",
@@ -267,11 +259,7 @@ export const awardAssessmentData = {
           editableBy: ["accessor"],
           label: "Signature",
           placeholder: "Signature",
-          validation: z
-            .string()
-            .refine((value) => !value || value.trim().length >= 2, {
-              message: "Signature must be at least 2 characters.",
-            }),
+          validation: z.string().optional()
         },
         {
           type: "text",
@@ -280,11 +268,7 @@ export const awardAssessmentData = {
           editableBy: ["accessor"],
           label: "Current Position",
           placeholder: "Current Position",
-          validation: z
-            .string()
-            .refine((value) => !value || value.trim().length >= 2, {
-              message: "Position must be at least 2 characters.",
-            }),
+          validation: z.string().optional()
         },
         {
           type: "date",

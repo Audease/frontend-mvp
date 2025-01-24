@@ -57,38 +57,38 @@ const AwardAssessment = ({
     setValue,
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      ...formFieldsA.reduce((acc, field) => {
-        acc[field.id] =
-          formData[field.id] ||
-          (field.type === "checkbox"
-            ? false
-            : field.type === "multiselect"
-            ? []
-            : "");
-        return acc;
-      }, {}),
-      ...formFieldsB.reduce((acc, field) => {
-        acc[field.id] =
-          formData[field.id] ||
-          (field.type === "checkbox"
-            ? false
-            : field.type === "multiselect"
-            ? []
-            : "");
-        return acc;
-      }, {}),
-      ...formFieldsC.reduce((acc, field) => {
-        acc[field.id] =
-          formData[field.id] ||
-          (field.type === "checkbox"
-            ? false
-            : field.type === "multiselect"
-            ? []
-            : "");
-        return acc;
-      }, {}),
-    },
+    // defaultValues: {
+    //   ...formFieldsA.reduce((acc, field) => {
+    //     acc[field.id] =
+    //       formData[field.id] ||
+    //       (field.type === "checkbox"
+    //         ? false
+    //         : field.type === "multiselect"
+    //         ? []
+    //         : "");
+    //     return acc;
+    //   }, {}),
+    //   ...formFieldsB.reduce((acc, field) => {
+    //     acc[field.id] =
+    //       formData[field.id] ||
+    //       (field.type === "checkbox"
+    //         ? false
+    //         : field.type === "multiselect"
+    //         ? []
+    //         : "");
+    //     return acc;
+    //   }, {}),
+    //   ...formFieldsC.reduce((acc, field) => {
+    //     acc[field.id] =
+    //       formData[field.id] ||
+    //       (field.type === "checkbox"
+    //         ? false
+    //         : field.type === "multiselect"
+    //         ? []
+    //         : "");
+    //     return acc;
+    //   }, {}),
+    // },
   });
 
   const onSubmit = (data: any) => {

@@ -5,13 +5,14 @@ import {
 
 export const accessorReject = async (
   userId: string,
+  reason: string,
   setLoading: (loading: boolean) => void,
   setShowDialog: (show: boolean) => void,
   setFormContent: (content: string) => void
 ) => {
   setLoading(true);
   try {
-    const success = await RejectLearner(userId);
+    const success = await RejectLearner(userId, reason);
     setShowDialog(false);
 
     if (success) {

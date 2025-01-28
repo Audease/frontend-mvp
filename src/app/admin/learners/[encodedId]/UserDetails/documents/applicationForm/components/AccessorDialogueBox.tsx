@@ -35,7 +35,7 @@ export function AccessorDialogueBox({
         <AlertDialogFooter>
           <Button
              onClick={async () => {
-              await reject(); 
+              reject(); 
               onClose(); 
             }}
             className="bg-red-600"

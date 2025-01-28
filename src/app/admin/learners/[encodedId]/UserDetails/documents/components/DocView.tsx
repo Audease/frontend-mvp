@@ -70,9 +70,8 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
     setIsDialogOpen(true);
   };
 
-  const handleAccessorDialogeReject = async (rejectionReason) => {
-    await accessorReject(userId, rejectionReason, setLoading, setShowDialog, setFormContent);
-    setIsDialogOpen(false)
+  const handleAccessorDialogeReject = (rejectionReason) => {
+    accessorReject(userId, rejectionReason, setLoading, setShowDialog, setFormContent);
   }
 
   const handleApprove = () => {

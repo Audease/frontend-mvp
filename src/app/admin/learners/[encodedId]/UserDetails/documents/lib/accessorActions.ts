@@ -17,8 +17,10 @@ export const accessorReject = async (
 
     if (success) {
       setFormContent("AccessorRejectPage");
+      setLoading(false);
     } else {
       alert("Failed to reject learner.");
+      setLoading(false);
     }
   } catch (error) {
     console.error("Error during rejection:", error);

@@ -15,39 +15,39 @@ export default function AccessorApproval({ learner, onBack }) {
   const [showFailureToast, setShowFailureToast] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const approve = async () => {
-    setLoading(true);
-    const success = await ApproveLearner(learner.id);
-    setLoading(false);
-    if (success) {
-      setShowSuccessToast(true);
-      setTimeout(() => {
-        setShowSuccessToast(false);
-      }, 5000);
-    } else if (!success) {
-      setShowFailureToast(true);
-      setTimeout(() => {
-        setShowFailureToast(false);
-      }, 5000);
-    }
-  };
+  // const approve = async () => {
+  //   setLoading(true);
+  //   const success = await ApproveLearner(learner.id);
+  //   setLoading(false);
+  //   if (success) {
+  //     setShowSuccessToast(true);
+  //     setTimeout(() => {
+  //       setShowSuccessToast(false);
+  //     }, 5000);
+  //   } else if (!success) {
+  //     setShowFailureToast(true);
+  //     setTimeout(() => {
+  //       setShowFailureToast(false);
+  //     }, 5000);
+  //   }
+  // };
 
-  const rejection = async () => {
-    setLoading(true);
-    const success = await RejectLearner(learner.id);
-    setLoading(false);
-    if (success) {
-      setShowSuccessToast(true);
-      setTimeout(() => {
-        setShowSuccessToast(false);
-      }, 5000);
-    } else if (!success) {
-      setShowFailureToast(true);
-      setTimeout(() => {
-        setShowFailureToast(false);
-      }, 5000);
-    }
-  };
+  // const rejection = async () => {
+  //   setLoading(true);
+  //   const success = await RejectLearner(learner.id);
+  //   setLoading(false);
+  //   if (success) {
+  //     setShowSuccessToast(true);
+  //     setTimeout(() => {
+  //       setShowSuccessToast(false);
+  //     }, 5000);
+  //   } else if (!success) {
+  //     setShowFailureToast(true);
+  //     setTimeout(() => {
+  //       setShowFailureToast(false);
+  //     }, 5000);
+  //   }
+  // };
 
   return (
     <div className="space-y-4 min-h-[35rem]">

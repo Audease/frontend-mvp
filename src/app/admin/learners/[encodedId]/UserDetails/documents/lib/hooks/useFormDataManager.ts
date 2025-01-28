@@ -8,7 +8,7 @@ interface BackendData {
   };
 }
 
-export const useFormDataManager = (userId: string) => {
+export const useFormDataManager = (userId: string, userRole: string) => {
   const [formData, setFormData] = useState({});
   const [formLoading, setFormLoading] = useState(false);
   // const [isSubmitted, setIsSubmitted] = useState(false);
@@ -45,10 +45,9 @@ export const useFormDataManager = (userId: string) => {
 
         const backendData = await response.json();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        isSubmitted = backendData.is_submitted
+        isSubmitted = backendData.is_submitted;
         // setIsSubmitted(backendData.is_submitted);
         transformFormData(backendData);
-        
       } catch (error) {
         // console.error("Error fetching form submissions:", error);
       }
@@ -58,7 +57,11 @@ export const useFormDataManager = (userId: string) => {
     fetchFormSubmissions();
   }, [userId]);
 
-  const updateFormData = async (formType: string, data: any) => {
+  const updateFormData = async (
+    formType: string,
+    data: any,
+    
+  ) => {
     setFormData((prevData) => ({
       ...prevData,
       [formType.toLowerCase()]: {
@@ -67,24 +70,43 @@ export const useFormDataManager = (userId: string) => {
       },
     }));
 
-    try {
-      setFormLoading(true);
-      const response = await fetch("/api/enrolmentForm/submissionDraft", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          studentId: userId,
-          formType: formType,
-          data: {
-            data,
+    if (userRole === "learner") {
+      try {
+        setFormLoading(true);
+        const response = await fetch("/api/enrolmentForm/submissionDraft", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-        }),
-      });
-      const responseData = await response.json();
-      
-    } catch {}
+          body: JSON.stringify({
+            studentId: userId,
+            formType: formType,
+            data: {
+              data,
+            },
+          }),
+        });
+        const responseData = await response.json();
+      } catch {}
+    } else if (userRole === "accessor") {
+      try {
+        setFormLoading(true);
+        const response = await fetch(`/api/enrolmentForm/updateDraft/?studentId=${userId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            data: {
+              data,
+            },
+            formType : formType,
+          }),
+        });
+        const responseData = await response.json();
+      } catch {}
+    }
+
     setFormLoading(false);
   };
 

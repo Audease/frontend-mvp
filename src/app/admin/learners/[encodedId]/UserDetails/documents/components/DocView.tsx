@@ -45,7 +45,7 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
   } = useFormNavigation(formComponentsArray);
 
   const { formData, formLoading, isSubmitted, updateFormData } =
-    useFormDataManager(userId);
+    useFormDataManager(userId, userRole);
 
   // Load college name on mount
   useEffect(() => {

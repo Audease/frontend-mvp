@@ -22,7 +22,7 @@ export const ApproveLearner = async (studentId) => {
   }
 };
 
-export const RejectLearner = async (studentId) => {
+export const RejectLearner = async (studentId, reason) => {
   const encodedStudentId = encodeURIComponent(studentId);
 
   try {
@@ -33,7 +33,9 @@ export const RejectLearner = async (studentId) => {
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ reason: reason }),
       }
+      
     );
 
     if (response.ok) {

@@ -8,6 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 
 interface AccessorDialogueBoxProps {
   isOpen: boolean;
@@ -32,15 +33,15 @@ export function AccessorDialogueBox({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel
+          <Button
              onClick={async () => {
-              await reject(); 
+              reject(); 
               onClose(); 
             }}
             className="bg-red-600"
           >
             Reject
-          </AlertDialogCancel>
+          </Button>
 
           <AlertDialogAction
              onClick={async () => {

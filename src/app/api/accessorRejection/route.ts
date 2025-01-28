@@ -17,6 +17,8 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ message: 'studentId is required' }, { status: 400 });
   }
 
+  const { reason } = await req.json();
+
   try {
     const response = await fetch(
       `${apiUrl}/v1/accessor/reject-application/${studentId}`,
@@ -26,6 +28,7 @@ export async function PATCH(req: NextRequest) {
           'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ reason }),
       }
     );
 

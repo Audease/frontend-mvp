@@ -17,6 +17,7 @@ import { useUserRole } from "../lib/hooks/useUserRole";
 import { useFormNavigation } from "../lib/hooks/useFormNavigation";
 import { useFormDataManager } from "../lib/hooks/useFormDataManager";
 import { SubmitFinal } from "../lib/learnerFinalSubmission";
+import { AccessorRejectDialog } from "./AccessorRejectDialog";
 
 interface DocViewProps {
   userId: string;
@@ -27,6 +28,7 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
   // Local state
   const [CollegeName, setCollegeName] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Hooks for user role and navigation
   const userRole = useUserRole();
@@ -65,27 +67,21 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
   };
 
   const handleReject = () => {
-    accessorReject(
-      userId,
-      setLoading,
-      setShowDialog,
-      setFormContent
-    );
+    setIsDialogOpen(true);
   };
 
+  const handleAccessorDialogeReject = (rejectionReason) => {
+    accessorReject(userId, rejectionReason, setLoading, setShowDialog, setFormContent);
+  }
+
   const handleApprove = () => {
-    accessorApprove(
-      userId,
-      setLoading,
-      setShowDialog,
-      setFormContent
-    );
+    accessorApprove(userId, setLoading, setShowDialog, setFormContent);
   };
 
   const submitFinall = async () => {
     try {
       const success = await SubmitFinal(userId);
-      return {  success };
+      return { success };
     } catch (error) {
       return { success: false, error };
     }
@@ -139,6 +135,13 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
           accessorApprove={async () => handleApprove()}
           accessorReject={async () => handleReject()}
         />
+        <div>
+          <AccessorRejectDialog
+            isOpen={isDialogOpen}
+            onOpenChange={setIsDialogOpen}
+            onReject={handleAccessorDialogeReject}
+          />
+        </div>
         {/* Pagination */}
         <div>
           <Pagination

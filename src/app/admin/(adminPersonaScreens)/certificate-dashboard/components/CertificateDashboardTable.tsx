@@ -119,7 +119,7 @@ export default function CertificateDashboardTable({
               Chose course
             </th>
             <th className="px-2 py-2 text-left text-[10px] font-normal text-tableText tracking-wider">
-              Application
+              Status
             </th>
             <th className="px-2 py-2 text-left text-[10px] font-normal text-tableText tracking-wider">
               Action
@@ -218,7 +218,7 @@ export default function CertificateDashboardTable({
                         className="hover:text-gold1 cursor-pointer"
                         onClick={approveCertificate}
                       >
-                        Send Application
+                        Certify
                       </p>
                     </div>
                   )}

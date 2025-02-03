@@ -192,12 +192,12 @@ export default function InductionDashboardTable({
                 <td className="px-2 py-2 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   <p
                     className={clsx("text-center p-1 rounded-lg", {
-                      "bg-green4 text-green3": row.application_mail === "Sent",
+                      "bg-green4 text-green3": row.inductor_status === "Sent",
                       "bg-tgrey8 text-tblack4":
-                        row.application_mail === "Not sent",
+                        row.inductor_status === "Not sent",
                     })}
                   >
-                    {row.application_mail}
+                    {row.inductor_status}
                   </p>
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-bold text-center relative">

@@ -1,92 +1,75 @@
 "use client";
 
+// Imports
 import { useState } from "react";
+
+// Components
 import InductionDashboardTable from "./components/InductionDashboardTable";
 import InductionStaffModal from "./components/InductionStaffModal";
 import InductionDashboardHeader from "./components/InductionDashboardHeader";
 import StaffButton from "./components/StaffButton";
 import FilterInduction from "./components/FilterInduction";
 import SendBtn from "./components/SendBtn";
-import { SendEmail } from "./utils/action";
-import { learnerRevalidation } from "@/app/action";
+import { MeetingFormDialog } from "./components/SendInductionInviteModal";
+
+// Utilities
 import { useInductionLearners } from "./utils/useInductionLearners";
+import useSendInvite from "./utils/useSendInvite";
 
 export default function AdminBKSDDashboard({
   showHeader = true,
   showStaffButton = true,
 }) {
-  // State management
+  // 🔹 State Management
   const [roleName, setRoleName] = useState("Induction");
   const [showInductionStaffModal, setShowInductionStaffModal] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [checkedIds, setCheckedIds] = useState([]);
-  const [showSuccessToast, setShowSuccessToast] = useState(false);
-  const [successfulEmail, setSuccessfulEmail] = useState<number>();
-  const [failedEmail, setFailedEmail] = useState<number>();
-  const [showFailureToast, setShowFailureToast] = useState(false);
   const [checkedItems, setCheckedItems] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(1);
   const [allLearners, setAllLearners] = useState([]);
-
   const { fetchInductionLearnersData } = useInductionLearners();
-
   const isDisabled = checkedIds.length <= 1;
 
-  // Functions for handling modal
-  const onViewStaffClick = () => {
-    setShowInductionStaffModal(true);
+  // 🔹 Induction Staff Modal Handlers
+  const onViewStaffClick = () => setShowInductionStaffModal(true);
+  const closeInductionStaffModal = () => setShowInductionStaffModal(false);
+
+  // 🔹 Induction Invite Modal Handlers
+  const [openInductionInviteModal, setOpenInductionInviteModalOpen] =
+    useState(false);
+  const [data, setData] = useState({});
+  const {
+    loadingProgress,
+    successfulEmail,
+    failedEmail,
+    showSuccessToast,
+    showFailureToast,
+    sendInvites,
+  } = useSendInvite();
+
+  const onOpenInductionInviteModalChange = () => {
+    setOpenInductionInviteModalOpen(false);
   };
 
-  const closeInductionStaffModal = () => {
-    setShowInductionStaffModal(false);
-  };
-
-  // Function for sending applications
-  const sendApplication = async () => {
-    setLoading2(true);
-    const results = await Promise.all(
-      checkedIds.map(async (id) => {
-        try {
-          const success = await SendEmail(id);
-          return { id, success };
-        } catch (error) {
-          return { id, success: false, error };
-        }
-      })
-    );
-
-    const successfulIds = results
-      .filter((result) => result.success)
-      .map((result) => result.id);
-    const failedIds = results
-      .filter((result) => !result.success)
-      .map((result) => result.id);
-
-    learnerRevalidation();
-    handleFetchLearnersData(1);
+  const handleInviteFormSubmit = async (values) => {
+    setData(values);
+    await sendInvites(checkedIds, data);
     setCheckedItems({});
-
-    if (successfulIds.length > failedIds.length) {
-      setSuccessfulEmail(successfulIds.length);
-      setFailedEmail(failedIds.length);
-      setShowSuccessToast(true);
-      setTimeout(() => setShowSuccessToast(false), 5000);
-    } else {
-      setSuccessfulEmail(successfulIds.length);
-      setFailedEmail(failedIds.length);
-      setShowFailureToast(true);
-      setTimeout(() => setShowFailureToast(false), 5000);
-    }
-
-    setLoading2(false);
-
-    return { successfulIds, failedIds };
+    setCheckedIds([]);
+    handleFetchLearnersData(1);
+    setOpenInductionInviteModalOpen(false);
   };
 
-  // Function to handle checkbox changes
+  // 🔹 Function for Sending Applications
+  const sendApplication = async () => {
+    setOpenInductionInviteModalOpen(true);
+  };
+
+  // 🔹 Function to Handle Checkbox Changes
   const handleCheckboxChange = (id) => {
     setCheckedItems((prev) => {
       const updatedItems = { ...prev, [id]: !prev[id] };
@@ -98,12 +81,11 @@ export default function AdminBKSDDashboard({
     });
   };
 
-  // Function to fetch learner data
+  // 🔹 Function to Fetch Learner Data
   const handleFetchLearnersData = async (page) => {
     setLoading(true);
-    const { totalPages, totalItems, allLearners } = await fetchInductionLearnersData(
-      page
-    );
+    const { totalPages, totalItems, allLearners } =
+      await fetchInductionLearnersData(page);
     setTotalPages(totalPages);
     setTotalItems(totalItems);
     setAllLearners(allLearners);
@@ -112,11 +94,11 @@ export default function AdminBKSDDashboard({
 
   return (
     <div>
-      {/* Header Section */}
+      {/* 🔹 Header Section */}
       <div className="flex flex-col xl:flex-row justify-between">
         {showHeader && <InductionDashboardHeader {...{ roleName }} />}
 
-        {/* Button Section */}
+        {/* 🔹 Button Section */}
         <div className="flex flex-row space-x-4 my-3 xl:my-0">
           <SendBtn onSendClick={sendApplication} disabled={isDisabled} />
           {showStaffButton && <StaffButton {...{ onViewStaffClick }} />}
@@ -126,7 +108,7 @@ export default function AdminBKSDDashboard({
         </div>
       </div>
 
-      {/* Dashboard Table Section */}
+      {/* 🔹 Dashboard Table Section */}
       <div className="mt-6">
         <InductionDashboardTable
           {...{
@@ -147,8 +129,21 @@ export default function AdminBKSDDashboard({
         />
       </div>
 
-      {/* Staff Modal Section */}
-      <InductionStaffModal show={showInductionStaffModal} onClose={closeInductionStaffModal} />
+      {/* 🔹 Staff Modal Section */}
+      <InductionStaffModal
+        show={showInductionStaffModal}
+        onClose={closeInductionStaffModal}
+      />
+
+      {/* 🔹 Induction Invite Modal Section */}
+      <div>
+        <MeetingFormDialog
+          isOpen={openInductionInviteModal}
+          onOpenChange={onOpenInductionInviteModalChange}
+          onSubmit={handleInviteFormSubmit}
+          loading={loadingProgress}
+        />
+      </div>
     </div>
   );
 }

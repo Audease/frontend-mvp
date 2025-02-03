@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { TokenManager } from "../utils/checkAndRefreshToken";
+import { TokenManager } from "../../utils/checkAndRefreshToken";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 

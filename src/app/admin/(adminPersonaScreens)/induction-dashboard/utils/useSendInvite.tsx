@@ -1,29 +1,40 @@
-import { useState } from "react";
-import { SendEmail } from "./action";
+import { learnerRevalidation } from '@/app/action';
+import { useState } from 'react';
 
-export const useSendApplication = async () => {
-    setLoading2(true);
-    const results = await Promise.all(
-      checkedIds.map(async (id) => {
-        try {
-          const success = await SendEmail(id);
-          return { id, success };
-        } catch (error) {
-          return { id, success: false, error };
+const useSendInvite = () => {
+  const [loadingProgress, setloadingProgress] = useState(false);
+  const [successfulEmail, setSuccessfulEmail] = useState(0);
+  const [failedEmail, setFailedEmail] = useState(0);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showFailureToast, setShowFailureToast] = useState(false);
+
+  const sendInvites = async (learnerIds, payload) => {
+    setloadingProgress(true);
+    const successfulIds = [];
+    const failedIds = [];
+
+    for (const id of learnerIds) {
+      // console.log(payload, id)
+      try {
+        const response = await fetch(`/api/induction/sendInductionInvite?studentId=${id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify( payload ),
+        });
+
+        if (response.ok) {
+          successfulIds.push(id);
+        } else {
+          failedIds.push(id);
         }
-      })
-    );
-
-    const successfulIds = results
-      .filter((result) => result.success)
-      .map((result) => result.id);
-    const failedIds = results
-      .filter((result) => !result.success)
-      .map((result) => result.id);
+      } catch (error) {
+        failedIds.push(id);
+      }
+    }
 
     learnerRevalidation();
-    handleFetchLearnersData(1);
-    setCheckedItems({});
 
     if (successfulIds.length > failedIds.length) {
       setSuccessfulEmail(successfulIds.length);
@@ -37,8 +48,19 @@ export const useSendApplication = async () => {
       setTimeout(() => setShowFailureToast(false), 5000);
     }
 
-    setLoading2(false);
+    setloadingProgress(false);
 
     return { successfulIds, failedIds };
-     
-}
+  };
+
+  return {
+    loadingProgress,
+    successfulEmail,
+    failedEmail,
+    showSuccessToast,
+    showFailureToast,
+    sendInvites,
+  };
+};
+
+export default useSendInvite;

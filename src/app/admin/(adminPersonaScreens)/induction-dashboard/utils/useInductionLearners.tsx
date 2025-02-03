@@ -2,7 +2,7 @@ export const useInductionLearners = () => {
   const fetchInductionLearnersData = async (page: number) => {
     try {
       const response = await fetch(
-        `/api/getInductionLearners?page=${page}&limit=${10}`
+        `/api/induction/getInductionLearners?page=${page}&limit=${10}`
       );
       const data = await response.json();
       if (response.ok) {

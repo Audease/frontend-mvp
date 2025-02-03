@@ -10,6 +10,7 @@ import SendBtn from "./components/SendBtn";
 import { SendEmail } from "./utils/action";
 import { learnerRevalidation } from "@/app/action";
 import { useInductionLearners } from "./utils/useInductionLearners";
+import { MeetingFormDialog } from "./components/SendInductionInviteModal";
 
 export default function AdminBKSDDashboard({
   showHeader = true,
@@ -44,46 +45,14 @@ export default function AdminBKSDDashboard({
     setShowInductionStaffModal(false);
   };
 
+  const [open, setOpen] = useState(false);
+  const onOpenChange = () => {
+   setOpen(false)
+  }
+
   // Function for sending applications
   const sendApplication = async () => {
-    setLoading2(true);
-    const results = await Promise.all(
-      checkedIds.map(async (id) => {
-        try {
-          const success = await SendEmail(id);
-          return { id, success };
-        } catch (error) {
-          return { id, success: false, error };
-        }
-      })
-    );
-
-    const successfulIds = results
-      .filter((result) => result.success)
-      .map((result) => result.id);
-    const failedIds = results
-      .filter((result) => !result.success)
-      .map((result) => result.id);
-
-    learnerRevalidation();
-    handleFetchLearnersData(1);
-    setCheckedItems({});
-
-    if (successfulIds.length > failedIds.length) {
-      setSuccessfulEmail(successfulIds.length);
-      setFailedEmail(failedIds.length);
-      setShowSuccessToast(true);
-      setTimeout(() => setShowSuccessToast(false), 5000);
-    } else {
-      setSuccessfulEmail(successfulIds.length);
-      setFailedEmail(failedIds.length);
-      setShowFailureToast(true);
-      setTimeout(() => setShowFailureToast(false), 5000);
-    }
-
-    setLoading2(false);
-
-    return { successfulIds, failedIds };
+    setOpen(true)
   };
 
   // Function to handle checkbox changes
@@ -109,6 +78,8 @@ export default function AdminBKSDDashboard({
     setAllLearners(allLearners);
     setLoading(false);
   };
+
+  
 
   return (
     <div>
@@ -149,6 +120,8 @@ export default function AdminBKSDDashboard({
 
       {/* Staff Modal Section */}
       <InductionStaffModal show={showInductionStaffModal} onClose={closeInductionStaffModal} />
+
+      <MeetingFormDialog isOpen={open} onOpenChange={onOpenChange} />
     </div>
   );
 }

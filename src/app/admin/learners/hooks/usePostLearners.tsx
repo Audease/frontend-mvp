@@ -1,39 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export const usePostLearners = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    date_of_birth: "",
-    mobile_number: "",
-    email: "",
-    NI_number: "",
-    passport_number: "",
-    home_address: "",
-    funding: "",
-    level: 1,
-    awarding: "",
-    chosen_course: "AdultCare",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: name === 'level' ? parseInt(value, 10) || 0 : value,
-    });
-  };
-
   const [error, setError] = useState(null);
 
-  const createLearner = async () => {
-    const payload = formData;
+  const createLearner = async (formData) => {
     try {
       const response = await fetch("/api/addLearner", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(formData),
       });
       const data = await response.json();
       if (response.ok) {
@@ -52,8 +29,6 @@ export const usePostLearners = () => {
   };
 
   return {
-    formData,
-    handleChange,
     createLearner,
     error,
   };

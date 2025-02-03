@@ -54,9 +54,9 @@ export default function Learners() {
     console.log("Selected option:", option);
   };
 
-  const handleLearnerCreated = () => {
-    learnerRevalidation();
-    setTableKey((prev) => prev + 1);
+  const handleLearnerCreated = async () => {
+    await learnerRevalidation();
+    handleFetchLearnersData(1);
   };
 
   useEffect(() => {

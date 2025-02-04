@@ -11,8 +11,8 @@ interface BackendData {
 export const useFormDataManager = (userId: string, userRole: string) => {
   const [formData, setFormData] = useState({});
   const [formLoading, setFormLoading] = useState(false);
-  // const [isSubmitted, setIsSubmitted] = useState(false);
-  let isSubmitted = false;
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  // let isSubmitted = false;
 
   const transformFormData = (backendData: BackendData) => {
     const usableData = Object.entries(backendData).reduce(
@@ -25,36 +25,37 @@ export const useFormDataManager = (userId: string, userRole: string) => {
     setFormData(usableData);
   };
 
-  useEffect(() => {
-    const fetchFormSubmissions = async () => {
-      try {
-        setFormLoading(true);
-        const response = await fetch(
-          `/api/enrolmentForm/getSubmission?studentId=${userId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch form submissions");
+  const fetchFormSubmissions = async () => {
+    try {
+      setFormLoading(true);
+      const response = await fetch(
+        `/api/enrolmentForm/getSubmission?studentId=${userId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
+      );
 
-        const backendData = await response.json();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        isSubmitted = backendData.is_submitted;
-        // setIsSubmitted(backendData.is_submitted);
-        transformFormData(backendData);
-      } catch (error) {
-        // console.error("Error fetching form submissions:", error);
+      if (!response.ok) {
+        throw new Error("Failed to fetch form submissions");
       }
-      setFormLoading(false);
-    };
 
+      const backendData = await response.json();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      // console.log(backendData.is_submitted);
+      setIsSubmitted(backendData.is_submitted);
+      transformFormData(backendData);
+    } catch (error) {
+      // console.error("Error fetching form submissions:", error);
+    }
+    setFormLoading(false);
+  };
+
+  useEffect(() => {
     fetchFormSubmissions();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const updateFormData = async (
@@ -110,5 +111,5 @@ export const useFormDataManager = (userId: string, userRole: string) => {
     setFormLoading(false);
   };
 
-  return { formData, formLoading, isSubmitted, updateFormData };
+  return { formData, formLoading, isSubmitted, updateFormData, fetchFormSubmissions };
 };

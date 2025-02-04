@@ -36,7 +36,7 @@ export default function CandidateRecordForm({
   onPrevClick,
   onNextClick,
   userRole,
-  isSubmitted
+  isSubmitted,
 }: CandidateRecordFormProps) {
   const {
     control,
@@ -73,8 +73,22 @@ export default function CandidateRecordForm({
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
         {formFields.map((field) => {
-          const isEditable =
-          !isSubmitted && field.editableBy.includes(userRole);
+          let isEditable: boolean;
+
+          if (isSubmitted) {
+            if (userRole === "learner") {
+              isEditable = false;
+            } else if (userRole === "accessor") {
+              isEditable = field.editableBy.includes("accessor");
+            }
+          } else {
+            if (userRole === "learner") {
+              isEditable = field.editableBy.includes("learner");
+            } else if (userRole === "accessor") {
+              isEditable = false;
+            }
+          }
+
           switch (field.type) {
             case "text":
               return (
@@ -117,30 +131,27 @@ export default function CandidateRecordForm({
                   )}
                 />
               );
-              case "number":
-                  return (
-                    <Controller
-                      key={`sectionField-${
-                        field.id }`}
-                      name={field.id}
-                      control={control}
-                      render={({ field: { onChange, value } }) => (
-                        <NumberInput
-                          id={field.id}
-                          label={field.label}
-                          disabled={!isEditable}
-                          onChange={(e) => onChange(Number(e.target.value))}
-                          value={value || ""}
-                          error={errors[field.id]?.message as string}
-                          placeholder={
-                            field.placeholder || "Enter a number"
-                          }
-                          min={field.min || 0}
-                          max={field.max || 10}
-                        />
-                      )}
+            case "number":
+              return (
+                <Controller
+                  key={`sectionField-${field.id}`}
+                  name={field.id}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <NumberInput
+                      id={field.id}
+                      label={field.label}
+                      disabled={!isEditable}
+                      onChange={(e) => onChange(Number(e.target.value))}
+                      value={value || ""}
+                      error={errors[field.id]?.message as string}
+                      placeholder={field.placeholder || "Enter a number"}
+                      min={field.min || 0}
+                      max={field.max || 10}
                     />
-                  );
+                  )}
+                />
+              );
             case "date":
               return (
                 <Controller
@@ -191,11 +202,17 @@ export default function CandidateRecordForm({
         </div>
         <div className="flex flex-row space-x-5 my-8">
           {onPrevClick && (
-            <Button type="button" onClick={onPrevClick} disabled={userRole === "Admin"}>
+            <Button
+              type="button"
+              onClick={onPrevClick}
+              disabled={userRole === "Admin"}
+            >
               Back
             </Button>
           )}
-          <Button type="submit" disabled={userRole === "Admin"}>Save and Continue</Button>
+          <Button type="submit" disabled={userRole === "Admin"}>
+            Save and Continue
+          </Button>
         </div>
       </form>
     </div>

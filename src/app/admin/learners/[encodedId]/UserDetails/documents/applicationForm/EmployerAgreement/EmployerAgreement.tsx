@@ -89,8 +89,21 @@ const EmployerAgreement = ({
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
         <div>
           {formFieldsA.map((field, index) => {
-            const isEditable =
-            !isSubmitted && field.editableBy.includes(userRole);
+            let isEditable: boolean;
+
+            if (isSubmitted) {
+              if (userRole === "learner") {
+                isEditable = false;
+              } else if (userRole === "accessor") {
+                isEditable = field.editableBy.includes("accessor");
+              }
+            } else {
+              if (userRole === "learner") {
+                isEditable = field.editableBy.includes("learner");
+              } else if (userRole === "accessor") {
+                isEditable = false;
+              }
+            }
             switch (field.type) {
               case "checkbox":
                 return (

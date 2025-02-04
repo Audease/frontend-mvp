@@ -94,8 +94,21 @@ export default function PrivacyNotice({
               <p className="text-base text-justify">{field.p}</p>
             </div>
             {field.fields.map((innerField) => {
-              const isEditable =
-                !isSubmitted && innerField.editableBy.includes(userRole);
+              let isEditable: boolean;
+
+              if (isSubmitted) {
+                if (userRole === "learner") {
+                  isEditable = false;
+                } else if (userRole === "accessor") {
+                  isEditable = innerField.editableBy.includes("accessor");
+                }
+              } else {
+                if (userRole === "learner") {
+                  isEditable = innerField.editableBy.includes("learner");
+                } else if (userRole === "accessor") {
+                  isEditable = false;
+                }
+              }
               switch (innerField.type) {
                 case "text":
                   return (

@@ -14,7 +14,7 @@ export default function AdminRecruiterdashboard({
   showStaffButton = true,
   showHeader = true,
 }) {
-  const [roleName, setRoleName] = useState("Onny");
+  const [roleName, setRoleName] = useState("Recruiter");
   const [activeTab, setActiveTab] = useState("All");
   const [activeBarStyle, setActiveBarStyle] = useState({});
   const [checkedItems, setCheckedItems] = useState({});

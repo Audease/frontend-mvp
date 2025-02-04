@@ -44,7 +44,7 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
     setFormContent,
   } = useFormNavigation(formComponentsArray);
 
-  const { formData, formLoading, isSubmitted, updateFormData } =
+  const { formData, formLoading, isSubmitted, updateFormData, fetchFormSubmissions } =
     useFormDataManager(userId, userRole);
 
   // Load college name on mount
@@ -58,6 +58,7 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
   // Handlers
   const handleSubmit = async () => {
     await submitFinall();
+    fetchFormSubmissions()
     setShowDialog(false);
     if (userRole === "learner") {
       setFormContent("SubmissionSuccess");
@@ -70,17 +71,20 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
     setIsDialogOpen(true);
   };
 
-  const handleAccessorDialogeReject = (rejectionReason) => {
-    accessorReject(userId, rejectionReason, setLoading, setShowDialog, setFormContent);
+  const handleAccessorDialogeReject = async (rejectionReason) => {
+    await accessorReject(userId, rejectionReason, setLoading, setShowDialog, setFormContent);
+    fetchFormSubmissions()
   }
 
-  const handleApprove = () => {
-    accessorApprove(userId, setLoading, setShowDialog, setFormContent);
+  const handleApprove = async () => {
+    await accessorApprove(userId, setLoading, setShowDialog, setFormContent);
+    fetchFormSubmissions()
   };
 
   const submitFinall = async () => {
     try {
       const success = await SubmitFinal(userId);
+      fetchFormSubmissions()
       return { success };
     } catch (error) {
       return { success: false, error };

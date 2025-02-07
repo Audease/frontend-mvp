@@ -1,15 +1,14 @@
+import { Sparkles } from "lucide-react";
 import { Type2Button } from "../../../../components/dashboard/Button";
 import RoleCard from "../../../../components/dashboard/RoleCard";
 import CreateRole from "./components/CreateRole/CreateRole";
 import CreateWorkflow from "./components/CreateWorkflow/CreateWorkflow";
 
 export default function Rightside({
-  onRoleClick,
-  onWorkflowClick,
   onStaffClick,
   onLearnerClick,
   onResourcesClick,
-  onFormClick
+  onFormClick,
 }) {
   return (
     <div>
@@ -48,22 +47,31 @@ export default function Rightside({
               leftIcon={"/formIcon.png"}
               buttonText={"Form"}
               onClick={onFormClick}
+              disabled={true}
             />
           </div>
         </div>
         {/* Cards Section */}
         <div className="mt-20">
           {/* Header */}
-          <div className="font-inter">
-            <h3 className="font-medium text-base">What&apos;s new</h3>
+          <div className="font-inter ">
+            {/* <h3 className="font-medium text-base">What&apos;s coming!</h3>
             <p className="font-normal text-tgrey3 text-sm">
-              You can find all settings here.
-            </p>
+              New features on the horizon
+            </p> */}
+            <div className="p-2 bg-indigo-500/10 rounded-full flex flex-row space-x-3 px-4">
+              <Sparkles className="h-6 w-6 text-tgrey1" />
+              <h3 className="font-medium text-base">What&apos;s coming!</h3>
+            </div>
+            <div>
+              {/* <h3 className="text-lg font-semibold text-white">New Features</h3> */}
+              <p className="text-sm text-gray-400 p-2">New features coming to your workspace</p>
+            </div>
           </div>
           {/* cards */}
           <div className="my-2 space-y-4">
-            <RoleCard />
-            <RoleCard />
+            <RoleCard title={"Workflows"} description={"Monitor and track activities across different personas with advanced workflow management."}/>
+            <RoleCard title={"In-Platform Messaging"} description={"Real-time chat sessions between team members for instant collaboration."}/>
           </div>
         </div>
       </div>

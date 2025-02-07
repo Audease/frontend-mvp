@@ -19,16 +19,24 @@ export default function Button({ buttonText, className, arrowDirection, onClick 
   );
 }
 
-export function Type2Button ({leftIcon, buttonText, onClick}) {
+export function Type2Button ({leftIcon, buttonText, onClick, disabled = false}) {
   return (
     <div>
-      <button className="flex flex-row bg-dashboardRolesBtn p-1 rounded-lg text-white font-inter" onClick={onClick}>
+      <button 
+        className={ `flex flex-row p-1 rounded-lg text-white font-inter bg-dashboardRolesBtn ${disabled ? "bg-gray-400 cursor-not-allowed" : ""}` }
+        //   className("flex flex-row p-1 rounded-lg text-white font-inter", {
+        //   "bg-dashboardRolesBtn": !disabled,
+        //   "bg-gray-400 cursor-not-allowed": disabled
+        // })
+        onClick={onClick} 
+        disabled={disabled}
+      >
         <div className="px-2 py-1">
           <Image src={leftIcon} width={16} height={16} alt="icon"/>
-          </div>
+        </div>
         <div className="text-base"> {buttonText} </div>
         <div className="pl-6 pt-1 pr-4">
-        <FiPlusCircle />
+          <FiPlusCircle />
         </div>
       </button>
     </div>

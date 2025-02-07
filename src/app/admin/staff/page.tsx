@@ -10,6 +10,7 @@ import LoadingSpinner, {
   LoadingSpinner2,
 } from "../../components/dashboard/Spinner";
 import SuccessToast, { FailureToast } from "@/app/components/NotificationToast";
+import AddStaffScreen from "../roles/components/Staff";
 
 type CheckedItems = {
   [key: number]: any;
@@ -87,6 +88,51 @@ export default function Staff() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const [activeComponent, setActiveComponent] = useState("StaffTable");
+
+  const renderComponent = () => {
+    switch (activeComponent) {
+      case "AddStaff":
+        return (
+          <AddStaffScreen
+            onClick={() => {
+              handleFetchStaffData(1);
+              setActiveComponent("StaffTable");
+            }}
+          />
+        );
+      default:
+        return (
+          <>
+            <div className="min-h-[22rem]">
+              <StaffTable
+                {...{
+                  staffData,
+                  setStaffData,
+                  currentPage,
+                  setCurrentPage,
+                  checkedItems,
+                  setCheckedItems,
+                  loading2,
+                }}
+                onRoleSelect={handleRoleSelect}
+              />
+            </div>
+
+            <div>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                itemsPerPage={10}
+                totalItems={totalItems}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          </>
+        );
+    }
+  };
+
   return (
     <div className="flex flex-col space-y-4">
       <div>
@@ -114,6 +160,14 @@ export default function Staff() {
           <div className="flex flex-col xl:flex-row xl:space-x-4 space-y-4 xl:space-y-0 my-3 xl:my-0">
             <div className="z-0">
               <SearchBox />
+            </div>
+            <div>
+              <button
+                className="bg-dashboardButtons text-white py-2 px-4 rounded focus:outline-none"
+                onClick={() => setActiveComponent("AddStaff")}
+              >
+                Add Staff
+              </button>
             </div>
             <div>
               <button
@@ -148,30 +202,7 @@ export default function Staff() {
             {errorToast && <FailureToast text={"Failed to assign role"} />}
           </div>
         </div>
-        <div className="min-h-[22rem]">
-          <StaffTable
-            {...{
-              staffData,
-              setStaffData,
-              currentPage,
-              setCurrentPage,
-              checkedItems,
-              setCheckedItems,
-              loading2
-            }}
-            onRoleSelect={handleRoleSelect}
-          />
-        </div>
-
-        <div>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            itemsPerPage={10}
-            totalItems={totalItems}
-            onPageChange={handlePageChange}
-          />
-        </div>
+        <div>{renderComponent()}</div>
       </div>
     </div>
   );

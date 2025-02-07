@@ -23,6 +23,7 @@ function CreateWorkflow({ }: Props) {
         leftIcon={"/worflow.png"}
         buttonText={"Workflow"}
         onClick={onWorkflowClick}
+        disabled={true}
       />
       {/* <CreateWorkflowModal {...{ isModalOpen, closeModal }} /> */}
     </>

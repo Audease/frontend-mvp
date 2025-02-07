@@ -12,6 +12,8 @@ import { useCreateRole } from "./hooks/useRoleCreate";
 import { learnerRevalidation } from "@/app/action";
 import AddLearnerModal, { LearnerCreated } from "../learners/components/learnerModal";
 import { AddAuditLearnerModal } from "./components/Rightside/components/CreateRole/AddAuditModal";
+import { useRouter } from "next/navigation";
+import AddStaffScreen from "./components/Staff";
 
 
 export default function Role() {
@@ -21,6 +23,7 @@ export default function Role() {
   const [learnerCreateModalState, setLearnerCreateModalState] = useState(false);
   const [learnerSuccessModal, setLearnerSuccessModal] = useState(false);
   const [addAuditLearnerModal, setAddAuditLearnerModal] = useState(false);
+  const route = useRouter();
 
   const onCreateClick = () => {
     setLearnerCreateModalState(false);
@@ -51,17 +54,17 @@ export default function Role() {
     showComponent("Staff");
   };
 
-  const onRoleClick = () => {
-    openModal();
-  };
+  // const onRoleClick = () => {
+  //   openModal();
+  // };
 
   const onLearnerClick = () => {
     setLearnerCreateModalState(true);
   };
 
-  const onWorkflowClick = () => {
-    setIsWorkflowModalOpen(true);
-  };
+  // const onWorkflowClick = () => {
+  //   setIsWorkflowModalOpen(true);
+  // };
 
   const closeWorkflowModal = () => {
     setIsWorkflowModalOpen(false);
@@ -82,7 +85,7 @@ export default function Role() {
   };
 
   const onResourcesClick = () => {
-    console.log("Resources Clicked");
+    route.push("/admin/resources");
   };
 
   const onFormClick = () => {
@@ -109,7 +112,7 @@ export default function Role() {
       case "SetUpAccount":
         return <SetUpAccount onClick={onBackClick} />;
       case "Staff":
-        return <Staff onClick={onBackClick} />;
+        return <AddStaffScreen onClick={onBackClick} />;
       case "Workflow":
         return <Workflow onClick={onBackClick} />;
       default:
@@ -168,9 +171,7 @@ export default function Role() {
         {/* Right side */}
         <div className="w-1/4 hidden xl:flex">
           <Rightside
-            onRoleClick={onRoleClick}
             onStaffClick={onStaffClick}
-            onWorkflowClick={onWorkflowClick}
             onLearnerClick={onLearnerClick}
             onResourcesClick={onResourcesClick}
             onFormClick={onFormClick}

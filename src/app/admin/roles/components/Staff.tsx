@@ -9,7 +9,7 @@ import axios from "axios";
 import { staffRevalidation } from "../../../action";
 import LoadingSpinner from "../../../components/dashboard/Spinner";
 
-export default function Staff({ onClick }) {
+export default function AddStaffScreen({ onClick }) {
   const [emailInput, setEmailInput] = useState("");
   const [staffs, setStaffs] = useState([]);
   const [avatars, setAvatars] = useState({});

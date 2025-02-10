@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({
       </button>
       <h3>{`Page ${sectionNumber} of ${totalSectionNumber}`}</h3>
     </div>
-    <div className="flex flex-row px-4 justify-between">
+    <div className="flex flex-col-reverse xl:flex-row px-4 justify-between">
       <div></div>
       <h2 className="text-center text-3xl my-6 font-extrabold capitalize">
         {collegeName}

@@ -2,55 +2,50 @@ import { useState, useEffect } from "react";
 
 interface BackendData {
   [key: string]: {
+    id: string;
     data: {
       data: any;
     };
   };
 }
 
-export const useFormDataManager = (userId: string, userRole: string) => {
-  const [formData, setFormData] = useState({});
+export const useFormDataManager = (userId: string) => {
+  const [formData, setFormData] = useState<Record<string, any>>({});
   const [formLoading, setFormLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  // let isSubmitted = false;
+  const [rawBackendData, setRawBackendData] = useState<BackendData>({});
 
   const transformFormData = (backendData: BackendData) => {
-    const usableData = Object.entries(backendData).reduce(
-      (acc, [key, value]) => {
-        acc[key] = value?.data?.data || null;
-        return acc;
-      },
-      {} as Record<string, any>
-    );
-    setFormData(usableData);
+    return Object.entries(backendData).reduce((acc, [key, value]) => {
+      acc[key] = value?.data?.data || null;
+      return acc;
+    }, {} as Record<string, any>);
   };
 
   const fetchFormSubmissions = async () => {
+    if (!userId) return;
+    
+    setFormLoading(true);
     try {
-      setFormLoading(true);
       const response = await fetch(
         `/api/enrolmentForm/getSubmission?studentId=${userId}`,
         {
           method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch form submissions");
-      }
+      if (!response.ok) throw new Error("Failed to fetch form submissions");
 
       const backendData = await response.json();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      // console.log(backendData.is_submitted);
+      setRawBackendData(backendData);
       setIsSubmitted(backendData.is_submitted);
-      transformFormData(backendData);
+      setFormData(transformFormData(backendData));
     } catch (error) {
-      // console.error("Error fetching form submissions:", error);
+      console.error("Error fetching form submissions:", error);
+    } finally {
+      setFormLoading(false);
     }
-    setFormLoading(false);
   };
 
   useEffect(() => {
@@ -58,58 +53,49 @@ export const useFormDataManager = (userId: string, userRole: string) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
-  const updateFormData = async (
-    formType: string,
-    data: any,
-    
-  ) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [formType.toLowerCase()]: {
-        ...prevData[formType.toLowerCase()],
-        ...data,
-      },
+  const updateFormData = async (formType: string, data: any) => {
+    if (!userId || !formType) return;
+
+    const formTypeKey = formType.toLowerCase();
+    setFormData(prev => ({
+      ...prev,
+      [formTypeKey]: { ...prev[formTypeKey], ...data },
     }));
 
-    if (userRole === "learner") {
-      try {
-        setFormLoading(true);
-        const response = await fetch("/api/enrolmentForm/submissionDraft", {
+    setFormLoading(true);
+    try {
+      if ((Object.keys(rawBackendData).length === 0) || !rawBackendData[formTypeKey]) {
+        await fetch("/api/enrolmentForm/submissionDraft", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             studentId: userId,
-            formType: formType,
-            data: {
-              data,
-            },
+            formType,
+            data: { data },
           }),
         });
-        const responseData = await response.json();
-      } catch {}
-    } else if (userRole === "accessor") {
-      try {
-        setFormLoading(true);
-        const response = await fetch(`/api/enrolmentForm/updateDraft/?studentId=${userId}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            data: {
-              data,
-            },
-            formType : formType,
-          }),
-        });
-        const responseData = await response.json();
-      } catch {}
-    }
+      } else {
+        const formId = rawBackendData[formTypeKey]?.id;
+        if (!formId) throw new Error("Form ID not found");
 
-    setFormLoading(false);
+        await fetch(`/api/enrolmentForm/updateDraft/?id=${formId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify( { data } ),
+        });
+      }
+    } catch (error) {
+      console.error("Error updating form data:", error);
+    } finally {
+      setFormLoading(false);
+    }
   };
 
-  return { formData, formLoading, isSubmitted, updateFormData, fetchFormSubmissions };
+  return {
+    formData,
+    formLoading,
+    isSubmitted,
+    updateFormData,
+    fetchFormSubmissions,
+  };
 };

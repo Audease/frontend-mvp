@@ -11,27 +11,27 @@ export async function PATCH(req: NextRequest) {
   }
 
   const { searchParams } = new URL(req.url);
-  const studentId = searchParams.get("studentId");
+  const id = searchParams.get("id");
 
-  if (!studentId) {
+  if (!id) {
     return NextResponse.json(
-      { message: "studentId is required" },
+      { message: "submissionId is required" },
       { status: 400 }
     );
   }
 
-  const { formType, data } = await req.json();
+  const { data } = await req.json();
 
   try {
     const response = await fetch(
-      `${apiUrl}/v1/forms/submissions/${studentId}`,
+      `${apiUrl}/v1/forms/submissions/${id}`,
       {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ formType, data }),
+        body: JSON.stringify({ data }),
       }
     );
 

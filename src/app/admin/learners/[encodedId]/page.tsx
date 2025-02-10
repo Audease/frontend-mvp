@@ -141,7 +141,7 @@ export default function UserDetails({ backButton = true }) {
           {message.text}
         </div>
       )}
-      <div className="flex flex-row w-full h-full min-h-[30rem] border border-tgrey2 rounded p-4 space-x-4">
+      <div className="flex flex-col xl:flex-row space-y-4  w-full h-full min-h-[30rem] border border-tgrey2 rounded p-4 xl:space-x-4">
         <div className="text-tgrey3 font-medium text-sm space-y-4">
           {/* User Details */}
           <h2

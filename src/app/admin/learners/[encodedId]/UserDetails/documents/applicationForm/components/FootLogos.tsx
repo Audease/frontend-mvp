@@ -12,10 +12,6 @@ const logos = [
     src: "/enrolmentForm/Logos/ED & Skills.png",
     alt: "Education and skills logo",
   },
-  // {
-  //   src: "/enrolmentForm/Logos/FocusAwards.png",
-  //   alt: "Focus awards",
-  // },
   {
     src: "/enrolmentForm/Logos/vtct.png",
     alt: "vtct logo",
@@ -44,17 +40,18 @@ const logos = [
 
 export default function FootLogos(props: FootLogosProps) {
   return (
-    <div className="flex flex-row space-x-4 py-4 justify-center ">
+    <div className="flex flex-wrap justify-center space-x-4 py-4">
       {logos.map((d, index) => (
-        <Image
-          key={index}
-          src={d.src}
-          alt={d.alt}
-          width={100}
-          height={20}
-          quality={100}
-          layout="intrinsic"
-        ></Image>
+        <div key={index} className="flex-shrink-0 m-2">
+          <Image
+            src={d.src}
+            alt={d.alt}
+            width={100}
+            height={20}
+            quality={100}
+            layout="intrinsic"
+          />
+        </div>
       ))}
     </div>
   );

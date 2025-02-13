@@ -46,22 +46,23 @@ const LearnerNav = () => {
     }
   };
   return (
-    <nav className="flex flex-row justify-between mx-10 py-4">
+    <nav className="flex flex-row w-full">
       {/* Logo */}
-      <div className="flex flex-row space-x-20">
+      <div className="flex flex-row items-center justify-center border-r-[1px] border-tgrey2 lg:w-[15%] p-4">
         <Image
           src="/audease_logo.png"
           width={112}
           height={30}
           alt="Audease logo"
         />
-
-        <div></div>
       </div>
       {/* Navigation and Options */}
-      <div className="flex flex-row space-x-8">
-        {/* Profile and Notifications */}
-        <div className="relative flex flex-col">
+      <div className="flex flex-row justify-between items-center  lg:w-[85%] py-2 px-20">
+        <div className="">
+          <h3 className="font-medium text-base text-tgrey3">Eden College</h3>
+          </div>
+          {/* Profile and Notifications */}
+        <div className="relative flex flex-col ">
           <div className="flex flex-row space-x-4 py-1">
             <Image
               src="/notification.png"
@@ -119,9 +120,10 @@ const LearnerNav = () => {
               </div>
             </div>
           )}
-
+            
           {notifications && <Notifications />}
         </div>
+        
       </div>
     </nav>
   );

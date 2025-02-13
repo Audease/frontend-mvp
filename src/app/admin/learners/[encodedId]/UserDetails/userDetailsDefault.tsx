@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { IoIosCheckmark } from "react-icons/io";
+import ProgressStepper from "../../components/ProgressIndicator";
+import { useUserRole } from "./documents/lib/hooks/useUserRole";
 
 interface UserDetailsDefaultProps {
   userId: string;
@@ -12,6 +14,11 @@ interface UserDetailsDefaultProps {
     learnerUserName: string;
     email: string;
     mobile_number: string;
+    application_status?: string;
+    application_mail?: string;
+    certificate_status?: string;
+    lazer_status?: string;
+    inductor_status?: string;
   }>;
 }
 
@@ -25,6 +32,21 @@ export default function UserDetailsDefault({
     email: initialFormData?.email || "",
     phoneNumber: initialFormData?.mobile_number || "",
   });
+
+  const progressData = [
+    { id: 1, label: 'Application', status: 'completed' },
+    { id: 2, label: 'BKSD', status: initialFormData?.application_mail === 'Sent' ? 'completed' : 'current' },
+    { id: 3, label: 'Accessor', status: initialFormData?.application_mail !== 'Sent' ? 'pending' : 
+      initialFormData?.application_status === 'Approved' ? 'completed' : 'current' },
+    { id: 4, label: 'Induction', status: initialFormData?.application_status !== 'Approved' ? 'pending' :
+      initialFormData?.inductor_status === 'Sent' ? 'completed' : 'current' },
+    { id: 5, label: 'Lazer', status: initialFormData?.inductor_status !== 'Sent' ? 'pending' :
+      initialFormData?.lazer_status === 'Approved' ? 'completed' : 'current' },
+    { id: 6, label: 'Certificate', status: initialFormData?.lazer_status !== 'Approved' ? 'pending' :
+      initialFormData?.certificate_status === 'Approved' ? 'completed' : 'current' }
+  ];
+
+  // console.log(initialFormData)
 
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
@@ -103,9 +125,19 @@ export default function UserDetailsDefault({
     }
   };
 
+  const userRole = useUserRole();
+
   return (
-    <div className="space-y-6">
-      <div className="space-y-4 rounded border border-tgrey2 border-e-0 p-4 mb-8 shadow-sm">
+    <div className="space-y-4 border-t-[1px] border-tgrey2 border-l-[1px] p-8">
+      <div className="pb-8">
+        <p className="font-normal text-sm text-tgrey3">
+          Your Application Status
+        </p>
+        <ProgressStepper data={progressData}/>
+      </div>
+
+      {/* {Personal details} */}
+      <div className="space-y-4 rounded border border-tgrey2 border-e-0 p-4 mb-8 shadow-sm mr-8">
         <div>
           <h3 className="font-semibold text-base pb-2">Personal Details</h3>
           <hr className="w-1/2" />
@@ -143,7 +175,7 @@ export default function UserDetailsDefault({
                 value={formData.learnerName}
                 onChange={handleInputChange}
                 className="rounded-lg py-2 px-3 border border-gray-400 w-60 focus:ring focus:ring-dashboardButtons focus:border-transparent"
-                disabled={isLoading}
+                disabled={userRole !== "admin" || isLoading}
               />
             </div>
 
@@ -159,7 +191,7 @@ export default function UserDetailsDefault({
                   value={formData.learnerUserName}
                   onChange={handleInputChange}
                   className="rounded-l-lg py-2 px-3 border border-gray-400 w-52 focus:ring focus:ring-dashboardButtons focus:border-transparent"
-                  disabled={isLoading}
+                  disabled={userRole !== "admin" || isLoading}
                 />
                 <span className="rounded-r-lg py-2 px-3 border border-l-0 border-gray-400 bg-tgrey4 w-24">
                   .learner
@@ -168,25 +200,27 @@ export default function UserDetailsDefault({
             </div>
           </div>
 
-          <div className="bg-tgrey4 p-3 rounded-lg">
+          <div className="bg-tgrey4 p-3 rounded-lg w-[35.5rem]">
             <p className="text-xs text-tgrey3">
-              Note: You can change username every 24 days. Check the username
-              before proceeding.
+              Note : You can only change username by reaching out to your
+              school.
             </p>
           </div>
 
-          <button
-            onClick={handleSaveChanges}
-            disabled={isLoading}
-            className="flex items-center space-x-2 bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
-          >
-            <IoIosCheckmark className="w-6 h-6" />
-            <span>{isLoading ? "Saving..." : "Save changes"}</span>
-          </button>
+          {userRole === "admin" && (
+            <button
+              onClick={handleSaveChanges}
+              disabled={isLoading}
+              className="flex items-center space-x-2 bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
+            >
+              <IoIosCheckmark className="w-6 h-6" />
+              <span>{isLoading ? "Saving..." : "Save changes"}</span>
+            </button>
+          )}
         </div>
       </div>
 
-      <div className="space-y-4 rounded border border-tgrey2 border-e-0 p-4 shadow-sm">
+      <div className="space-y-4 rounded border border-tgrey2 border-e-0 p-4 shadow-sm mr-8">
         <div>
           <h3 className="font-semibold text-base pb-2">
             Email and Phone Details
@@ -207,19 +241,23 @@ export default function UserDetailsDefault({
                 value={formData.email}
                 onChange={handleInputChange}
                 className="rounded-lg py-2 px-3 border border-gray-400 w-60 focus:ring focus:ring-dashboardButtons focus:border-transparent"
-                disabled={isLoading}
+                disabled={userRole !== "admin" || isLoading}
               />
-              <button
-                onClick={() => handleUpdateContact("email")}
-                disabled={isLoading}
-                className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
-              >
-                {isLoading ? "Updating..." : "Update"}
-              </button>
+              {userRole === "admin" && (
+                <button
+                  onClick={() => handleUpdateContact("email")}
+                  disabled={isLoading}
+                  className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
+                >
+                  {isLoading ? "Updating..." : "Update"}
+                </button>
+              )}
             </div>
-            <p className="text-xs text-tgrey3 bg-tgrey4 p-2 rounded-lg inline-block">
-              Note: You&apos;ll get a confirmation email within 30 minutes.
-            </p>
+            <div className="bg-tgrey4 p-3 rounded-lg w-[30rem]">
+              <p className="text-xs text-tgrey3">
+                Note : You can only change email by reaching out to your school.
+              </p>
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -234,19 +272,24 @@ export default function UserDetailsDefault({
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
                 className="rounded-lg py-2 px-3 border border-gray-400 w-60 focus:ring focus:ring-dashboardButtons focus:border-transparent"
-                disabled={isLoading}
+                disabled={userRole !== "admin" || isLoading}
               />
-              <button
-                onClick={() => handleUpdateContact("phone")}
-                disabled={isLoading}
-                className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
-              >
-                {isLoading ? "Updating..." : "Update"}
-              </button>
+              {userRole === "admin" && (
+                <button
+                  onClick={() => handleUpdateContact("phone")}
+                  disabled={isLoading}
+                  className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
+                >
+                  {isLoading ? "Updating..." : "Update"}
+                </button>
+              )}
             </div>
-            <p className="text-xs text-tgrey3 bg-tgrey4 p-2 rounded-lg inline-block">
-              Note: You&apos;ll get a confirmation OTP within 30 minutes.
-            </p>
+            <div className="bg-tgrey4 p-3 rounded-lg w-[30rem]">
+              <p className="text-xs text-tgrey3">
+                Note : You can only change phone number by reaching out to your
+                school.
+              </p>
+            </div>
           </div>
         </div>
       </div>

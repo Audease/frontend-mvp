@@ -2,6 +2,7 @@
 
 import { SlArrowLeft } from "react-icons/sl";
 import { IoMdSettings, IoMdLock } from "react-icons/io";
+import { AiOutlineHome } from "react-icons/ai";
 import { IoPerson } from "react-icons/io5";
 import { FaBell } from "react-icons/fa";
 import clsx from "clsx";
@@ -13,6 +14,8 @@ import UserDetailsDeactivation from "./UserDetails/userDetailsDeactivation";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import { decodeId } from "../utils/id-encoded";
+import { FaRegCalendarMinus } from "react-icons/fa6";
+import { PiCirclesFour } from "react-icons/pi";
 
 interface Learner {
   id: string;
@@ -113,7 +116,7 @@ export default function UserDetails({ backButton = true }) {
 
   
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col">
       {/* Back Button */}
       <div>
         {backButton && (
@@ -141,74 +144,74 @@ export default function UserDetails({ backButton = true }) {
           {message.text}
         </div>
       )}
-      <div className="flex flex-col xl:flex-row space-y-4  w-full h-full min-h-[30rem] border border-tgrey2 rounded p-4 xl:space-x-4">
-        <div className="text-tgrey3 font-medium text-sm space-y-4">
+      <div className="flex flex-col xl:flex-row min-h-[30rem] rounded w-full">
+        <div className="text-tgrey3 font-medium text-sm space-y-2 lg:w-[15%] px-6 pt-6 ">
           {/* User Details */}
           <h2
             className={clsx(
-              "flex flex-row cursor-pointer pr-10 py-1 pl-2 rounded",
+              "flex flex-row items-center  cursor-pointer pr-10 py-1 pl-2 rounded",
               {
-                "bg-tgrey4": activeSection === "userDetails",
+                "bg-[#FDF5EE]": activeSection === "userDetails",
                 "bg-white": activeSection !== "userDetails",
               }
             )}
             onClick={onUserDetailsClick}
           >
             <span className="pr-2 py-1">
-              <IoMdSettings />
+              <AiOutlineHome className="w-5 h-5"/>
             </span>
-            User Details
+            Home
           </h2>
           {/* Documents */}
           <h2
             className={clsx(
-              "flex flex-row cursor-pointer pr-10 py-1 pl-2 rounded",
+              "flex flex-row items-center cursor-pointer pr-10 py-1 pl-2 rounded",
               {
-                "bg-tgrey4": activeSection === "documents",
+                "bg-[#FDF5EE]": activeSection === "documents",
                 "bg-white": activeSection !== "documents",
               }
             )}
             onClick={onDocumentsClick}
           >
             <span className="pr-2 py-1">
-              <IoMdLock />
+              <FaRegCalendarMinus className="w-5 h-5"/>
             </span>
             Documents
           </h2>
           {/* Password */}
           <h2
             className={clsx(
-              "flex flex-row cursor-pointer pr-10 py-1 pl-2 rounded",
+              "flex flex-row items-center cursor-pointer pr-10 py-1 pl-2 rounded",
               {
-                "bg-tgrey4": activeSection === "password",
+                "bg-[#FDF5EE]": activeSection === "password",
                 "bg-white": activeSection !== "password",
               }
             )}
             onClick={onPasswordClick}
           >
             <span className="pr-2 py-1">
-              <FaBell />
+              <IoMdLock className="w-5 h-5"/>
             </span>
             Password
           </h2>
           {/* Deactivation */}
           <h2
             className={clsx(
-              "flex flex-row cursor-pointer pr-10 py-1 pl-2 rounded",
+              "flex flex-row items-center cursor-pointer pr-10 py-1 pl-2 rounded",
               {
-                "bg-tgrey4": activeSection === "deactivation",
+                "bg-[#FDF5EE]": activeSection === "deactivation",
                 "bg-white": activeSection !== "deactivation",
               }
             )}
             onClick={onDeactivationClick}
           >
             <span className="pr-2 py-1">
-              <IoPerson />
+              <PiCirclesFour className="w-6 h-6"/>
             </span>
             Deactivation
           </h2>
         </div>
-        <div className="flex flex-col pl-4 w-full mr-0">
+        <div className="flex flex-col lg:w-[85%]">
           {renderActiveSection()}
         </div>
       </div>

@@ -24,6 +24,8 @@ const NoAccess = () => {
     } else {
       console.error("Failed to log out");
     }
+
+    router.push("/signIn");
   };
 
   return (

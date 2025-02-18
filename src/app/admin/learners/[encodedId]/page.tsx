@@ -1,10 +1,7 @@
 "use client";
 
 import { SlArrowLeft } from "react-icons/sl";
-import { IoMdSettings, IoMdLock } from "react-icons/io";
 import { AiOutlineHome } from "react-icons/ai";
-import { IoPerson } from "react-icons/io5";
-import { FaBell } from "react-icons/fa";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
 import UserDetailsDefault from "./UserDetails/userDetailsDefault";
@@ -16,6 +13,7 @@ import { useParams } from "next/navigation";
 import { decodeId } from "../utils/id-encoded";
 import { FaRegCalendarMinus } from "react-icons/fa6";
 import { PiCirclesFour } from "react-icons/pi";
+import { IoMdLock } from "react-icons/io";
 
 interface Learner {
   id: string;

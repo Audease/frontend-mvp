@@ -1,11 +1,14 @@
 
 "use client";
 
+import { useAppSelector } from "@/redux/store";
 import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
 
 export default function WelcomeModal({openModal, closeModal} ) {
-    const [userName, setUserName] = useState("Learner");
+     const userName = useAppSelector(
+        (state) => state.authReducer.value.userName
+      ) || "Learner";
 
   return (
     <>

@@ -7,6 +7,8 @@ import { IoIosCheckmark } from "react-icons/io";
 import ProgressStepper from "../../components/ProgressIndicator";
 import { useUserRole } from "./documents/lib/hooks/useUserRole";
 
+
+
 interface UserDetailsDefaultProps {
   userId: string;
   formData?: Partial<{
@@ -32,6 +34,7 @@ export default function UserDetailsDefault({
     email: initialFormData?.email || "",
     phoneNumber: initialFormData?.mobile_number || "",
   });
+ 
 
   const progressData = [
     { id: 1, label: 'Application', status: 'completed' },

@@ -1,14 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import Notifications from "../../../components/dashboard/Notifications";
 import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/redux/store";
 
 const LearnerNav = () => {
   const [notifications, setNotifications] = useState(false);
   const [profileOptions, setProfileOptions] = useState(false);
+  const [userEmailFirstLetter, setuserEmailFirstLetter] = useState("");
   const menuRef = useRef(null);
   const router = useRouter();
 
@@ -45,6 +46,17 @@ const LearnerNav = () => {
       console.error("Failed to log out");
     }
   };
+
+  const userEmail = useAppSelector(
+    (state) => state.authReducer.value.userEmail
+  );
+  useEffect(() => {
+    if (userEmail) {
+      const firstLetter = userEmail.charAt(0).toUpperCase();
+      setuserEmailFirstLetter(firstLetter);
+    }
+  }, [userEmail]);
+
   return (
     <nav className="flex flex-row w-full">
       {/* Logo */}
@@ -60,8 +72,8 @@ const LearnerNav = () => {
       <div className="flex flex-row justify-between items-center  lg:w-[85%] py-2 px-20">
         <div className="">
           <h3 className="font-medium text-base text-tgrey3">Eden College</h3>
-          </div>
-          {/* Profile and Notifications */}
+        </div>
+        {/* Profile and Notifications */}
         <div className="relative flex flex-col ">
           <div className="flex flex-row space-x-4 py-1">
             <Image
@@ -78,7 +90,9 @@ const LearnerNav = () => {
               aria-expanded={profileOptions}
               aria-haspopup="true"
             >
-              <p className="text-tgrey3 text-h5 font-semibold">N</p>
+              <p className="text-tgrey3 text-h5 font-semibold">
+                {userEmailFirstLetter}
+              </p>
             </div>
           </div>
           {profileOptions && (
@@ -120,10 +134,9 @@ const LearnerNav = () => {
               </div>
             </div>
           )}
-            
+
           {notifications && <Notifications />}
         </div>
-        
       </div>
     </nav>
   );

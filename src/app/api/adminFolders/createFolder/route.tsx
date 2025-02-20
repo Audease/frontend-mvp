@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const response = await fetch(`${apiUrl}/v1/admin/create-folder`, {
+    const response = await fetch(`${apiUrl}/v1/admin/folders`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${accessToken}`,

@@ -35,7 +35,7 @@ const Page = () => {
 
   return (
     <div>
-      <FolderHead createFolder={createFolder} />
+      <FolderHead createFolder={() => createFolder("")} />
       <div>
         <h3 className="font-medium text-lg">Folders</h3>
       </div>
@@ -46,13 +46,14 @@ const Page = () => {
           </div>
         ) : error ? (
           <div>Error: {error}</div>
-        ) : folderData && folderData.length > 0 ? (
+        ) : folderData ? (
           <FolderTableList
             folderData={folderData}
-            onDeleteClick={(folderId) => console.log(`Deleting folder: ${folderId}`)}
+            onDeleteClick={(folderId) => console.log(`Deleting Page folder: ${folderId}`)}
+            createFolder={(folderId: string) => createFolder(folderId)}
           />
         ) : (
-          <EmptyScreen createFolder={createFolder} />
+          <EmptyScreen createFolder={() => createFolder("")} />
         )}
 
         <CreateFolderModal
@@ -61,7 +62,7 @@ const Page = () => {
           folderCreationSuccess={folderCreationSuccess}
           folderCreationError={folderCreationError}
           onClose={handleClose}
-          onCreate={folderCreate}
+          onCreate={(folderName) => folderCreate(folderName)}
         />
       </div>
     </div>

@@ -1,7 +1,21 @@
 import { useState } from "react";
 
+export interface Folder {
+  id: string;
+  name: string;
+  userId: string;
+  parentFolderId: string | null;
+  createdAt: string;
+  subFolders: Folder[];
+  documents: Document[];
+}
+
+interface FolderData {
+  data: Folder[];
+}
+
 export default function useGetFolders() {
-  const [folderData, setFolderData] = useState([]);
+  const [folderData, setFolderData] = useState<FolderData | null>(null);;
   const [loading2, setLoading2] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,6 +30,7 @@ export default function useGetFolders() {
       });
       if (response.ok) {
         const data = await response.json();
+        // console.log(data.data)
         setFolderData(data);
       } else {
         setError("Failed to fetch folders");

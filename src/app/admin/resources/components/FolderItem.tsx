@@ -76,7 +76,7 @@ const FolderItem: React.FC<FolderItemProps> = ({
         <div>
           {/* Recursively Render Subfolders */}
           {folder.subFolders && folder.subFolders.length > 0 && (
-            <div className="ml-4 md:ml-10">
+            <div className="ml-4 md:ml-20">
               {folder.subFolders.map((subFolder) => (
                 <FolderItem
                   key={subFolder.id}

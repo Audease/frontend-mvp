@@ -74,9 +74,18 @@ const FolderItem: React.FC<FolderItemProps> = ({
       {/* Folder Content (Files and Subfolders) */}
       {isOpen && (
         <div>
+          <div className="mt-4">
+            <FilesInFolder
+              folderId={folder.id}
+              files={files}
+              loading={loading}
+              error={error}
+              createFolder={() => createFolder(folder.id)}
+            />
+          </div>
           {/* Recursively Render Subfolders */}
           {folder.subFolders && folder.subFolders.length > 0 && (
-            <div className="ml-4 md:ml-10">
+            <div className="ml-4 md:ml-20">
               {folder.subFolders.map((subFolder) => (
                 <FolderItem
                   key={subFolder.id}
@@ -93,16 +102,6 @@ const FolderItem: React.FC<FolderItemProps> = ({
               ))}
             </div>
           )}
-
-          <div className="mt-4">
-            <FilesInFolder
-              folderId={folder.id}
-              files={files}
-              loading={loading}
-              error={error}
-              createFolder={() => createFolder(folder.id)}
-            />
-          </div>
         </div>
       )}
     </div>

@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import UploadFileBtn from "./UploadFileBtn";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { MdOutlineCheckBoxOutlineBlank, MdOutlineDeleteForever } from "react-icons/md";
+import {
+  MdOutlineCheckBoxOutlineBlank,
+  MdOutlineDeleteForever,
+} from "react-icons/md";
+import LearnersListModal from "./LearnersListModal";
 
 type Props = {
   folderId: string;
@@ -20,6 +24,11 @@ const FilesInFolder = ({
   createFolder,
 }: Props) => {
   const noOfFiles = files ? files.length : 0;
+  const [openLearnersModal, setOpenLearnersModal] = useState(false);
+
+  const assignFiles = () => {
+    setOpenLearnersModal(true);
+  };
 
   return (
     <div className="flex flex-col py-2">
@@ -41,7 +50,8 @@ const FilesInFolder = ({
           ))}
         </ul>
       )}
-      <div className="ml-10 flex flex-row justify-between my-3">
+
+      <div className="ml-10 flex-col flex md:flex-row space-y-2 justify-between my-3">
         <div className="flex flex-row justify-start space-x-6">
           <Image
             src={"/file_icon.png"}
@@ -51,12 +61,21 @@ const FilesInFolder = ({
           />
           <p className="text-sm font-normal text-[#3A3A49]">My File.jpg</p>
         </div>
-        <div className="flex flex-row space-x-4 font-normal text-[#3A3A49] justify-between items-center mr-8">
-          <MdOutlineDeleteForever className="text-red-600"/>
-          <MdOutlineCheckBoxOutlineBlank className="text-dashboardButtons"/>
-          <p className="text-sm font-normal text-[#3A3A49]">Assign document</p>
+        <div className="flex flex-row space-x-4 font-normal text-[#3A3A49] items-center mr-8">
+          <MdOutlineDeleteForever className="text-red-600" />
+          <div
+            className="group flex flex-row justify-start items-center space-x-2"
+            onClick={assignFiles}
+          >
+            <MdOutlineCheckBoxOutlineBlank className="text-dashboardButtons group-hover:text-dashboardButtons" />
+            <p className="text-sm font-normal text-[#3A3A49] group-hover:text-dashboardButtons">
+              Assign document
+            </p>
+          </div>
         </div>
       </div>
+      
+      <LearnersListModal show={openLearnersModal} onClose={() => setOpenLearnersModal(false)} />
 
       <div className="flex flex-col justify-center items-center lg:flex-row gap-3 space-x-4">
         <Button

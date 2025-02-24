@@ -7,6 +7,7 @@ import {
   MdOutlineDeleteForever,
 } from "react-icons/md";
 import LearnersListModal from "./LearnersListModal";
+import CloudinaryUploader from "./UploadFile";
 
 type Props = {
   folderId: string;
@@ -28,6 +29,14 @@ const FilesInFolder = ({
 
   const assignFiles = () => {
     setOpenLearnersModal(true);
+  };
+
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+
+  const handleUploadComplete = (result) => {
+    console.log('Upload completed:', result);
+    // Do something with the upload result
+    setIsUploadModalOpen(false); // Close modal after upload
   };
 
   return (
@@ -76,7 +85,13 @@ const FilesInFolder = ({
       </div>
       
       <LearnersListModal show={openLearnersModal} onClose={() => setOpenLearnersModal(false)} />
-
+      {isUploadModalOpen && (
+        <div className="modal-backdrop flex text-center justify-center my-2">
+          <div className="modal-content">
+            <CloudinaryUploader onUploadComplete={handleUploadComplete} />
+          </div>
+        </div>
+      )}
       <div className="flex flex-col justify-center items-center lg:flex-row gap-3 space-x-4">
         <Button
           className="bg-dashboardButtons"
@@ -84,7 +99,7 @@ const FilesInFolder = ({
         >
           Create Sub-Folder
         </Button>
-        <UploadFileBtn onUploadClick={() => console.log(folderId)} />
+        <UploadFileBtn onUploadClick={() => setIsUploadModalOpen(!isUploadModalOpen)} />
       </div>
     </div>
   );

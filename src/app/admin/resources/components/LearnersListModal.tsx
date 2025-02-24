@@ -1,3 +1,4 @@
+"use client";
 import { Modal } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
@@ -29,38 +30,27 @@ const LearnersListModal = ({ show, onClose }: Props) => {
     setCurrentPage((prev) => Math.min(totalPages, prev + 1));
   };
 
+  const [allLearners, setAllLearners] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-   const [allLearners, setallLearners] = useState([]);
-    const [originalLearners, setOriginalLearners] = useState([]);
-    const [loading, setLoading] = useState(false);
-
-    const fetchLearnersData = async (page: number) => {
-        try {
-          const response = await fetch(`/api/getLearners?page=${page}&limit=${8}`);
-          const data = await response.json();
-          if (response.ok) {
-            setTotalPages(data.totalPages);
-            setTotalItems(data.total);
-            setallLearners(data.result);
-    
-            return { totalPages, totalItems, allLearners };
-          } else {
-            console.error("Failed to fetch staff data:", data);
-          }
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
-    
+  const { fetchLearnersData } = useLearners();
 
   useEffect(() => {
-    fetchLearnersData(currentPage)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    const fetchTheData = async () => {
+      setLoading(true);
+      const response = await fetchLearnersData(currentPage, 7);
+      setTotalPages(response.totalPages);
+      setTotalItems(response.totalItems);
+      setAllLearners(response.allLearners);
+      setLoading(false);
+    };
+    fetchTheData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   return (
     <Modal show={show} onClose={onClose} className="modal" size="2xl">
-      <div className="flex flex-col space-y-4 mx-4">
+      <div className="flex flex-col space-y-4 mx-4 max-h-[80vh] overflow-hidden">
         <div className="grid grid-cols-3 items-center py-4">
           <div></div>
           <h3 className="text-center font-medium text-2xl">Learners</h3>
@@ -75,11 +65,11 @@ const LearnersListModal = ({ show, onClose }: Props) => {
           </div>
         </div>
 
-        <div className="flex  flex-col space-y-4 md:space-y-0 md:flex-row justify-between items-center">
+        <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row justify-between items-center">
           <div className="flex flex-row space-x-4">
             <p className="text-sm text-tgrey3">
-              Showing {(currentPage - 1) * 10 + 1}-
-              {Math.min(currentPage * 10, 1000)} of {totalItems} learners
+              Showing {(currentPage - 1) * 7 + 1}-
+              {Math.min(currentPage * 7, 1000)} of {totalItems} learners
             </p>
           </div>
 
@@ -119,13 +109,13 @@ const LearnersListModal = ({ show, onClose }: Props) => {
           </div>
         </div>
 
-        <div className="overflow-auto">
+        <div className="flex-grow overflow-y-auto">
           <LearnerModalTable
             checkedItems={() => console.log("checked items")}
             handleCheckboxChange={undefined}
             isEditing={undefined}
-            loading={undefined}
-            allLearners={ allLearners }
+            loading={loading}
+            allLearners={allLearners}
             handleInputChange={undefined}
           />
         </div>

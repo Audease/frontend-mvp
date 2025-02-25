@@ -84,12 +84,12 @@ const FolderItem: React.FC<FolderItemProps> = ({
             />
           </div>
           {/* Recursively Render Subfolders */}
-          {folder.subFolders && folder.subFolders.length > 0 && (
+          {folder.childFolders && folder.childFolders.length > 0 && (
             <div className="ml-4 md:ml-20">
-              {folder.subFolders.map((subFolder) => (
+              {folder.childFolders.map((childFolder) => (
                 <FolderItem
-                  key={subFolder.id}
-                  folder={subFolder}
+                  key={childFolder.id}
+                  folder={childFolder}
                   onToggle={onToggle}
                   onDelete={onDelete}
                   convertDate={convertDate}
@@ -97,7 +97,7 @@ const FolderItem: React.FC<FolderItemProps> = ({
                   files={files}
                   loading={loading}
                   error={error}
-                  createFolder={() => createFolder(subFolder.id)}
+                  createFolder={createFolder}
                 />
               ))}
             </div>

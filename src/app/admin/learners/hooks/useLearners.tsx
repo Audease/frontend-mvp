@@ -1,9 +1,9 @@
 
 export const useLearners = () => {
 
-  const fetchLearnersData = async (page: number) => {
+  const fetchLearnersData = async (page: number, limit: number = 10) => {
     try {
-      const response = await fetch(`/api/getLearners?page=${page}&limit=${10}`);
+      const response = await fetch(`/api/getLearners?page=${page}&limit=${limit}`);
       const data = await response.json();
       if (response.ok) {
         const totalPages = data.totalPages;

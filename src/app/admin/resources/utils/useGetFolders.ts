@@ -6,7 +6,7 @@ export interface Folder {
   userId: string;
   parentFolderId: string | null;
   createdAt: string;
-  subFolders: Folder[];
+  childFolders: Folder[];
   documents: Document[];
 }
 

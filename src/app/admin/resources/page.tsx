@@ -50,7 +50,7 @@ const Page = () => {
           <FolderTableList
             folderData={folderData}
             onDeleteClick={(folderId) => console.log(`Deleting Page folder: ${folderId}`)}
-            createFolder={(folderId: string) => createFolder(folderId)}
+            createFolder={createFolder}
           />
         ) : (
           <EmptyScreen createFolder={() => createFolder("")} />

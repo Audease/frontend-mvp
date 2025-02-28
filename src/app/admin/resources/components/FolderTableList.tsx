@@ -33,7 +33,7 @@ const FolderTableList = ({ folderData, onDeleteClick, createFolder }: Props) => 
           files={folder.documents}
           loading={false}
           error={null}
-          createFolder={() => createFolder(folder.id)}
+          createFolder={createFolder}
         />
       ))}
     </div>

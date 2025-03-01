@@ -18,6 +18,7 @@ interface FolderItemProps {
   loading: boolean;
   error: string | null;
   createFolder: (folderId: string) => void;
+  refetchData: () => void;
 }
 
 const FolderItem: React.FC<FolderItemProps> = ({
@@ -30,6 +31,7 @@ const FolderItem: React.FC<FolderItemProps> = ({
   files,
   loading,
   error,
+  refetchData
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -77,10 +79,11 @@ const FolderItem: React.FC<FolderItemProps> = ({
           <div className="mt-4">
             <FilesInFolder
               folderId={folder.id}
-              files={files}
+              files={folder.documents}
               loading={loading}
               error={error}
               createFolder={() => createFolder(folder.id)}
+              refetchData = {refetchData}
             />
           </div>
           {/* Recursively Render Subfolders */}
@@ -94,10 +97,11 @@ const FolderItem: React.FC<FolderItemProps> = ({
                   onDelete={onDelete}
                   convertDate={convertDate}
                   textClassName="text-sm text-green-500"
-                  files={files}
+                  files={childFolder.documents}
                   loading={loading}
                   error={error}
                   createFolder={createFolder}
+                  refetchData = {refetchData}
                 />
               ))}
             </div>

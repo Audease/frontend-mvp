@@ -8,6 +8,7 @@ import FolderTableList from "./components/FolderTableList";
 import useGetFolders from "./utils/useGetFolders";
 import EmptyScreen from "./components/EmptyScreen";
 import LoadingSpinner from "@/app/components/dashboard/Spinner";
+import { adminFolderListRevalidation } from "@/app/action";
 
 const Page = () => {
   const {
@@ -27,6 +28,12 @@ const Page = () => {
     OnClose();
     setKey((prevKey) => prevKey + 1); 
   };
+
+  const handleUIUpdate = async () => {
+    await getFolders();
+    adminFolderListRevalidation();
+    setKey((prevKey) => prevKey + 1); 
+  }
 
   useEffect(() => {
     getFolders();
@@ -51,6 +58,7 @@ const Page = () => {
             folderData={folderData}
             onDeleteClick={(folderId) => console.log(`Deleting Page folder: ${folderId}`)}
             createFolder={createFolder}
+            refetchData={() => handleUIUpdate()}
           />
         ) : (
           <EmptyScreen createFolder={() => createFolder("")} />

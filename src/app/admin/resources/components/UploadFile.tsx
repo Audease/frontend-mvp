@@ -264,7 +264,8 @@ const CloudinaryUploader = ({ onUploadComplete }) => {
       return (response as { secure_url: string }).secure_url;
     } catch (err) {
       setError('Failed to upload file. Please try again.');
-      console.error('Upload error:', err);
+      onUploadComplete("Failed to upload file. Please try again.");
+      // console.error('Upload error:', err);
     } finally {
       setLoading(false);
     }

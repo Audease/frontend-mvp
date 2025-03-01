@@ -7,9 +7,10 @@ type Props = {
   folderData;
   onDeleteClick: (folderId: string) => void;
   createFolder: (folderId: string) => void;
+  refetchData: () => void;
 };
 
-const FolderTableList = ({ folderData, onDeleteClick, createFolder }: Props) => {
+const FolderTableList = ({ folderData, onDeleteClick, createFolder, refetchData }: Props) => {
   
   const handleToggle = (folderId: string) => {
     // Do anything with toggled folder
@@ -34,6 +35,7 @@ const FolderTableList = ({ folderData, onDeleteClick, createFolder }: Props) => 
           loading={false}
           error={null}
           createFolder={createFolder}
+          refetchData = {refetchData}
         />
       ))}
     </div>

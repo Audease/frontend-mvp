@@ -4,10 +4,8 @@ import LoadingSpinner from "../../../components/dashboard/Spinner";
 export default function LearnerModalTable({
   checkedItems,
   handleCheckboxChange,
-  isEditing,
   loading,
   allLearners,
-  handleInputChange,
 }) {
   return (
     <div className="flex flex-col justify-between  w-full overflow-x-auto overflow-y-auto">
@@ -62,77 +60,19 @@ export default function LearnerModalTable({
                       checked={!!checkedItems[row.id]}
                     />
                   </span>
-                  {isEditing && checkedItems[row.id] ? (
-                    <input
-                      type="text"
-                      value={row.name}
-                      onChange={(e) =>
-                        handleInputChange(row.id, "name", e.target.value)
-                      }
-                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
-                    />
-                  ) : (
-                    row.name
-                  )}
-                </td>
-               
-                <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
-                  {isEditing && checkedItems[row.id] ? (
-                    <input
-                      type="text"
-                      value={row.email}
-                      onChange={(e) =>
-                        handleInputChange(row.id, "email", e.target.value)
-                      }
-                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
-                    />
-                  ) : (
-                    row.email
-                  )}
-                </td>
-               
-                <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
-                  {isEditing && checkedItems[row.id] ? (
-                    <input
-                      type="text"
-                      value={row.funding}
-                      onChange={(e) =>
-                        handleInputChange(row.id, "funding", e.target.value)
-                      }
-                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
-                    />
-                  ) : (
-                    row.funding
-                  )}
+                  {row.name}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
-                  {isEditing && checkedItems[row.id] ? (
-                    <input
-                      type="text"
-                      value={row.level}
-                      onChange={(e) =>
-                        handleInputChange(row.id, "level", e.target.value)
-                      }
-                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
-                    />
-                  ) : (
-                    row.level
-                  )}
+                  {row.email}
                 </td>
-
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
-                  {isEditing && checkedItems[row.id] ? (
-                    <select
-                      name=""
-                      id=""
-                      className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 space-y-2"
-                    >
-                      <option value="">Adultcare</option>
-                      <option value="">Children Care</option>
-                    </select>
-                  ) : (
-                    row.chosen_course
-                  )}
+                  {row.funding}
+                </td>
+                <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
+                  {row.level}
+                </td>
+                <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">
+                  {row.chosen_course}
                 </td>
               </tr>
             ))

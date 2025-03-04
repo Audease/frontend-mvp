@@ -5,13 +5,28 @@ import { IoMdClose } from "react-icons/io";
 import FilterDropdown from "./FilterLearners";
 import LearnerModalTable from "./LearnerModalTable";
 import { useLearners } from "../../learners/hooks/useLearners";
+import SearchBox from "@/app/components/dashboard/SearchBox";
+import Button from "@/app/components/button";
 
 type Props = {
   show: boolean;
   onClose: () => void;
+  checkedItems: { [key: number]: boolean };
+  handleCheckboxChange: (id: number, checked: boolean) => void;
+  learnersSelected: boolean;
+  onAddDocClick: () => void;
+  actionResponse: string
 };
 
-const LearnersListModal = ({ show, onClose }: Props) => {
+const LearnersListModal = ({
+  show,
+  onClose,
+  checkedItems,
+  handleCheckboxChange,
+  learnersSelected,
+  onAddDocClick,
+  actionResponse
+}: Props) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -109,14 +124,35 @@ const LearnersListModal = ({ show, onClose }: Props) => {
           </div>
         </div>
 
+        <div className="flex flex-col space-y-2 md:space-y-0 md:flex-row space-x-2">
+          <div
+            className={`${learnersSelected ? "w-full md:w-[75%]" : "w-full"}`}
+          >
+            <SearchBox />
+          </div>
+          <div
+            className={`cursor-pointer ${
+              learnersSelected
+                ? "block w-[90%] mx-2 md:mx-0 md:w-[25%]"
+                : "hidden"
+            }`}
+          >
+            <Button
+              buttonText="Add Document"
+              className=""
+              buttonClick={onAddDocClick}
+            />
+          </div>
+        </div>
+
+        <p className="text-center text-sm"> {actionResponse}</p>
+
         <div className="flex-grow overflow-y-auto">
           <LearnerModalTable
-            checkedItems={() => console.log("checked items")}
-            handleCheckboxChange={undefined}
-            isEditing={undefined}
-            loading={loading}
+            checkedItems={checkedItems}
+            handleCheckboxChange={handleCheckboxChange}
             allLearners={allLearners}
-            handleInputChange={undefined}
+            loading={loading}
           />
         </div>
       </div>

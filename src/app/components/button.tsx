@@ -1,11 +1,12 @@
 "use client";
 
-export default function Button({ buttonText, className }) {
+export default function Button({ buttonText, className, buttonClick = () => {} }) {
   return (
     <div>
       <button
         className={`${className} py-2 text-white text-h2 border rounded-md bg-gold1 w-full font-semibold`}
         type="submit"
+        onClick={buttonClick}
       >
         {buttonText}
       </button>

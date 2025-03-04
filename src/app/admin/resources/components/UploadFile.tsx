@@ -24,17 +24,28 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
 
 // Accepted file types
 const ACCEPTED_TYPES = {
+  // Images
   'image/jpeg': 'Image',
   'image/png': 'Image',
   'image/gif': 'Image',
   'image/webp': 'Image',
+
+  // Videos
   'video/mp4': 'Video',
   'video/quicktime': 'Video',
   'video/webm': 'Video',
+
+  // PDFs
   'application/pdf': 'PDF',
-  'application/msword': 'Document',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'Document',
+
+  // Documents
+  'application/msword': 'Document', // .doc files
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'Document', // Standard .docx MIME type
+  'application/wps-office.docx': 'Document', // WPS Office .docx MIME type
+  'application/octet-stream': 'Document', // Fallback for some .docx files
+  'application/zip': 'Document', // Some browsers detect .docx as ZIP
 };
+
 
 // Step 1: File Selection Component
 const FileSelectScreen = ({ onFileSelect, error }) => {
@@ -177,7 +188,7 @@ const CloudinaryUploader = ({ onUploadComplete }) => {
         setError('File size must be less than 10MB');
         return;
       }
-
+      
       // Check file type
       if (!ACCEPTED_TYPES[selectedFile.type]) {
         setError('Unsupported file type');

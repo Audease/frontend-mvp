@@ -8,7 +8,7 @@ import {
 } from "react-icons/md";
 import LearnersListModal from "./LearnersListModal";
 import CloudinaryUploader from "./UploadFile";
-import { postURLToDb } from "../utils/action";;
+import { assignDocToLearners, postURLToDb } from "../utils/action";
 
 type Props = {
   folderId: string;
@@ -29,8 +29,10 @@ const FilesInFolder = ({
 }: Props) => {
   const noOfFiles = files ? files.length : 0;
   const [openLearnersModal, setOpenLearnersModal] = useState(false);
+  const [selectedFileId, setSelectedFileId] = useState("");
 
-  const assignFiles = () => {
+  const assignFiles = (id) => {
+    setSelectedFileId(id);
     setOpenLearnersModal(true);
   };
 
@@ -58,7 +60,50 @@ const FilesInFolder = ({
 
   const handleFileClick = (url, format) => {
     window.open(url, "_blank");
-    console.log(format)
+  };
+
+  const [checkedItems, setCheckedItems] = useState({});
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [learnersSelected, setLearnersSelected] = useState(false);
+
+  const handleCheckboxChange = (id) => {
+    setCheckedItems((prev) => {
+      const newChecked = { ...prev, [id]: !prev[id] };
+      const updatedIds = Object.keys(newChecked).filter(
+        (key) => newChecked[key]
+      );
+
+      setSelectedIds(updatedIds);
+      return newChecked;
+    });
+  };
+
+  useEffect(() => {
+    setLearnersSelected(selectedIds.length > 0);
+  }, [selectedIds]);
+
+  const payload = {
+    documentId: selectedFileId,
+    studentIds: selectedIds,
+  };
+
+  const closeLearnerModal = () => {
+    setOpenLearnersModal(false);
+    setSelectedIds([]);
+    setCheckedItems({});
+    setSelectedFileId("");
+    setActionResponse("");
+  };
+
+  const [actionResponse, setActionResponse] = useState("");
+
+  const handleAddDocumentClick = async () => {
+    const response = await assignDocToLearners(payload);
+    setActionResponse(response);
+    const timeoutId = setTimeout(() => {
+      setActionResponse("");
+    }, 10000);
+    return () => clearTimeout(timeoutId);
   };
 
   return (
@@ -76,7 +121,6 @@ const FilesInFolder = ({
       ) : (
         <ul>
           {files.map((file: any) => (
-            // <li key={file.id}>{file.fileName}</li>
             <div
               className="ml-10 flex-col flex md:flex-row space-y-2 justify-between my-3"
               key={file.id}
@@ -88,7 +132,10 @@ const FilesInFolder = ({
                   height={10}
                   width={30}
                 />
-                <p className="text-sm font-normal text-[#3A3A49]" onClick={() => handleFileClick(file.publicUrl, file.fileType)}>
+                <p
+                  className="text-sm font-normal text-[#3A3A49] cursor-pointer"
+                  onClick={() => handleFileClick(file.publicUrl, file.fileType)}
+                >
                   {file.fileName}
                 </p>
               </div>
@@ -96,7 +143,7 @@ const FilesInFolder = ({
                 <MdOutlineDeleteForever className="text-red-600" />
                 <div
                   className="group flex flex-row justify-start items-center space-x-2"
-                  onClick={assignFiles}
+                  onClick={() => assignFiles(file.id)}
                 >
                   <MdOutlineCheckBoxOutlineBlank className="text-dashboardButtons group-hover:text-dashboardButtons" />
                   <p className="text-sm font-normal text-[#3A3A49] group-hover:text-dashboardButtons">
@@ -111,7 +158,12 @@ const FilesInFolder = ({
 
       <LearnersListModal
         show={openLearnersModal}
-        onClose={() => setOpenLearnersModal(false)}
+        onClose={closeLearnerModal}
+        checkedItems={checkedItems}
+        handleCheckboxChange={handleCheckboxChange}
+        learnersSelected={learnersSelected}
+        onAddDocClick={handleAddDocumentClick}
+        actionResponse={actionResponse}
       />
       {isUploadModalOpen && (
         <div className="modal-backdrop flex text-center justify-center my-2">

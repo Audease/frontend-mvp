@@ -15,7 +15,7 @@ type Props = {
   handleCheckboxChange: (id: number, checked: boolean) => void;
   learnersSelected: boolean;
   onAddDocClick: () => void;
-  actionResponse: string
+  actionResponse: string;
 };
 
 const LearnersListModal = ({
@@ -25,7 +25,7 @@ const LearnersListModal = ({
   handleCheckboxChange,
   learnersSelected,
   onAddDocClick,
-  actionResponse
+  actionResponse,
 }: Props) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -144,8 +144,18 @@ const LearnersListModal = ({
             />
           </div>
         </div>
+      
 
-        <p className="text-center text-sm"> {actionResponse}</p>
+        {actionResponse === "201" ? (
+          <p className="text-center text-sm text-green-500">
+            Documents assigned successfully!
+          </p>
+        ) : actionResponse ? (
+          <p className="text-center text-sm text-red-500">
+            An error occurred, try again!
+          </p>
+        ) : null
+        }
 
         <div className="flex-grow overflow-y-auto">
           <LearnerModalTable

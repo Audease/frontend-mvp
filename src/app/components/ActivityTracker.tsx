@@ -14,10 +14,9 @@ const whitelist = [
 export default function ActivityTracker() {
   const route = usePathname();
   const router = useRouter();
-  let timeout = null;
+  let timeout = null; 
 
   const restartAutoReset = () => {
-    console.log(timeout);
     if (timeout) {
       clearTimeout(timeout);
     }
@@ -34,8 +33,7 @@ export default function ActivityTracker() {
         }
       };
       logout();
-    }, 1000 * 60); // 60 Seconds
-    console.log(timeout);
+    }, 1000 * 60 * 15); // 15 minutes
   };
 
   const onMouseMove = () => {

@@ -17,6 +17,7 @@ export default function ActivityTracker() {
   let timeout = null;
 
   const restartAutoReset = () => {
+    console.log(timeout);
     if (timeout) {
       clearTimeout(timeout);
     }
@@ -33,7 +34,8 @@ export default function ActivityTracker() {
         }
       };
       logout();
-    }, 1000 * 60 * 15); // 15 minutes
+    }, 1000 * 60); // 60 Seconds
+    console.log(timeout);
   };
 
   const onMouseMove = () => {

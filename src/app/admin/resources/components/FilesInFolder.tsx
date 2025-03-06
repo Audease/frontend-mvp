@@ -99,7 +99,11 @@ const FilesInFolder = ({
 
   const handleAddDocumentClick = async () => {
     const response = await assignDocToLearners(payload);
-    setActionResponse(response);
+    if (response == 201){
+      setActionResponse("201");
+    } else {
+      setActionResponse("An error occured, try again")
+    }
     const timeoutId = setTimeout(() => {
       setActionResponse("");
     }, 10000);

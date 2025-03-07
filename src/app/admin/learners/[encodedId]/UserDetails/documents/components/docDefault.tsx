@@ -1,5 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { CiCalendar } from "react-icons/ci";
+import { useLearnerDoc } from "../lib/hooks/useLearnerDoc";
+
+interface Document {
+  fileName: string;
+  fileType: string;
+  publicUrl: string;
+}
 
 interface DocDefaultProps {
   userId: string;
@@ -7,8 +14,11 @@ interface DocDefaultProps {
 }
 
 const DocDefault = ({ onViewClick, userId }: DocDefaultProps) => {
-  // I want to fetch all the available documents per profile and also allow admin to add documents accross profiles
-  const [documents, setDocuments] = useState<any[]>([]);
+  const { documents, loading, error } = useLearnerDoc(userId);
+
+  const onDocumentViewClick = (url: string) => {
+    window.open(url, "_blank");
+  };
 
   return (
     <div className="space-y-4 rounded border border-tgrey2 p-4 mb-8 h-[30rem] font-inter shadow-sm">
@@ -16,7 +26,7 @@ const DocDefault = ({ onViewClick, userId }: DocDefaultProps) => {
         <h3 className="font-semibold text-base pb-2">Documents</h3>
         <hr className="w-3/4" />
       </div>
-      <div className="flex flex-row space-x-[27rem]">
+      <div className="flex flex-col md:flex-row md:space-x-[16rem] lg:space-x-[25rem]">
         <div className="flex flex-row space-x-4">
           <div className="bg-dashboardButtonsBg w-8 h-8 rounded-full flex justify-center items-center">
             <CiCalendar className="w-6 h-6 text-dashboardButtons" />
@@ -27,9 +37,6 @@ const DocDefault = ({ onViewClick, userId }: DocDefaultProps) => {
         </div>
         {/* Buttons  */}
         <div className="flex flex-row space-x-6">
-          <button className="flex flex-row bg-dashboardButtonsBg text-dashboardButtons text-sm font-semibold py-2 px-6 rounded-lg">
-            Download
-          </button>
           <button
             onClick={onViewClick}
             className="flex flex-row bg-black text-white text-sm font-semibold py-2 px-6 rounded-lg"
@@ -38,10 +45,50 @@ const DocDefault = ({ onViewClick, userId }: DocDefaultProps) => {
           </button>
         </div>
       </div>
-      <div className="text-center justify-center">
-        <p className="font-normal text-sm text-tgrey3 mt-10">
-          All documents and files comes here
-        </p>
+      {/* Other documents  */}
+      <div className="text-center justify-center md:w-[30rem]">
+        {loading && (
+          <p className="font-normal text-sm text-tgrey3 mt-10">
+            Loading other documents ...
+          </p>
+        )}
+        {error && (
+          <p className="font-normal text-sm text-red-500 mt-10">
+            Error loading documents
+          </p>
+        )}
+        {!loading && !error && documents && documents.length > 0
+          ? documents.map((document: Document, index: number) => (
+              <div
+                className="flex flex-col md:flex-row space-y-4 md:justify-between lg:space-x-[27rem]"
+                key={index}
+              >
+                <div className="flex flex-row space-x-4">
+                  <div className="bg-dashboardButtonsBg w-8 h-8 rounded-full flex justify-center items-center">
+                    <CiCalendar className="w-6 h-6 text-dashboardButtons" />
+                  </div>
+                  <div>
+                    <h2 className="font-medium text-sm py-2">
+                      {document.fileName}.{document.fileType}
+                    </h2>
+                  </div>
+                </div>
+                {/* Buttons  */}
+                <div className="flex flex-row ">
+                  <button
+                    onClick={() => onDocumentViewClick(document.publicUrl)}
+                    className="flex flex-row bg-black text-white text-sm font-semibold py-2 px-6 rounded-lg"
+                  >
+                    View
+                  </button>
+                </div>
+              </div>
+            ))
+          : !loading && (
+              <p className="font-normal text-sm text-tgrey3 mt-10">
+                You have no documents assigned.
+              </p>
+            )}
       </div>
     </div>
   );

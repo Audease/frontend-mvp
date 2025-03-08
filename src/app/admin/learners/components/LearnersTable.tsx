@@ -140,7 +140,7 @@ export default function LearnersTable({
                           View
                         </p>
                         <p className="text-tred1 hover:text-gold1 cursor-pointer">
-                          Move to Trash
+                          Archive 
                         </p>
                       </div>
                     )}

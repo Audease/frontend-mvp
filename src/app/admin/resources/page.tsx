@@ -9,6 +9,8 @@ import useGetFolders from "./utils/useGetFolders";
 import EmptyScreen from "./components/EmptyScreen";
 import LoadingSpinner from "@/app/components/dashboard/Spinner";
 import { adminFolderListRevalidation } from "@/app/action";
+import { DeleteFolder } from "./components/DeleteModal";
+import { deleteFolder } from "./utils/action";
 
 const Page = () => {
   const {
@@ -22,23 +24,41 @@ const Page = () => {
   } = useFolderModal();
 
   const { folderData, loading2, error, getFolders } = useGetFolders();
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [key, setKey] = useState(0);
 
   const handleClose = () => {
     OnClose();
-    setKey((prevKey) => prevKey + 1); 
+    setKey((prevKey) => prevKey + 1);
   };
 
   const handleUIUpdate = async () => {
     await getFolders();
     adminFolderListRevalidation();
-    setKey((prevKey) => prevKey + 1); 
-  }
+    setKey((prevKey) => prevKey + 1);
+  };
 
   useEffect(() => {
     getFolders();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
+
+  const [folderId, setFolderId] = useState("");
+
+  const openFolderDeleteModal = (folderId) => {
+    setFolderId(folderId);
+    setOpenDeleteModal(true);
+  };
+
+  const handleDocDelete = async () => {
+    setDeleting(true);
+    await deleteFolder(folderId);
+    setDeleting(false);
+    setOpenDeleteModal(false);
+    await adminFolderListRevalidation();
+    await getFolders();
+  };
 
   return (
     <div>
@@ -56,7 +76,7 @@ const Page = () => {
         ) : folderData ? (
           <FolderTableList
             folderData={folderData}
-            onDeleteClick={(folderId) => console.log(`Deleting Page folder: ${folderId}`)}
+            onDeleteClick={(id) => openFolderDeleteModal(id)}
             createFolder={createFolder}
             refetchData={() => handleUIUpdate()}
           />
@@ -71,6 +91,13 @@ const Page = () => {
           folderCreationError={folderCreationError}
           onClose={handleClose}
           onCreate={(folderName) => folderCreate(folderName)}
+        />
+
+        <DeleteFolder
+          openModal={openDeleteModal}
+          onClose={() => setOpenDeleteModal(false)}
+          onFolderDeleteClick={handleDocDelete}
+          loading={deleting}
         />
       </div>
     </div>

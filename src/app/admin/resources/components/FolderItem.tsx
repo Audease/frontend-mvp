@@ -31,7 +31,7 @@ const FolderItem: React.FC<FolderItemProps> = ({
   files,
   loading,
   error,
-  refetchData
+  refetchData,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -83,7 +83,7 @@ const FolderItem: React.FC<FolderItemProps> = ({
               loading={loading}
               error={error}
               createFolder={() => createFolder(folder.id)}
-              refetchData = {refetchData}
+              refetchData={refetchData}
             />
           </div>
           {/* Recursively Render Subfolders */}
@@ -101,7 +101,7 @@ const FolderItem: React.FC<FolderItemProps> = ({
                   loading={loading}
                   error={error}
                   createFolder={createFolder}
-                  refetchData = {refetchData}
+                  refetchData={refetchData}
                 />
               ))}
             </div>

@@ -26,7 +26,7 @@ const DocDefault = ({ onViewClick, userId }: DocDefaultProps) => {
         <h3 className="font-semibold text-base pb-2">Documents</h3>
         <hr className="w-3/4" />
       </div>
-      <div className="flex flex-col md:flex-row md:space-x-[16rem] lg:space-x-[25rem]">
+      <div className="flex flex-col md:flex-row justify-between md:w-[70%] space-y-2 md:space-y-0">
         <div className="flex flex-row space-x-4">
           <div className="bg-dashboardButtonsBg w-8 h-8 rounded-full flex justify-center items-center">
             <CiCalendar className="w-6 h-6 text-dashboardButtons" />
@@ -46,7 +46,7 @@ const DocDefault = ({ onViewClick, userId }: DocDefaultProps) => {
         </div>
       </div>
       {/* Other documents  */}
-      <div className="text-center justify-center md:w-[30rem]">
+      <div className="text-center justify-center">
         {loading && (
           <p className="font-normal text-sm text-tgrey3 mt-10">
             Loading other documents ...
@@ -60,7 +60,7 @@ const DocDefault = ({ onViewClick, userId }: DocDefaultProps) => {
         {!loading && !error && documents && documents.length > 0
           ? documents.map((document: Document, index: number) => (
               <div
-                className="flex flex-col md:flex-row space-y-4 md:justify-between lg:space-x-[27rem]"
+                className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:justify-between md:w-[70%] py-2"
                 key={index}
               >
                 <div className="flex flex-row space-x-4">
@@ -68,7 +68,7 @@ const DocDefault = ({ onViewClick, userId }: DocDefaultProps) => {
                     <CiCalendar className="w-6 h-6 text-dashboardButtons" />
                   </div>
                   <div>
-                    <h2 className="font-medium text-sm py-2">
+                    <h2 className="font-medium text-sm py-2 ">
                       {document.fileName}.{document.fileType}
                     </h2>
                   </div>

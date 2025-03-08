@@ -39,11 +39,11 @@ const ACCEPTED_TYPES = {
   'application/pdf': 'PDF',
 
   // Documents
-  'application/msword': 'Document', // .doc files
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'Document', // Standard .docx MIME type
-  'application/wps-office.docx': 'Document', // WPS Office .docx MIME type
-  'application/octet-stream': 'Document', // Fallback for some .docx files
-  'application/zip': 'Document', // Some browsers detect .docx as ZIP
+  'application/msword': 'Document', 
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'Document', 
+  'application/wps-office.docx': 'Document', 
+  'application/octet-stream': 'Document', 
+  'application/zip': 'Document', 
 };
 
 

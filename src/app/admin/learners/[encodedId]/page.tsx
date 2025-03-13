@@ -193,7 +193,7 @@ export default function UserDetails({ backButton = true }) {
             Password
           </h2>
           {/* Deactivation */}
-          <h2
+          {/* <h2
             className={clsx(
               "flex flex-row items-center cursor-pointer pr-10 py-1 pl-2 rounded",
               {
@@ -206,8 +206,8 @@ export default function UserDetails({ backButton = true }) {
             <span className="pr-2 py-1">
               <PiCirclesFour className="w-6 h-6"/>
             </span>
-            Deactivation
-          </h2>
+            More Options
+          </h2> */}
         </div>
         <div className="flex flex-col lg:w-[85%]">
           {renderActiveSection()}

@@ -244,12 +244,15 @@ const CloudinaryUploader = ({ onUploadComplete }) => {
 
       const response = await new Promise((resolve, reject) => {
         xhr.onload = () => {
+         
           if (xhr.status === 200) {
             resolve(JSON.parse(xhr.response));
           } else {
             reject(new Error('Upload failed'));
           }
         };
+
+        // console.log(response)
         xhr.onerror = () => reject(new Error('Upload failed'));
         xhr.send(formData);
       });
@@ -271,7 +274,7 @@ const CloudinaryUploader = ({ onUploadComplete }) => {
           onUploadComplete(response);
         }
       }, 1000); // Brief delay to show 100% completion
-      // console.log('Upload response:', response.secure_url);
+      console.log('Upload response:', response);
       return (response as { secure_url: string }).secure_url;
     } catch (err) {
       setError('Failed to upload file. Please try again.');

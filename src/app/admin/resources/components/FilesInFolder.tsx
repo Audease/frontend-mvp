@@ -39,11 +39,11 @@ const FilesInFolder = ({ folderId, files, error, loading, createFolder, refetchD
     if (result !== "Failed to upload file. Please try again.") {
       const payload = {
         fileName: result.display_name,
-        fileType: result.format,
+        fileType: result.format || "docx",
         publicUrl: result.url,
       };
       const status = await postURLToDb(folderId, payload);
-      alert(status === 201 ? "File upload successful" : "There is an issue");
+      alert(status === 201 ? "File upload successful" : "An error occurred, try again");
       refetchData();
     } else {
       alert(result);

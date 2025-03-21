@@ -39,7 +39,7 @@ export const auth = createSlice({
       state.value.userId = action.payload;
     },
     setUserName: (state, action: PayloadAction<string>) => {
-      state.value.userId = action.payload;
+      state.value.userName = action.payload;
     },
     logOut: () => initialState,
   },

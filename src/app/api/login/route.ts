@@ -16,10 +16,10 @@ export async function POST(req: NextRequest) {
     if (response.status === 200) {
       const {
         token: { access, refresh },
-        permissions, user_id, learner_id
+        permissions, user_id, learner_id, email, name,
       } = response.data;
 
-      const responseData = { permissions, user_id };
+      const responseData = { permissions, user_id, userEmail: email, userName: name };
       if (learner_id) {
         responseData['learner_id'] = learner_id;
       }
@@ -59,7 +59,6 @@ export async function POST(req: NextRequest) {
         path: '/',
         sameSite: "strict",
       });
-
 
       return res;
     } else {

@@ -23,11 +23,11 @@ export const useLearnerByRecruiter = () => {
   const [changedValues, setChangedValues] = useState<ChangedValuesState>({});
 
   // Fetch learners data
-  const handleFetchLearnersData = async (page: number) => {
+  const handleFetchLearnersData = async (page: number, limit, funding, course ) => {
     setLoading(true);
     try {
       const { totalPages, totalItems, allLearners } = await fetchLearnersData(
-        page
+        page, 10, funding, course
       );
       setTotalpages(totalPages);
       setTotalItems(totalItems);
@@ -41,7 +41,7 @@ export const useLearnerByRecruiter = () => {
   };
 
   useEffect(() => {
-    handleFetchLearnersData(currentPage);
+    handleFetchLearnersData(currentPage, 10, '', ''); 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 

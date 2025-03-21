@@ -12,6 +12,7 @@ import CreateLearner from "@/app/admin/learners/components/CreateLearner";
 
 
 export default function ActionButtons({
+  onFilterClick,
   checkedItems,
   onDeleteClick,
   onEditClick,
@@ -20,6 +21,7 @@ export default function ActionButtons({
   handleLearnerCreated,
   showStaffButton = true,
 }) {
+
   return (
     <div className="flex flex-row space-x-4">
       {Object.values(checkedItems).some((isChecked) => isChecked) && (
@@ -35,7 +37,7 @@ export default function ActionButtons({
         <ImportLearner />
 
         {showStaffButton && <RecruiterStaff />}
-        <FilterLearner />
+        <FilterLearner onFilterClick={onFilterClick}/>
       </div>
     </div>
   );

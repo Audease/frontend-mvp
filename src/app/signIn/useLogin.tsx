@@ -61,7 +61,7 @@ export function useLogin() {
       );
 
       const {  permissions, learner_id, user_id, userEmail, userName } = response.data;
-      console.log(userName)
+
 
       dispatch(setUserEmail(userEmail));
       dispatch(setUserName(userName));

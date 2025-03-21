@@ -76,7 +76,8 @@ export default function AdminRecruiterdashboard({
         setLoading2(true);
         await DeleteStudent(checkedIds);
         await learnerRevalidation();
-        handleFetchLearnersData(1);
+        handleFetchLearnersData(1, 10, '', '');
+        setTableKey((prev) => prev + 1);
         setCheckedItems({});
       } catch (error) {
         console.error("Error deleting students:", error);
@@ -119,7 +120,11 @@ export default function AdminRecruiterdashboard({
 
   const handleLearnerCreated = async () => {
     await learnerRevalidation();
-    handleFetchLearnersData(1);
+    handleFetchLearnersData(1, 10,'', '');
+  };
+
+  const onFilterClick = (funding, course) => {
+    handleFetchLearnersData(1, 10, funding, course);
   };
 
   return (
@@ -156,6 +161,7 @@ export default function AdminRecruiterdashboard({
                 onRevertEditButtonClick,
                 handleLearnerCreated,
                 showStaffButton,
+                onFilterClick
               }}
             />
           </div>

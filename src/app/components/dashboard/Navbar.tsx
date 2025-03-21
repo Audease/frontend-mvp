@@ -7,9 +7,10 @@ import { useState, useEffect, useRef } from "react";
 import Notifications from "./Notifications";
 import NavbarPlusButton from "./NavbarPlusButton";
 import { useRouter } from "next/navigation";
-import { useAppSelector } from "../../../redux/store";
-
+import { useAppSelector, persistor } from "../../../redux/store";
 import { Navbar } from "flowbite-react";
+import { useDispatch } from "react-redux";
+import { logOut } from "@/redux/features/login/auth-slice";
 
 const links = [
   { name: "Apps", href: "/admin" },
@@ -27,6 +28,7 @@ export default function Nav() {
   const [userEmailFirstLetter, setuserEmailFirstLetter] = useState("");
   const menuRef = useRef(null);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const toggleVisibility = () => {
     setProfileOptions((prevState) => !prevState);
@@ -46,6 +48,8 @@ export default function Nav() {
     });
 
     if (response.ok) {
+      localStorage.removeItem('persist:root');
+      dispatch(logOut());
       router.push("/signIn");
     } else {
       console.error("Failed to log out");
@@ -55,6 +59,7 @@ export default function Nav() {
   const userEmail = useAppSelector(
     (state) => state.authReducer.value.userEmail
   );
+
   useEffect(() => {
     if (userEmail) {
       const firstLetter = userEmail.charAt(0).toUpperCase();
@@ -62,9 +67,8 @@ export default function Nav() {
     }
   }, [userEmail]);
 
-
   return (
-    <Navbar fluid rounded>
+    <Navbar className="mx-6">
       <Navbar.Brand as={Link} href="/">
         <Image
           src="/audease_logo.png"
@@ -72,32 +76,20 @@ export default function Nav() {
           height={30}
           alt="Audease logo"
         />
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white"></span>
       </Navbar.Brand>
       <Navbar.Toggle />
       <Navbar.Collapse>
         <NavLinks links={links} />
-        {/* Search Field */}
-        <div className="relative hidden xl:flex">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="pl-10 pr-4 py-2 border-none rounded-lg w-72 focus:outline focus:ring-tgrey1 text-tgrey3 bg-tgrey4"
-            aria-label="Search"
-          />
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-            <Image src="/search.svg" width={15} height={15} alt="Search icon" />
-          </span>
-        </div>
-
-        <div>
+        <div className="lg:hidden items-center flex">
           <p
-            className="px-2 flex py-2 text-h2 text-tgrey3 hover:text-dashboardButtons lg:hidden cursor-pointer"
+            className="px-2 flex py-2 text-h2 text-tgrey3 hover:text-dashboardButtons  cursor-pointer"
             onClick={logout}
           >
             Logout
           </p>
         </div>
+
+        <div className="hidden xl:block lg:w-32"></div>
 
         {/* Profile and Notifications */}
         <div className="hidden relative lg:flex flex-col" ref={menuRef}>
@@ -132,7 +124,9 @@ export default function Nav() {
               {/* My profile  */}
               <div className="flex flex-row">
                 <div className="w-6 h-6 bg-profilebg rounded-full flex items-center justify-center p-2">
-                  <p className="text-tgrey3 text-h5 font-semibold">N</p>
+                  <p className="text-tgrey3 text-h5 font-semibold">
+                    {userEmailFirstLetter}
+                  </p>
                 </div>
                 <div>
                   <p className="px-2 hover:text-dashboardButtons text-sm cursor-pointer">

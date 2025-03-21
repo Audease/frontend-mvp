@@ -2,11 +2,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './features/login/auth-slice';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { persistStore, persistReducer } from 'redux-persist';
-import sessionStorage from 'redux-persist/lib/storage/session';
+import storage from 'redux-persist/lib/storage'; 
 
 const persistConfig = {
   key: 'root', 
-  storage: sessionStorage, 
+  storage, 
 };
 
 const persistedReducer = persistReducer(persistConfig, authReducer);

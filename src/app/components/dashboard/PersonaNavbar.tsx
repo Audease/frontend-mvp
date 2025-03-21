@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
+import { logOut } from "@/redux/features/login/auth-slice";
+import { useDispatch } from "react-redux";
 
 export default function PersonaNavbar() {
   const [profileOptions, setProfileOptions] = useState(false);
@@ -17,6 +19,7 @@ export default function PersonaNavbar() {
   const [plusButton, setPlusButton] = useState(false);
   const menuRef = useRef(null);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const toggleVisibility = () => {
     setProfileOptions((prevState) => !prevState);
@@ -46,11 +49,13 @@ export default function PersonaNavbar() {
   }, []);
 
   const logout = async () => {
-    console.log("logout");
     const response = await fetch("/api/logout", {
       method: "POST",
     });
+
     if (response.ok) {
+      localStorage.removeItem("persist:root");
+      dispatch(logOut());
       router.push("/signIn");
     } else {
       console.error("Failed to log out");

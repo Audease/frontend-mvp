@@ -8,25 +8,45 @@ export async function POST(req: NextRequest) {
     }
   );
 
-  // Clear the cookies by setting their expiration date to a past date
   res.cookies.set("accessToken", "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    expires: new Date(0), // Set expiration date to past
+    expires: new Date(0), 
     path: "/",
   });
 
   res.cookies.set("refreshToken", "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    expires: new Date(0), // Set expiration date to past
+    expires: new Date(0), 
     path: "/",
   });
 
   res.cookies.set("permissions", "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    expires: new Date(0), // Set expiration date to past
+    expires: new Date(0), 
+    path: "/",
+  });
+
+  res.cookies.set("email", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    expires: new Date(0), 
+    path: "/",
+  });
+
+  res.cookies.set("name", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    expires: new Date(0), 
+    path: "/",
+  });
+
+  res.cookies.set("learnerId", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    expires: new Date(0), 
     path: "/",
   });
 

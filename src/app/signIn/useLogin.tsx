@@ -7,6 +7,7 @@ import {
   setUserId,
   setUserPackage,
   setUserPermissions,
+  setUserName
 } from "../../redux/features/login/auth-slice";
 import { AppDispatch } from "../../redux/store";
 import { encodeId } from "../admin/learners/utils/id-encoded";
@@ -19,6 +20,8 @@ type Permission = {
 type LoginResponse = {
   user_id: string;
   learner_id: string;
+  userEmail: string;
+  userName: string;
   permissions: string[];
   message?: string;
 };
@@ -57,10 +60,11 @@ export function useLogin() {
         { headers: { "Content-Type": "application/json" }}
       );
 
-      const {  permissions, learner_id } = response.data;
-      
+      const {  permissions, learner_id, user_id, userEmail, userName } = response.data;
 
-      dispatch(setUserEmail(email));
+
+      dispatch(setUserEmail(userEmail));
+      dispatch(setUserName(userName));
       dispatch(setUserId(learner_id));
       dispatch(setUserPackage("Free"));
       dispatch(setUserPermissions(permissions));

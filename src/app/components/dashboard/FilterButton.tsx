@@ -267,7 +267,6 @@ export function NewFilterButton({
               Filter
             </button>
           </div>
-          ;
         </div>
       )}
     </div>

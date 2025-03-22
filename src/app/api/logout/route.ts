@@ -29,26 +29,5 @@ export async function POST(req: NextRequest) {
     path: "/",
   });
 
-  res.cookies.set("email", "", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    expires: new Date(0), 
-    path: "/",
-  });
-
-  res.cookies.set("name", "", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    expires: new Date(0), 
-    path: "/",
-  });
-
-  res.cookies.set("learnerId", "", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    expires: new Date(0), 
-    path: "/",
-  });
-
   return res;
 }

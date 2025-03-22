@@ -2,11 +2,13 @@
 import { Modal } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import FilterDropdown from "./FilterLearners";
 import LearnerModalTable from "./LearnerModalTable";
-import { useLearners } from "../../learners/hooks/useLearners";
-import SearchBox from "@/app/components/dashboard/SearchBox";
+import { SearchComponent } from "@/app/components/dashboard/SearchBox";
 import Button from "@/app/components/button";
+import FilterLearner from "../../(adminPersonaScreens)/recruiter-dashboard/components/Filter";
+import { useLearnerByRecruiter } from "../../(adminPersonaScreens)/recruiter-dashboard/utils/useLearnerByRecruiter";
+import Pagination from "@/app/components/dashboard/Pagination";
+import { PlainButton } from "@/app/components/dashboard/Button";
 
 type Props = {
   show: boolean;
@@ -27,46 +29,37 @@ const LearnersListModal = ({
   onAddDocClick,
   actionResponse,
 }: Props) => {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalItems, setTotalItems] = useState(1);
-
-  const handleSelect = (option: string) => {
-    setSelectedOption(option);
-    console.log("Selected option:", option);
-  };
-
-  const handlePreviousPage = () => {
-    setCurrentPage((prev) => Math.max(1, prev - 1));
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(totalPages, prev + 1));
-  };
-
-  const [allLearners, setAllLearners] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const { fetchLearnersData } = useLearners();
+  const {
+    handlePageChange,
+    allLearners,
+    currentPage,
+    totalPages,
+    totalItems,
+    loading,
+    handleFetchLearnersData,
+  } = useLearnerByRecruiter();
 
   useEffect(() => {
-    const fetchTheData = async () => {
-      setLoading(true);
-      const response = await fetchLearnersData(currentPage, 7);
-      setTotalPages(response.totalPages);
-      setTotalItems(response.totalItems);
-      setAllLearners(response.allLearners);
-      setLoading(false);
-    };
-    fetchTheData();
+    handleFetchLearnersData(1, 8, "", "", "");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, []);
+
+  const onFilterClick = (funding, course) => {
+    handleFetchLearnersData(1, 8, funding, course, '');
+  };
+
+  const handleSearch = (searchValue: string) => {
+    handleFetchLearnersData(1, 8, '', '', searchValue);
+  };
+
+  const resetLearners = () => {
+    handleFetchLearnersData(1, 8, "", "", "");
+  };
 
   return (
     <Modal show={show} onClose={onClose} className="modal" size="2xl">
-      <div className="flex flex-col space-y-4 mx-4 max-h-[80vh] overflow-hidden">
-        <div className="grid grid-cols-3 items-center py-4">
+      <div className="flex flex-col space-y-2 mx-4 max-h-[80vh] overflow-hidden">
+        <div className="grid grid-cols-3 items-center py-2">
           <div></div>
           <h3 className="text-center font-medium text-2xl">Learners</h3>
           <div className="justify-self-end">
@@ -80,55 +73,12 @@ const LearnersListModal = ({
           </div>
         </div>
 
-        <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row justify-between items-center">
-          <div className="flex flex-row space-x-4">
-            <p className="text-sm text-tgrey3">
-              Showing {(currentPage - 1) * 7 + 1}-
-              {Math.min(currentPage * 7, 1000)} of {totalItems} learners
-            </p>
-          </div>
-
-          <div className="flex flex-row justify-center items-center space-x-4">
-            <p className="text-sm text-tgrey3">Sort by:</p>
-            <FilterDropdown
-              options={["Funding", "Course", "Awarding"]}
-              onSelect={handleSelect}
-            />
-          </div>
-
-          <div className="flex flex-row space-x-4">
-            <button
-              className={`text-sm ${
-                currentPage === 1
-                  ? "text-gray-400"
-                  : "text-tgrey3 hover:text-gray-700"
-              }`}
-              onClick={handlePreviousPage}
-              disabled={currentPage === 1}
-              aria-label="Previous page"
-            >
-              Previous
-            </button>
-            <button
-              className={`text-sm ${
-                currentPage === totalPages
-                  ? "text-gray-400"
-                  : "text-tgrey3 hover:text-gray-700"
-              }`}
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages}
-              aria-label="Next page"
-            >
-              Next
-            </button>
-          </div>
-        </div>
-
-        <div className="flex flex-col space-y-2 md:space-y-0 md:flex-row space-x-2">
+        <div className="flex flex-col space-y-2 md:space-y-0 md:flex-row space-x-2 items-center">
+          <PlainButton text={"All"} onClick={resetLearners} ></PlainButton>
           <div
             className={`${learnersSelected ? "w-full md:w-[75%]" : "w-full"}`}
           >
-            <SearchBox />
+            <SearchComponent searchValue={handleSearch} />
           </div>
           <div
             className={`cursor-pointer ${
@@ -139,12 +89,14 @@ const LearnersListModal = ({
           >
             <Button
               buttonText="Add Document"
-              className=""
+              className="py-1 text-sm"
               buttonClick={onAddDocClick}
             />
           </div>
+          <div className="flex flex-row justify-center items-center space-x-4">
+            <FilterLearner onFilterClick={onFilterClick} />
+          </div>
         </div>
-      
 
         {actionResponse === "201" ? (
           <p className="text-center text-sm text-green-500">
@@ -154,8 +106,7 @@ const LearnersListModal = ({
           <p className="text-center text-sm text-red-500">
             An error occurred, try again!
           </p>
-        ) : null
-        }
+        ) : null}
 
         <div className="flex-grow overflow-y-auto">
           <LearnerModalTable
@@ -163,6 +114,16 @@ const LearnersListModal = ({
             handleCheckboxChange={handleCheckboxChange}
             allLearners={allLearners}
             loading={loading}
+          />
+        </div>
+
+        <div className="py-2">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            itemsPerPage={10}
+            totalItems={totalItems}
+            onPageChange={handlePageChange}
           />
         </div>
       </div>

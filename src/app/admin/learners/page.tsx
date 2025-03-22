@@ -1,68 +1,61 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import FilterButton from "@/app/components/dashboard/FilterButton";
-import { useLearners } from "./hooks/useLearners";
 import { learnerRevalidation } from "@/app/action";
-import { useRouter } from "next/navigation";
 import CreateLearner from "./components/CreateLearner";
 import LearnersTable from "./components/LearnersTable";
+import { SearchComponent } from "@/app/components/dashboard/SearchBox";
+import FilterLearner from "../(adminPersonaScreens)/recruiter-dashboard/components/Filter";
+import { useLearnerByRecruiter } from "../(adminPersonaScreens)/recruiter-dashboard/utils/useLearnerByRecruiter";
 
 export default function Learners() {
-  const [allLearners, setAllLearners] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalItems, setTotalItems] = useState(1);
-  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("All");
-  const [selectedOption, setSelectedOption] = useState(null);
   const [tableKey, setTableKey] = useState(1);
+  const tabs = useMemo(() => ["All", "Recent", "Archive"], []);
 
-  const route = useRouter();
-  const { fetchLearnersData } = useLearners();
-
-  const tabs = useMemo(
-    () => [
-      "All",
-      "Recent",
-      "No funder",
-      "Funding one",
-      "Funding two",
-      "Deleted",
-    ],
-    []
-  );
-
-  const handleFetchLearnersData = async (page) => {
-    setLoading(true);
-    const { totalPages, totalItems, allLearners } = await fetchLearnersData(
-      page
-    );
-    setTotalPages(totalPages);
-    setTotalItems(totalItems);
-    setAllLearners(allLearners);
-    setLoading(false);
-  };
-
-  const handlePageChange = async (page) => {
-    setCurrentPage(page);
-    handleFetchLearnersData(page);
-  };
-
-  const handleSelect = (option) => {
-    setSelectedOption(option);
-    console.log("Selected option:", option);
-  };
+  const {
+    allLearners,
+    currentPage,
+    totalPages,
+    totalItems,
+    loading,
+    changedValues,
+    setChangedValues,
+    handlePageChange,
+    handleRevertChanges,
+    handleInputChange,
+    handleFetchLearnersData,
+  } = useLearnerByRecruiter();
 
   const handleLearnerCreated = async () => {
     await learnerRevalidation();
-    handleFetchLearnersData(1);
+    handleFetchLearnersData(currentPage, 10, "", "", "");
+    setTableKey((prev) => prev + 1);
   };
 
   useEffect(() => {
-    handleFetchLearnersData(currentPage);
+    handleFetchLearnersData(currentPage, 10, "", "", "");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const searchValue = (searchValue: string) => {
+    setSearchQuery(searchValue);
+    handleFetchLearnersData(1, 10, "", "", searchValue);
+  };
+
+  const onFilterClick = (funding, course) => {
+    handleFetchLearnersData(1, 10, funding, course, "");
+  };
+
+  const onTabClick = (tab: string) => {
+    setActiveTab(tab);
+
+    if (tab === "All") {
+      handleFetchLearnersData(1, 10, "", "", "");
+    }
+  };
 
   return (
     <div className="font-inter">
@@ -80,7 +73,7 @@ export default function Learners() {
                   className={`cursor-pointer pt-4 ${
                     activeTab === tab ? "text-gold1" : ""
                   }`}
-                  onClick={() => setActiveTab(tab)}
+                  onClick={() => onTabClick(tab)}
                 >
                   {tab}
                 </h2>
@@ -88,15 +81,13 @@ export default function Learners() {
             </div>
 
             {/* The buttons on the right side */}
-            <div className="hidden xl:flex flex-row space-x-4">
+            <div className="hidden xl:flex flex-row space-x-4 items-center">
+              <SearchComponent searchValue={searchValue} />
+
               <CreateLearner onLearnerCreated={handleLearnerCreated} />
 
               {/* Filter Button */}
-              <FilterButton
-                options={["Recruiter", "BKSD", "Accessor", "Inductor", "Lazer"]}
-                onSelect={handleSelect}
-                label="Filter"
-              />
+              <FilterLearner onFilterClick={onFilterClick} />
             </div>
           </div>
 

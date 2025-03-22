@@ -19,7 +19,7 @@ export default function AdminRecruiterdashboard({
   const [activeBarStyle, setActiveBarStyle] = useState({});
   const [checkedItems, setCheckedItems] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-  const tabs = useMemo(() => ["All", "Recent", "Deleted"], []);
+  const tabs = useMemo(() => ["All", "Recent", "Archive"], []);
   const [tableKey, setTableKey] = useState(1);
   const [loading2, setLoading2] = useState(false);
 
@@ -76,7 +76,7 @@ export default function AdminRecruiterdashboard({
         setLoading2(true);
         await DeleteStudent(checkedIds);
         await learnerRevalidation();
-        handleFetchLearnersData(1, 10, '', '');
+        handleFetchLearnersData(1, 10, "", "", "");
         setTableKey((prev) => prev + 1);
         setCheckedItems({});
       } catch (error) {
@@ -85,7 +85,7 @@ export default function AdminRecruiterdashboard({
         setLoading2(false);
       }
     } else {
-      console.log("No students selected for deletion.");
+      alert("No students selected for deletion.");
     }
   };
 
@@ -120,11 +120,26 @@ export default function AdminRecruiterdashboard({
 
   const handleLearnerCreated = async () => {
     await learnerRevalidation();
-    handleFetchLearnersData(1, 10,'', '');
+    handleFetchLearnersData(1, 10, "", "", "");
   };
 
   const onFilterClick = (funding, course) => {
-    handleFetchLearnersData(1, 10, funding, course);
+    handleFetchLearnersData(1, 10, funding, course, "");
+  };
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const searchValue = (searchValue: string) => {
+    setSearchQuery(searchValue);
+    handleFetchLearnersData(1, 10, "", "", searchValue);
+  };
+
+  const onTabClick = (tab: string) => {
+    setActiveTab(tab);
+
+    if (tab === "All") {
+      handleFetchLearnersData(1, 10, "", "", "");
+    }
   };
 
   return (
@@ -136,35 +151,35 @@ export default function AdminRecruiterdashboard({
 
       {/* Selection and active bar */}
       <section className="mt-4 flex-col">
-        <div className="flex flex-col xl:flex-row justify-between font-medium text-sm text-tgrey3">
-          <div className="flex flex-row space-x-6">
+        <div className="flex flex-col md:flex-row justify-between font-medium text-sm text-tgrey3">
+          <div className="flex flex-row space-x-6 items-center">
             {tabs.map((tab) => (
               <h2
                 key={tab}
                 className={`cursor-pointer pt-4 ${
                   activeTab === tab ? "text-black" : ""
                 }`}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => onTabClick(tab)}
               >
                 {tab}
               </h2>
             ))}
           </div>
           {/* The buttons on the right side  */}
-          <div>
-            <ActionButtons
-              {...{
-                checkedItems,
-                onDeleteClick,
-                onEditClick,
-                onConfirmEditButtonClick,
-                onRevertEditButtonClick,
-                handleLearnerCreated,
-                showStaffButton,
-                onFilterClick
-              }}
-            />
-          </div>
+
+          <ActionButtons
+            {...{
+              searchValue,
+              checkedItems,
+              onDeleteClick,
+              onEditClick,
+              onConfirmEditButtonClick,
+              onRevertEditButtonClick,
+              handleLearnerCreated,
+              showStaffButton,
+              onFilterClick,
+            }}
+          />
         </div>
         {/* The active bar color change */}
         <div className="w-full h-[0.10rem] bg-gray-300 my-2">

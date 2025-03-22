@@ -16,12 +16,13 @@ export async function GET(req: NextRequest) {
   const limit = searchParams.get("limit") || "10";
   const funding = searchParams.get("funding") || "";
   const chosen_course = searchParams.get("chosen_course") || "";
+  const search = searchParams.get("search") || "";
 
   try {
     // Pass the page and limit in the request URL
     const response = await fetch(
       apiUrl +
-        `/v1/recruitment/students/filters?funding=${funding}&chosen_course=${chosen_course}&page=${page}&limit=${limit}`,
+        `/v1/recruitment/students/filters?funding=${funding}&chosen_course=${chosen_course}&search=${search}&page=${page}&limit=${limit}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

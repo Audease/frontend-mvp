@@ -1,10 +1,10 @@
 
 export const useLearners = () => {
 
-  const fetchLearnersData = async (page: number, limit: number = 10, funding = '', chosen_course = '') => {
+  const fetchLearnersData = async (page: number, limit: number = 10, funding = '', chosen_course = '', search = '') => {
    
       try {
-        const response = await fetch(`/api/getLearnersB?funding=${funding}&chosen_course=${chosen_course}&page=${page}&limit=${limit}`);
+        const response = await fetch(`/api/getLearnersB?funding=${funding}&chosen_course=${chosen_course}&search=${search}&page=${page}&limit=${limit}`);
         const data = await response.json();
         if (response.ok) {
           const totalPages = 10;

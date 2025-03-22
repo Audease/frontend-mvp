@@ -2,65 +2,80 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import PersonaNavLinks from "./PersonaNavLinks";
 import { useState, useEffect, useRef } from "react";
-import Notifications from "./Notifications";
-import NavbarPlusButton from "./NavbarPlusButton";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "@/redux/store";
+import { logOut } from "@/redux/features/login/auth-slice";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
-import { logOut } from "@/redux/features/login/auth-slice";
-import { useDispatch } from "react-redux";
+import PersonaNavLinks from "./PersonaNavLinks";
+import Notifications from "./Notifications";
+import NavbarPlusButton from "./NavbarPlusButton";
 
 export default function PersonaNavbar() {
   const [profileOptions, setProfileOptions] = useState(false);
   const [notifications, setNotifications] = useState(false);
   const [plusButton, setPlusButton] = useState(false);
-  const menuRef = useRef(null);
+  const [userEmailFirstLetter, setUserEmailFirstLetter] = useState("");
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const userEmail = useAppSelector(
+    (state) => state.authReducer.value.userEmail
+  );
+
+  useEffect(() => {
+    if (userEmail) {
+      setUserEmailFirstLetter(userEmail.charAt(0).toUpperCase());
+    }
+  }, [userEmail]);
+
+
   const toggleVisibility = () => {
-    setProfileOptions((prevState) => !prevState);
+    setProfileOptions((prev) => !prev);
   };
 
   const toggleNotifications = () => {
-    setNotifications((prevState) => !prevState);
+    setNotifications((prev) => !prev);
   };
 
   const togglePlusButton = () => {
-    setPlusButton((prevState) => !prevState);
+    setPlusButton((prev) => !prev);
   };
-
-  const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
-      setProfileOptions(false);
-      setNotifications(false);
-      setPlusButton(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const logout = async () => {
-    const response = await fetch("/api/logout", {
-      method: "POST",
-    });
+    try {
+      const response = await fetch("/api/logout", {
+        method: "POST",
+      });
 
-    if (response.ok) {
-      localStorage.removeItem("persist:root");
-      dispatch(logOut());
-      router.push("/signIn");
-    } else {
-      console.error("Failed to log out");
+      if (response.ok) {
+        localStorage.removeItem("persist:root");
+        dispatch(logOut());
+        router.push("/signIn");
+      } else {
+        console.error("Failed to log out");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
     }
   };
+
+  const ProfileOption = ({ icon, text, onClick }) => (
+    <div
+      className="flex flex-row items-center cursor-pointer hover:text-dashboardButtons"
+      onClick={onClick}
+    >
+      <div>
+        <Image src={icon} width={20} height={20} alt={text} />
+      </div>
+      <div>
+        <p className="px-3 text-sm">{text}</p>
+      </div>
+    </div>
+  );
 
   const MobileMenu = () => (
     <div className="flex flex-col space-y-4 p-4">
@@ -82,7 +97,9 @@ export default function PersonaNavbar() {
 
       <div className="flex items-center space-x-2">
         <div className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center">
-          <p className="text-tgrey3 text-h5 font-semibold">N</p>
+          <p className="text-tgrey3 text-h5 font-semibold">
+            {userEmailFirstLetter}
+          </p>
         </div>
         <p className="text-sm">My Profile</p>
       </div>
@@ -116,7 +133,7 @@ export default function PersonaNavbar() {
 
         <button
           onClick={logout}
-          className="flex items-center space-x-2 hover:text-dashboardButtons w-full"
+          className="flex items-center space-x-2 hover:text-dashboardButtons w-full text-left"
         >
           <Image src="/logout.png" width={18} height={18} alt="Logout" />
           <span className="text-sm">Logout</span>
@@ -127,7 +144,7 @@ export default function PersonaNavbar() {
 
   return (
     <nav className="sticky top-0 bg-white z-50 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-2 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo and Main Nav */}
           <div className="flex items-center">
@@ -147,25 +164,8 @@ export default function PersonaNavbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-4">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="pl-10 pr-4 py-2 border-none rounded-lg w-72 focus:outline focus:ring-tgrey1 text-tgrey3 bg-tgrey4"
-                aria-label="Search"
-              />
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                <Image
-                  src="/search.svg"
-                  width={15}
-                  height={15}
-                  alt="Search icon"
-                />
-              </span>
-            </div>
-
-            <div className="flex items-center space-x-4" ref={menuRef}>
-              <button onClick={togglePlusButton}>
+            <div className="flex items-center space-x-4">
+              <button onClick={togglePlusButton} aria-label="Create new" type="button">
                 <Image
                   src="/createbutton.png"
                   width={30}
@@ -175,7 +175,7 @@ export default function PersonaNavbar() {
                 />
               </button>
 
-              <button onClick={toggleNotifications}>
+              <button onClick={toggleNotifications} aria-label="Notifications" type="button">
                 <Image
                   src="/notification.png"
                   width={32}
@@ -188,76 +188,45 @@ export default function PersonaNavbar() {
               <button
                 onClick={toggleVisibility}
                 className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center hover:opacity-80"
+                aria-label="Profile options"
               >
-                <p className="text-tgrey3 text-h5 font-semibold">N</p>
+                <p className="text-tgrey3 text-h5 font-semibold">
+                  {userEmailFirstLetter}
+                </p>
               </button>
             </div>
 
             {/* Profile Dropdown */}
             {profileOptions && (
-              <div className="absolute top-14 bg-white shadow-lg rounded-lg p-4 font-medium w-48 right-[4rem] space-y-4">
-                {/* My profile  */}
-                <div className="flex flex-row">
-                  <div className="w-6 h-6 bg-profilebg rounded-full flex items-center justify-center p-2">
-                    <p className="text-tgrey3 text-h5 font-semibold">N</p>
-                  </div>
-                  <div>
-                    <p className="px-2 hover:text-dashboardButtons text-sm cursor-pointer">
-                      My Profile
+              <div className="absolute top-14 bg-white shadow-lg rounded-lg p-4 font-medium w-48 right-8 space-y-4">
+                <div className="flex flex-row items-center cursor-pointer hover:text-dashboardButtons">
+                  <div className="w-6 h-6 bg-profilebg rounded-full flex items-center justify-center">
+                    <p className="text-tgrey3 text-h5 font-semibold">
+                      {userEmailFirstLetter}
                     </p>
                   </div>
-                </div>
-                {/* Help and support  */}
-                <div className="flex flex-row">
                   <div>
-                    <Image
-                      src={"/help.png"}
-                      width={20}
-                      height={20}
-                      alt="Help and Support"
-                    />
-                  </div>
-                  <div>
-                    <p className="px-3 hover:text-dashboardButtons text-sm cursor-pointer">
-                      Help and Support
-                    </p>
+                    <p className="px-2 text-sm">My Profile</p>
                   </div>
                 </div>
-                {/* Invite Friends  */}
-                <div className="flex flex-row">
-                  <div>
-                    <Image
-                      src={"/friends.png"}
-                      width={20}
-                      height={20}
-                      alt="Help and Support"
-                    />
-                  </div>
-                  <div>
-                    <p className="px-3 hover:text-dashboardButtons text-sm cursor-pointer">
-                      Invite Friends
-                    </p>
-                  </div>
-                </div>
-                {/* Logout */}
-                <div className="flex flex-row">
-                  <div>
-                    <Image
-                      src={"/logout.png"}
-                      width={20}
-                      height={20}
-                      alt="Help and Support"
-                    />
-                  </div>
-                  <div>
-                    <p
-                      className="px-3 hover:text-dashboardButtons text-sm cursor-pointer"
-                      onClick={logout}
-                    >
-                      Logout
-                    </p>
-                  </div>
-                </div>
+
+                <ProfileOption
+                  icon="/help.png"
+                  text="Help and Support"
+                  onClick={() => router.push("/help")}
+                />
+
+                <ProfileOption
+                  icon="/friends.png"
+                  text="Invite Friends"
+                  onClick={() => router.push("/invite")}
+                />
+
+                <ProfileOption
+                  icon="/logout.png"
+                  text="Logout"
+                  onClick={logout}
+                />
               </div>
             )}
 
@@ -269,7 +238,7 @@ export default function PersonaNavbar() {
           <div className="lg:hidden">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" aria-label="Menu">
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>

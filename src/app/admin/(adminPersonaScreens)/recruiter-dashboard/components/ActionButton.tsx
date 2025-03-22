@@ -9,9 +9,10 @@ import ImportLearner from "./ImportLearner";
 import RecruiterStaff from "./RecruiterStaff";
 import FilterLearner from "./Filter";
 import CreateLearner from "@/app/admin/learners/components/CreateLearner";
-
+import { SearchComponent } from "@/app/components/dashboard/SearchBox";
 
 export default function ActionButtons({
+  searchValue,
   onFilterClick,
   checkedItems,
   onDeleteClick,
@@ -21,7 +22,6 @@ export default function ActionButtons({
   handleLearnerCreated,
   showStaffButton = true,
 }) {
-
   return (
     <div className="flex flex-row space-x-4">
       {Object.values(checkedItems).some((isChecked) => isChecked) && (
@@ -32,12 +32,16 @@ export default function ActionButtons({
           <RevertEditButton {...{ onRevertEditButtonClick }} />
         </div>
       )}
-      <div className="xl:flex flex-row space-x-4 hidden">
+
+      {!Object.values(checkedItems).some((isChecked) => isChecked) && (
+        <SearchComponent searchValue={searchValue}/>
+      )}
+
+      <div className="xl:flex flex-row space-x-4 hidden items-center justify-center">
         <CreateLearner onLearnerCreated={handleLearnerCreated} />
         <ImportLearner />
-
         {showStaffButton && <RecruiterStaff />}
-        <FilterLearner onFilterClick={onFilterClick}/>
+        <FilterLearner onFilterClick={onFilterClick} />
       </div>
     </div>
   );

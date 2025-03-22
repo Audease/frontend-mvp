@@ -26,6 +26,7 @@ const DocDefault = ({ onViewClick, userId }: DocDefaultProps) => {
         <h3 className="font-semibold text-base pb-2">Documents</h3>
         <hr className="w-3/4" />
       </div>
+      
       <div className="flex flex-col md:flex-row justify-between md:w-[70%] space-y-2 md:space-y-0">
         <div className="flex flex-row space-x-4">
           <div className="bg-dashboardButtonsBg w-8 h-8 rounded-full flex justify-center items-center">

@@ -102,7 +102,7 @@ export const behaviouralData = {
       label: "Candidate Signature",
       section: "learner",
       editableBy: ["learner"],
-      type: "text",
+      type: "signature",
       placeholder: "Type in your surname and credentials to append signature",
       validation: z.string().refine((value) => value.trim().length >= 2, {
         message: "Signature must be at least 2 characters.",

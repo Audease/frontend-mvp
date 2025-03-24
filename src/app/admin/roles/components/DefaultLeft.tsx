@@ -27,7 +27,7 @@ export default function DefaultLeft({ onClickSetUpAcct }) {
     }
   }, [userPackage, userPermissions])
 
-  const tabs = useMemo(() => ["All","Recent", "Thrash"],[]);
+  const tabs = useMemo(() => ["All","Recent", "Archive"],[]);
 
 
   return (

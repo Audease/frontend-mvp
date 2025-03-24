@@ -26,7 +26,6 @@ const ImportLearner = () => {
   const randomFunction = () => {
     setLearnerImportModalState(false);
     setLearnerImportSuccessModal(true);
-    // Fixing deployment bug
     handleFetchLearnersData(1, 10, '', '', '');
   };
 

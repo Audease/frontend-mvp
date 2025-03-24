@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import Checkbox from "@/app/components/form/Checkbox/Checkbox";
 import { behaviouralData } from "./data/Behavioural";
 import FootLogos from "../components/FootLogos";
+import SignaturePad from "../../components/SignaturePad";
 
 interface BehaviouralFormProps {
   formData?: any;
@@ -120,6 +121,22 @@ export default function BehaviouralForm({
                 )}
               />
             );
+          case "signature":
+            return (
+              <Controller
+                key={field.id}
+                name={field.id}
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <SignaturePad
+                    initialValue={value} 
+                    onSignatureChange={(signatureData) => {
+                      onChange(signatureData); 
+                    }}
+                  />
+                )}
+              />
+            );
           default:
             return null;
         }
@@ -135,6 +152,7 @@ export default function BehaviouralForm({
         )}
         <Button type="submit" disabled={userRole === "Admin"}>Save and Continue</Button>
       </div>
+     
     </form>
   );
 }

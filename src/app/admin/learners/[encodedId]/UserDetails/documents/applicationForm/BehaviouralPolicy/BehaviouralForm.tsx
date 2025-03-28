@@ -128,11 +128,18 @@ export default function BehaviouralForm({
                 name={field.id}
                 control={control}
                 render={({ field: { onChange, value } }) => (
-                  <SignaturePad
-                    initialValue={value} 
-                    onSignatureChange={(signatureData) => {
-                      onChange(signatureData); 
+                  <TextInput
+                    signature = {true}
+                    id={field.id}
+                    className="application-form-input text-red-800"
+                    placeholder={field.placeholder}
+                    label={field.label}
+                    value={value || ""}
+                    disabled={!isEditable}
+                    onChange={(e) => {
+                      onChange(e);
                     }}
+                    error={errors[field.id]?.message as string}
                   />
                 )}
               />

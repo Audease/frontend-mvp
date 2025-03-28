@@ -94,22 +94,22 @@ export default function Nav() {
         {/* Profile and Notifications */}
         <div className="hidden relative lg:flex flex-col" ref={menuRef}>
           <div className="flex flex-row space-x-4 py-1">
-            <Image
+            {/* <Image
               src="/createbutton.png"
               width={30}
               height={30}
               alt="Create button"
               onClick={togglePlusButton}
               aria-expanded={plusButton}
-            />
-            <Image
+            /> */}
+            {/* <Image
               src="/notification.png"
               width={32}
               height={32}
               alt="Notification button"
               onClick={toggleNotifications}
               aria-expanded={notifications}
-            />
+            /> */}
             <div
               className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center p-2 cursor-pointer"
               onClick={toggleVisibility}
@@ -151,7 +151,7 @@ export default function Nav() {
                 </div>
               </div>
               {/* Invite Friends  */}
-              <div className="flex flex-row">
+              {/* <div className="flex flex-row">
                 <div>
                   <Image
                     src={"/friends.png"}
@@ -165,7 +165,7 @@ export default function Nav() {
                     Invite Friends
                   </p>
                 </div>
-              </div>
+              </div> */}
               {/* Logout */}
               <div className="flex flex-row">
                 <div>

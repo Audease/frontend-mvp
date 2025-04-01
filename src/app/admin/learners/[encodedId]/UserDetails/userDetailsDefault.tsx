@@ -38,12 +38,12 @@ export default function UserDetailsDefault({
 
   const progressData = [
     { id: 1, label: 'Application', status: 'completed' },
-    { id: 2, label: 'BKSD', status: initialFormData?.application_mail === 'Sent' ? 'completed' : 'current' },
+    { id: 2, label: 'Entrance Exam', status: initialFormData?.application_mail === 'Sent' ? 'completed' : 'current' },
     { id: 3, label: 'Accessor', status: initialFormData?.application_mail !== 'Sent' ? 'pending' : 
       initialFormData?.application_status === 'Approved' ? 'completed' : 'current' },
     { id: 4, label: 'Induction', status: initialFormData?.application_status !== 'Approved' ? 'pending' :
       initialFormData?.inductor_status === 'Sent' ? 'completed' : 'current' },
-    { id: 5, label: 'Lazer', status: initialFormData?.inductor_status !== 'Sent' ? 'pending' :
+    { id: 5, label: 'Learning Platform', status: initialFormData?.inductor_status !== 'Sent' ? 'pending' :
       initialFormData?.lazer_status === 'Approved' ? 'completed' : 'current' },
     { id: 6, label: 'Certificate', status: initialFormData?.lazer_status !== 'Approved' ? 'pending' :
       initialFormData?.certificate_status === 'Approved' ? 'completed' : 'current' }

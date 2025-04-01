@@ -171,8 +171,13 @@ export default function Staff() {
             </div>
             <div>
               <button
-                className="bg-dashboardRolesBtn text-white py-2 px-4 rounded focus:outline-none"
+                className={
+                  Object.keys(checkedItems).length === 0
+                    ? "bg-gray-300 text-gray-500 py-2 px-4 rounded"
+                    : "bg-dashboardRolesBtn text-white py-2 px-4 rounded focus:outline-none"
+                }
                 onClick={() => handleAssignRole()}
+                disabled={Object.keys(checkedItems).length === 0}
               >
                 Assign a role
               </button>

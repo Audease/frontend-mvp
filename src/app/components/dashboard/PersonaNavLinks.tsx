@@ -51,7 +51,7 @@ export default function PersonaNavLinks() {
     .map((permission) => availableLinks[permission]);
 
   // Messenger Link
-  links.push({ name: "Messenger", href: "#" });
+  // links.push({ name: "Messenger", href: "/admin/messenger" });
 
   return (
     <div className="flex flex-col md:flex-row p-0 md:space-x-8">

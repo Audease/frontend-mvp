@@ -10,6 +10,8 @@ type Props = {
   error?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
+  signature?: boolean;
+  [key: string]: any; 
 };
 
 function TextInput({
@@ -19,6 +21,7 @@ function TextInput({
   type = "text",
   label,
   placeholder = "",
+  signature = false,
   error,
   onChange,
   disabled,
@@ -46,6 +49,7 @@ function TextInput({
           ${isActive ? "bg-blue-50" : "bg-white"}
           ${disabled ? "bg-gray-100 cursor-not-allowed opacity-75" : ""}
           ${className}
+          ${signature && "signature-input font-semibold font-signature"}
         `}
         type={type}
         value={value}

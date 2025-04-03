@@ -13,15 +13,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import { usePostLearners } from "../hooks/usePostLearners";
 import { learnerRevalidation } from "@/app/action";
+import FundingField from "./FundingField";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -39,7 +40,7 @@ const formSchema = z.object({
   home_address: z.string().min(1, "Home address is required"),
   funding: z.string().min(1, "Funding is required"),
   awarding: z.string().min(1, "Awarding is required"),
-  chosen_course: z.enum(["AdultCare", "YouthPlus", "ChildrenCare"]),
+  chosen_course: z.string().min(1, "Chosen course is required"),
   level: z.number().min(0, "Level must be 0 or greater"),
 });
 
@@ -63,7 +64,7 @@ const RegistrationForm = ({
       home_address: "",
       funding: "",
       awarding: "",
-      chosen_course: "AdultCare",
+      chosen_course: "",
       level: 1,
     },
   });
@@ -86,15 +87,15 @@ const RegistrationForm = ({
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+    <Form {...form} >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 px-4 pb-4">
         <div className="grid grid-cols-2 gap-y-1 gap-x-6">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name (First, Surname and Middle name)</FormLabel>
+                <FormLabel>Name (First Name, Middle Name and Surname)</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter your name" {...field} />
                 </FormControl>
@@ -187,19 +188,7 @@ const RegistrationForm = ({
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="funding"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Funding</FormLabel>
-                <FormControl>
-                  <Input placeholder="Input" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+         <FundingField form={form} />
 
           <FormField
             control={form.control}
@@ -219,23 +208,30 @@ const RegistrationForm = ({
             control={form.control}
             name="chosen_course"
             render={({ field }) => (
+              // <FormItem>
+              //   <FormLabel>Chosen course</FormLabel>
+              //   <Select
+              //     onValueChange={field.onChange}
+              //     defaultValue={field.value}
+              //   >
+              //     <FormControl>
+              //       <SelectTrigger>
+              //         <SelectValue placeholder="Select a course" />
+              //       </SelectTrigger>
+              //     </FormControl>
+              //     <SelectContent>
+              //       <SelectItem value="AdultCare">Adult Care</SelectItem>
+              //       <SelectItem value="YouthPlus">Youth Plus</SelectItem>
+              //       <SelectItem value="ChildrenCare">Children Care</SelectItem>
+              //     </SelectContent>
+              //   </Select>
+              //   <FormMessage />
+              // </FormItem>
               <FormItem>
-                <FormLabel>Chosen course</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a course" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="AdultCare">Adult Care</SelectItem>
-                    <SelectItem value="YouthPlus">Youth Plus</SelectItem>
-                    <SelectItem value="ChildrenCare">Children Care</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormLabel>Chosen Course</FormLabel>
+                <FormControl>
+                  <Input placeholder="Input" {...field} />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

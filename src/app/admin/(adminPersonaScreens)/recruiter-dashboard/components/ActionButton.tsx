@@ -1,8 +1,8 @@
 import {
-  ConfirmEditButton,
+  // ConfirmEditButton,
   DeleteLearnerButton,
   EditLearnerButton,
-  RevertEditButton,
+  // RevertEditButton,
 } from "./RecruiterButtons";
 
 import ImportLearner from "./ImportLearner";
@@ -17,8 +17,8 @@ export default function ActionButtons({
   checkedItems,
   onDeleteClick,
   onEditClick,
-  onConfirmEditButtonClick,
-  onRevertEditButtonClick,
+  // onConfirmEditButtonClick,
+  // onRevertEditButtonClick,
   handleLearnerCreated,
   showStaffButton = true,
 }) {
@@ -28,8 +28,8 @@ export default function ActionButtons({
         <div className="flex space-x-2 my-3 xl:my-0 xl:space-x-4">
           <DeleteLearnerButton {...{ onDeleteClick }} />
           <EditLearnerButton {...{ onEditClick }} />
-          <ConfirmEditButton {...{ onConfirmEditButtonClick }} />
-          <RevertEditButton {...{ onRevertEditButtonClick }} />
+          {/* <ConfirmEditButton {...{ onConfirmEditButtonClick }} />
+          <RevertEditButton {...{ onRevertEditButtonClick }} /> */}
         </div>
       )}
 

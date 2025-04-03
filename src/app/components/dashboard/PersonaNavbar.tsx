@@ -118,7 +118,7 @@ export default function PersonaNavbar() {
           <span className="text-sm">Help and Support</span>
         </Link>
 
-        <Link
+        {/* <Link
           href="/invite"
           className="flex items-center space-x-2 hover:text-dashboardButtons"
         >
@@ -129,7 +129,7 @@ export default function PersonaNavbar() {
             alt="Invite Friends"
           />
           <span className="text-sm">Invite Friends</span>
-        </Link>
+        </Link> */}
 
         <button
           onClick={logout}
@@ -165,7 +165,7 @@ export default function PersonaNavbar() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-4">
             <div className="flex items-center space-x-4">
-              <button onClick={togglePlusButton} aria-label="Create new" type="button">
+              {/* <button onClick={togglePlusButton} aria-label="Create new" type="button">
                 <Image
                   src="/createbutton.png"
                   width={30}
@@ -173,9 +173,9 @@ export default function PersonaNavbar() {
                   alt="Create button"
                   className="hover:opacity-80"
                 />
-              </button>
+              </button> */}
 
-              <button onClick={toggleNotifications} aria-label="Notifications" type="button">
+              {/* <button onClick={toggleNotifications} aria-label="Notifications" type="button">
                 <Image
                   src="/notification.png"
                   width={32}
@@ -183,7 +183,7 @@ export default function PersonaNavbar() {
                   alt="Notification button"
                   className="hover:opacity-80"
                 />
-              </button>
+              </button> */}
 
               <button
                 onClick={toggleVisibility}
@@ -210,17 +210,17 @@ export default function PersonaNavbar() {
                   </div>
                 </div>
 
-                <ProfileOption
+                {/* <ProfileOption
                   icon="/help.png"
                   text="Help and Support"
                   onClick={() => router.push("/help")}
-                />
+                /> */}
 
-                <ProfileOption
+                {/* <ProfileOption
                   icon="/friends.png"
                   text="Invite Friends"
                   onClick={() => router.push("/invite")}
-                />
+                /> */}
 
                 <ProfileOption
                   icon="/logout.png"

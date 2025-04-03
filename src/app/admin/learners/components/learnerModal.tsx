@@ -11,7 +11,7 @@ export default function AddLearnerModal({
 }) {
   return (
     <div className="font-inter">
-      <Modal {...{ show, onClose }} className="modal" size={"3xl"}>
+      <Modal {...{ show, onClose }} className="modal h-10" size={"3xl"}>
         <div className="flex flex-col p-4">
           <div className="flex flex-row justify-between items-center">
             <h2 className="font-medium text-lg text-tblack3 ml-[18rem]">
@@ -25,11 +25,13 @@ export default function AddLearnerModal({
             />
           </div>
           <hr className="my-4" />
-          <RegistrationForm
-            onLearnerCreated={onLearnerCreated}
-            onClose={onClose}
-            setLearnerSuccessModal={setLearnerSuccessModal}
-          />
+          <div className="overflow-y-auto h-[30rem]">
+            <RegistrationForm
+              onLearnerCreated={onLearnerCreated}
+              onClose={onClose}
+              setLearnerSuccessModal={setLearnerSuccessModal}
+            />
+          </div>
         </div>
       </Modal>
     </div>

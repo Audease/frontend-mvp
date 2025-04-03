@@ -14,7 +14,8 @@ module.exports = {
   	extend: {
   		fontFamily: {
   			switzer: ['Switzer', 'sans-serif'],
-  			inter: ['Inter', 'sans-serif']
+  			inter: ['Inter', 'sans-serif'],
+			signature: ["Pacifico", "cursive"],
   		},
   		colors: {
   			bgDefault: '#FEF0DE',

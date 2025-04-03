@@ -37,15 +37,7 @@ export const UpdateLearner = async (studentId, payload) => {
         body: JSON.stringify(payload),
       }
     );
-
-    if (response.status === 204) {
-      alert("User Successfully Updated");
-    }
-
-    if (!response.ok) {
-      throw new Error("Failed to update student");
-    }
-    console.log("Student updated successfully");
+    return response;
   } catch (error) {
     console.error("Error updating student:", error);
   }

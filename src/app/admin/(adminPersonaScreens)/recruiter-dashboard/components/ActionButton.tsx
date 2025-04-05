@@ -19,6 +19,7 @@ export default function ActionButtons({
   onEditClick,
   // onConfirmEditButtonClick,
   // onRevertEditButtonClick,
+  callback,
   handleLearnerCreated,
   showStaffButton = true,
 }) {
@@ -39,7 +40,7 @@ export default function ActionButtons({
 
       <div className="xl:flex flex-row space-x-4 hidden items-center justify-center">
         <CreateLearner onLearnerCreated={handleLearnerCreated} />
-        <ImportLearner />
+        <ImportLearner callback={callback}/>
         {showStaffButton && <RecruiterStaff />}
         <FilterLearner onFilterClick={onFilterClick} />
       </div>

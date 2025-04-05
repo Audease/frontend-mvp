@@ -2,9 +2,11 @@ import { useState } from "react";
 import { FaPlus, FaCheck } from "react-icons/fa";
 
 import { useLearnerByRecruiter } from "../utils/useLearnerByRecruiter";
-import LearnerImportModal, { LearnerImportSuccessModal } from "@/app/admin/learners/components/LearnerImportModal";
+import LearnerImportModal from "@/app/admin/learners/components/LearnerImportModal";
+import { LearnerImportSuccessModal } from "@/app/admin/learners/components/LearnerImportSuccessModal";
+import { learnerRevalidation } from "@/app/action";
 
-const ImportLearner = () => {
+const ImportLearner = ({callback}) => {
   const [learnerImportModalState, setLearnerImportModalState] = useState(false);
   const [learnerImportSuccessModal, setLearnerImportSuccessModal] = useState(false);
   const { handleFetchLearnersData } = useLearnerByRecruiter();
@@ -14,19 +16,25 @@ const ImportLearner = () => {
   };
 
 
-  const closeLearnerImportSuccessModal = () => {
+  const closeLearnerImportSuccessModal = async() => {
+    await handleFetchLearnersData(1, 10, '', '', '');
+    learnerRevalidation();
     setLearnerImportModalState(false);
     setLearnerImportSuccessModal(false);
+    if (callback) {
+      callback();
+    }
   };
 
   const onImportClick = () => {
     setLearnerImportModalState(true);
   };
 
-  const randomFunction = () => {
+  const randomFunction = (callback: () => void) => {
     setLearnerImportModalState(false);
     setLearnerImportSuccessModal(true);
     handleFetchLearnersData(1, 10, '', '', '');
+    
   };
 
   return (

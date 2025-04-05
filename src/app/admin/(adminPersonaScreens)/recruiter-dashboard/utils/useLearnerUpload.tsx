@@ -1,52 +1,65 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import axios from 'axios';
 
 export const useLearnerImport = (randomFunction) => {
   const [fileName, setFileName] = useState("File Name");
   const [fileSelected, setFileSelected] = useState(false);
-  const [isFile, setIsFile] = useState(false);
   const [uploadingError, setUploadingError] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploaded, setUploaded] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [file, setFile] = useState(null);
 
-  const handleFileUpload = (event) => {
+  // Create a reusable function for clearing error messages
+  const clearError = useCallback(() => {
+    setUploadingError("");
+  }, []);
+
+  // Create a function to reset all states
+  const resetStates = useCallback(() => {
+    setUploaded(false);
+    setUploading(false);
+    setFile(null);
+    setFileName("File Name");
+    setFileSelected(false);
+    setUploadProgress(0);
+    setUploadingError("");
+  }, []);
+
+  const handleFileUpload = useCallback((event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       setFile(selectedFile);
       setFileName(selectedFile.name);
       setFileSelected(true);
-      setIsFile(true);
-      setUploadingError("");
+      clearError();
     }
-  };
+  }, [clearError]);
 
-  const onUploadClick = () => {
+  const handleFileRemove = useCallback(() => {
+    resetStates();
+  }, [resetStates]);
+
+  const onUploadClick = useCallback(() => {
     if (!file) {
       setUploadingError("No file selected for upload.");
+      setTimeout(clearError, 5000);
       return;
     }
-    const formData = new FormData();
-    formData.append("file", file);
-    setIsFile(false);
+    
     setUploading(true);
     setUploadProgress(0);
-    uploadFile(file);
-  };
+    
+    const formData = new FormData();
+    formData.append("file", file);
+    
+    uploadFile(formData);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [file, clearError]);
 
-  const uploadFile = async (file) => {
-    setIsFile(false);
-  
-    if (!file) {
-      console.error('No file provided');
-      return;
-    }
-  
+  const uploadFile = async (formData) => {
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-  
+      setUploading(true);
       const response = await axios.post("/api/uploadLearners", formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -56,48 +69,39 @@ export const useLearnerImport = (randomFunction) => {
           setUploadProgress(percentCompleted);
         },
       });
-  
+      
+
       if (response.status === 201) {
         setUploaded(true);
         setUploading(false);
         setUploadProgress(100);
 
+        // After successful upload, reset the form and call the callback
         setTimeout(() => {
-          setUploaded(false);
-          setUploading(false);
-          setFile(null);
-          setUploadProgress(0);
-          setUploadingError("");
+          resetStates();
           randomFunction();
         }, 3000);
       } else {
-        console.error('Upload failed:', response.status, response.data);
-        setUploadingError(`Upload failed: ${response.status}`);
+        setUploadingError(`Upload failed: ${response.data.message.message || 'Unknown error'}`);
+        setTimeout(clearError, 15000);
+        setFile(null);
+        setFileName("File Name");
         setUploaded(false);
         setUploading(false);
       }
     } catch (error) {
-      console.error('Error in uploadFile:', error);
-      setUploadingError("Failed to upload the file. Please try again.");
+      setUploadingError(error.response.data.message.message || "Failed to upload the file. Please try again.");
+      setTimeout(clearError, 15000);
       setUploaded(false);
       setUploading(false);
+      setFile(null);
     }
   };
 
-  const handleFileRemove = () => {
-    setFile(null);
-    setFileName("File Name");
-    setFileSelected(false);
-    setUploadingError("");
-    setUploading(false);
-    setUploaded(false);
-    setUploadProgress(0);
-  };
-
   return {
+    file,
     fileName,
     fileSelected,
-    isFile,
     uploadingError,
     uploadProgress,
     uploaded,

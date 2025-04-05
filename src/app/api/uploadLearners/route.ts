@@ -30,10 +30,9 @@ export async function POST(req: NextRequest) {
       const data = await response.json();
       return NextResponse.json(data, { status: response.status });
     } else {
-      const errorData = await response.text();
-      console.error("API response error:", response.status, errorData);
+      const errorData = await response.json();
       return NextResponse.json(
-        { message: "Failed to upload sheet", error: errorData },
+        { message: errorData, error: errorData },
         { status: response.status }
       );
     }

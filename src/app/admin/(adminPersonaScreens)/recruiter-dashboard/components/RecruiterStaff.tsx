@@ -15,7 +15,7 @@ const RecruiterStaff = () => {
   return (
     <div>
       <button
-        className="flex flex-row w-24 rounded-md py-[0.4rem] px-3 bg-black text-white font-medium text-sm text-center justify-center"
+        className="flex flex-row w-24 rounded-md py-[0.4rem] px-3 bg-tgrey3 text-white font-medium text-sm text-center justify-center"
         onClick={onViewStaffClick}
       >
         View staff

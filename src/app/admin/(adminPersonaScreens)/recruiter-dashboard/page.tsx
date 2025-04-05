@@ -185,6 +185,12 @@ export default function AdminRecruiterdashboard({
     }
   };
 
+  const callback = async () => {
+    await handleFetchLearnersData(currentPage, 10, "", "", searchQuery);
+    await learnerRevalidation();
+    setTableKey((prev) => prev + 1);
+  };
+
   return (
     <div className="flex flex-col">
       {/* Header Section */}
@@ -215,6 +221,7 @@ export default function AdminRecruiterdashboard({
               handleLearnerCreated,
               showStaffButton,
               onFilterClick,
+              callback
             }}
           />
         </div>

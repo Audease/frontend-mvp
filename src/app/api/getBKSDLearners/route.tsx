@@ -13,12 +13,14 @@ export async function GET(req: NextRequest) {
   // Extract the page and limit from the request query parameters
   const { searchParams } = new URL(req.url);
   const page = searchParams.get('page') || '1'; 
-  const limit = searchParams.get('limit') || '10'; 
+  const limit = searchParams.get('limit') || '10';
+  const search = searchParams.get('search') || ''; 
+  const application_mail = searchParams.get('application_mail') || '';
 
   try {
     // Pass the page and limit in the request URL
     const response = await fetch(
-      apiUrl + `/v1/bksd/students?page=${page}&limit=${limit}`,
+      apiUrl + `/v1/bksd/students/filters?page=${page}&limit=${limit}&search=${search}&application_mail=${application_mail}`,
       {
         headers: {
           'Authorization': `Bearer ${accessToken}`,

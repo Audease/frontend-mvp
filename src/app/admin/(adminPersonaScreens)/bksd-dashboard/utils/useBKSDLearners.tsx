@@ -1,12 +1,12 @@
 export const useBKSDLearners = () => {
-  const fetchBKSDLearnersData = async (page: number) => {
+  const fetchBKSDLearnersData = async (page: number, searchquery: string, application_mail_status: string) => {
     try {
       const response = await fetch(
-        `/api/getBKSDLearners?page=${page}&limit=${10}`
+        `/api/getBKSDLearners?page=${page}&limit=${10}&search=${searchquery}&application_mail=${application_mail_status}`,
       );
       const data = await response.json();
       if (response.ok) {
-        const totalPages = data.lastPage;
+        const totalPages = data.totalPages;
         const totalItems = data.total;
         const allLearners = data.data;
 

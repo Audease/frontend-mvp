@@ -39,7 +39,7 @@ export default function FilterButton({ options, onSelect, label }) {
         </div>
       </button>
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-36 bg-white border-2 rounded border-gray-200 shadow-lg z-10">
+        <div className="absolute right-10 mt-2 w-32 bg-white border-2 rounded border-gray-200 shadow-lg z-10">
           {options.map((option, index) => (
             <div
               key={index}

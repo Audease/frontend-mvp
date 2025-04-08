@@ -1,39 +1,9 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import clsx from "clsx";
-import Pagination from "../../../../components/dashboard/Pagination";
-import { useAccessorLearners } from "../utils/useAccessorLearners";
 import LoadingSpinner from "../../../../components/dashboard/Spinner";
-import { accessorLearnerRevalidation } from "@/app/action";
 
-export default function AccessorDashboardTable({ onViewChange }) {
-  const { fetchAccessorLearnersData } = useAccessorLearners();
-  const [allLearners, setallLearners] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalpages] = useState(1);
-  const [totalItems, setTotalItems] = useState(1);
-  const [loading, setLoading] = useState(true);
-
-  const handleFetchAccessorLearnersData = async (page) => {
-    setLoading(true);
-    const { totalPages, totalItems, allLearners } =
-      await fetchAccessorLearnersData(page);
-    setTotalpages(totalPages);
-    setTotalItems(totalItems);
-    setallLearners(allLearners);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    handleFetchAccessorLearnersData(currentPage);
-    accessorLearnerRevalidation();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handlePageChange = async (page) => {
-    setCurrentPage(page);
-    handleFetchAccessorLearnersData(page);
-  };
+export default function AccessorDashboardTable({ onViewChange, allLearners, loading }) {
 
   const [editOptionsVisible, setEditOptionsVisible] = useState(null);
   const menuRef = useRef(null);
@@ -56,7 +26,7 @@ export default function AccessorDashboardTable({ onViewChange }) {
   }, [menuRef]);
 
   return (
-    <div className="flex flex-col justify-between min-h-[35rem] w-full overflow-x-auto">
+    <div className="flex flex-col justify-between min-h-[25rem] my-4 w-full overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200 font-inter table-auto rounded-t-lg h-full">
         <thead className="bg-tgrey-6 border border-tgrey6">
           <tr>
@@ -200,15 +170,7 @@ export default function AccessorDashboardTable({ onViewChange }) {
           )}
         </tbody>
       </table>
-      <div className="mt-7">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          itemsPerPage={10}
-          totalItems={totalItems}
-          onPageChange={handlePageChange}
-        />
-      </div>
+      
     </div>
   );
 }

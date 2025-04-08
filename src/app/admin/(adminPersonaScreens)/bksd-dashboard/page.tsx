@@ -1,15 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BKSDDashboardTable from "./components/BKSDDashboardTable";
 import BKSDStaffModal from "./components/bksdStaffModal";
 import BKSDDashboardHeader from "./components/BKSDDashboardHeader";
 import StaffButton from "./components/StaffButton";
-import FilterBKSD from "./components/FilterBKSD";
 import SendBtn from "./components/SendBtn";
 import { SendEmail } from "./utils/action";
 import { learnerRevalidation } from "@/app/action";
 import { useBKSDLearners } from "./utils/useBKSDLearners";
+import { SearchComponent } from "@/app/components/dashboard/SearchBox";
+import FilterButton from "@/app/components/dashboard/FilterButton";
+import Pagination from "@/app/components/dashboard/Pagination";
 
 export default function AdminBKSDDashboard({
   showHeader = true,
@@ -66,7 +68,7 @@ export default function AdminBKSDDashboard({
       .map((result) => result.id);
 
     learnerRevalidation();
-    handleFetchLearnersData(1);
+    handleFetchLearnersData(1, "", "");
     setCheckedItems({});
 
     if (successfulIds.length > failedIds.length) {
@@ -99,10 +101,16 @@ export default function AdminBKSDDashboard({
   };
 
   // Function to fetch learner data
-  const handleFetchLearnersData = async (page) => {
+  const handleFetchLearnersData = async (
+    page,
+    searchquery,
+    application_mail_status
+  ) => {
     setLoading(true);
     const { totalPages, totalItems, allLearners } = await fetchBKSDLearnersData(
-      page
+      page,
+      searchquery,
+      application_mail_status
     );
     setTotalPages(totalPages);
     setTotalItems(totalItems);
@@ -110,18 +118,57 @@ export default function AdminBKSDDashboard({
     setLoading(false);
   };
 
+  const handleSearch = async (query) => {
+    handleFetchLearnersData(1, query, "");
+    setCurrentPage(1);
+  };
+
+  const handleFilter = async (filter) => {
+    setCurrentPage(1);
+    handleFetchLearnersData(1, "", filter);
+  };
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  //  Event handling functions
+  const handlePageChange = async (page) => {
+    setCurrentPage(page);
+    handleFetchLearnersData(page, "", "");
+  };
+
+  useEffect(() => {
+    handleFetchLearnersData(currentPage, "", "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handlePageReset = async () => {
+    setCurrentPage(1);
+    handleFetchLearnersData(1, "", "");
+  };
+
   return (
     <div>
       {/* Header Section */}
-      <div className="flex flex-col xl:flex-row justify-between">
+      <div className="flex flex-col xl:flex-row justify-between items-center">
         {showHeader && <BKSDDashboardHeader {...{ roleName }} />}
 
         {/* Button Section */}
-        <div className="flex flex-row space-x-4 my-3 xl:my-0">
+        <div className="flex flex-col md:flex-row space-x-4 space-y-4 md:space-y-0 my-3 xl:my-0 items-center">
+        <h3 className="py-2 px-3 bg-black text-white text-sm rounded-md" onClick= {handlePageReset}>All</h3>
+          <div>
+            <SearchComponent searchValue={handleSearch} />
+          </div>
+
           <SendBtn onSendClick={sendApplication} disabled={isDisabled} />
           {showStaffButton && <StaffButton {...{ onViewStaffClick }} />}
-          <div className="hidden xl:flex">
-            {showStaffButton && <FilterBKSD />}
+          <div className="hidden xl:flex ">
+            {showStaffButton && (
+              <FilterButton
+                options={["Sent", "Not sent"]}
+                onSelect={handleFilter}
+                label={"Filter"}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -138,13 +185,19 @@ export default function AdminBKSDDashboard({
             showFailureToast,
             checkedItems,
             handleCheckboxChange,
-            handleFetchLearnersData,
             loading,
             allLearners,
-            totalPages,
-            totalItems,
           }}
         />
+        <div className="mt-7">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            itemsPerPage={10}
+            totalItems={totalItems}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
 
       {/* Staff Modal Section */}

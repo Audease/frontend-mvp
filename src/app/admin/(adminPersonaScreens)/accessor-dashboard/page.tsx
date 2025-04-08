@@ -20,7 +20,7 @@ export default function AccessorDashboard({showHeader=true}) {
   return (
     <div className="">
       {view === "dashboard" ? (
-        <Accessor onViewChange={handleViewChange} {...{showHeader}}/>
+        <Accessor onViewChange={handleViewChange} {...{showHeader}} />
       ) : (
         <AccessorApproval learner={selectedLearner} onBack={handleBackToDashboard} />
       )}

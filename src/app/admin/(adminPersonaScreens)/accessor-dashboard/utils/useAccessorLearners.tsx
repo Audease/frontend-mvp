@@ -1,8 +1,8 @@
 export const useAccessorLearners = () => {
-    const fetchAccessorLearnersData = async (page: number) => {
+    const fetchAccessorLearnersData = async (page: number, search: string) => {
       try {
         const response = await fetch(
-          `/api/getAccessorLearner?page=${page}&limit=${10}`
+          `/api/getAccessorLearner?page=${page}&limit=${10}&search=${search}`,
         );
         const data = await response.json();
         if (response.ok) {

@@ -21,23 +21,14 @@ export default function BKSDDashboardTable({
   showFailureToast,
   checkedItems,
   handleCheckboxChange,
-  handleFetchLearnersData,
   loading,
-  allLearners,
-  totalPages,
-  totalItems,
+  allLearners
 }) {
-  const [currentPage, setCurrentPage] = useState(1);
+
 
   const [editOptionsVisible, setEditOptionsVisible] = useState(null);
 
   const menuRef = useRef(null);
-
-  // Event handling functions
-  const handlePageChange = async (page) => {
-    setCurrentPage(page);
-    handleFetchLearnersData(page);
-  };
 
   const toggleVisibility = (index) => {
     setEditOptionsVisible((prev) => (prev === index ? null : index));
@@ -55,11 +46,6 @@ export default function BKSDDashboardTable({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
-
-  useEffect(() => {
-    handleFetchLearnersData(currentPage);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Rendering
@@ -224,15 +210,6 @@ export default function BKSDDashboardTable({
           )}
         </tbody>
       </table>
-      <div className="mt-7">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          itemsPerPage={10}
-          totalItems={totalItems}
-          onPageChange={handlePageChange}
-        />
-      </div>
     </div>
   );
 }

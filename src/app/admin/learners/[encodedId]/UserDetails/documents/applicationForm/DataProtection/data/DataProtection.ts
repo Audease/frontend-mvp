@@ -146,7 +146,7 @@ export const dataProtectionData = {
     },
     {
       type: "text",
-      id: "fullName",
+      id: "candidateName",
       section: "learner",
       editableBy: ["learner"],
       label: "Full Name",

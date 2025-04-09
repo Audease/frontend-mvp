@@ -26,14 +26,13 @@ const content = privacyNotice;
 const description = content.description;
 const formFields = content.section;
 
-
 const formSchema: z.ZodObject<FormSchema> = z.object(
   formFields.reduce((acc, section) => {
     section.fields.forEach((field) => {
       acc[field.id] = field.validation;
     });
     return acc;
-  }, {}),
+  }, {})
 );
 
 export default function PrivacyNotice({
@@ -54,10 +53,13 @@ export default function PrivacyNotice({
     defaultValues: {
       ...formFields.reduce((acc, section) => {
         section.fields.forEach((field) => {
-          acc[field.id] = 
-            formData[field.id] || 
-            (field.type === "checkbox" ? false : 
-             field.type === "multiselect" ? [] : "");
+          acc[field.id] =
+            formData[field.id] ||
+            (field.type === "checkbox"
+              ? false
+              : field.type === "multiselect"
+              ? []
+              : "");
         });
         return acc;
       }, {}),
@@ -132,6 +134,29 @@ export default function PrivacyNotice({
                       )}
                     />
                   );
+                case "signature":
+                  return (
+                    <Controller
+                      key={innerField.id}
+                      name={innerField.id}
+                      control={control}
+                      render={({ field: { onChange, value } }) => (
+                        <TextInput
+                          id={innerField.id}
+                          signature={true}
+                          className="application-form-input"
+                          placeholder={innerField.placeholder}
+                          disabled={!isEditable}
+                          label={innerField.label}
+                          value={value || ""}
+                          onChange={(e) => {
+                            onChange(e);
+                          }}
+                          error={errors[innerField.id]?.message as string}
+                        />
+                      )}
+                    />
+                  );
                 case "checkbox":
                   return (
                     <Controller
@@ -165,11 +190,17 @@ export default function PrivacyNotice({
 
         <div className="flex flex-row space-x-5 my-8">
           {onPrevClick && (
-            <Button type="button" onClick={onPrevClick} disabled={userRole === "Admin"}>
+            <Button
+              type="button"
+              onClick={onPrevClick}
+              disabled={userRole === "Admin"}
+            >
               Back
             </Button>
           )}
-          <Button type="submit" disabled={userRole === "Admin"}>Save and Continue</Button>
+          <Button type="submit" disabled={userRole === "Admin"}>
+            Save and Continue
+          </Button>
         </div>
       </form>
     </div>

@@ -131,7 +131,7 @@ export default function BehaviouralForm({
                   <TextInput
                     signature = {true}
                     id={field.id}
-                    className="application-form-input text-red-800"
+                    className="application-form-input"
                     placeholder={field.placeholder}
                     label={field.label}
                     value={value || ""}

@@ -54,7 +54,8 @@ const ExtremismPolicyForm: React.FC<ExtremismPolicyProps> = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       ...formFieldsA.reduce((acc, field) => {
-        acc[field.id] = formData[field.id] ||
+        acc[field.id] =
+          formData[field.id] ||
           (field.type === "checkbox"
             ? false
             : field.type === "multiselect"
@@ -63,7 +64,8 @@ const ExtremismPolicyForm: React.FC<ExtremismPolicyProps> = ({
         return acc;
       }, {}),
       ...formFieldsB.reduce((acc, field) => {
-        acc[field.id] = formData[field.id] ||
+        acc[field.id] =
+          formData[field.id] ||
           (field.type === "checkbox"
             ? false
             : field.type === "multiselect"
@@ -140,6 +142,29 @@ const ExtremismPolicyForm: React.FC<ExtremismPolicyProps> = ({
                     )}
                   />
                 );
+              case "signature":
+                return (
+                  <Controller
+                    key={`formField-${field.id || index}`}
+                    name={field.id}
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <TextInput
+                        id={field.id}
+                        signature={true}
+                        className="application-form-input"
+                        placeholder={field.placeholder}
+                        disabled={!isEditable}
+                        label={field.label}
+                        value={value || ""}
+                        onChange={(e) => {
+                          onChange(e);
+                        }}
+                        error={errors[field.id]?.message as string}
+                      />
+                    )}
+                  />
+                );
               case "date":
                 return (
                   <Controller
@@ -172,8 +197,21 @@ const ExtremismPolicyForm: React.FC<ExtremismPolicyProps> = ({
         </div>
         <div>
           {formFieldsB.map((field, index) => {
-            const isEditable =
-              !isSubmitted && field.editableBy.includes(userRole);
+            let isEditable: boolean;
+
+            if (isSubmitted) {
+              if (userRole === "learner") {
+                isEditable = false;
+              } else if (userRole === "accessor") {
+                isEditable = field.editableBy.includes("accessor");
+              }
+            } else {
+              if (userRole === "learner") {
+                isEditable = field.editableBy.includes("learner");
+              } else if (userRole === "accessor") {
+                isEditable = false;
+              }
+            }
             switch (field.type) {
               case "text":
                 return (
@@ -184,6 +222,29 @@ const ExtremismPolicyForm: React.FC<ExtremismPolicyProps> = ({
                     render={({ field: { onChange, value } }) => (
                       <TextInput
                         id={field.id}
+                        className="application-form-input"
+                        placeholder={field.placeholder}
+                        disabled={!isEditable}
+                        label={field.label}
+                        value={value || ""}
+                        onChange={(e) => {
+                          onChange(e);
+                        }}
+                        error={errors[field.id]?.message as string}
+                      />
+                    )}
+                  />
+                );
+              case "signature":
+                return (
+                  <Controller
+                    key={`formField-${field.id || index}`}
+                    name={field.id}
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <TextInput
+                        id={field.id}
+                        signature={true}
                         className="application-form-input"
                         placeholder={field.placeholder}
                         disabled={!isEditable}
@@ -229,11 +290,17 @@ const ExtremismPolicyForm: React.FC<ExtremismPolicyProps> = ({
 
         <div className="flex flex-row space-x-5 my-8">
           {onPrevClick && (
-            <Button type="button" onClick={onPrevClick} disabled={userRole === "Admin"}>
+            <Button
+              type="button"
+              onClick={onPrevClick}
+              disabled={userRole === "Admin"}
+            >
               Back
             </Button>
           )}
-          <Button type="submit" disabled={userRole === "Admin"}>Save and Continue</Button>
+          <Button type="submit" disabled={userRole === "Admin"}>
+            Save and Continue
+          </Button>
         </div>
       </form>
     </div>

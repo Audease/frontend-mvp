@@ -173,6 +173,29 @@ const ParticipantAgreement: React.FC<ParticipantAgreementProps> = ({
                       )}
                     />
                   );
+                case "signature":
+                  return (
+                    <Controller
+                      key={`formField-${field.id || index}`}
+                      name={field.id}
+                      control={control}
+                      render={({ field: { onChange, value } }) => (
+                        <TextInput
+                          id={field.id}
+                          signature={true}
+                          className="application-form-input"
+                          placeholder={field.placeholder}
+                          disabled={!isEditable}
+                          label={field.label}
+                          value={value || ""}
+                          onChange={(e) => {
+                            onChange(e);
+                          }}
+                          error={errors[field.id]?.message as string}
+                        />
+                      )}
+                    />
+                  );
                 case "date":
                   return (
                     <Controller
@@ -223,11 +246,17 @@ const ParticipantAgreement: React.FC<ParticipantAgreementProps> = ({
 
           <div className="flex flex-row space-x-5 my-8">
             {onPrevClick && (
-              <Button type="button" onClick={onPrevClick} disabled={userRole === "Admin"}>
+              <Button
+                type="button"
+                onClick={onPrevClick}
+                disabled={userRole === "Admin"}
+              >
                 Back
               </Button>
             )}
-            <Button type="submit" disabled={userRole === "Admin"}>Save and Continue</Button>
+            <Button type="submit" disabled={userRole === "Admin"}>
+              Save and Continue
+            </Button>
           </div>
         </form>
       </div>

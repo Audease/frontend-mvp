@@ -105,7 +105,7 @@ export const privacyNotice = {
       fields: [
         {
           type: "text",
-          id: "declarationName",
+          id: "candidateName",
           section: "learner",
           editableBy: ["learner"],
           label: "Name",
@@ -115,8 +115,8 @@ export const privacyNotice = {
           }),
         },
         {
-          type: "text",
-          id: "declarationSign",
+          type: "signature",
+          id: "candidateSignature",
           section: "learner",
           editableBy: ["learner"],
           label: "Signature",

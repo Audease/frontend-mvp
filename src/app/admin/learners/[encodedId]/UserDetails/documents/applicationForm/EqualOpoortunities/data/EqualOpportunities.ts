@@ -121,7 +121,7 @@ export const equalOpportunitiesData = {
       validation: z.string().optional()
     },
     {
-      type: "text",
+      type: "signature",
       id: "candidateSignature",
       section: "learner",
       editableBy: ["learner"],
@@ -143,7 +143,7 @@ export const equalOpportunitiesData = {
       }),
     },
     {
-      type: "text",
+      type: "signature",
       id: "ldaSignature",
       section: "admin",
       editableBy: ["accessor"],

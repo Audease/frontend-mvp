@@ -43,7 +43,7 @@ const ChildProtectionForm = ({
   onNextClick,
   onPrevClick,
   userRole,
-  isSubmitted
+  isSubmitted,
 }: ChildProtectionFormProps) => {
   const {
     control,
@@ -85,21 +85,21 @@ const ChildProtectionForm = ({
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-4">
       <div>
         {formFields.map((field) => {
-           let isEditable: boolean;
+          let isEditable: boolean;
 
-           if (isSubmitted) {
-             if (userRole === "learner") {
-               isEditable = false;
-             } else if (userRole === "accessor") {
-               isEditable = field.editableBy.includes("accessor");
-             }
-           } else {
-             if (userRole === "learner") {
-               isEditable = field.editableBy.includes("learner");
-             } else if (userRole === "accessor") {
-               isEditable = false;
-             }
-           }
+          if (isSubmitted) {
+            if (userRole === "learner") {
+              isEditable = false;
+            } else if (userRole === "accessor") {
+              isEditable = field.editableBy.includes("accessor");
+            }
+          } else {
+            if (userRole === "learner") {
+              isEditable = field.editableBy.includes("learner");
+            } else if (userRole === "accessor") {
+              isEditable = false;
+            }
+          }
           switch (field.type) {
             case "text":
               return (
@@ -110,6 +110,29 @@ const ChildProtectionForm = ({
                   render={({ field: { onChange, value } }) => (
                     <TextInput
                       id={field.id}
+                      className="application-form-input"
+                      placeholder={field.placeholder}
+                      disabled={!isEditable}
+                      label={field.label}
+                      value={value || ""}
+                      onChange={(e) => {
+                        onChange(e);
+                      }}
+                      error={errors[field.id]?.message as string}
+                    />
+                  )}
+                />
+              );
+            case "signature":
+              return (
+                <Controller
+                  key={field.id}
+                  name={field.id}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextInput
+                      id={field.id}
+                      signature={true}
                       className="application-form-input"
                       placeholder={field.placeholder}
                       disabled={!isEditable}
@@ -174,8 +197,21 @@ const ChildProtectionForm = ({
 
       <div>
         {formFieldsB.map((field, index) => {
-           const isEditable =
-           !isSubmitted && field.editableBy.includes(userRole);
+          let isEditable: boolean;
+
+          if (isSubmitted) {
+            if (userRole === "learner") {
+              isEditable = false;
+            } else if (userRole === "accessor") {
+              isEditable = field.editableBy.includes("accessor");
+            }
+          } else {
+            if (userRole === "learner") {
+              isEditable = field.editableBy.includes("learner");
+            } else if (userRole === "accessor") {
+              isEditable = false;
+            }
+          }
           switch (field.type) {
             case "text":
               return (
@@ -186,6 +222,29 @@ const ChildProtectionForm = ({
                   render={({ field: { onChange, value } }) => (
                     <TextInput
                       id={field.id}
+                      className="application-form-input"
+                      placeholder={field.placeholder}
+                      disabled={!isEditable}
+                      label={field.label}
+                      value={value || ""}
+                      onChange={(e) => {
+                        onChange(e);
+                      }}
+                      error={errors[field.id]?.message as string}
+                    />
+                  )}
+                />
+              );
+            case "signature":
+              return (
+                <Controller
+                  key={`formField-${field.id || index}`}
+                  name={field.id}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextInput
+                      id={field.id}
+                      signature={true}
                       className="application-form-input"
                       placeholder={field.placeholder}
                       disabled={!isEditable}
@@ -231,11 +290,17 @@ const ChildProtectionForm = ({
 
       <div className="flex flex-row space-x-5 my-8">
         {onPrevClick && (
-          <Button type="button" onClick={onPrevClick} disabled={userRole === "Admin"}>
+          <Button
+            type="button"
+            onClick={onPrevClick}
+            disabled={userRole === "Admin"}
+          >
             Back
           </Button>
         )}
-        <Button type="submit" disabled={userRole === "Admin"}>Save and Continue</Button>
+        <Button type="submit" disabled={userRole === "Admin"}>
+          Save and Continue
+        </Button>
       </div>
     </form>
   );

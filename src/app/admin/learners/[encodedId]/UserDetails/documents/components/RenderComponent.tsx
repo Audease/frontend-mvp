@@ -17,10 +17,10 @@ import ParticipantAgreement from "../applicationForm/ParticipantAgreement/Partic
 import ExtremismPolicy from "../applicationForm/ExtremismPolicy/ExtremismPolicy";
 import ChildProtection from "../applicationForm/ChildProtection/ChildProtection";
 import SkillsAssessment from "../applicationForm/SkillSelfAssessment/Assessment";
-import AwardAssessment from "../applicationForm/AwardAssessment/AwardAssessment.tsx";
 import SubmissionSuccess from "../applicationForm/components/SubmissionSuccess";
 import AccessorSuccessPage from "../applicationForm/components/AccessorSuccessPage";
 import AccessorRejectPage from "../applicationForm/components/AccessorRejectPAge";
+import AwardAssessment from "../applicationForm/AwardAssessment/AwardAssessment";
 
 const RenderFormComponent = ({
   formContent,

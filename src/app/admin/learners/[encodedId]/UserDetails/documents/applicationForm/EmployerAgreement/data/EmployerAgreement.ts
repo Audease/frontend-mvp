@@ -20,7 +20,7 @@ export const employerAgreeemnt = {
     },
     {
       type: "text",
-      id: "employerLearnerName",
+      id: "candidateName",
       section: "learner",
       editableBy: ["learner"],
       label: "Learner Name",
@@ -44,8 +44,8 @@ export const employerAgreeemnt = {
   },
   formFields: [
     {
-      type: "text",
-      id: "learnerSignature",
+      type: "signature",
+      id: "candidateSignature",
       section: "learner",
       editableBy: ["learner"],
       label: "Learner signature:",
@@ -56,7 +56,7 @@ export const employerAgreeemnt = {
     },
     {
       type: "text",
-      id: "learnerName",
+      id: "candidateName",
       section: "learner",
       editableBy: ["learner"],
       label: "Learner Name",
@@ -75,7 +75,7 @@ export const employerAgreeemnt = {
       validation: z.string().date(),
     },
     {
-      type: "text",
+      type: "signature",
       id: "edenCollegeSignature",
       section: "admin",
       editableBy: ["accessor"],
@@ -96,7 +96,7 @@ export const employerAgreeemnt = {
     },
     {
       type: "text",
-      id: "edenCollegeName",
+      id: "ldaName",
       section: "admin",
       editableBy: ["accessor"],
       label: "Name",
@@ -106,7 +106,7 @@ export const employerAgreeemnt = {
       }),
     },
     {
-      type: "text",
+      type: "signature",
       id: "employerSignature",
       section: "admin",
       editableBy: ["accessor"],

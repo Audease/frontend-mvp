@@ -36,8 +36,8 @@ export const participantAgreementData = {
     ],
     formFields: [
       {
-        type: "text",
-        id: "participantAgreementSignature",
+        type: "signature",
+        id: "candidateSignature",
         section: "learner",
         editableBy: ["learner"],
         label: "Signature",

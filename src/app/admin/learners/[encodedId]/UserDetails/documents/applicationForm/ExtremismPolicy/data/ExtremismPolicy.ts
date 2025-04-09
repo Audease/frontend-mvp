@@ -141,7 +141,7 @@ export const extremismPolicyData = {
     },
     {
       type: "text",
-      id: "extremismCandidateName",
+      id: "candidateName",
       section: "learner",
       editableBy: ["learner"],
       label: "Candidate Name",
@@ -152,7 +152,7 @@ export const extremismPolicyData = {
     },
     {
       type: "text",
-      id: "extremismCandidateEmployer",
+      id: "employerName",
       section: "learner",
       editableBy: ["learner", "accessor"],
       label: "Employer",
@@ -161,7 +161,7 @@ export const extremismPolicyData = {
     },
     {
       type: "text",
-      id: "extremismCourseDetails",
+      id: "courseDetails",
       section: "learner",
       editableBy: ["learner", "accessor"],
       label: "Course/Project Details",
@@ -169,8 +169,8 @@ export const extremismPolicyData = {
       validation: z.string().optional()
     },
     {
-      type: "text",
-      id: "extremismCandidateSignature",
+      type: "signature",
+      id: "candidateSignature",
       section: "learner",
       editableBy: ["learner"],
       label: "Candidate Signature",
@@ -194,7 +194,7 @@ export const extremismPolicyData = {
     formFields: [
       {
         type: "text",
-        id: "extremismLDAName",
+        id: "ldaName",
         section: "admin",
         editableBy: ["accessor"],
         label: "Learning and Development Adviser Name",
@@ -219,12 +219,12 @@ export const extremismPolicyData = {
           }),
       },
       {
-        type: "text",
-        id: "extremismLDASignature",
+        type: "signature",
+        id: "ldaSignature",
         section: "admin",
         editableBy: ["accessor"],
         label: "Learning and Development Adviser Signature",
-        placeholder: "Learning and Development Adviser Signature",
+        placeholder: "Type in your surname and credentials to append signature",
         validation: z
           .string()
           .refine((value) => !value || value.trim().length >= 2, {
@@ -232,12 +232,12 @@ export const extremismPolicyData = {
           }),
       },
       {
-        type: "text",
+        type: "signature",
         id: "extremismECASignature",
         section: "admin",
         editableBy: ["accessor"],
         label: "Eden College Allocated LDA Signature",
-        placeholder: "Eden College Allocated LDA Signature",
+        placeholder: "Type in your surname and credentials to append signature",
         validation: z
           .string()
           .refine((value) => !value || value.trim().length >= 2, {

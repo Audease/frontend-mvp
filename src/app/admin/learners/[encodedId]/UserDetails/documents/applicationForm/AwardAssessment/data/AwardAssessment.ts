@@ -183,7 +183,7 @@ export const awardAssessmentData = {
       },
       {
         type: "text",
-        id: "nameOfCandidate",
+        id: "candidateName",
         section: "learner",
         editableBy: ["learner"],
         label: "Name of candidate",
@@ -193,7 +193,7 @@ export const awardAssessmentData = {
         }),
       },
       {
-        type: "text",
+        type: "signature",
         id: "candidateSignature",
         section: "learner",
         editableBy: ["learner"],
@@ -205,7 +205,7 @@ export const awardAssessmentData = {
       },
       {
         type: "text",
-        id: "candidateEmployer",
+        id: "employerName",
         section: "learner",
         editableBy: ["learner", "accessor"],
         label: "Employer",
@@ -253,7 +253,7 @@ export const awardAssessmentData = {
           validation: z.string().optional()
         },
         {
-          type: "text",
+          type: "signature",
           id: "edenSignature",
           section: "admin",
           editableBy: ["accessor"],

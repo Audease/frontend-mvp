@@ -44,7 +44,7 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
     setFormContent,
   } = useFormNavigation(formComponentsArray);
 
-  const { formData, formLoading, isSubmitted, updateFormData, fetchFormSubmissions } =
+  const { formData, formLoading, isSubmitted, updateFormData, fetchFormSubmissions, formUpdateResponse } =
     useFormDataManager(userId);
 
   // Load college name on mount
@@ -127,6 +127,8 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
               isSubmitted={isSubmitted}
               userRole={userRole}
             />
+
+            {formUpdateResponse && <h3 className="text-sm animate-flash">{formUpdateResponse.message}</h3>}
           </div>
         </div>
 

@@ -88,7 +88,7 @@ export const candidateRecordData = {
       validation: z.string().optional(),
     },
     {
-      type: "text",
+      type: "signature",
       id: "candidateSignature",
       section: "learner",
       editableBy: ["learner"],

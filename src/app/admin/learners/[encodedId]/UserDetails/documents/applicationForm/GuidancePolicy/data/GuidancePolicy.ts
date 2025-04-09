@@ -408,7 +408,7 @@ export const guidancePolicyData = {
       validation: z.string().optional(),
     },
     {
-      type: "text",
+      type: "signature",
       id: "candidateSignature",
       section: "learner",
       editableBy: ["learner"],
@@ -428,7 +428,7 @@ export const guidancePolicyData = {
       }),
     },
     {
-      type: "text",
+      type: "signature",
       id: "ldaSignature",
       section: "admin",
       editableBy: ["accessor"],
@@ -450,12 +450,12 @@ export const guidancePolicyData = {
       }),
     },
     {
-      type: "text",
+      type: "signature",
       id: "eldaSignature",
       section: "admin",
       editableBy: ["accessor"],
       label: " Eden College Allocated LDA Signature",
-      placeholder: "LDA Signature",
+      placeholder: "ELDA Signature",
       validation: z.string().refine((value) => !value || value.trim().length >= 2, {
         message: "LDA signature must be at least 2 characters.",
       }),

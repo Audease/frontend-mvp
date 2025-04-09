@@ -14,6 +14,7 @@ export const useFormDataManager = (userId: string) => {
   const [formLoading, setFormLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [rawBackendData, setRawBackendData] = useState<BackendData>({});
+  const [formUpdateResponse, setFormUpdateResponse] = useState(null)
 
   const transformFormData = (backendData: BackendData) => {
     return Object.entries(backendData).reduce((acc, [key, value]) => {
@@ -24,7 +25,7 @@ export const useFormDataManager = (userId: string) => {
 
   const fetchFormSubmissions = async () => {
     if (!userId) return;
-    
+
     setFormLoading(true);
     try {
       const response = await fetch(
@@ -50,22 +51,28 @@ export const useFormDataManager = (userId: string) => {
 
   useEffect(() => {
     fetchFormSubmissions();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const updateFormData = async (formType: string, data: any) => {
     if (!userId || !formType) return;
 
     const formTypeKey = formType.toLowerCase();
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [formTypeKey]: { ...prev[formTypeKey], ...data },
     }));
 
     setFormLoading(true);
     try {
-      if ((Object.keys(rawBackendData).length === 0) || !rawBackendData[formTypeKey]) {
-        await fetch("/api/enrolmentForm/submissionDraft", {
+      let response;
+
+      if (
+        Object.keys(rawBackendData).length === 0 ||
+        !rawBackendData[formTypeKey]
+      ) {
+        // Create new draft
+        response = await fetch("/api/enrolmentForm/submissionDraft", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -75,17 +82,29 @@ export const useFormDataManager = (userId: string) => {
           }),
         });
       } else {
+        // Update existing draft
         const formId = rawBackendData[formTypeKey]?.id;
         if (!formId) throw new Error("Form ID not found");
 
-        await fetch(`/api/enrolmentForm/updateDraft/?id=${formId}`, {
+        response = await fetch(`/api/enrolmentForm/updateDraft/?id=${formId}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify( { data } ),
+          body: JSON.stringify({ data }),
         });
       }
+
+      if (!response.ok) {
+        setFormUpdateResponse("Error Updating Form, Please go back and Submit again")
+      }
+
+      const result = await response.json();
+      setFormUpdateResponse(result)
+      setTimeout(() => {
+        setFormUpdateResponse(null)
+      }, 5000)
+      
     } catch (error) {
-      console.error("Error updating form data:", error);
+      console.error("Error saving form:", error);
     } finally {
       setFormLoading(false);
     }
@@ -95,6 +114,7 @@ export const useFormDataManager = (userId: string) => {
     formData,
     formLoading,
     isSubmitted,
+    formUpdateResponse,
     updateFormData,
     fetchFormSubmissions,
   };

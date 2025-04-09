@@ -241,7 +241,7 @@ export const healthandSafetyData = {
       validation: z.string().optional(),
     },
     {
-      type: "text",
+      type: "signature",
       id: "candidateSignature",
       section: "learner",
       editableBy: ["learner"],
@@ -261,7 +261,7 @@ export const healthandSafetyData = {
       }),
     },
     {
-      type: "text",
+      type: "signature",
       id: "ldaSignature",
       section: "admin",
       editableBy: ["accessor"],

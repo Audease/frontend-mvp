@@ -56,7 +56,7 @@ export const behaviouralData = {
   ],
   formFields: [
     {
-      id: "agreement",
+      id: "learnerAgreement",
       label: "I have read and understood the policy.",
       type: "checkbox",
       section: "learner",
@@ -124,7 +124,7 @@ export const behaviouralData = {
       label: "Learning and Development Adviser Signature",
       section: "admin",
       editableBy: ["accessor"],
-      type: "text",
+      type: "signature",
       placeholder: "Type in your surname and credentials to append signature",
       validation: z.string().optional().refine((value) => !value || value.trim().length >= 2, {
         message: "Signature must be at least 2 characters if provided.",

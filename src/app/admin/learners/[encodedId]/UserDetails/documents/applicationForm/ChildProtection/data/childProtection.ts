@@ -62,7 +62,7 @@ export const childProtection = {
     },
     {
       type: "text",
-      id: "childProtectionName",
+      id: "candidateName",
       section: "learner",
       editableBy: ["learner"],
       label: "Candidate Name",
@@ -73,7 +73,7 @@ export const childProtection = {
     },
     {
       type: "text",
-      id: "childProtectionEmployer",
+      id: "employerName",
       section: "learner",
       editableBy: ["learner", "accessor"],
       label: "Employer",
@@ -82,7 +82,7 @@ export const childProtection = {
     },
     {
       type: "text",
-      id: "childProtectionCourseDetails",
+      id: "courseDetails",
       section: "learner",
       editableBy: ["learner", "accessor"],
       label: "Course/Project Details",
@@ -90,8 +90,8 @@ export const childProtection = {
       validation: z.string().optional()
     },
     {
-      type: "text",
-      id: "childProtectionCandidateSignature",
+      type: "signature",
+      id: "candidateSignature",
       section: "learner",
       editableBy: ["learner"],
       label: "Candidate Signature",
@@ -115,7 +115,7 @@ export const childProtection = {
     formFields: [
       {
         type: "text",
-        id: "childProtectionLDAName",
+        id: "ldaName",
         section: "admin",
         editableBy: ["accessor"],
         label: "Learning and Development Adviser Name",
@@ -128,7 +128,7 @@ export const childProtection = {
       },
       {
         type: "text",
-        id: "childProtectionECAName",
+        id: "ECAName",
         section: "admin",
         editableBy: ["accessor"],
         label: "Eden College Allocated LDA",
@@ -140,8 +140,8 @@ export const childProtection = {
             }),
       },
       {
-        type: "text",
-        id: "childProtectionLDASignature",
+        type: "signature",
+        id: "ldaSignature",
         section: "admin",
         editableBy: ["accessor"],
         label: "Learning and Development Adviser Signature",
@@ -153,8 +153,8 @@ export const childProtection = {
             }),
       },
       {
-        type: "text",
-        id: "childProtectionECASignature",
+        type: "signature",
+        id: "ECASignature",
         section: "admin",
         editableBy: ["accessor"],
         label: "Eden College Allocated LDA Signature",

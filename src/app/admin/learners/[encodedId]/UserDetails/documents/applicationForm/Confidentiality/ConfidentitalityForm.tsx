@@ -99,6 +99,29 @@ export default function ConfidentialityForm({
                 )}
               />
             );
+          case "signature":
+            return (
+              <Controller
+                key={field.id}
+                name={field.id}
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    id={field.id}
+                    signature={true}
+                    className="application-form-input"
+                    placeholder={field.placeholder}
+                    label={field.label}
+                    value={value || ""}
+                    disabled={!isEditable}
+                    onChange={(e) => {
+                      onChange(e);
+                    }}
+                    error={errors[field.id]?.message as string}
+                  />
+                )}
+              />
+            );
           case "checkbox":
             return (
               <Controller

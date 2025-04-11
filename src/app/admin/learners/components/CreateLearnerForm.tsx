@@ -70,7 +70,7 @@ const RegistrationForm = ({
   });
 
   const onSubmit = async (data) => {
-    setLoading(true)
+    setLoading(true);
     try {
       const success = await createLearner(data);
       if (success) {
@@ -78,24 +78,29 @@ const RegistrationForm = ({
         onLearnerCreated();
         learnerRevalidation();
         setLearnerSuccessModal(true);
-        form.reset(); 
+        form.reset();
       }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   return (
-    <Form {...form} >
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 px-4 pb-4">
-        <div className="grid grid-cols-2 gap-y-1 gap-x-6">
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-3 px-4 pb-4"
+      >
+        <div className="grid grid-cols-2 gap-y-2 gap-x-6">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name (First Name, Middle Name and Surname)</FormLabel>
+                <FormLabel>
+                  Name (First Name, Middle Name and Surname)
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="Enter your name" {...field} />
                 </FormControl>
@@ -188,8 +193,6 @@ const RegistrationForm = ({
             )}
           />
 
-         <FundingField form={form} />
-
           <FormField
             control={form.control}
             name="awarding"
@@ -256,6 +259,8 @@ const RegistrationForm = ({
               </FormItem>
             )}
           />
+
+          <FundingField form={form} />
         </div>
 
         {apiError && (
@@ -266,7 +271,7 @@ const RegistrationForm = ({
 
         <div className="flex justify-center">
           <Button type="submit" className="w-96 bg-gold1">
-           {loading ? "Creating Learner ..." : "Create"}
+            {loading ? "Creating Learner ..." : "Create"}
           </Button>
         </div>
       </form>

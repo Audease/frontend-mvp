@@ -44,7 +44,7 @@ const LearnerEditForm = ({
   patchLoading,
   learner = null,
   apiError,
-  apiSuccess
+  apiSuccess,
 }) => {
   // Create form with default empty values
   const form = useForm({
@@ -212,8 +212,6 @@ const LearnerEditForm = ({
                 )}
               />
 
-              <FundingField form={form} />
-
               <FormField
                 control={form.control}
                 name="awarding"
@@ -261,6 +259,8 @@ const LearnerEditForm = ({
                   </FormItem>
                 )}
               /> */}
+
+              <FundingField form={form} />
             </div>
 
             {apiError && (
@@ -269,12 +269,12 @@ const LearnerEditForm = ({
               </div>
             )}
 
-            {apiSuccess && ( 
+            {apiSuccess && (
               <div className="text-green-500 text-sm text-center py-2">
                 {apiSuccess.message || "Learner updated successfully!!!"}
               </div>
             )}
-            
+
             <div className="flex justify-center my-2">
               <Button type="submit" className="w-96 bg-gold1">
                 {patchLoading ? "Updating Learner..." : "Update Learner"}

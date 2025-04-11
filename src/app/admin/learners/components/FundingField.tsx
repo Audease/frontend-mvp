@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { 
   FormField, 
   FormItem, 
@@ -12,14 +12,16 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const FundingField = ({ form }) => {
-  const [fundingType, setFundingType] = useState("self-funding");
+  const [fundingType, setFundingType] = useState(form.getValues("funding") || "");  
 
   const handleFundingChange = (value) => {
     setFundingType(value);
     
-    if (value === "self-funding") {
-      form.setValue("funding", "self-funding");
-    } else {
+    if (value === "student-loan") {
+      form.setValue("funding", "student-loan");
+    } else if (value === "private") {
+      form.setValue("funding", "private");
+    } else if (value === "others") {
       form.setValue("funding", "");
     }
   };
@@ -40,19 +42,23 @@ const FundingField = ({ form }) => {
                 className="flex flex-col space-y-2"
               >
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="self-funding" id="self-funding" />
-                  <Label htmlFor="self-funding">Self Funding</Label>
+                  <RadioGroupItem value="student-loan" id="student-loan" />
+                  <Label htmlFor="student-loan">Student loan</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="scholarship" id="scholarship" />
-                  <Label htmlFor="scholarship">Scholarship</Label>
+                  <RadioGroupItem value="private" id="private" />
+                  <Label htmlFor="private">Private</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="others" id="others" />
+                  <Label htmlFor="others">Others</Label>
                 </div>
               </RadioGroup>
 
-              {fundingType === "scholarship" && (
+              {fundingType === "others" && (
                 <Input 
-                  placeholder="Enter scholarship provider" 
-                  value={field.value !== "self-funding" ? field.value : ""}
+                  placeholder="Enter funding source" 
+                  value={field.value !== "others" ? field.value : ""}
                   onChange={(e) => {
                     form.setValue("funding", e.target.value);
                   }}

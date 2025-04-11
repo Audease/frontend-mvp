@@ -14,7 +14,7 @@ const PersonaBackButton = () => {
             <div className="pt-2">
               <SlArrowLeft className="text-tgrey3 h-[0.6rem]" />
             </div>
-            <p className="font-medium text-base">Back</p>
+            <p className="font-medium text-base cursor-pointer">Back</p>
           </button>
         </div>
   )

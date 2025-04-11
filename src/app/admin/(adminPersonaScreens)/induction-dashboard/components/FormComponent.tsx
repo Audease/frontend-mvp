@@ -16,11 +16,11 @@ import {
 import { AlertDialogFooter } from "@/components/ui/alert-dialog";
 
 const formSchema = z.object({
-  meetingId: z.string().min(1, "Meeting ID is required"),
-  meetingUrl: z.string().url("Invalid URL").min(1, "Meeting URL is required"),
+  meetingId: z.string().optional(),
+  meetingUrl: z.string().optional(),
   password: z.string().optional(),
-  startTime: z.string().min(1, "Start time is required"),
-  endTime: z.string().min(1, "End time is required"),
+  startTime: z.string().min(1, "Start time is required").optional(),
+  endTime: z.string().min(1, "End time is required").optional(),
 });
 
 const FormComponent = ({ closeModal, onSubmit, loading }) => {
@@ -75,7 +75,7 @@ const FormComponent = ({ closeModal, onSubmit, loading }) => {
               <FormControl>
                 <Input
                   placeholder="Enter Password"
-                  type="password"
+                  type="text"
                   {...field}
                 />
               </FormControl>

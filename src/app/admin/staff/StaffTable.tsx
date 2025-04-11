@@ -171,7 +171,8 @@ export default function StaffTable({
                     onClick={() => toggleVisibility(staff.id)}
                     aria-expanded={editOptions[staff.id] || false}
                     aria-haspopup="true"
-                    className="cursor-default font-bold"
+                    className="cursor-pointer font-bold hover:text-dashboardButtons"
+
                   >
                     ...
                   </p>

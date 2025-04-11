@@ -39,12 +39,8 @@ export default function InductionDashboardTable({
     handleFetchLearnersData(page);
   };
 
-  const toggleVisibility = (index, rowId) => {
-    if (checkedItems[rowId]) {
-      setEditOptionsVisible((prev) => (prev === index ? null : index));
-    } else {
-      setEditOptionsVisible(null);
-    }
+  const toggleVisibility = (index) => {
+    setEditOptionsVisible((prev) => (prev === index ? null : index));
   };
 
   const handleClickOutside = (event) => {
@@ -202,14 +198,14 @@ export default function InductionDashboardTable({
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-bold text-center relative">
                   <p
-                    onClick={() => toggleVisibility(index, row.id)}
+                    onClick={() => toggleVisibility(index)}
                     aria-expanded={editOptionsVisible === index}
                     aria-haspopup="true"
                     className="cursor-pointer font-bold"
                   >
                     ...
                   </p>
-                  {editOptionsVisible === index && checkedItems[row.id] && (
+                  {editOptionsVisible === index && (
                     <div
                       ref={menuRef}
                       className="bg-white shadow-lg rounded-lg p-2 font-medium w-32 absolute left-[-80px]  border-2 right-0 text-tblack3 space-y-4 z-10 top-10"

@@ -13,7 +13,7 @@ import SuccessToast, {
 
 // State handling
 export default function InductionDashboardTable({
-  sendApplication,
+  handleSingleRowInductionEmail, 
   loading2,
   successfulEmail,
   failedEmail,
@@ -212,7 +212,10 @@ export default function InductionDashboardTable({
                     >
                       <p
                         className="hover:text-gold1 cursor-pointer"
-                        onClick={sendApplication}
+                        onClick={() => {
+                          handleSingleRowInductionEmail(row.id);
+                          setEditOptionsVisible(null);
+                        }}
                       >
                         Send Invite
                       </p>

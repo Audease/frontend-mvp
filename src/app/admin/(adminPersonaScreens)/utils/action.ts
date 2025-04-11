@@ -30,16 +30,16 @@ export const GetPersonaStaff = async ({personaPermission}) => {
 
 
   const DeleteStaff = async (staffId) => {
-    const encodedStaffId = encodeURIComponent(staffId);
+    // const encodedStaffId = encodeURIComponent(staffId);
     try {
       const response = await fetch(
-        `/api/deleteStaff/?studentId=${encodedStaffId}`,
+        `/api/deleteStaff/?staffId=${staffId}`,
         {
           method: "DELETE",
         }
       );
   
-      if (response.status === 204) {
+      if (response.status === 200) {
         return true
       }
   

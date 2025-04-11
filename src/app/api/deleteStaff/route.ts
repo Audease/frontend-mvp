@@ -19,18 +19,18 @@ export async function DELETE(req: NextRequest) {
 
   try {
     const response = await fetch(
-      apiUrl +  `/v1/admin/delete/${staffId}`,
+      `${apiUrl}/v1/admin/delete/?staffId=${staffId}`,
       {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        }
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }
       }
     );
 
     if (response.ok) {
-      return NextResponse.json({ status: 204 });
+      return NextResponse.json({ status: 200 });
     } else {
       return NextResponse.json({ message: 'Failed to delete staff' }, { status: response.status });
     }

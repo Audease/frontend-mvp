@@ -14,11 +14,13 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const page = searchParams.get("page") || "1";
   const limit = searchParams.get("limit") || "10";
+  const inductor_status = searchParams.get("inductor_status");
+  const search = searchParams.get("search");
 
   try {
     // Pass the page and limit in the request URL
     const response = await fetch(
-      apiUrl + `/v1/induction/students?page=${page}&limit=${limit}`,
+      apiUrl + `/v1/induction/students/filter?inductor_status=${inductor_status}&page=${page}&limit=${limit}&search=${search}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

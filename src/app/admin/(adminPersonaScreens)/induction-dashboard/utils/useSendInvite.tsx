@@ -14,7 +14,6 @@ const useSendInvite = () => {
     const failedIds = [];
 
     for (const id of learnerIds) {
-      // console.log(payload, id)
       try {
         const response = await fetch(`/api/induction/sendInductionInvite?studentId=${id}`, {
           method: 'POST',

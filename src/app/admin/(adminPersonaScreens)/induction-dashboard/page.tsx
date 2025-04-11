@@ -27,6 +27,7 @@ export default function AdminBKSDDashboard({
   const [checkedIds, setCheckedIds] = useState([]);
   const [checkedItems, setCheckedItems] = useState({});
   const [loading, setLoading] = useState(false);
+  const [key, setKey] = useState(0);
 
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(1);
@@ -61,6 +62,7 @@ export default function AdminBKSDDashboard({
     setCheckedItems({});
     setCheckedIds([]);
     handleFetchLearnersData(1);
+    setKey((prev) => prev + 1);
     setOpenInductionInviteModalOpen(false);
   };
 
@@ -112,6 +114,7 @@ export default function AdminBKSDDashboard({
       <div className="mt-6">
         <InductionDashboardTable
           {...{
+            key,
             sendApplication,
             successfulEmail,
             failedEmail,

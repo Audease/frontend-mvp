@@ -8,6 +8,7 @@ import Image from "next/image";
 import axios from "axios";
 import { staffRevalidation } from "../../../action";
 import LoadingSpinner from "../../../components/dashboard/Spinner";
+import StaffSuccessModal from "./StaffSuccessModal";
 
 export default function AddStaffScreen({ onClick }) {
   const [emailInput, setEmailInput] = useState("");
@@ -125,6 +126,8 @@ export default function AddStaffScreen({ onClick }) {
       return updatedInvitedStaff;
     });
     setAddedMessageVisible(true);
+    setShowSuccessModal(true);
+
     setTimeout(() => {
       setAddedMessageVisible(false);
     }, 5000); 
@@ -151,6 +154,12 @@ export default function AddStaffScreen({ onClick }) {
   async function getAvatarUrl(email) {
     const res = await fetch(`https://ui-avatars.com/api/?name=${email}`);
     return res.url;
+  }
+
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const handleCloseSuccessModal = () => {
+    setShowSuccessModal(false);
+    setStaffs([]);
   }
 
   return (
@@ -201,6 +210,8 @@ export default function AddStaffScreen({ onClick }) {
             </div>
             {error && <p className="text-red-500 text-sm">{error}</p>}
           </div>
+
+          <StaffSuccessModal show={showSuccessModal} onClose={handleCloseSuccessModal} />
 
           {/* The buttons */}
           <div className="flex flex-row justify-between">

@@ -13,7 +13,7 @@ import SuccessToast, {
 
 // State handling
 export default function LazerDashboardTable({
-  approveLazer,
+  handleSingleRowApprove,
   loading2,
   success,
   failed,
@@ -39,12 +39,8 @@ export default function LazerDashboardTable({
     handleFetchLearnersData(page);
   };
 
-  const toggleVisibility = (index, rowId) => {
-    if (checkedItems[rowId]) {
-      setEditOptionsVisible((prev) => (prev === index ? null : index));
-    } else {
-      setEditOptionsVisible(null);
-    }
+  const toggleVisibility = (index) => {
+    setEditOptionsVisible((prev) => (prev === index ? null : index));
   };
 
   const handleClickOutside = (event) => {
@@ -63,7 +59,7 @@ export default function LazerDashboardTable({
 
   useEffect(() => {
     handleFetchLearnersData(currentPage);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Rendering
@@ -71,10 +67,14 @@ export default function LazerDashboardTable({
     <div className="flex flex-col justify-between  w-full overflow-x-auto">
       <div className="fixed z-50 right-8 animate-bounce">
         {showSuccessToast && (
-          <SuccessToast text={`${success} sent successfully. ${failed} failed`} />
+          <SuccessToast
+            text={`${success} sent successfully. ${failed} failed`}
+          />
         )}
         {showFailureToast && (
-          <FailureToast text={`${failed} failed. ${success} sent successfully. `} />
+          <FailureToast
+            text={`${failed} failed. ${success} sent successfully. `}
+          />
         )}
       </div>
       {loading2 && (
@@ -148,7 +148,7 @@ export default function LazerDashboardTable({
           ) : (
             allLearners.map((row, index) => (
               <tr key={row.id}>
-                <td className="px-2 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium flex flex-row cursor-pointer" >
+                <td className="px-2 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium flex flex-row cursor-pointer">
                   <span className="pr-4">
                     <input
                       type="checkbox"
@@ -157,7 +157,7 @@ export default function LazerDashboardTable({
                       checked={!!checkedItems[row.id]}
                     />
                   </span>
-                  
+
                   {row.name}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
@@ -194,8 +194,7 @@ export default function LazerDashboardTable({
                   <p
                     className={clsx("text-center p-1 rounded-lg", {
                       "bg-green4 text-green3": row.lazer_status === "Approved",
-                      "bg-tgrey8 text-tblack4":
-                        row.lazer_status === "Pending",
+                      "bg-tgrey8 text-tblack4": row.lazer_status === "Pending",
                     })}
                   >
                     {row.lazer_status}
@@ -203,21 +202,21 @@ export default function LazerDashboardTable({
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-bold text-center relative">
                   <p
-                    onClick={() => toggleVisibility(index, row.id)}
+                    onClick={() => toggleVisibility(index)}
                     aria-expanded={editOptionsVisible === index}
                     aria-haspopup="true"
                     className="cursor-pointer font-bold"
                   >
                     ...
                   </p>
-                  {editOptionsVisible === index && checkedItems[row.id] && (
+                  {editOptionsVisible === index && (
                     <div
                       ref={menuRef}
                       className="bg-white shadow-lg rounded-lg p-2 font-medium w-32 absolute left-[-80px]  border-2 right-0 text-tblack3 space-y-4 z-10 top-10"
                     >
                       <p
                         className="hover:text-gold1 cursor-pointer"
-                        onClick={approveLazer}
+                        onClick={() => handleSingleRowApprove(row.id)}
                       >
                         Approve
                       </p>

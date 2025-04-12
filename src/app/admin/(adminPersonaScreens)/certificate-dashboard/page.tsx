@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CertificateDashboardTable from "./components/CertificateDashboardTable";
 import CertificateDashboardHeader from "./components/CertificateDashboardHeader";
 import StaffButton from "./components/StaffButton";
@@ -10,6 +10,8 @@ import { certificateApproveLearner } from "./utils/action";
 import { certificateLearnerRevalidation } from "@/app/action";
 import { useCertificateLearners } from "./utils/useCertificateLearners";
 import CertificateStaffModal from "./components/CertificateStaffModal";
+import { SearchComponent } from "@/app/components/dashboard/SearchBox";
+import FilterButton from "@/app/components/dashboard/FilterButton";
 
 export default function AdminCertificateDashboard({
   showHeader = true,
@@ -29,6 +31,7 @@ export default function AdminCertificateDashboard({
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(1);
   const [allLearners, setAllLearners] = useState([]);
+  const [key, setKey] = useState(0);
 
   const { fetchCertificateLearnersData } = useCertificateLearners();
 
@@ -54,7 +57,15 @@ export default function AdminCertificateDashboard({
     setLoading(false);
   };
 
-  // Function for sending applications
+  useEffect(
+    () => {
+      handleFetchLearnersData(1);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  // Function for sending bulk applications
   const approveCertificate = async () => {
     setLoading2(true);
     const results = await Promise.all(
@@ -78,6 +89,10 @@ export default function AdminCertificateDashboard({
     certificateLearnerRevalidation();
     handleFetchLearnersData(1);
     setCheckedItems({});
+    setKey((prev) => prev + 1);
+    setCheckedIds([]);
+    setLoading(false);
+    setLoading2(false);
 
     if (successfulIds.length > failedIds.length) {
       setSuccessfulEmail(successfulIds.length);
@@ -96,6 +111,33 @@ export default function AdminCertificateDashboard({
     return { successfulIds, failedIds };
   };
 
+  // Function to handle single row certification
+  const handleSingleRowCertify = async (id) => {
+    setLoading2(true);
+    try {
+      const success = await certificateApproveLearner(id);
+      if (success) {
+        setSuccessfulEmail(1);
+        setFailedEmail(0);
+        setShowSuccessToast(true);
+        setTimeout(() => setShowSuccessToast(false), 5000);
+      } else {
+        setFailedEmail(1);
+        setShowFailureToast(true);
+        setTimeout(() => setShowFailureToast(false), 5000);
+      }
+      handleFetchLearnersData(1);
+      await certificateLearnerRevalidation();
+      setKey((prev) => prev + 1);
+    } catch (error) {
+      setFailedEmail(1);
+      setShowFailureToast(true);
+      setTimeout(() => setShowFailureToast(false), 5000);
+    } finally {
+      setLoading2(false);
+    }
+  };
+
   // Function to handle checkbox changes
   const handleCheckboxChange = (id) => {
     setCheckedItems((prev) => {
@@ -108,17 +150,47 @@ export default function AdminCertificateDashboard({
     });
   };
 
+  // Function to handle search input
+  const handleSearch = (searchValue) => {
+    console.log("Search Value:", searchValue);
+  };
+
+  // Function to reset the page
+  const handlePageReset = () => {
+    setKey((prev) => prev + 1);
+  };
+
+  // Function to handle filter selection
+  const handleFilter = (selectedOption) => {
+    console.log("Selected Filter Option:", selectedOption);
+  }
+
   return (
     <div>
       {/* Header Section */}
-      <div className="flex flex-col xl:flex-row justify-between">
+      <div className="flex flex-col xl:flex-row justify-between items-center">
         {showHeader && <CertificateDashboardHeader {...{ roleName }} />}
         {/* Button Section */}
-        <div className="flex flex-row space-x-4 my-3 xl:my-0">
+        <div className="flex flex-col md:flex-row space-x-4 space-y-2 md:space-y-0 my-3 xl:my-0 items-center">
+          <div className="flex flex-col md:flex-row space-x-4 space-y-2 md:space-y-0 my-3 xl:my-0 items-center">
+            <h3
+              className="py-2 px-3 bg-black text-white text-sm rounded-md"
+              onClick={handlePageReset}
+            >
+              All
+            </h3>
+            <SearchComponent searchValue={handleSearch} />
+          </div>
           <SendBtn onSendClick={approveCertificate} disabled={isDisabled} />
           {showStaffButton && <StaffButton {...{ onViewStaffClick }} />}
           <div className="hidden xl:flex">
-            {showStaffButton && <FilterCertificate />}
+            {showStaffButton && (
+              <FilterButton
+                options={["Approved", "Pending"]}
+                onSelect={handleFilter}
+                label={"Filter"}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -126,8 +198,9 @@ export default function AdminCertificateDashboard({
       {/* Dashboard Table Section */}
       <div className="mt-6">
         <CertificateDashboardTable
+          key={key}
           {...{
-            approveCertificate,
+            handleSingleRowCertify,
             successfulEmail,
             failedEmail,
             loading2,

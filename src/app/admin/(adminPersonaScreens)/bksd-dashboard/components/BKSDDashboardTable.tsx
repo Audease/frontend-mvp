@@ -38,7 +38,7 @@ export default function BKSDDashboardTable({
   }, []);
 
   return (
-    <div className="flex flex-col justify-between w-full overflow-x-auto">
+    <div className="flex flex-col justify-between w-full min-h-80 overflow-x-auto">
       <div className="fixed z-50 right-8 animate-bounce">
         {showSuccessToast && (
           <SuccessToast text={`${successfulEmail} sent successfully. ${failedEmail} failed`} />

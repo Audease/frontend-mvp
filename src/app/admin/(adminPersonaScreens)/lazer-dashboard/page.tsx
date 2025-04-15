@@ -5,10 +5,9 @@ import LazerDashboardTable from "./components/LazerDashboardTable";
 import LazerStaffModal from "./components/LazerStaffModal";
 import LazerDashboardHeader from "./components/LazerDashboardHeader";
 import StaffButton from "./components/StaffButton";
-import FilterLazer from "./components/LazerInduction";
 import { LazerApproveLearner } from "./utils/action";
 import { lazerLearnerRevalidation } from "@/app/action";
-import { useLazerLearners } from "./utils/useLazerLearners";
+import { lazerLearner, useLazerLearners } from "./utils/useLazerLearners";
 import ApproveBtn from "./components/ApproveBtn";
 import FilterButton from "@/app/components/dashboard/FilterButton";
 import { SearchComponent } from "@/app/components/dashboard/SearchBox";
@@ -27,6 +26,7 @@ export default function AdminLazerDashboard({
   const [failed, setFailed] = useState<number>();
   const [showFailureToast, setShowFailureToast] = useState(false);
   const [checkedItems, setCheckedItems] = useState({});
+  const [key, setKey] = useState(0);
 
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
@@ -68,13 +68,14 @@ export default function AdminLazerDashboard({
       .map((result) => result.id);
 
     lazerLearnerRevalidation();
-    handleFetchLearnersData(1);
+    handleFetchLearnersData({ page: 1 });
     setCheckedItems({});
 
     if (successfulIds.length > failedIds.length) {
       setSuccess(successfulIds.length);
       setFailed(failedIds.length);
       setShowSuccessToast(true);
+      setKey((prev) => prev + 1);
       setTimeout(() => setShowSuccessToast(false), 5000);
     } else {
       setSuccess(successfulIds.length);
@@ -98,8 +99,9 @@ export default function AdminLazerDashboard({
         setFailed(0);
         setShowSuccessToast(true);
         setTimeout(() => setShowSuccessToast(false), 5000);
-        handleFetchLearnersData(1);
+        handleFetchLearnersData({ page: 1 });
         await lazerLearnerRevalidation();
+        setKey((prev) => prev + 1);
       } else {
         setSuccess(0);
         setFailed(1);
@@ -130,10 +132,14 @@ export default function AdminLazerDashboard({
   };
 
   // Function to fetch learner data
-  const handleFetchLearnersData = async (page) => {
+  const handleFetchLearnersData = async ({
+    lazer_status,
+    page,
+    searchQuery,
+  }: lazerLearner) => {
     setLoading(true);
     const { totalPages, totalItems, allLearners } =
-      await fetchLazerLearnersData(page);
+      await fetchLazerLearnersData({ lazer_status, page, searchQuery });
     setTotalPages(totalPages);
     setTotalItems(totalItems);
     setAllLearners(allLearners);
@@ -142,7 +148,7 @@ export default function AdminLazerDashboard({
 
   useEffect(
     () => {
-      handleFetchLearnersData(1);
+      handleFetchLearnersData({ page: 1 });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -150,16 +156,18 @@ export default function AdminLazerDashboard({
 
   // Function to handle filter selection
   const handleFilter = async (lazer_status) => {
-    console.log("Selected filter:", lazer_status);
+    handleFetchLearnersData({ lazer_status, page: 1 });
   };
 
   // Function to handle search input
   const handleSearch = async (search) => {
-    console.log("Search query:", search);
+    handleFetchLearnersData({ page: 1, searchQuery: search });
   };
 
   // Function to reset the page
-  const handlePageReset = async () => {};
+  const handlePageReset = async () => {
+    handleFetchLearnersData({ page: 1 });
+  };
 
   return (
     <div>
@@ -196,6 +204,7 @@ export default function AdminLazerDashboard({
       <div className="mt-6">
         <LazerDashboardTable
           {...{
+            key,
             handleSingleRowApprove,
             success,
             failed,

@@ -1,10 +1,25 @@
 import axios from "axios";
 import { rolesRevalidation, staffRevalidation } from "../../../action";
 
+export interface GetStaffDataProps {
+  page: number;
+  search?: string;
+  status?: string;
+}
+
 export const useStaff = () => {
-  const fetchStaffData = async (page: number) => {
+  const fetchStaffData = async ({
+    page,
+    search,
+    status,
+  }: GetStaffDataProps) => {
+    let url;
+    if (!search && !status) {
+      url = `/api/listStaff?page=${page}&limit=${10}`;
+    }
+
     try {
-      const response = await fetch(`/api/listStaff?page=${page}&limit=${10}`);
+      const response = await fetch(url);
       const data = await response.json();
       if (response.ok) {
         const totalPages = data.totalPages;

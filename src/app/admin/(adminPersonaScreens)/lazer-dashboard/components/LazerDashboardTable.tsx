@@ -36,7 +36,7 @@ export default function LazerDashboardTable({
   // Event handling functions
   const handlePageChange = async (page) => {
     setCurrentPage(page);
-    handleFetchLearnersData(page);
+    handleFetchLearnersData({page});
   };
 
   const toggleVisibility = (index) => {
@@ -55,11 +55,6 @@ export default function LazerDashboardTable({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
-
-  useEffect(() => {
-    handleFetchLearnersData(currentPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Rendering

@@ -13,6 +13,7 @@ import SuccessToast, {
 
 // State handling
 export default function InductionDashboardTable({
+  handleMarkPresent,
   handleSingleRowInductionEmail, 
   loading2,
   successfulEmail,
@@ -36,7 +37,7 @@ export default function InductionDashboardTable({
   // Event handling functions
   const handlePageChange = async (page) => {
     setCurrentPage(page);
-    handleFetchLearnersData(page);
+    handleFetchLearnersData("", page, 10, "");
   };
 
   const toggleVisibility = (index) => {
@@ -57,10 +58,6 @@ export default function InductionDashboardTable({
     };
   }, []);
 
-  useEffect(() => {
-    handleFetchLearnersData(currentPage);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // Rendering
   return (
@@ -113,6 +110,9 @@ export default function InductionDashboardTable({
             </th>
             <th className="px-2 py-2 text-left text-[10px] font-normal text-tableText tracking-wider">
               Chose course
+            </th>
+            <th className="px-2 py-2 text-left text-[10px] font-normal text-tableText tracking-wider">
+              Attendance
             </th>
             <th className="px-2 py-2 text-left text-[10px] font-normal text-tableText tracking-wider">
               Status
@@ -185,6 +185,17 @@ export default function InductionDashboardTable({
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   {row.chosen_course}
                 </td>
+                <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
+                  <p 
+                    className={clsx("text-center p-1 rounded-lg", {
+                      "bg-green4 text-green3": row.attendance_status === "present",
+                      "bg-tgrey8 text-tblack4":
+                        row.attendance_status === "absent",
+                    })}
+                  >
+                    {row.inductor_status === "Not sent" ? "Pending" :  row.attendance_status}
+                  </p>
+                </td>
                 <td className="px-2 py-2 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   <p
                     className={clsx("text-center p-1 rounded-lg", {
@@ -219,6 +230,9 @@ export default function InductionDashboardTable({
                       >
                         Send Invite
                       </p>
+                      <p className="text-green-700 cursor-pointer hover:text-gold1"
+                      onClick={() => handleMarkPresent(row.id)}
+                      >Mark Present</p>
                     </div>
                   )}
                 </td>

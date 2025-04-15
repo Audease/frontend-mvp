@@ -11,7 +11,7 @@ export const useInductionLearners = () => {
       );
       const data = await response.json();
       if (response.ok) {
-        const totalPages = 12;
+        const totalPages = data.totalPages;
         const totalItems = data.total;
         const allLearners = data.data;
 

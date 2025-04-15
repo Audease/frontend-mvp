@@ -14,11 +14,27 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const page = searchParams.get("page") || "1";
   const limit = searchParams.get("limit") || "10";
+  const lazer_status =  searchParams.get("lazer_status");
+  const search = searchParams.get("search");
 
   try {
+    let url;
+
+    if (!lazer_status && search) {
+      url = `/v1/lazer/students/filter?page=${page}&limit=${10}&search=${search}`;
+    }
+    if (lazer_status && !search) {
+      url = `/v1/lazer/students/filter?lazer_status=${lazer_status}&page=${page}&limit=${10}`;
+    }
+    // if (lazer_status !== "" && search !== "") {
+    //   url = `/v1/lazer/students/filter?lazer_status=${lazer_status}&page=${page}&limit=${10}&search=${search}`;
+    // }
+    if (!lazer_status  && !search ) {
+      url = `/v1/lazer/students/filter?page=${page}&limit=${10}`;
+    }
     // Pass the page and limit in the request URL
     const response = await fetch(
-      apiUrl + `/v1/lazer/students?page=${page}&limit=${limit}`,
+      apiUrl + url,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

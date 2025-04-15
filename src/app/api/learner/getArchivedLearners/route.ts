@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { TokenManager } from '../utils/checkAndRefreshToken';
+import { TokenManager } from '../../utils/checkAndRefreshToken';
+
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -15,24 +16,18 @@ export async function GET(req: NextRequest) {
   const page = searchParams.get('page') || '1'; 
   const limit = searchParams.get('limit') || '10'; 
   const search = searchParams.get('search') || '';
-  const status = searchParams.get('status') || ''; 
-
-  let url;
-    if (!search && !status) {
-      url = `/v1/admin/new-staff?page=${page}&limit=${10}`;
-    }
 
   try {
     // Pass the page and limit in the request URL
     const response = await fetch(
-      apiUrl + url,
+      apiUrl + `/v1/archive/students?page=${page}&limit=${limit}&search=${search}`,
       {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
         cache: 'force-cache',
-        next: { tags: ['stafflist'] }, 
+        next: { tags: ['archivedLearners'] }, 
       }
     );
 
@@ -40,9 +35,9 @@ export async function GET(req: NextRequest) {
       const data = await response.json();
       return NextResponse.json(data, { status: 200 });
     } else {
-      return NextResponse.json({ message: 'Failed to list staff' }, { status: response.status });
+      return NextResponse.json({ message: 'Failed to list archived learners' }, { status: response.status });
     }
   } catch (error: any) {
-    return NextResponse.json({ message: 'Failed to list staff' }, { status: 500 });
+    return NextResponse.json({ message: 'Failed to list archived learners' }, { status: 500 });
   }
 }

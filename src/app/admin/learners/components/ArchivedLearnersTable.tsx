@@ -1,12 +1,14 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import LoadingSpinner from "@/app/components/dashboard/Spinner";
+import LoadingSpinner, {
+  LoadingSpinner2,
+} from "@/app/components/dashboard/Spinner";
 import Pagination from "@/app/components/dashboard/Pagination";
 import { useRouter } from "next/navigation";
 import { encodeId } from "../utils/id-encoded";
 
-export default function LearnersTable({
-  handleArchiveLearner,
+export default function ArchivedLearnersTable({
+  handleUnArchiveLearner,
   allLearners,
   currentPage,
   totalPages,
@@ -39,7 +41,6 @@ export default function LearnersTable({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
 
   const handleViewLearner = (learnerId) => {
     router.push(`/admin/learners/${encodeId(learnerId)}`);
@@ -79,7 +80,7 @@ export default function LearnersTable({
                   colSpan={7}
                   className="px-4 py-4 text-center text-sm text-tableText2 font-medium"
                 >
-                  <LoadingSpinner />
+                  <p>Loading...</p>
                 </td>
               </tr>
             ) : allLearners.length === 0 ? (
@@ -126,14 +127,17 @@ export default function LearnersTable({
                         ref={menuRef}
                         className="bg-white shadow-lg rounded-lg p-4 font-medium w-32 absolute top-full border-2 right-16 text-tblack3 space-y-4 "
                       >
-                        <p
+                        {/* <p
                           className="hover:text-gold1 cursor-pointer"
                           onClick={() => handleViewLearner(row.id)}
                         >
                           View
-                        </p>
-                        <p className="text-tred1 hover:text-gold1 cursor-pointer" onClick={() => handleArchiveLearner(row.id)}>
-                          Archive 
+                        </p> */}
+                        <p
+                          className="text-tred1 hover:text-gold1 cursor-pointer"
+                          onClick={() => handleUnArchiveLearner(row.id)}
+                        >
+                          Restore
                         </p>
                       </div>
                     )}

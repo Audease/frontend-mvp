@@ -38,4 +38,8 @@ export async function certificateLearnerRevalidation() {
   revalidateTag("certificateLearnersList");
 }
 
+export async function archivedLearnersRevalidation(){
+  revalidateTag("archivedLearners")
+}
+
 

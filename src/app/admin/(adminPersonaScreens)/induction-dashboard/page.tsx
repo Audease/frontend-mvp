@@ -16,6 +16,7 @@ import { useInductionLearners } from "./utils/useInductionLearners";
 import useSendInvite from "./utils/useSendInvite";
 import { SearchComponent } from "@/app/components/dashboard/SearchBox";
 import FilterButton from "@/app/components/dashboard/FilterButton";
+import { boolean } from "zod";
 
 export default function AdminBKSDDashboard({
   showHeader = true,
@@ -122,6 +123,60 @@ export default function AdminBKSDDashboard({
   const handlePageReset = () => {
     handleFetchLearnersData("", 1, 10, "");
   };
+
+  const handleMarkPresent = async (learnerId) => {
+    setLoading2(true);
+    try {
+      const response = await fetch(
+        `/api/induction/markPresent?studentId=${learnerId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            attendance_status: "present",
+          }),
+        }
+      );
+      if (response.ok) {
+        handleFetchLearnersData("", 1, 10, "");
+        setKey((prev) => prev + 1);
+      } else {
+        console.error("Failed to mark as present");
+      }
+    } catch (error) {
+      console.error("Error marking as present:", error);
+    } finally {
+      setLoading2(false);
+    }
+  };
+
+  const handleMarkBulkPresent = async () => {
+    setLoading2(true);
+    for (const id of checkedIds) {
+      try {
+        const response = await fetch(
+          `/api/induction/markPresent?studentId=${id}`,
+          {
+            method: "POST",
+          }
+        );
+        if (!response.ok) {
+          console.error("Failed to mark as present");
+        }
+      } catch (error) {
+        console.error("Error marking as present:", error);
+      }
+    }
+    setCheckedItems({});
+    setCheckedIds([]);
+    handleFetchLearnersData("", 1, 10, "");
+    setKey((prev) => prev + 1);
+    setLoading2(false);
+  };
+
+  // 🔹 Render Component
   return (
     <div>
       {/* 🔹 Header Section */}
@@ -129,7 +184,7 @@ export default function AdminBKSDDashboard({
         {showHeader && <InductionDashboardHeader {...{ roleName }} />}
 
         {/* 🔹 Button Section */}
-        <div className="flex flex-row space-x-4 my-3 xl:my-0 items-center">
+        <div className="flex flex-col md:flex-row space-x-4 space-y-2 md:space-y-0 my-3 xl:my-0 items-center">
           <div className="flex flex-col md:flex-row space-x-4 space-y-4 md:space-y-0 my-3 xl:my-0 items-center">
             <h3
               className="py-2 px-3 bg-black text-white text-sm rounded-md"
@@ -139,6 +194,11 @@ export default function AdminBKSDDashboard({
             </h3>
             <SearchComponent searchValue={handleSearch} />
           </div>
+          {!isDisabled && (
+            <h3 className="py-2 px-3 bg-tgrey1 text-white text-sm rounded-md hover:text-black cursor-pointer" onClick={handleMarkBulkPresent}>
+              Mark All Present
+            </h3>
+          )}
           <SendBtn onSendClick={sendApplication} disabled={isDisabled} />
           {showStaffButton && <StaffButton {...{ onViewStaffClick }} />}
           <div className="hidden xl:flex">
@@ -158,6 +218,7 @@ export default function AdminBKSDDashboard({
         <InductionDashboardTable
           {...{
             key,
+            handleMarkPresent,
             handleSingleRowInductionEmail,
             successfulEmail,
             failedEmail,

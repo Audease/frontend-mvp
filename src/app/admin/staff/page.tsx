@@ -1,8 +1,9 @@
 "use client";
 import { useState, useMemo, useEffect } from "react";
-import { useStaff } from "./hooks/useStaff";
-import SearchBox from "../../components/dashboard/SearchBox";
-import FilterButton from "../../components/dashboard/FilterButton";
+import { GetStaffDataProps, useStaff } from "./hooks/useStaff";
+import SearchBox, {
+  SearchComponent,
+} from "../../components/dashboard/SearchBox";
 import StaffTable from "./StaffTable";
 import Pagination from "../../components/dashboard/Pagination";
 import { staffRevalidation } from "../../action";
@@ -11,6 +12,7 @@ import LoadingSpinner, {
 } from "../../components/dashboard/Spinner";
 import SuccessToast, { FailureToast } from "@/app/components/NotificationToast";
 import AddStaffScreen from "../roles/components/Staff";
+import FilterButton from "@/app/components/dashboard/FilterButton";
 
 type CheckedItems = {
   [key: number]: any;
@@ -18,11 +20,9 @@ type CheckedItems = {
 
 export default function Staff() {
   const [activeTab, setActiveTab] = useState("All");
-  const [dropdownOptions, setDropdownOptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [staffData, setStaffData] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
   const [checkedItems, setCheckedItems] = useState<CheckedItems>({});
   const [selectedRole, setSelectedRole] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,7 +51,7 @@ export default function Staff() {
 
       // Revalidate and fetch updated staff data
       staffRevalidation();
-      handleFetchStaffData(1);
+      handleFetchStaffData({page: currentPage});
 
       // Reset checked items
       setCheckedItems({});
@@ -68,9 +68,9 @@ export default function Staff() {
     }
   };
 
-  const handleFetchStaffData = async (page) => {
+  const handleFetchStaffData = async ({page, search, status}: GetStaffDataProps) => {
     setLoading2(true);
-    const { totalPages, totalItems, result } = await fetchStaffData(page);
+    const { totalPages, totalItems, result } = await fetchStaffData({page, search, status});
     setTotalpages(totalPages);
     setTotalItems(totalItems);
     setStaffData(result);
@@ -79,12 +79,29 @@ export default function Staff() {
 
   const handlePageChange = async (page) => {
     setCurrentPage(page);
-    await handleFetchStaffData(page);
+    await handleFetchStaffData({page});
     setCheckedItems({});
   };
 
+  // Function to handle filter selection
+  const handleFilter = async (status) => {
+    handleFetchStaffData( {page: 1, search:"", status});
+  };
+
+  // Function to handle search input
+  const handleSearch = async (search) => {
+    handleFetchStaffData( {page: 1, search, status: ""});
+  };
+
+  // Function to reset the page to the first page
+  const handlePageReset = async () => {
+    setCurrentPage(1);
+    setCheckedItems({});
+    await handleFetchStaffData({page: 1});
+  };
+
   useEffect(() => {
-    handleFetchStaffData(currentPage);
+    handleFetchStaffData({page: currentPage});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -96,7 +113,7 @@ export default function Staff() {
         return (
           <AddStaffScreen
             onClick={() => {
-              handleFetchStaffData(1);
+              handleFetchStaffData({page: currentPage});
               setActiveComponent("StaffTable");
             }}
           />
@@ -157,9 +174,15 @@ export default function Staff() {
           </div>
 
           {/* The buttons on the right side */}
-          <div className="flex flex-col xl:flex-row xl:space-x-4 space-y-4 xl:space-y-0 my-3 xl:my-0">
-            <div className="z-0">
-              <SearchBox />
+          <div className="flex flex-col xl:flex-row xl:space-x-4 space-y-4 xl:space-y-0 my-3 xl:my-0 items-center">
+            <div className="z-0 flex flex-row space-x-2 items-center">
+            <h3
+              className="py-2 px-3 bg-black text-white text-sm rounded-md"
+              onClick={handlePageReset}
+            >
+              All
+            </h3>
+              <SearchComponent searchValue={handleSearch} />
             </div>
             <div>
               <button
@@ -183,9 +206,9 @@ export default function Staff() {
               </button>
             </div>
             <FilterButton
-              options={dropdownOptions}
-              onSelect={() => {}}
-              label="Filter"
+              options={["Assigned", "Unassigned"]}
+              onSelect={handleFilter}
+              label={"Filter"}
             />
           </div>
         </div>

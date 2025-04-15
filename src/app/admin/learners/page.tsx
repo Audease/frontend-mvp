@@ -1,17 +1,23 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { learnerRevalidation } from "@/app/action";
+import {
+  archivedLearnersRevalidation,
+  learnerRevalidation,
+} from "@/app/action";
 import CreateLearner from "./components/CreateLearner";
 import LearnersTable from "./components/LearnersTable";
 import { SearchComponent } from "@/app/components/dashboard/SearchBox";
 import FilterLearner from "../(adminPersonaScreens)/recruiter-dashboard/components/Filter";
 import { useLearnerByRecruiter } from "../(adminPersonaScreens)/recruiter-dashboard/utils/useLearnerByRecruiter";
+import { useArchiveLearners } from "./hooks/useArchiveLearners";
+import { LoadingSpinner2 } from "@/app/components/dashboard/Spinner";
+import ArchivedLearnersTable from "./components/ArchivedLearnersTable";
 
 export default function Learners() {
-  const [activeTab, setActiveTab] = useState("All");
+  const [activeTab, setActiveTab] = useState("Active");
   const [tableKey, setTableKey] = useState(1);
-  const tabs = useMemo(() => ["All", "Recent", "Archive"], []);
+  const tabs = useMemo(() => ["Active", "Recent", "Archive"], []);
 
   const {
     allLearners,
@@ -19,13 +25,19 @@ export default function Learners() {
     totalPages,
     totalItems,
     loading,
-    changedValues,
-    setChangedValues,
     handlePageChange,
-    handleRevertChanges,
-    handleInputChange,
     handleFetchLearnersData,
   } = useLearnerByRecruiter();
+
+  const {
+    archiveLoading,
+    archiveLearner,
+    handleUnArchiveLearner,
+    getArchivedLearners,
+    totalArchivedPages,
+    totalArchivedItems,
+    archivedLearners,
+  } = useArchiveLearners();
 
   const handleLearnerCreated = async () => {
     await learnerRevalidation();
@@ -34,7 +46,7 @@ export default function Learners() {
   };
 
   useEffect(() => {
-    handleFetchLearnersData(currentPage, 10, "", "", "");
+    getArchivedLearners(1, 10, "");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -42,7 +54,13 @@ export default function Learners() {
 
   const searchValue = (searchValue: string) => {
     setSearchQuery(searchValue);
-    handleFetchLearnersData(1, 10, "", "", searchValue);
+    if (renderTable === "learnerTable") {
+      handleFetchLearnersData(1, 10, "", "", searchValue);
+    } else if (renderTable === "archivedTable") {
+      getArchivedLearners(1, 10, searchValue);
+    } else {
+      handleFetchLearnersData(1, 10, "", "", searchValue);
+    }
   };
 
   const onFilterClick = (funding, course) => {
@@ -52,8 +70,90 @@ export default function Learners() {
   const onTabClick = (tab: string) => {
     setActiveTab(tab);
 
-    if (tab === "All") {
+    if (tab === "Active") {
+      setRenderTable("learnerTable");
       handleFetchLearnersData(1, 10, "", "", "");
+      setTableKey((prev) => prev + 1);
+    }
+
+    if (tab === "Archive") {
+      archivedLearnersRevalidation();
+      setTableKey((prev) => prev + 1);
+      setRenderTable("archivedTable");
+    }
+  };
+
+  const handleArchiveLearner = async (learnerId: string) => {
+    await archiveLearner(learnerId);
+    await handleFetchLearnersData(currentPage, 10, "", "", "");
+    await getArchivedLearners(1, 10, "");
+    await learnerRevalidation();
+    await archivedLearnersRevalidation();
+    setTableKey((prev) => prev + 1);
+  };
+
+  const [renderTable, setRenderTable] = useState("learnersTable");
+
+  const renderLearnerTable = () => {
+    switch (renderTable) {
+      case "learnersTable":
+        return (
+          <LearnersTable
+            key={tableKey}
+            {...{
+              handleArchiveLearner,
+              allLearners,
+              currentPage,
+              totalPages,
+              totalItems,
+              loading,
+              handlePageChange,
+            }}
+          />
+        );
+      case "archivedTable":
+        return (
+          <ArchivedLearnersTable
+            key={tableKey}
+            handleUnArchiveLearner={handleUnArchiveLearner}
+            allLearners={archivedLearners}
+            currentPage={currentPage}
+            totalPages={totalArchivedPages}
+            totalItems={totalArchivedItems}
+            loading={archiveLoading}
+            handlePageChange={handlePageChange}
+          />
+        );
+      default:
+        return (
+          <LearnersTable
+            key={tableKey}
+            {...{
+              handleArchiveLearner,
+              allLearners,
+              currentPage,
+              totalPages,
+              totalItems,
+              loading,
+              handlePageChange,
+            }}
+          />
+        );
+    }
+  };
+
+  const handlePageReset = () => {
+    if (activeTab === "Active") {
+      setRenderTable("learnerTable");
+      handleFetchLearnersData(1, 10, "", "", "");
+      setTableKey((prev) => prev + 1);
+    }
+
+    if (activeTab === "Archive") {
+      getArchivedLearners(1, 10, "");
+      archivedLearnersRevalidation();
+      setTableKey((prev) => prev + 1);
+      setRenderTable("archivedTable");
     }
   };
 
@@ -82,7 +182,15 @@ export default function Learners() {
 
             {/* The buttons on the right side */}
             <div className="hidden xl:flex flex-row space-x-4 items-center">
-              <SearchComponent searchValue={searchValue} />
+              <div className="flex flex-row items-center space-x-2">
+                <h3
+                  className="py-2 px-3 bg-black text-white text-sm rounded-md"
+                  onClick={handlePageReset}
+                >
+                  All
+                </h3>
+                <SearchComponent searchValue={searchValue} />
+              </div>
 
               <CreateLearner onLearnerCreated={handleLearnerCreated} />
 
@@ -96,18 +204,13 @@ export default function Learners() {
         </div>
 
         {/* The main body, which is the table list */}
-        <div className="w-full overflow-x-auto">
-          <LearnersTable
-            key={tableKey}
-            {...{
-              allLearners,
-              currentPage,
-              totalPages,
-              totalItems,
-              loading,
-              handlePageChange,
-            }}
-          />
+        <div className="w-full overflow-x-auto relative">
+          {archiveLoading && (
+            <div className="flex justify-center items-center absolute inset-0 z-0 bg-white/50 backdrop-blur-sm">
+              <LoadingSpinner2 />
+            </div>
+          )}
+          {renderLearnerTable()}
         </div>
       </div>
     </div>

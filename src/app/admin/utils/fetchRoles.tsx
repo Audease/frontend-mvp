@@ -1,9 +1,10 @@
 import { rolesRevalidation } from "@/app/action";
 
-export const fetchRoles = async () => {
+export const fetchRoles = async (sort = "") => {
     rolesRevalidation()
     try {
-        const response = await fetch("/api/getRoles", {
+        const queryParam = sort ? `?sort=${sort}` : "";
+        const response = await fetch(`/api/getRoles${queryParam}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

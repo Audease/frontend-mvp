@@ -35,7 +35,7 @@ export default function AdminBKSDDashboard({
   const [totalItems, setTotalItems] = useState(1);
   const [allLearners, setAllLearners] = useState([]);
   const { fetchInductionLearnersData } = useInductionLearners();
-  const isDisabled = checkedIds.length <= 1;
+  const isDisabled = checkedIds.length <= 0;
 
   // 🔹 Induction Staff Modal Handlers
   const onViewStaffClick = () => setShowInductionStaffModal(true);
@@ -60,14 +60,15 @@ export default function AdminBKSDDashboard({
 
   const handleInviteFormSubmit = async (values) => {
     setData(values);
-    await sendInvites(checkedIds, data);
+    await sendInvites(checkedIds, values);
     setCheckedItems({});
     setCheckedIds([]);
-    handleFetchLearnersData(1, 10, "", "");
+    handleFetchLearnersData("", 1, 10, "");
     setKey((prev) => prev + 1);
     setOpenInductionInviteModalOpen(false);
   };
 
+  
   // 🔹 Function for Sending Applications
   const sendApplication = async () => {
     setOpenInductionInviteModalOpen(true);
@@ -113,7 +114,7 @@ export default function AdminBKSDDashboard({
   , []);
 
   const handleSearch = (query) => {
-    handleFetchLearnersData("sent", 1, 10, query);
+    handleFetchLearnersData("", 1, 10, query);
   };
 
   const handleFilter = (filter) => {
@@ -124,7 +125,8 @@ export default function AdminBKSDDashboard({
     handleFetchLearnersData("", 1, 10, "");
   };
 
-  const handleMarkPresent = async (learnerId) => {
+  // Function to toggle attendance between present and absent
+  const handleToggleAttendance = async (learnerId, status) => {
     setLoading2(true);
     try {
       const response = await fetch(
@@ -135,44 +137,87 @@ export default function AdminBKSDDashboard({
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            attendance_status: "present",
+            attendance_status: status,
           }),
+          cache: "no-store",
         }
       );
+      
       if (response.ok) {
-        handleFetchLearnersData("", 1, 10, "");
-        setKey((prev) => prev + 1);
+        // Update just this row in the local state
+        setAllLearners(prevLearners => 
+          prevLearners.map(learner => 
+            learner.id === learnerId 
+              ? { ...learner, attendance_status: status } 
+              : learner
+          )
+        );
       } else {
-        console.error("Failed to mark as present");
+        console.error(`Failed to mark as ${status}`);
       }
     } catch (error) {
-      console.error("Error marking as present:", error);
+      console.error(`Error marking as ${status}:`, error);
     } finally {
       setLoading2(false);
     }
   };
 
-  const handleMarkBulkPresent = async () => {
+  // Function to handle bulk toggle of attendance status
+  const handleBulkAttendanceToggle = async () => {
+    if (checkedIds.length === 0) return;
+    
     setLoading2(true);
+    
+    // Determine if we're marking all as present or all as absent
+    // If ANY checked item is absent, we'll mark all as present
+    // Otherwise, we'll mark all as absent
+    const hasAbsentLearners = checkedIds.some(id => {
+      const learner = allLearners.find(l => l.id === id);
+      return !learner || learner.attendance_status !== "present";
+    });
+    
+    const newStatus = hasAbsentLearners ? "present" : "absent";
+    
     for (const id of checkedIds) {
       try {
         const response = await fetch(
           `/api/induction/markPresent?studentId=${id}`,
           {
             method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              attendance_status: newStatus,
+            }),
+            cache: "no-store",
           }
         );
+        
         if (!response.ok) {
-          console.error("Failed to mark as present");
+          console.error(`Failed to toggle attendance status for student ${id}`);
         }
       } catch (error) {
-        console.error("Error marking as present:", error);
+        console.error(`Error toggling attendance status:`, error);
       }
     }
+    
+    // Update local state for the affected items
+    setAllLearners(prevLearners => 
+      prevLearners.map(learner => {
+        if (checkedIds.includes(learner.id)) {
+          return {
+            ...learner,
+            attendance_status: newStatus
+          };
+        }
+        return learner;
+      })
+    );
+    
     setCheckedItems({});
     setCheckedIds([]);
-    handleFetchLearnersData("", 1, 10, "");
-    setKey((prev) => prev + 1);
+    setKey(prev => prev + 1);
     setLoading2(false);
   };
 
@@ -187,7 +232,7 @@ export default function AdminBKSDDashboard({
         <div className="flex flex-col md:flex-row space-x-4 space-y-2 md:space-y-0 my-3 xl:my-0 items-center">
           <div className="flex flex-col md:flex-row space-x-4 space-y-4 md:space-y-0 my-3 xl:my-0 items-center">
             <h3
-              className="py-2 px-3 bg-black text-white text-sm rounded-md"
+              className="py-2 px-3 bg-black text-white text-sm rounded-md cursor-pointer"
               onClick={handlePageReset}
             >
               All
@@ -195,8 +240,11 @@ export default function AdminBKSDDashboard({
             <SearchComponent searchValue={handleSearch} />
           </div>
           {!isDisabled && (
-            <h3 className="py-2 px-3 bg-tgrey1 text-white text-sm rounded-md hover:text-black cursor-pointer" onClick={handleMarkBulkPresent}>
-              Mark All Present
+            <h3 
+              className="py-2 px-3 bg-tgrey1 text-white text-sm rounded-md hover:text-black cursor-pointer" 
+              onClick={handleBulkAttendanceToggle}
+            >
+              Toggle Attendance
             </h3>
           )}
           <SendBtn onSendClick={sendApplication} disabled={isDisabled} />
@@ -218,7 +266,7 @@ export default function AdminBKSDDashboard({
         <InductionDashboardTable
           {...{
             key,
-            handleMarkPresent,
+            handleToggleAttendance,
             handleSingleRowInductionEmail,
             successfulEmail,
             failedEmail,

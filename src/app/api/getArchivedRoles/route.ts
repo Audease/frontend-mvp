@@ -17,8 +17,8 @@ export async function GET(req: NextRequest) {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
-      cache: "force-cache",
-      next: { tags: ["archivedRoles"] },
+      cache: "no-store", // Disable caching completely
+      next: { revalidate: 0 } // Force revalidation on each request
     });
 
     if (response.ok) {

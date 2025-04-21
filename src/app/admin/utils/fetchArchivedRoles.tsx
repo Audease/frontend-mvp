@@ -1,11 +1,17 @@
-export const fetchArchivedRoles = async () => {
+// src/app/utils/fetchArchivedRoles.tsx
+export const fetchArchivedRoles = async (forceRefresh = false) => {
     try {
-        const response = await fetch("/api/getArchivedRoles", {
+        const url = "/api/getArchivedRoles";
+        const options = {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
             },
-        });
+            // Add cache control headers to prevent caching
+            ...(forceRefresh ? { cache: "no-store" as RequestCache } : {})
+        };
+
+        const response = await fetch(url, options);
 
         if (response.ok) {
             const data = await response.json();

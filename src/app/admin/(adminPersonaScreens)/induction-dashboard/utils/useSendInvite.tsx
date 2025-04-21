@@ -20,7 +20,8 @@ const useSendInvite = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify( payload ),
+          body: JSON.stringify(payload),
+          cache: 'no-store',
         });
 
         if (response.ok) {
@@ -29,6 +30,7 @@ const useSendInvite = () => {
           failedIds.push(id);
         }
       } catch (error) {
+        console.error("Error sending invite:", error);
         failedIds.push(id);
       }
     }

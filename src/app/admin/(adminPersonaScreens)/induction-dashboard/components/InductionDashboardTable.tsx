@@ -13,7 +13,7 @@ import SuccessToast, {
 
 // State handling
 export default function InductionDashboardTable({
-  handleMarkPresent,
+  handleToggleAttendance,
   handleSingleRowInductionEmail, 
   loading2,
   successfulEmail,
@@ -61,7 +61,7 @@ export default function InductionDashboardTable({
 
   // Rendering
   return (
-    <div className="flex flex-col justify-between  w-full overflow-x-auto">
+    <div className="flex flex-col justify-between w-full overflow-x-auto">
       <div className="fixed z-50 right-8 animate-bounce">
         {showSuccessToast && (
           <SuccessToast text={`${successfulEmail} sent successfully. ${failedEmail} failed`} />
@@ -71,7 +71,7 @@ export default function InductionDashboardTable({
         )}
       </div>
       {loading2 && (
-        <div className=" flex justify-center items-center">
+        <div className="flex justify-center items-center">
           <LoadingSpinner2 />
         </div>
       )}
@@ -187,13 +187,20 @@ export default function InductionDashboardTable({
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   <p 
-                    className={clsx("text-center p-1 rounded-lg", {
-                      "bg-green4 text-green3": row.attendance_status === "present",
-                      "bg-tgrey8 text-tblack4":
-                        row.attendance_status === "absent",
+                    className={clsx("text-center p-1 rounded-lg cursor-pointer", {
+                      "bg-green4 text-green3 hover:bg-green-300": row.attendance_status === "present",
+                      "bg-tgrey8 text-tblack4 hover:bg-gray-300": row.attendance_status === "absent" || row.inductor_status === "Not sent",
                     })}
+                    onClick={() => {
+                      if (row.inductor_status !== "Not sent") {
+                        handleToggleAttendance(
+                          row.id, 
+                          row.attendance_status === "present" ? "absent" : "present"
+                        );
+                      }
+                    }}
                   >
-                    {row.inductor_status === "Not sent" ? "Pending" :  row.attendance_status}
+                    {row.inductor_status === "Not sent" ? "Pending" : row.attendance_status}
                   </p>
                 </td>
                 <td className="px-2 py-2 whitespace-nowrap text-[9px] text-tableText2 font-medium">
@@ -219,7 +226,7 @@ export default function InductionDashboardTable({
                   {editOptionsVisible === index && (
                     <div
                       ref={menuRef}
-                      className="bg-white shadow-lg rounded-lg p-2 font-medium w-32 absolute left-[-80px]  border-2 right-0 text-tblack3 space-y-4 z-10 top-10"
+                      className="bg-white shadow-lg rounded-lg p-2 font-medium w-32 absolute left-[-80px] border-2 right-0 text-tblack3 space-y-4 z-10 top-10"
                     >
                       <p
                         className="hover:text-gold1 cursor-pointer"
@@ -230,9 +237,27 @@ export default function InductionDashboardTable({
                       >
                         Send Invite
                       </p>
-                      <p className="text-green-700 cursor-pointer hover:text-gold1"
-                      onClick={() => handleMarkPresent(row.id)}
-                      >Mark Present</p>
+                      {row.attendance_status === "present" ? (
+                        <p 
+                          className="text-red-500 cursor-pointer hover:text-gold1"
+                          onClick={() => {
+                            handleToggleAttendance(row.id, "absent");
+                            setEditOptionsVisible(null);
+                          }}
+                        >
+                          Mark Absent
+                        </p>
+                      ) : (
+                        <p 
+                          className="text-green-700 cursor-pointer hover:text-gold1"
+                          onClick={() => {
+                            handleToggleAttendance(row.id, "present");
+                            setEditOptionsVisible(null);
+                          }}
+                        >
+                          Mark Present
+                        </p>
+                      )}
                     </div>
                   )}
                 </td>

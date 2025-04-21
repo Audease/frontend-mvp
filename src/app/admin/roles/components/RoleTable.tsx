@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { fetchRoles } from "../../utils/fetchRoles";
-import { fetchArchivedRoles } from "../../utils/fetchedArchivedRoles";
+import { fetchArchivedRoles } from "../../utils/fetchArchivedRoles";
 import { useRouter } from "next/navigation";
 import LoadingSpinner, {
   LoadingSpinner2,
@@ -45,33 +45,35 @@ export default function RoleTable({ activeTab = "All" }) {
   }, []);
 
   // Fetch roles based on active tab
-  useEffect(() => {
-    const fetchRolesData = async () => {
-      setLoading(true);
-      let fetchedRoles = [];
-      
-      if (activeTab === "Archive") {
-        const archivedRoles = await fetchArchivedRoles();
-        if (archivedRoles) {
-          fetchedRoles = archivedRoles;
-        }
-      } else if (activeTab === "Recent") {
-        const recentRoles = await fetchRoles("desc");
-        if (recentRoles) {
-          fetchedRoles = recentRoles;
-        }
-      } else {
-        const allRoles = await fetchRoles();
-        if (allRoles) {
-          fetchedRoles = allRoles;
-        }
+  const fetchRolesData = async (forceRefresh = false) => {
+    setLoading(true);
+    let fetchedRoles = [];
+    
+    if (activeTab === "Archive") {
+      // Use no-cache option to prevent caching for archived roles
+      const archivedRoles = await fetchArchivedRoles(forceRefresh);
+      if (archivedRoles) {
+        fetchedRoles = archivedRoles;
       }
-      
-      setRoles(fetchedRoles);
-      setLoading(false);
-    };
+    } else if (activeTab === "Recent") {
+      const recentRoles = await fetchRoles("desc");
+      if (recentRoles) {
+        fetchedRoles = recentRoles;
+      }
+    } else {
+      const allRoles = await fetchRoles();
+      if (allRoles) {
+        fetchedRoles = allRoles;
+      }
+    }
+    
+    setRoles(fetchedRoles);
+    setLoading(false);
+  };
 
+  useEffect(() => {
     fetchRolesData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, roleDataKey]);
 
   // Archive a role
@@ -89,18 +91,8 @@ export default function RoleTable({ activeTab = "All" }) {
       });
       
       if (response.ok) {
-        // Refresh role data
-        if (activeTab === "All") {
-          const allRoles = await fetchRoles();
-          if (allRoles) {
-            setRoles(allRoles);
-          }
-        } else if (activeTab === "Recent") {
-          const recentRoles = await fetchRoles("desc");
-          if (recentRoles) {
-            setRoles(recentRoles);
-          }
-        }
+        // Remove the archived role from the current view immediately
+        setRoles(prevRoles => prevRoles.filter(role => role.id !== selectedRoleId));
         
         setShowArchiveModal(false);
         setArchiveReason("");
@@ -116,17 +108,17 @@ export default function RoleTable({ activeTab = "All" }) {
   // Unarchive a role
   const handleUnarchiveRole = async (roleId) => {
     setLoading2(true);
+    // Close any open edit options
+    setEditOptions({});
+    
     try {
       const response = await fetch(`/api/unarchiveRole?roleId=${roleId}`, {
         method: 'POST',
       });
       
       if (response.ok) {
-        // Refresh archived roles
-        const archivedRoles = await fetchArchivedRoles();
-        if (archivedRoles) {
-          setRoles(archivedRoles);
-        }
+        // Remove the unarchived role from the archived view immediately
+        setRoles(prevRoles => prevRoles.filter(role => role.id !== roleId));
       }
     } catch (error) {
       console.error("Error unarchiving role:", error);
@@ -140,6 +132,8 @@ export default function RoleTable({ activeTab = "All" }) {
     setSelectedRoleName(roleName);
     setArchiveReason("");
     setShowArchiveModal(true);
+    // Close any open edit options
+    setEditOptions({});
   };
 
   const permissionsMap = [
@@ -202,7 +196,7 @@ export default function RoleTable({ activeTab = "All" }) {
               {activeTab === "Archive" ? "Archived" : "Updated"}
             </th>
             <th className="px-6 py-3 text-left text-sm font-normal text-tableText tracking-wider">
-              {activeTab === "Archive" ? "Archived by" : "Last editor"}
+              {activeTab === "Archive" ? "Archive Reason" : "Last editor"}
             </th>
             <th className="px-6 py-3 text-left text-sm font-normal text-tableText tracking-wider"></th>
           </tr>
@@ -245,6 +239,19 @@ export default function RoleTable({ activeTab = "All" }) {
                         ? "Newly created roles will appear here"
                         : "Create a role to get started"}
                   </p>
+                  
+                  {/* Refresh button for Archive tab */}
+                  {activeTab === "Archive" && (
+                    <button 
+                      onClick={() => fetchRolesData(true)}
+                      className="mt-4 text-sm text-dashboardButtons hover:text-gold1 flex items-center"
+                    >
+                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                      Refresh
+                    </button>
+                  )}
                 </div>
               </td>
             </tr>
@@ -271,14 +278,6 @@ export default function RoleTable({ activeTab = "All" }) {
                           </div>
                         );
                       })}
-
-                      {/* Show archive reason in tooltip for archived roles */}
-                      {activeTab === "Archive" && row.archiveReason && (
-                        <div className="pt-2 mt-2 border-t border-gray-200">
-                          <p className="text-xs text-gray-500">Archive reason:</p>
-                          <p className="text-sm">{row.archiveReason}</p>
-                        </div>
-                      )}
                     </div>
                   }
                   placement="right"
@@ -303,7 +302,18 @@ export default function RoleTable({ activeTab = "All" }) {
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
-                  {activeTab === "Archive" ? row.archivedBy : row.lastEditor}
+                  {activeTab === "Archive" 
+                    ? (
+                      <Tooltip 
+                        content={row.archiveReason || "No reason provided"}
+                        placement="top"
+                      >
+                        <span className="truncate block max-w-[200px]">
+                          {row.archiveReason || "No reason provided"}
+                        </span>
+                      </Tooltip>
+                    ) 
+                    : row.lastEditor}
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-col justify-end relative">
@@ -347,6 +357,21 @@ export default function RoleTable({ activeTab = "All" }) {
           )}
         </tbody>
       </table>
+
+      {/* Archive tab header with refresh button */}
+      {activeTab === "Archive" && roles.length > 0 && (
+        <div className="flex justify-end mt-2">
+          <button 
+            onClick={() => fetchRolesData(true)}
+            className="text-sm text-dashboardButtons hover:text-gold1 flex items-center"
+          >
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Refresh
+          </button>
+        </div>
+      )}
 
       {/* Archive Modal */}
       <Modal

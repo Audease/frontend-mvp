@@ -14,13 +14,15 @@ import { Modal } from "flowbite-react";
 export function MeetingFormDialog({ isOpen, onOpenChange, onSubmit, loading }) {
   return (
     <Modal show={isOpen} onClose={onOpenChange} size={"xl"}>
-      <Card>
+      <Card className="border-0 shadow-none">
         <CardHeader>
-          <CardTitle>Schedule Meeting</CardTitle>
-          <CardDescription>Enter meeting details below</CardDescription>
+          <CardTitle className="text-xl font-bold">Schedule Meeting</CardTitle>
+          <CardDescription>
+            Enter meeting details using individual fields or paste meeting information directly
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <FormComponent closeModal={onOpenChange} onSubmit={onSubmit} loading = {loading} />
+          <FormComponent closeModal={onOpenChange} onSubmit={onSubmit} loading={loading} />
         </CardContent>
       </Card>
     </Modal>

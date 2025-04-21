@@ -1,4 +1,3 @@
-// src/app/api/archiveRole/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { TokenManager } from "../utils/checkAndRefreshToken";
 

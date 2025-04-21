@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
   const limit = searchParams.get("limit") || "10";
   const inductor_status = searchParams.get("inductor_status");
   const search = searchParams.get("search");
+  const timestamp = new Date().getTime(); // Add timestamp to prevent caching
 
   try {
     // Pass the page and limit in the request URL
@@ -25,9 +26,12 @@ export async function GET(req: NextRequest) {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "Pragma": "no-cache",
+          "Expires": "0"
         },
-        cache: "force-cache",
-        next: { tags: ["learnersList"] },
+        cache: "no-store",
+        next: { revalidate: 0 },
       }
     );
 

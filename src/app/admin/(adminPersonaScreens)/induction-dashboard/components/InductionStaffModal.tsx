@@ -7,10 +7,23 @@ import SuccessToast, {
   FailureToast,
 } from "../../../../components/NotificationToast";
 import { usePersonaStaff } from "../../utils/usePersonaStaff";
+import { useEffect, useState } from "react";
 
 export default function InductionStaffModal({ show, onClose }) {
-  const { staffList, error, refetch } = usePersonaStaff("Induction");
+  const { staffList, error, loading: staffLoading, refetch } = usePersonaStaff("Induction");
   const { handleRemove, loading, succesToast, failureToast } = useDeleteStaff();
+  const [retryCount, setRetryCount] = useState(0);
+
+  // Add a retry mechanism for failed fetches
+  useEffect(() => {
+    if (error && retryCount < 3) {
+      const timer = setTimeout(() => {
+        setRetryCount(prev => prev + 1);
+        refetch();
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [error, retryCount, refetch]);
 
   return (
     <div>
@@ -47,43 +60,67 @@ export default function InductionStaffModal({ show, onClose }) {
 
         {/* Search Results */}
         <div className="flex flex-col px-4 space-y-4 h-80 overflow-y-auto">
-          {loading && <LoadingSpinner />}
-          <div className="fixed z-50 animate-bounce">
-            {succesToast && (
-              <SuccessToast text={"Staff Successfully deleted"} />
-            )}
-            {failureToast && <FailureToast text={"Failed to delete staff"} />}
-            {error && <p>Failed to load staff</p>}
-          </div>
-          {staffList.map((staff) => (
-            <div
-              key={staff.id}
-              className="flex flex-row justify-between space-x-2 items-center"
-            >
-              <div className="flex flex-row space-x-2">
-                <div className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center p-2 cursor-pointer">
-                  <p className="text-tgrey3 text-lg">
-                    {staff.email.charAt(0).toUpperCase()}
-                  </p>
-                </div>
-                <div className="flex flex-col">
-                  <h4 className="font-medium text-sm">{staff.email}</h4>
-                  <p className="font-normal text-xs text-tgrey3">
-                    {staff.username}
-                  </p>
-                </div>
-              </div>
-              {/* Remove Button */}
-              <div>
-                <button
-                  onClick={() => handleRemove(staff.id)}
-                  className="py-1 px-2 text-dashboardButtons bg-dashboardButtonsBg rounded-md text-sm"
-                >
-                  Remove
-                </button>
-              </div>
+          {loading || staffLoading ? (
+            <div className="flex justify-center items-center h-full">
+              <LoadingSpinner />
             </div>
-          ))}
+          ) : error ? (
+            <div className="flex flex-col items-center justify-center h-full">
+              <p className="text-red-500 mb-4">Failed to load staff list</p>
+              <button 
+                onClick={() => {
+                  setRetryCount(0);
+                  refetch();
+                }}
+                className="px-4 py-2 bg-dashboardButtons text-white rounded hover:bg-tgrey1"
+              >
+                Retry
+              </button>
+            </div>
+          ) : !Array.isArray(staffList) || staffList.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full">
+              <p className="text-gray-500">No staff members found</p>
+            </div>
+          ) : (
+            <>
+              <div className="fixed z-50 animate-bounce">
+                {succesToast && (
+                  <SuccessToast text={"Staff Successfully deleted"} />
+                )}
+                {failureToast && <FailureToast text={"Failed to delete staff"} />}
+              </div>
+              
+              {staffList.map((staff) => (
+                <div
+                  key={staff.id}
+                  className="flex flex-row justify-between space-x-2 items-center"
+                >
+                  <div className="flex flex-row space-x-2">
+                    <div className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center p-2 cursor-pointer">
+                      <p className="text-tgrey3 text-lg">
+                        {staff.email.charAt(0).toUpperCase()}
+                      </p>
+                    </div>
+                    <div className="flex flex-col">
+                      <h4 className="font-medium text-sm">{staff.email}</h4>
+                      <p className="font-normal text-xs text-tgrey3">
+                        {staff.username}
+                      </p>
+                    </div>
+                  </div>
+                  {/* Remove Button */}
+                  <div>
+                    <button
+                      onClick={() => handleRemove(staff.id)}
+                      className="py-1 px-2 text-dashboardButtons bg-dashboardButtonsBg rounded-md text-sm"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
         </div>
       </Modal>
     </div>

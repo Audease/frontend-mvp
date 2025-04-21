@@ -1,3 +1,4 @@
+// src/app/api/getArchivedRoles/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { TokenManager } from "../utils/checkAndRefreshToken";
 
@@ -10,23 +11,14 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  // Extract any query parameters
-  const { searchParams } = new URL(req.url);
-  const sort = searchParams.get("sort") || "";
-  
-  let endpoint = "/v1/admin/roles";
-  if (sort) {
-    endpoint += `?sort=${sort}`;
-  }
-
   try {
-    const response = await fetch(apiUrl + endpoint, {
+    const response = await fetch(apiUrl + "/v1/admin/roles/archived", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
-      cache: "force-cache",
-      next: { tags: ["roles"] },
+      cache: "no-store", // Disable caching completely
+      next: { revalidate: 0 } // Force revalidation on each request
     });
 
     if (response.ok) {
@@ -35,13 +27,13 @@ export async function GET(req: NextRequest) {
     } else {
       const errorData = await response.json().catch(() => ({}));
       return NextResponse.json(
-        { message: errorData.message || "Failed to get role options" },
+        { message: errorData.message || "Failed to get archived roles" },
         { status: response.status }
       );
     }
   } catch (error: any) {
     return NextResponse.json(
-      { message: "Failed to get role options" },
+      { message: "Failed to get archived roles" },
       { status: 500 }
     );
   }

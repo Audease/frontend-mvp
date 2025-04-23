@@ -48,7 +48,7 @@ export default function RoleTable({ activeTab = "All" }) {
   const fetchRolesData = async (forceRefresh = false) => {
     setLoading(true);
     let fetchedRoles = [];
-    
+
     if (activeTab === "Archive") {
       // Use no-cache option to prevent caching for archived roles
       const archivedRoles = await fetchArchivedRoles(forceRefresh);
@@ -66,34 +66,39 @@ export default function RoleTable({ activeTab = "All" }) {
         fetchedRoles = allRoles;
       }
     }
-    
+
     setRoles(fetchedRoles);
     setLoading(false);
   };
 
   useEffect(() => {
     fetchRolesData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, roleDataKey]);
 
   // Archive a role
   const handleArchiveRole = async () => {
     if (!selectedRoleId || !archiveReason.trim()) return;
-    
+
     setLoading2(true);
     try {
-      const response = await fetch(`/api/archiveRole?roleId=${selectedRoleId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ reason: archiveReason }),
-      });
-      
+      const response = await fetch(
+        `/api/archiveRole?roleId=${selectedRoleId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ reason: archiveReason }),
+        }
+      );
+
       if (response.ok) {
         // Remove the archived role from the current view immediately
-        setRoles(prevRoles => prevRoles.filter(role => role.id !== selectedRoleId));
-        
+        setRoles((prevRoles) =>
+          prevRoles.filter((role) => role.id !== selectedRoleId)
+        );
+
         setShowArchiveModal(false);
         setArchiveReason("");
         setSelectedRoleId(null);
@@ -110,15 +115,15 @@ export default function RoleTable({ activeTab = "All" }) {
     setLoading2(true);
     // Close any open edit options
     setEditOptions({});
-    
+
     try {
       const response = await fetch(`/api/unarchiveRole?roleId=${roleId}`, {
-        method: 'POST',
+        method: "POST",
       });
-      
+
       if (response.ok) {
         // Remove the unarchived role from the archived view immediately
-        setRoles(prevRoles => prevRoles.filter(role => role.id !== roleId));
+        setRoles((prevRoles) => prevRoles.filter((role) => role.id !== roleId));
       }
     } catch (error) {
       console.error("Error unarchiving role:", error);
@@ -221,33 +226,55 @@ export default function RoleTable({ activeTab = "All" }) {
               <td colSpan={4} className="px-6 py-4">
                 <div className="flex flex-col items-center justify-center py-8">
                   <div className="text-gray-400 mb-4">
-                    <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    <svg
+                      className="w-16 h-16"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
                     </svg>
                   </div>
                   <p className="text-sm text-tableText2 font-medium mb-2">
-                    {activeTab === "Archive" 
-                      ? "No archived roles found" 
-                      : activeTab === "Recent" 
-                        ? "No recent roles found"
-                        : "No roles found"}
+                    {activeTab === "Archive"
+                      ? "No archived roles found"
+                      : activeTab === "Recent"
+                      ? "No recent roles found"
+                      : "No roles found"}
                   </p>
                   <p className="text-xs text-tgrey3">
-                    {activeTab === "Archive" 
-                      ? "Roles moved to trash will appear here" 
-                      : activeTab === "Recent" 
-                        ? "Newly created roles will appear here"
-                        : "Create a role to get started"}
+                    {activeTab === "Archive"
+                      ? "Roles moved to trash will appear here"
+                      : activeTab === "Recent"
+                      ? "Newly created roles will appear here"
+                      : "Create a role to get started"}
                   </p>
-                  
+
                   {/* Refresh button for Archive tab */}
                   {activeTab === "Archive" && (
-                    <button 
+                    <button
                       onClick={() => fetchRolesData(true)}
                       className="mt-4 text-sm text-dashboardButtons hover:text-gold1 flex items-center"
                     >
-                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      <svg
+                        className="w-4 h-4 mr-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                        />
                       </svg>
                       Refresh
                     </button>
@@ -302,18 +329,18 @@ export default function RoleTable({ activeTab = "All" }) {
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
-                  {activeTab === "Archive" 
-                    ? (
-                      <Tooltip 
-                        content={row.archiveReason || "No reason provided"}
-                        placement="top"
-                      >
-                        <span className="truncate block max-w-[200px]">
-                          {row.archiveReason || "No reason provided"}
-                        </span>
-                      </Tooltip>
-                    ) 
-                    : row.lastEditor}
+                  {activeTab === "Archive" ? (
+                    <Tooltip
+                      content={row.archiveReason || "No reason provided"}
+                      placement="top"
+                    >
+                      <span className="truncate block max-w-[200px]">
+                        {row.archiveReason || "No reason provided"}
+                      </span>
+                    </Tooltip>
+                  ) : (
+                    row.lastEditor
+                  )}
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-col justify-end relative">
@@ -328,21 +355,32 @@ export default function RoleTable({ activeTab = "All" }) {
                   {editOptions[index] && (
                     <div
                       ref={menuRef}
-                      className="bg-white shadow-lg rounded-lg p-4 font-medium w-32 absolute top-full border-2 right-20 text-tblack3 space-y-4 z-20"
+                      className="bg-white shadow-lg rounded-lg p-4 font-medium w-32 absolute 
+               transform -translate-y-1/2 right-10 text-tblack3 space-y-4 z-20"
+                      style={{
+                        // Position above or below based on available space
+                        top: "auto",
+                        bottom: "auto",
+                        ...(window.innerHeight -
+                          document.documentElement.scrollTop <
+                        200
+                          ? { bottom: "100%" }
+                          : { top: "0" }),
+                      }}
                     >
                       {activeTab !== "Archive" && (
                         <p className="hover:text-gold1 cursor-pointer">Edit</p>
                       )}
                       <hr />
                       {activeTab === "Archive" ? (
-                        <p 
+                        <p
                           className="text-green-600 hover:text-gold1 cursor-pointer"
                           onClick={() => handleUnarchiveRole(row.id)}
                         >
                           Restore
                         </p>
                       ) : (
-                        <p 
+                        <p
                           className="text-tred1 hover:text-gold1 cursor-pointer"
                           onClick={() => openArchiveModal(row.id, row.role)}
                         >
@@ -361,12 +399,23 @@ export default function RoleTable({ activeTab = "All" }) {
       {/* Archive tab header with refresh button */}
       {activeTab === "Archive" && roles.length > 0 && (
         <div className="flex justify-end mt-2">
-          <button 
+          <button
             onClick={() => fetchRolesData(true)}
             className="text-sm text-dashboardButtons hover:text-gold1 flex items-center"
           >
-            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            <svg
+              className="w-4 h-4 mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              />
             </svg>
             Refresh
           </button>
@@ -382,20 +431,22 @@ export default function RoleTable({ activeTab = "All" }) {
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold">Archive Role</h3>
-            <button 
+            <button
               onClick={() => setShowArchiveModal(false)}
               className="text-gray-500 hover:text-gray-700"
             >
               <IoClose size={24} />
             </button>
           </div>
-          
+
           <div className="mb-4">
             <p className="text-sm text-gray-600">
-              You&apos;re about to archive <span className="font-semibold">{selectedRoleName}</span>
+              You&apos;re about to archive{" "}
+              <span className="font-semibold">{selectedRoleName}</span>
             </p>
             <p className="text-sm text-gray-600 mt-2 mb-4">
-              Please provide a reason for archiving this role. This helps keep track of why changes were made.
+              Please provide a reason for archiving this role. This helps keep
+              track of why changes were made.
             </p>
             <textarea
               className="w-full border border-gray-300 rounded-md p-2 text-sm"
@@ -405,10 +456,12 @@ export default function RoleTable({ activeTab = "All" }) {
               onChange={(e) => setArchiveReason(e.target.value)}
             ></textarea>
             {archiveReason.trim() === "" && (
-              <p className="text-xs text-red-500 mt-1">A reason is required to archive this role</p>
+              <p className="text-xs text-red-500 mt-1">
+                A reason is required to archive this role
+              </p>
             )}
           </div>
-          
+
           <div className="flex justify-end space-x-2">
             <button
               className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md text-sm"
@@ -417,7 +470,11 @@ export default function RoleTable({ activeTab = "All" }) {
               Cancel
             </button>
             <button
-              className={`px-4 py-2 ${archiveReason.trim() === "" ? 'bg-red-300' : 'bg-red-500 hover:bg-red-600'} text-white rounded-md text-sm`}
+              className={`px-4 py-2 ${
+                archiveReason.trim() === ""
+                  ? "bg-red-300"
+                  : "bg-red-500 hover:bg-red-600"
+              } text-white rounded-md text-sm`}
               onClick={handleArchiveRole}
               disabled={archiveReason.trim() === ""}
             >

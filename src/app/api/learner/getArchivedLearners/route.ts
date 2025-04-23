@@ -1,11 +1,11 @@
+// src/app/api/learner/getArchivedLearners/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { TokenManager } from '../../utils/checkAndRefreshToken';
-
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function GET(req: NextRequest) {
- const accessToken = await TokenManager();
+  const accessToken = await TokenManager();
 
   if (!accessToken) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
@@ -25,9 +25,12 @@ export async function GET(req: NextRequest) {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
         },
-        cache: 'force-cache',
-        next: { tags: ['archivedLearners'] }, 
+        cache: 'no-store',
+        next: { revalidate: 0 }
       }
     );
 

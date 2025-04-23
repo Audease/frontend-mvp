@@ -17,19 +17,23 @@ export async function GET(req: NextRequest) {
   const funding = searchParams.get("funding") || "";
   const chosen_course = searchParams.get("chosen_course") || "";
   const search = searchParams.get("search") || "";
+  const sort = searchParams.get("sort") || ""; // Add sort parameter
 
   try {
     // Pass the page and limit in the request URL
     const response = await fetch(
       apiUrl +
-        `/v1/recruitment/students/filters?funding=${funding}&chosen_course=${chosen_course}&search=${search}&page=${page}&limit=${limit}`,
+        `/v1/recruitment/students/filters?funding=${funding}&chosen_course=${chosen_course}&search=${search}&page=${page}&limit=${limit}&sort=${sort}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "Pragma": "no-cache",
+          "Expires": "0"
         },
-        cache: "force-cache",
-        next: { tags: ["learnersList"] },
+        cache: "no-store",
+        next: { revalidate: 0 } // Disable caching
       }
     );
 

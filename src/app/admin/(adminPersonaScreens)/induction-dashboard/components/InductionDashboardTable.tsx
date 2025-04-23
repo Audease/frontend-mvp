@@ -10,6 +10,8 @@ import LoadingSpinner, {
 import SuccessToast, {
   FailureToast,
 } from "../../../../components/NotificationToast";
+import { Toast } from 'flowbite-react'; // Import Toast from flowbite
+import { FiAlertCircle } from "react-icons/fi"; // Import an alert icon
 
 // State handling
 export default function InductionDashboardTable({
@@ -29,8 +31,9 @@ export default function InductionDashboardTable({
   totalItems,
 }) {
   const [currentPage, setCurrentPage] = useState(1);
-
   const [editOptionsVisible, setEditOptionsVisible] = useState(null);
+  const [showAttendanceToast, setShowAttendanceToast] = useState(false);
+  const [attendanceToastMessage, setAttendanceToastMessage] = useState("");
 
   const menuRef = useRef(null);
 
@@ -50,6 +53,17 @@ export default function InductionDashboardTable({
     }
   };
 
+  // Handle attendance toggle attempts for uninvited students
+  const handleAttendanceToggleAttempt = (row) => {
+    if (row.inductor_status === "Not sent") {
+      setAttendanceToastMessage("This student hasn't been sent an induction invite yet. Please send an invite first before marking attendance.");
+      setShowAttendanceToast(true);
+      setTimeout(() => setShowAttendanceToast(false), 5000);
+      return false;
+    }
+    return true;
+  };
+
   // Lifecycle effects
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -58,16 +72,28 @@ export default function InductionDashboardTable({
     };
   }, []);
 
-
   // Rendering
   return (
     <div className="flex flex-col justify-between w-full overflow-x-auto">
-      <div className="fixed z-50 right-8 animate-bounce">
+      <div className="fixed z-50 right-8">
         {showSuccessToast && (
           <SuccessToast text={`${successfulEmail} sent successfully. ${failedEmail} failed`} />
         )}
         {showFailureToast && (
           <FailureToast text={`${failedEmail} failed. ${successfulEmail} sent successfully. `} />
+        )}
+        {showAttendanceToast && (
+          <div className="animate-bounce">
+            <Toast>
+              <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-orange-500">
+                <FiAlertCircle className="h-5 w-5" />
+              </div>
+              <div className="ml-3 text-sm font-normal">
+                {attendanceToastMessage}
+              </div>
+              <Toast.Toggle onDismiss={() => setShowAttendanceToast(false)} />
+            </Toast>
+          </div>
         )}
       </div>
       {loading2 && (
@@ -187,18 +213,20 @@ export default function InductionDashboardTable({
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   <p 
-                    className={clsx("text-center p-1 rounded-lg cursor-pointer", {
-                      "bg-green4 text-green3 hover:bg-green-300": row.attendance_status === "present",
-                      "bg-tgrey8 text-tblack4 hover:bg-gray-300": row.attendance_status === "absent" || row.inductor_status === "Not sent",
+                    className={clsx("text-center p-1 rounded-lg", {
+                      "bg-green4 text-green3 hover:bg-green-300 cursor-pointer": row.attendance_status === "present" && row.inductor_status !== "Not sent",
+                      "bg-tgrey8 text-tblack4 hover:bg-gray-300 cursor-pointer": row.attendance_status === "absent" && row.inductor_status !== "Not sent",
+                      "bg-tgrey8 text-tblack4 opacity-70 cursor-not-allowed": row.inductor_status === "Not sent"
                     })}
                     onClick={() => {
-                      if (row.inductor_status !== "Not sent") {
+                      if (handleAttendanceToggleAttempt(row)) {
                         handleToggleAttendance(
                           row.id, 
                           row.attendance_status === "present" ? "absent" : "present"
                         );
                       }
                     }}
+                    title={row.inductor_status === "Not sent" ? "Send induction invite first" : "Click to toggle attendance status"}
                   >
                     {row.inductor_status === "Not sent" ? "Pending" : row.attendance_status}
                   </p>
@@ -207,8 +235,7 @@ export default function InductionDashboardTable({
                   <p
                     className={clsx("text-center p-1 rounded-lg", {
                       "bg-green4 text-green3": row.inductor_status === "Sent",
-                      "bg-tgrey8 text-tblack4":
-                        row.inductor_status === "Not sent",
+                      "bg-tgrey8 text-tblack4": row.inductor_status === "Not sent",
                     })}
                   >
                     {row.inductor_status}
@@ -237,25 +264,39 @@ export default function InductionDashboardTable({
                       >
                         Send Invite
                       </p>
-                      {row.attendance_status === "present" ? (
-                        <p 
-                          className="text-red-500 cursor-pointer hover:text-gold1"
-                          onClick={() => {
-                            handleToggleAttendance(row.id, "absent");
-                            setEditOptionsVisible(null);
-                          }}
-                        >
-                          Mark Absent
-                        </p>
+                      {row.inductor_status !== "Not sent" ? (
+                        row.attendance_status === "present" ? (
+                          <p 
+                            className="text-red-500 cursor-pointer hover:text-gold1"
+                            onClick={() => {
+                              handleToggleAttendance(row.id, "absent");
+                              setEditOptionsVisible(null);
+                            }}
+                          >
+                            Mark Absent
+                          </p>
+                        ) : (
+                          <p 
+                            className="text-green-700 cursor-pointer hover:text-gold1"
+                            onClick={() => {
+                              handleToggleAttendance(row.id, "present");
+                              setEditOptionsVisible(null);
+                            }}
+                          >
+                            Mark Present
+                          </p>
+                        )
                       ) : (
                         <p 
-                          className="text-green-700 cursor-pointer hover:text-gold1"
+                          className="text-gray-400 cursor-not-allowed"
                           onClick={() => {
-                            handleToggleAttendance(row.id, "present");
+                            setAttendanceToastMessage("This student hasn't been sent an induction invite yet. Please send an invite first before marking attendance.");
+                            setShowAttendanceToast(true);
+                            setTimeout(() => setShowAttendanceToast(false), 5000);
                             setEditOptionsVisible(null);
                           }}
                         >
-                          Mark Present
+                          Attendance Unavailable
                         </p>
                       )}
                     </div>

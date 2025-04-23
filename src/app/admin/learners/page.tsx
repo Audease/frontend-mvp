@@ -41,7 +41,7 @@ export default function Learners() {
 
   const handleLearnerCreated = async () => {
     await learnerRevalidation();
-    handleFetchLearnersData(currentPage, 10, "", "", "");
+    handleFetchLearnersData(currentPage, 10, "", "", "", "asc");
     setTableKey((prev) => prev + 1);
   };
 
@@ -50,33 +50,47 @@ export default function Learners() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Call this after archive/restore operations
+  const refreshAllData = async () => {
+    await handleFetchLearnersData(currentPage, 10, "", "", "", "asc");
+    await getArchivedLearners(1, 10, "");
+    await learnerRevalidation();
+    await archivedLearnersRevalidation();
+    setTableKey((prev) => prev + 1);
+  };
+
   const [searchQuery, setSearchQuery] = useState("");
 
   const searchValue = (searchValue: string) => {
     setSearchQuery(searchValue);
     if (renderTable === "learnerTable") {
-      handleFetchLearnersData(1, 10, "", "", searchValue);
+      handleFetchLearnersData(1, 10, "", "", searchValue, "asc");
     } else if (renderTable === "archivedTable") {
       getArchivedLearners(1, 10, searchValue);
     } else {
-      handleFetchLearnersData(1, 10, "", "", searchValue);
+      handleFetchLearnersData(1, 10, "", "", searchValue, "asc");
     }
   };
 
   const onFilterClick = (funding, course) => {
-    handleFetchLearnersData(1, 10, funding, course, "");
+    handleFetchLearnersData(1, 10, funding, course, "", "asc");
   };
+
+  const [renderTable, setRenderTable] = useState("learnersTable");
 
   const onTabClick = (tab: string) => {
     setActiveTab(tab);
 
     if (tab === "Active") {
       setRenderTable("learnerTable");
-      handleFetchLearnersData(1, 10, "", "", "");
+      handleFetchLearnersData(1, 10, "", "", "", "asc");
       setTableKey((prev) => prev + 1);
-    }
-
-    if (tab === "Archive") {
+    } else if (tab === "Recent") {
+      setRenderTable("learnerTable");
+      // Set sort=desc for recent tab
+      handleFetchLearnersData(1, 10, "", "", "", "desc");
+      setTableKey((prev) => prev + 1);
+    } else if (tab === "Archive") {
       archivedLearnersRevalidation();
       setTableKey((prev) => prev + 1);
       setRenderTable("archivedTable");
@@ -85,18 +99,17 @@ export default function Learners() {
 
   const handleArchiveLearner = async (learnerId: string) => {
     await archiveLearner(learnerId);
-    await handleFetchLearnersData(currentPage, 10, "", "", "");
-    await getArchivedLearners(1, 10, "");
-    await learnerRevalidation();
-    await archivedLearnersRevalidation();
-    setTableKey((prev) => prev + 1);
+    await refreshAllData();
   };
 
-  const [renderTable, setRenderTable] = useState("learnersTable");
+  const handleRestoreLearner = async (learnerId: string) => {
+    await handleUnArchiveLearner(learnerId);
+    await refreshAllData();
+  };
 
   const renderLearnerTable = () => {
     switch (renderTable) {
-      case "learnersTable":
+      case "learnerTable":
         return (
           <LearnersTable
             key={tableKey}
@@ -115,7 +128,7 @@ export default function Learners() {
         return (
           <ArchivedLearnersTable
             key={tableKey}
-            handleUnArchiveLearner={handleUnArchiveLearner}
+            handleUnArchiveLearner={handleRestoreLearner}
             allLearners={archivedLearners}
             currentPage={currentPage}
             totalPages={totalArchivedPages}
@@ -145,11 +158,13 @@ export default function Learners() {
   const handlePageReset = () => {
     if (activeTab === "Active") {
       setRenderTable("learnerTable");
-      handleFetchLearnersData(1, 10, "", "", "");
+      handleFetchLearnersData(1, 10, "", "", "", "asc");
       setTableKey((prev) => prev + 1);
-    }
-
-    if (activeTab === "Archive") {
+    } else if (activeTab === "Recent") {
+      setRenderTable("learnerTable");
+      handleFetchLearnersData(1, 10, "", "", "", "desc");
+      setTableKey((prev) => prev + 1);
+    } else if (activeTab === "Archive") {
       getArchivedLearners(1, 10, "");
       archivedLearnersRevalidation();
       setTableKey((prev) => prev + 1);
@@ -184,7 +199,7 @@ export default function Learners() {
             <div className="hidden xl:flex flex-row space-x-4 items-center">
               <div className="flex flex-row items-center space-x-2">
                 <h3
-                  className="py-2 px-3 bg-black text-white text-sm rounded-md"
+                  className="py-2 px-3 bg-black text-white text-sm rounded-md cursor-pointer"
                   onClick={handlePageReset}
                 >
                   All

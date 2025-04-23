@@ -40,20 +40,20 @@ const LearnersListModal = ({
   } = useLearnerByRecruiter();
 
   useEffect(() => {
-    handleFetchLearnersData(1, 8, "", "", "");
+    handleFetchLearnersData(1, 8, "", "", "", "");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onFilterClick = (funding, course) => {
-    handleFetchLearnersData(1, 8, funding, course, '');
+    handleFetchLearnersData(1, 8, funding, course, '', "");
   };
 
   const handleSearch = (searchValue: string) => {
-    handleFetchLearnersData(1, 8, '', '', searchValue);
+    handleFetchLearnersData(1, 8, '', '', searchValue, "");
   };
 
   const resetLearners = () => {
-    handleFetchLearnersData(1, 8, "", "", "");
+    handleFetchLearnersData(1, 8, "", "", "", "");
   };
 
   return (

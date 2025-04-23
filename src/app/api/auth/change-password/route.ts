@@ -1,4 +1,3 @@
-// src/app/api/learner/archiveLearner/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { TokenManager } from "../../utils/checkAndRefreshToken";
 
@@ -11,44 +10,36 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const { searchParams } = new URL(req.url);
-  const studentId = searchParams.get("studentId");
-
-  if (!studentId) {
-    return NextResponse.json(
-      { message: "studentId is required" },
-      { status: 400 }
-    );
-  }
-
   try {
     const payload = await req.json();
+
     const response = await fetch(
-      apiUrl + `/v1/archive/students/${studentId}`,
+      `${apiUrl}/v1/auth/change-password`,
       {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
-          "Cache-Control": "no-cache, no-store, must-revalidate",
-          "Pragma": "no-cache",
-          "Expires": "0"
         },
         body: JSON.stringify(payload),
       }
     );
 
     if (response.ok) {
-      return NextResponse.json({ status: 200, message: "Learner archived successfully" });
-    } else {
       return NextResponse.json(
-        { message: "Archive operation failed" },
+        { message: "Password changed successfully" },
+        { status: 200 }
+      );
+    } else {
+      const errorData = await response.json().catch(() => ({}));
+      return NextResponse.json(
+        { message: errorData.message || "Failed to change password" },
         { status: response.status }
       );
     }
   } catch (error) {
     return NextResponse.json(
-      { message: "Archive operation failed" },
+      { message: "Failed to change password" },
       { status: 500 }
     );
   }

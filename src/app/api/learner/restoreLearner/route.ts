@@ -1,3 +1,4 @@
+// src/app/api/learner/restoreLearner/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { TokenManager } from "../../utils/checkAndRefreshToken";
 
@@ -12,7 +13,6 @@ export async function POST(req: NextRequest) {
 
   const { searchParams } = new URL(req.url);
   const studentId = searchParams.get("studentId");
-//   const payload = studentId
 
   if (!studentId) {
     return NextResponse.json(
@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const payload = await req.json();
     const response = await fetch(
       apiUrl + `/v1/archive/students/${studentId}/restore`,
       {
@@ -30,22 +29,24 @@ export async function POST(req: NextRequest) {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "Pragma": "no-cache",
+          "Expires": "0"
         },
-        // body: JSON.stringify(payload),
       }
     );
 
     if (response.ok) {
-      return NextResponse.json({ status: 200 });
+      return NextResponse.json({ status: 200, message: "Learner restored successfully" });
     } else {
       return NextResponse.json(
-        { message: "Status changing failed" },
+        { message: "Restore operation failed" },
         { status: response.status }
       );
     }
   } catch (error) {
     return NextResponse.json(
-      { message: "Status changing failed" },
+      { message: "Restore operation failed" },
       { status: 500 }
     );
   }

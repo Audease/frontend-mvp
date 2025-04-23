@@ -4,6 +4,7 @@ import LoadingSpinner from "@/app/components/dashboard/Spinner";
 import Pagination from "@/app/components/dashboard/Pagination";
 import { useRouter } from "next/navigation";
 import { encodeId } from "../utils/id-encoded";
+import { format, parseISO, isValid } from "date-fns"; // For date formatting
 
 export default function LearnersTable({
   handleArchiveLearner,
@@ -40,9 +41,24 @@ export default function LearnersTable({
     };
   }, []);
 
-
   const handleViewLearner = (learnerId) => {
     router.push(`/admin/learners/${encodeId(learnerId)}`);
+  };
+  
+  // Format date to a more human-readable form
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    
+    try {
+      const date = parseISO(dateString);
+      
+      if (!isValid(date)) return "Invalid date";
+      
+      return format(date, "MMM d, yyyy h:mm a");
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid date";
+    }
   };
 
   return (
@@ -61,7 +77,7 @@ export default function LearnersTable({
                 Email
               </th>
               <th className="px-4 py-3 text-left text-sm font-normal text-tableText tracking-wider">
-                Login time
+                Last Login
               </th>
               <th className="px-4 py-3 text-left text-sm font-normal text-tableText tracking-wider">
                 Funding
@@ -94,17 +110,17 @@ export default function LearnersTable({
             ) : (
               allLearners.map((row) => (
                 <tr key={row.id} className="group">
-                  <td className="px-2 py-4 whitespace-nowrap text-sm  text-tableText2 font-medium flex flex-row ">
+                  <td className="px-2 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-row ">
                     {row.name}
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium ">
-                    {row.username}
+                    {row.user?.username || "N/A"}
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium ">
                     {row.email}
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium ">
-                    {row.loginTime}
+                    {row.user?.last_login_at ? formatDate(row.user.last_login_at) : "Never logged in"}
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium ">
                     {row.funding}

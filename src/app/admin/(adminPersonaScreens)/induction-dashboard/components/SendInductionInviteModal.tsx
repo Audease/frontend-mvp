@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import FormComponent from "./FormComponent";
 import {
   Card,
@@ -12,6 +12,19 @@ import {
 import { Modal } from "flowbite-react";
 
 export function MeetingFormDialog({ isOpen, onOpenChange, onSubmit, loading }) {
+  const [activeTab, setActiveTab] = useState("manual");
+  
+  const handleFormSubmit = (formData) => {
+    console.log("MeetingFormDialog received submission:", formData);
+    
+    // Determine which tab was used based on presence of meetingInfo
+    const tabUsed = formData.meetingInfo ? "paste" : "manual";
+    console.log("Tab used for submission:", tabUsed);
+    
+    // Call the parent's onSubmit
+    onSubmit(formData);
+  };
+
   return (
     <Modal show={isOpen} onClose={onOpenChange} size={"xl"}>
       <Card className="border-0 shadow-none">
@@ -22,7 +35,11 @@ export function MeetingFormDialog({ isOpen, onOpenChange, onSubmit, loading }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <FormComponent closeModal={onOpenChange} onSubmit={onSubmit} loading={loading} />
+          <FormComponent 
+            closeModal={onOpenChange} 
+            onSubmit={handleFormSubmit} 
+            loading={loading} 
+          />
         </CardContent>
       </Card>
     </Modal>

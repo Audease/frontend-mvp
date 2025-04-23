@@ -1,3 +1,4 @@
+// src/app/api/induction/sendInductionInvite/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { TokenManager } from "../../utils/checkAndRefreshToken";
 
@@ -21,7 +22,24 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const payload = await req.json();
+    // Get request body and log it
+    const requestBody = await req.text();
+    console.log("Raw request body:", requestBody);
+    
+    // Parse JSON
+    let payload;
+    try {
+      payload = JSON.parse(requestBody);
+      console.log("Parsed payload:", payload);
+    } catch (e) {
+      console.error("Failed to parse JSON:", e);
+      return NextResponse.json(
+        { message: "Invalid JSON payload" },
+        { status: 400 }
+      );
+    }
+    
+    // Forward the exact payload to the backend
     const response = await fetch(
       apiUrl + `/v1/induction/students/${studentId}/inductor`,
       {
@@ -34,17 +52,31 @@ export async function POST(req: NextRequest) {
       }
     );
 
+    // Get response body
+    const responseBody = await response.text();
+    console.log("Backend response:", response.status, responseBody);
+
     if (response.ok) {
-      return NextResponse.json({ status: 200 });
+      return NextResponse.json({ 
+        status: 200,
+        message: "Invite sent successfully" 
+      });
     } else {
       return NextResponse.json(
-        { message: "Invite sending failed" },
+        { 
+          message: "Invite sending failed", 
+          error: responseBody
+        },
         { status: response.status }
       );
     }
   } catch (error) {
+    console.error("Error in invite API route:", error);
     return NextResponse.json(
-      { message: "Invite sending failed" },
+      { 
+        message: "Invite sending failed",
+        error: error.toString()
+      },
       { status: 500 }
     );
   }

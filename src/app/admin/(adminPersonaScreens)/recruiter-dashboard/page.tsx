@@ -79,7 +79,7 @@ export default function AdminRecruiterdashboard({
       setLoading2(true);
       await DeleteStudent(checkedIds);
       await learnerRevalidation();
-      handleFetchLearnersData(1, 10, "", "", "");
+      handleFetchLearnersData(1, 10, "", "", "", "");
       setTableKey((prev) => prev + 1);
       setCheckedItems({});
     } catch (error) {
@@ -115,24 +115,24 @@ export default function AdminRecruiterdashboard({
   // Handle new learner creation
   const handleLearnerCreated = async () => {
     await learnerRevalidation();
-    handleFetchLearnersData(1, 10, "", "", "");
+    handleFetchLearnersData(1, 10, "", "", "", "");
   };
 
   // Handle filtering
   const onFilterClick = (funding, course) => {
-    handleFetchLearnersData(1, 10, funding, course, "");
+    handleFetchLearnersData(1, 10, funding, course, "", "");
   };
 
   // Handle search input
   const searchValue = (searchValue) => {
     setSearchQuery(searchValue);
-    handleFetchLearnersData(1, 10, "", "", searchValue);
+    handleFetchLearnersData(1, 10, "", "", searchValue, "");
   };
 
   // Handle tab switching
   const onTabClick = (tab) => {
     setActiveTab(tab);
-    if (tab === "All") handleFetchLearnersData(1, 10, "", "", "");
+    if (tab === "All") handleFetchLearnersData(1, 10, "", "", "", "");
   };
 
   // Handle edit modal close
@@ -176,7 +176,7 @@ export default function AdminRecruiterdashboard({
         }, 3000);
       }
       await learnerRevalidation();
-      handleFetchLearnersData(currentPage, 10, "", "", searchQuery);
+      handleFetchLearnersData(currentPage, 10, "", "", searchQuery, "");
       setTableKey((prev) => prev + 1);
     } catch (error) {
       console.error("Error updating learner:", error);
@@ -186,7 +186,7 @@ export default function AdminRecruiterdashboard({
   };
 
   const callback = async () => {
-    await handleFetchLearnersData(currentPage, 10, "", "", searchQuery);
+    await handleFetchLearnersData(currentPage, 10, "", "", searchQuery, "");
     await learnerRevalidation();
     setTableKey((prev) => prev + 1);
   };

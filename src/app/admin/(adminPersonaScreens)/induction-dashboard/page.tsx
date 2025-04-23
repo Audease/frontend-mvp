@@ -34,6 +34,8 @@ export default function AdminBKSDDashboard({
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(1);
   const [allLearners, setAllLearners] = useState([]);
+  const [showAttendanceToast, setShowAttendanceToast] = useState(false);
+  const [attendanceToastMessage, setAttendanceToastMessage] = useState("");
   const { fetchInductionLearnersData } = useInductionLearners();
   const isDisabled = checkedIds.length <= 0;
 
@@ -59,8 +61,19 @@ export default function AdminBKSDDashboard({
   };
 
   const handleInviteFormSubmit = async (values) => {
+    console.log("handleInviteFormSubmit received values:", values);
+    
+    // Store the form values
     setData(values);
+    
+    // Check if this is from paste tab (has meetingInfo) or manual tab
+    const isPasteTab = values.meetingInfo && values.meetingInfo.trim() !== '';
+    console.log("Form submission from tab:", isPasteTab ? "paste" : "manual");
+    
+    // Always send the data regardless of which tab
     await sendInvites(checkedIds, values);
+    
+    // Reset state
     setCheckedItems({});
     setCheckedIds([]);
     handleFetchLearnersData("", 1, 10, "");
@@ -163,63 +176,82 @@ export default function AdminBKSDDashboard({
   };
 
   // Function to handle bulk toggle of attendance status
-  const handleBulkAttendanceToggle = async () => {
-    if (checkedIds.length === 0) return;
+  // Function to handle bulk toggle of attendance status
+const handleBulkAttendanceToggle = async () => {
+  if (checkedIds.length === 0) return;
+  
+  // Filter out students who haven't been sent invites
+  const eligibleIds = checkedIds.filter(id => {
+    const learner = allLearners.find(l => l.id === id);
+    return learner && learner.inductor_status !== "Not sent";
+  });
+  
+  // Check if there are any ineligible students
+  const ineligibleCount = checkedIds.length - eligibleIds.length;
+  if (ineligibleCount > 0) {
+    // Show toast notification about ineligible students
+    // You'll need to add this state and UI component
+    setShowAttendanceToast(true);
+    setAttendanceToastMessage(`${ineligibleCount} student(s) haven't been sent invites and won't have attendance updated.`);
+    setTimeout(() => setShowAttendanceToast(false), 5000);
     
-    setLoading2(true);
-    
-    // Determine if we're marking all as present or all as absent
-    // If ANY checked item is absent, we'll mark all as present
-    // Otherwise, we'll mark all as absent
-    const hasAbsentLearners = checkedIds.some(id => {
-      const learner = allLearners.find(l => l.id === id);
-      return !learner || learner.attendance_status !== "present";
-    });
-    
-    const newStatus = hasAbsentLearners ? "present" : "absent";
-    
-    for (const id of checkedIds) {
-      try {
-        const response = await fetch(
-          `/api/induction/markPresent?studentId=${id}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              attendance_status: newStatus,
-            }),
-            cache: "no-store",
-          }
-        );
-        
-        if (!response.ok) {
-          console.error(`Failed to toggle attendance status for student ${id}`);
+    // If all selected students are ineligible, exit the function
+    if (eligibleIds.length === 0) return;
+  }
+  
+  setLoading2(true);
+  
+  // Determine if we're marking all as present or all as absent
+  // Only consider eligible students for this determination
+  const hasAbsentLearners = eligibleIds.some(id => {
+    const learner = allLearners.find(l => l.id === id);
+    return !learner || learner.attendance_status !== "present";
+  });
+  
+  const newStatus = hasAbsentLearners ? "present" : "absent";
+  
+  for (const id of eligibleIds) {
+    try {
+      const response = await fetch(
+        `/api/induction/markPresent?studentId=${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            attendance_status: newStatus,
+          }),
+          cache: "no-store",
         }
-      } catch (error) {
-        console.error(`Error toggling attendance status:`, error);
+      );
+      
+      if (!response.ok) {
+        console.error(`Failed to toggle attendance status for student ${id}`);
       }
+    } catch (error) {
+      console.error(`Error toggling attendance status:`, error);
     }
-    
-    // Update local state for the affected items
-    setAllLearners(prevLearners => 
-      prevLearners.map(learner => {
-        if (checkedIds.includes(learner.id)) {
-          return {
-            ...learner,
-            attendance_status: newStatus
-          };
-        }
-        return learner;
-      })
-    );
-    
-    setCheckedItems({});
-    setCheckedIds([]);
-    setKey(prev => prev + 1);
-    setLoading2(false);
-  };
+  }
+  
+  // Update local state for the affected items
+  setAllLearners(prevLearners => 
+    prevLearners.map(learner => {
+      if (eligibleIds.includes(learner.id)) {
+        return {
+          ...learner,
+          attendance_status: newStatus
+        };
+      }
+      return learner;
+    })
+  );
+  
+  setCheckedItems({});
+  setCheckedIds([]);
+  setKey(prev => prev + 1);
+  setLoading2(false);
+};
 
   // 🔹 Render Component
   return (
@@ -273,6 +305,10 @@ export default function AdminBKSDDashboard({
             loading2,
             showSuccessToast,
             showFailureToast,
+            showAttendanceToast,
+            setShowAttendanceToast,
+            attendanceToastMessage,
+            setAttendanceToastMessage,
             checkedItems,
             handleCheckboxChange,
             handleFetchLearnersData,

@@ -13,25 +13,38 @@ export const useStaff = () => {
     search,
     status,
   }: GetStaffDataProps) => {
-    let url;
-    if (!search && !status) {
-      url = `/api/listStaff?page=${page}&limit=${10}`;
+    // Always construct a base URL
+    let url = `/api/listStaff?page=${page}&limit=${10}`;
+    
+    // Add search parameter if it exists
+    if (search) {
+      url += `&search=${encodeURIComponent(search)}`;
+    }
+    
+    // Add status parameter if it exists
+    if (status) {
+      url += `&status=${encodeURIComponent(status)}`;
     }
 
     try {
       const response = await fetch(url);
       const data = await response.json();
+      
       if (response.ok) {
-        const totalPages = data.totalPages;
-        const totalItems = data.total;
-        const result = data.result;
+        const totalPages = data.totalPages || 1;
+        const totalItems = data.total || 0;
+        const result = data.result || [];
 
         return { totalPages, totalItems, result };
       } else {
         console.error("Failed to fetch staff data:", data);
+        // Return default values to prevent destructuring errors
+        return { totalPages: 1, totalItems: 0, result: [] };
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+      // Return default values to prevent destructuring errors
+      return { totalPages: 1, totalItems: 0, result: [] };
     }
   };
 
@@ -43,7 +56,7 @@ export const useStaff = () => {
         roleId: selectedRoles[staff.id],
       };
     });
-    // console.log(formattedStaffArray)
+    
     try {
       const response = await axios.post(
         "/api/assignRole",
@@ -54,11 +67,13 @@ export const useStaff = () => {
           headers: { "Content-Type": "application/json" },
         }
       );
-      // alert("Role(s) assigned successfully");
+      
       await staffRevalidation();
       await rolesRevalidation();
+      return response.data;
     } catch (error) {
       console.error("Error assigning role:", error);
+      throw error;
     }
   };
 

@@ -206,7 +206,7 @@ export default function Staff() {
               </button>
             </div>
             <FilterButton
-              options={["Assigned", "Unassigned"]}
+              options={["assigned", "unassigned"]}
               onSelect={handleFilter}
               label={"Filter"}
             />

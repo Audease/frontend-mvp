@@ -85,14 +85,14 @@ export default function DefaultLeft({ onClickSetUpAcct }) {
           </div>
 
           {/* Create Button - Only show in All or Recent tabs */}
-          {activeTab !== "Archive" && (
+          {/* {activeTab !== "Archive" && (
             <Button
               buttonText={"Create"}
               className={""}
               arrowDirection={<SlArrowDown />}
               onClick={() => {}}
             />
-          )}
+          )} */}
         </div>
         {/* The active bar color change */}
         <div className="w-full h-[0.10rem] bg-gray-300 my-2">

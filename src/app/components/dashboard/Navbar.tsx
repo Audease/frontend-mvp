@@ -6,11 +6,12 @@ import NavLinks from "./NavLinks";
 import { useState, useEffect, useRef } from "react";
 import Notifications from "./Notifications";
 import NavbarPlusButton from "./NavbarPlusButton";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useAppSelector, persistor } from "../../../redux/store";
 import { useDispatch } from "react-redux";
 import { logOut } from "@/redux/features/login/auth-slice";
 import { Navbar } from "flowbite-react";
+import clsx from "clsx";
 
 const links = [
   { name: "Apps", href: "/admin" },
@@ -59,7 +60,7 @@ export default function Nav() {
     });
 
     if (response.ok) {
-      localStorage.removeItem('persist:root');
+      localStorage.removeItem("persist:root");
       dispatch(logOut());
       router.push("/signIn");
     } else {
@@ -94,6 +95,8 @@ export default function Nav() {
     };
   }, [menuRef]);
 
+  const pathname = usePathname();
+
   return (
     <nav className="bg-white shadow-sm px-4 py-3">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -112,9 +115,14 @@ export default function Nav() {
           <ul className="flex space-x-8">
             {links.map((link) => (
               <li key={link.name}>
-                <Link 
-                  href={link.href} 
-                  className="text-gray-600 hover:text-dashboardButtons font-medium transition-colors duration-200"
+                <Link
+                  href={link.href}
+                  className={clsx(
+                    "font-inter font-medium flex flex-row text-h2 text-tgrey3 space-x-2 rounded my-2 py-1 px-2   hover:text-dashboardButtons transition-colors duration-200",
+                    {
+                      "bg-tgrey4": pathname === link.href,
+                    }
+                  )}
                 >
                   {link.name}
                 </Link>
@@ -146,7 +154,7 @@ export default function Nav() {
                 </div>
                 <p className="px-2 text-sm">My Profile</p>
               </div>
-              
+
               {/* Help and support  */}
               <div className="flex items-center hover:bg-gray-50 p-2 rounded-lg cursor-pointer">
                 <Image
@@ -157,9 +165,9 @@ export default function Nav() {
                 />
                 <p className="px-3 text-sm">Help and Support</p>
               </div>
-              
+
               {/* Logout */}
-              <div 
+              <div
                 className="flex items-center hover:bg-gray-50 p-2 rounded-lg cursor-pointer"
                 onClick={logout}
               >
@@ -173,7 +181,7 @@ export default function Nav() {
               </div>
             </div>
           )}
-          
+
           {notifications && <Notifications />}
           {plusButton && <NavbarPlusButton />}
         </div>
@@ -188,7 +196,7 @@ export default function Nav() {
           <span className="sr-only">Open main menu</span>
           {/* Hamburger icon */}
           <svg
-            className={`${mobileMenuOpen ? 'hidden' : 'block'} h-6 w-6`}
+            className={`${mobileMenuOpen ? "hidden" : "block"} h-6 w-6`}
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -204,7 +212,7 @@ export default function Nav() {
           </svg>
           {/* X icon */}
           <svg
-            className={`${mobileMenuOpen ? 'block' : 'hidden'} h-6 w-6`}
+            className={`${mobileMenuOpen ? "block" : "hidden"} h-6 w-6`}
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -222,7 +230,7 @@ export default function Nav() {
       </div>
 
       {/* Mobile Navigation Menu */}
-      <div className={`${mobileMenuOpen ? 'block' : 'hidden'} lg:hidden`}>
+      <div className={`${mobileMenuOpen ? "block" : "hidden"} lg:hidden`}>
         <div className="px-2 pt-2 pb-3 space-y-1 divide-y divide-gray-200">
           {/* Navigation Links */}
           {links.map((link) => (
@@ -235,7 +243,7 @@ export default function Nav() {
               {link.name}
             </Link>
           ))}
-          
+
           {/* User info and profile in mobile */}
           <div className="pt-4 pb-3">
             <div className="flex items-center px-2 py-3">
@@ -248,7 +256,7 @@ export default function Nav() {
                 </div>
               </div>
             </div>
-            
+
             {/* Mobile Profile Options */}
             <div className="mt-3 space-y-2">
               <button className="block w-full text-left px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900">
@@ -257,7 +265,7 @@ export default function Nav() {
               <button className="block w-full text-left px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900">
                 Help and Support
               </button>
-              <button 
+              <button
                 className="block w-full text-left px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                 onClick={logout}
               >
@@ -271,8 +279,7 @@ export default function Nav() {
   );
 }
 
-// Old NAVBAR 
-
+// Old NAVBAR
 
 // "use client";
 
@@ -297,7 +304,7 @@ export default function Nav() {
 //   { name: "Worflows", href: "/admin/workflows" },
 // ];
 
-export  function OldNav() {
+export function OldNav() {
   const [profileOptions, setProfileOptions] = useState(false);
   const [notifications, setNotifications] = useState(false);
   const [plusButton, setPlusButton] = useState(false);
@@ -324,7 +331,7 @@ export  function OldNav() {
     });
 
     if (response.ok) {
-      localStorage.removeItem('persist:root');
+      localStorage.removeItem("persist:root");
       dispatch(logOut());
       router.push("/signIn");
     } else {

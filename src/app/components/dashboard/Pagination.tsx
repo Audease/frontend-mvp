@@ -1,4 +1,7 @@
+'use client'
+
 import React from "react";
+import { useState, useEffect } from "react";
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 
 export default function Pagination({

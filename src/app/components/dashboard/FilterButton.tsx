@@ -28,7 +28,7 @@ export default function FilterButton({ options, onSelect, label }) {
   };
 
   return (
-    <div className="relative inline-block" ref={dropdownRef}>
+    <div className=" inline-block" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
         className="text-black py-1 px-4 rounded focus:outline-none border-grey-300 border-2"
@@ -39,7 +39,7 @@ export default function FilterButton({ options, onSelect, label }) {
         </div>
       </button>
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-36 bg-white border-2 rounded border-gray-200 shadow-lg z-10">
+        <div className="absolute right-10 mt-2 w-32 bg-white border-2 rounded border-gray-200 shadow-lg z-10">
           {options.map((option, index) => (
             <div
               key={index}
@@ -84,7 +84,7 @@ export function RecruiterFilterButton({
   }, []);
 
   return (
-    <div className="relative inline-block" ref={dropdownRef}>
+    <div className=" inline-block" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
         className="text-black p-1 rounded focus:outline-none border-grey-300 border-2"
@@ -154,7 +154,7 @@ export function BKSDFilterButton({
   }, []);
 
   return (
-    <div className="relative inline-block" ref={dropdownRef}>
+    <div className="inline-block" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
         className="text-black p-1 rounded focus:outline-none border-grey-300 border-2"
@@ -182,6 +182,91 @@ export function BKSDFilterButton({
           >
             Filter
           </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function NewFilterButton({
+  label,
+  onFilterClick,
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [fundingInput, setFundingInput] = useState("");
+  const [courseInput, setCourseInput] = useState("");
+  const dropdownRef = useRef(null);
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleFundingChange = (e) => {
+    setFundingInput(e.target.value);
+  };
+
+  const handleCourseChange = (e) => {
+    setCourseInput(e.target.value);
+  };
+
+  const handleFilterClick = () => {
+    onFilterClick(fundingInput, courseInput);
+  };
+
+  return (
+    <div className="inline-block" ref={dropdownRef}>
+      <button
+        onClick={toggleDropdown}
+        className="text-black p-1 rounded focus:outline-none border-grey-300 border-2"
+      >
+        <div className="flex flex-row text-sm font-normal">
+          <LuSettings2 className="h-4 w-8 text-tgrey3" />
+          {label} <MdOutlineKeyboardArrowDown className="w-8 h-6 text-tgrey3" />
+        </div>
+      </button>
+      {isOpen && (
+        <div className="relative">
+          <div className="absolute right-0 mt-2 p-4 w-64 bg-white border-2 rounded border-gray-200 shadow-lg z-10 space-y-4 flex flex-col">
+            <div className="space-y-2">
+              <h2 className="font-normal text-sm text-tgrey3">Funding</h2>
+              <input
+                type="text"
+                value={fundingInput}
+                onChange={handleFundingChange}
+                placeholder="Enter funding category"
+                className="w-full p-2 border border-gray-300 rounded text-sm"
+              />
+            </div>
+            <div className="space-y-2">
+              <h2 className="font-normal text-sm text-tgrey3">Chosen Course</h2>
+              <input
+                type="text"
+                value={courseInput}
+                onChange={handleCourseChange}
+                placeholder="Enter course name"
+                className="w-full p-2 border border-gray-300 rounded text-sm"
+              />
+            </div>
+
+            <button
+              className="font-bold text-white text-sm bg-dashboardButtons py-2 px-2 rounded-lg"
+              onClick={handleFilterClick}
+              type="button"
+            >
+              Filter
+            </button>
+          </div>
         </div>
       )}
     </div>

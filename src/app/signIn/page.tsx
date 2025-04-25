@@ -1,72 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../components/button";
+import { useLogin } from "./useLogin";
 
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordToggle, setPasswordToggle] = useState("password");
-  const [error, setError] = useState("");
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-
+  const { handleLogin, loading, error } = useLogin();
+ 
   const handleEyeClick = () => {
     setPasswordToggle((prevState) =>
       prevState === "password" ? "text" : "password"
     );
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    setError("");
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    setError("");
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    const payload = {
-      username: email,
-      password: password,
-    };
-
-    console.log("Submitting payload:", payload);
-    try {
-      const response = await axios.post(
-        "/api/login",
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        console.log("Login successful:", response.data);
-        router.push("/dashboard");
-      } else {
-        console.error("Login failed:", response.data);
-        setError(response.data.message || "Login failed");
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-      setError("Invalid email or password");
-      setLoading(false);
-    } finally {
-      setLoading(false); // Ensure loading state is reset
-    }
+    handleLogin(email, password);
   };
 
   return (
@@ -120,7 +75,7 @@ export default function SignIn() {
                   email ? "bg-gray-100" : ""
                 }`}
                 placeholder="Username"
-                onChange={handleEmailChange}
+                onChange={(e) => setEmail(e.target.value)}
                 required
                 aria-label="Username"
               />
@@ -133,7 +88,7 @@ export default function SignIn() {
                     password ? "bg-gray-100" : ""
                   }`}
                   placeholder="Password"
-                  onChange={handlePasswordChange}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                   aria-label="Password"
                 />

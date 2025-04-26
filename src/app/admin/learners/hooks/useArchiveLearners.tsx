@@ -108,7 +108,7 @@ export const useArchiveLearners = () => {
       
       if (response.ok) {
         const data = await response.json();
-        console.log("Restore response:", data);
+        // console.log("Restore response:", data);
         setArchiveLoading(false);
         return true;
       } else {

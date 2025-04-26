@@ -43,7 +43,7 @@ export default function RecruiterNavbar() {
   }, []);
 
   const logout = async () => {
-    console.log("logout");
+    // console.log("logout");
   
     // Call the server-side logout route to clear cookies on the server side
     const response = await fetch('/api/logout', {

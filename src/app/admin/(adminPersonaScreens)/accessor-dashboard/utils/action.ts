@@ -39,7 +39,7 @@ export const RejectLearner = async (studentId, reason) => {
     );
 
     if (response.ok) {
-      console.log("Application Rejected successfully.");
+      // console.log("Application Rejected successfully.");
       return true;
     } else {
       console.error("Rejection failed with status:", response.status);

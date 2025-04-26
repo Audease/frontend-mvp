@@ -8,7 +8,7 @@ const Logout = () => {
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
-    console.log("Logging out...");
+    // console.log("Logging out...");
     try {
       const response = await fetch("/api/logout", {
         method: "POST",

@@ -25,7 +25,7 @@ export const useCreateWorkflow = () => {
     try {
       const response = await axios.post('/api/createWorkflow', workflowFormData);
       if (response.status === 201) {
-        console.log('Workflow created successfully:', response.data);
+        // console.log('Workflow created successfully:', response.data);
         setIsWorkflowSuccessModal(true);
         closeWorkflowModal();
         // Clear form data after success

@@ -41,7 +41,7 @@ function ResetPasswordContent() {
     useEffect(() => {
         const tokenUrl = searchParams.get('token');
         setToken(tokenUrl)
-        console.log(token)
+        // console.log(token)
     
 
         if (tokenUrl) {
@@ -96,12 +96,12 @@ function ResetPasswordContent() {
             password: oldPassword
         }
 
-        console.log(payload)
+        // console.log(payload)
 
         if (!error && token) {
             try {
                 const response = await axios.post('https://backend-mvp-dev-535547563935.europe-west4.run.app/v1/auth/reset-password', payload);
-                console.log("New password set", response.data);
+                // console.log("New password set", response.data);
                 router.push('/reset-password/reset-successful');
 
             } catch (err) {

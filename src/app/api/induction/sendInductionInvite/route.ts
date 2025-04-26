@@ -24,13 +24,13 @@ export async function POST(req: NextRequest) {
   try {
     // Get request body and log it
     const requestBody = await req.text();
-    console.log("Raw request body:", requestBody);
+    // console.log("Raw request body:", requestBody);
     
     // Parse JSON
     let payload;
     try {
       payload = JSON.parse(requestBody);
-      console.log("Parsed payload:", payload);
+      // console.log("Parsed payload:", payload);
     } catch (e) {
       console.error("Failed to parse JSON:", e);
       return NextResponse.json(
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
 
     // Get response body
     const responseBody = await response.text();
-    console.log("Backend response:", response.status, responseBody);
+    // console.log("Backend response:", response.status, responseBody);
 
     if (response.ok) {
       return NextResponse.json({ 

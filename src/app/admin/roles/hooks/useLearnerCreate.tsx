@@ -26,7 +26,7 @@ export const useCreateLearner = () => {
     try {
       const response = await axios.post('/api/createLearner', learnerFormData);
       if (response.status === 201) {
-        console.log('Learner created successfully:', response.data);
+        // console.log('Learner created successfully:', response.data);
         setIsLearnerSuccessModal(true);
         closeLearnerModal();
         // Clear form data after success

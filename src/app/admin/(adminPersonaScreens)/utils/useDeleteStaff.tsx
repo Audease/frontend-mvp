@@ -7,7 +7,7 @@ export const useDeleteStaff = () => {
   const [failureToast, setFailureToast] = useState(false);
 
   const handleRemove = async (staffID) => {
-    console.log("Deleting staff with ID:", staffID);
+    // console.log("Deleting staff with ID:", staffID);
     setLoading(true);
     let deleteSuccess = await DeleteStaff(staffID);
     setLoading(false);

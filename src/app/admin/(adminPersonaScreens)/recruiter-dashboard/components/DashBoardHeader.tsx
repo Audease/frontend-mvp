@@ -9,9 +9,9 @@ export default function DashboardHeader({ roleName }) {
       <div>
         <h3 className="font-medium text-2xl pl-3">{roleName} Dashboard</h3>
       </div>
-      <div className="py-1 hidden xl:flex">
+      {/* <div className="py-1 hidden xl:flex">
         <LuPencil className="text-dashboardButtons w-10 h-5" />
-      </div>
+      </div> */}
     </div>
   );
 }

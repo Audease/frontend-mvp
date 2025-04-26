@@ -100,7 +100,7 @@ function ResetPasswordContent() {
 
         if (!error && token) {
             try {
-                const response = await axios.post('https://audease-dev.onrender.com/v1/auth/reset-password', payload);
+                const response = await axios.post('https://backend-mvp-dev-535547563935.europe-west4.run.app/v1/auth/reset-password', payload);
                 console.log("New password set", response.data);
                 router.push('/reset-password/reset-successful');
 

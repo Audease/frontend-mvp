@@ -15,11 +15,11 @@ export function MeetingFormDialog({ isOpen, onOpenChange, onSubmit, loading }) {
   const [activeTab, setActiveTab] = useState("manual");
   
   const handleFormSubmit = (formData) => {
-    console.log("MeetingFormDialog received submission:", formData);
+    // console.log("MeetingFormDialog received submission:", formData);
     
     // Determine which tab was used based on presence of meetingInfo
     const tabUsed = formData.meetingInfo ? "paste" : "manual";
-    console.log("Tab used for submission:", tabUsed);
+    // console.log("Tab used for submission:", tabUsed);
     
     // Call the parent's onSubmit
     onSubmit(formData);

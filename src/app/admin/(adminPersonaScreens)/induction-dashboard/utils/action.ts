@@ -18,7 +18,7 @@ export const SendEmail = async (studentId) => {
       if (!response.ok) {
         return false;
       }
-      console.log("Application sent successfully");
+      // console.log("Application sent successfully");
     } catch (error) {
       console.error("Error sending application:", error);
     }

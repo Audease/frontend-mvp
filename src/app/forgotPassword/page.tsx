@@ -36,7 +36,7 @@ export default function ForgotPassword() {
     }
 
     // localStorage.setItem("email", JSON.stringify(email));
-    console.log(forgotPasswordEmail);
+    // console.log(forgotPasswordEmail);
   };
 
   let passwordFormComponent;

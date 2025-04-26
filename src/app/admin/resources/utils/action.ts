@@ -44,7 +44,7 @@ export const deleteDocument = async (docId) => {
     );
     return response;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return { error: error.message, status: "failed" };
   }
 };
@@ -62,7 +62,7 @@ export const deleteFolder = async (folderId) => {
     );
     return response;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return { error: error.message, status: "failed" };
   }
 };

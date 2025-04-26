@@ -274,7 +274,7 @@ const CloudinaryUploader = ({ onUploadComplete }) => {
           onUploadComplete(response);
         }
       }, 1000); // Brief delay to show 100% completion
-      console.log('Upload response:', response);
+      // console.log('Upload response:', response);
       return (response as { secure_url: string }).secure_url;
     } catch (err) {
       setError('Failed to upload file. Please try again.');

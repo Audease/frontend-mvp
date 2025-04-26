@@ -70,7 +70,7 @@ export default function FormStep() {
   }, [currentStep]);
 
   const handleSubmit = async () => {
-    console.log("Clicking")
+    // console.log("Clicking")
     setLoading(true);
     setError("");
 

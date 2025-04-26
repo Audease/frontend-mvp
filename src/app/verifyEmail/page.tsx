@@ -11,7 +11,7 @@ export default function VerifyEmail() {
 
   useEffect(() => {
     const registeredEmail = (localStorage.getItem("userEmail"));
-    console.log(registeredEmail)
+    // console.log(registeredEmail)
     if (registeredEmail && registeredEmail) {
       setUserEmail(registeredEmail);
     }

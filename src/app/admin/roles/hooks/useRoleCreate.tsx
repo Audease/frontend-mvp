@@ -45,7 +45,7 @@ export const useCreateRole = () => {
   const closeRoleSuccessModal = () => {
     setIsRoleSuccessModal(false);
     setRoleFormData({ roleName: "", permission: []});
-    console.log("Succesfully closed")
+    // console.log("Succesfully closed")
     setRoleDataKey(prevKey => prevKey + 1); 
   };
 

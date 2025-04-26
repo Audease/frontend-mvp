@@ -94,8 +94,8 @@ export default function BKSDDashboardTable({
                     <input
                       type="checkbox"
                       className="staff-checkbox h-3 w-3 text-tableText2 rounded-sm focus:ring-tgrey2"
-                      onChange={() => handleCheckboxChange(row.id)}
-                      checked={!!checkedItems[row.id]}
+                      onChange={() => row.application_mail !== "Sent" &&  handleCheckboxChange(row.id)}
+                      checked={row.application_mail !== "Sent" && !!checkedItems[row.id]}
                     />
                   </span>
                   {row.name}
@@ -129,7 +129,7 @@ export default function BKSDDashboardTable({
                   >
                     ...
                   </p>
-                  {editOptionsVisible === index && (
+                  {row.application_mail !== "Sent" && editOptionsVisible === index && (
                     <div
                       ref={menuRef}
                       className="bg-white shadow-lg rounded-lg p-2 font-medium w-32 absolute left-[-80px] border-2 right-0 text-tblack3 space-y-4 z-10 top-10"

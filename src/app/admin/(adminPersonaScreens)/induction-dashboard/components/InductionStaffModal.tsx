@@ -44,7 +44,7 @@ export default function InductionStaffModal({ show, onClose }) {
         </div>
 
         {/* Search Bar */}
-        <div className="flex flex-col space-y-2 px-4">
+        {/* <div className="flex flex-col space-y-2 px-4">
           <label htmlFor="" className="font-normal text-sm text-tgrey3">
             Search
           </label>
@@ -53,7 +53,7 @@ export default function InductionStaffModal({ show, onClose }) {
             placeholder="Enter staff name"
             className="border-1 border-tgrey2 rounded py-1 focus:ring-gold1 focus:border-none focus:ring"
           />
-        </div>
+        </div> */}
 
         {/* Line Break */}
         <hr className="my-2 mx-4" />

@@ -93,7 +93,7 @@ export default function DocView({ onBackClick, userId }: DocViewProps) {
 
   // Render
   return (
-    <div className="space-y-4 border-tgrey2 p-4 mb-8 rounded-xl border bg-tgrey4 text-card-foreground shadow">
+    <div className="space-y-4 border-tgrey2 p-4 mb-8 rounded-xl border bg-tgrey4 text-card-foreground shadow m-4 lg:mx-8">
       {/* Header */}
       <Header
         onBackClick={onBackClick}

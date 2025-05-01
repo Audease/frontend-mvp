@@ -21,7 +21,7 @@ const ProgressStepper = ({data}) => {
         
         {/* Steps */}
         {data.map((step, index) => (
-          <div key={step.id} className="relative flex flex-col ">
+          <div key={step.id} className="relative flex flex-col">
             {/* Circle */}
             <div 
               className={`w-6 h-6 mx-2 rounded-full border-2 flex items-center justify-center z-10 
@@ -39,7 +39,7 @@ const ProgressStepper = ({data}) => {
             </div>
             
             {/* Label */}
-            <span className={`mt-3 text-xs 
+            <span className={`mt-3 md:text-xs text-[8px]
               ${step.status === 'completed' || step.status === 'current' ? 
                 'text-gray-900' : 'text-gray-500'}`}>
               {step.label}

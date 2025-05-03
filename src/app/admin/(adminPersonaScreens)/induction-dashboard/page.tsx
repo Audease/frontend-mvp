@@ -61,14 +61,14 @@ export default function AdminBKSDDashboard({
   };
 
   const handleInviteFormSubmit = async (values) => {
-    console.log("handleInviteFormSubmit received values:", values);
+    // console.log("handleInviteFormSubmit received values:", values);
     
     // Store the form values
     setData(values);
     
     // Check if this is from paste tab (has meetingInfo) or manual tab
     const isPasteTab = values.meetingInfo && values.meetingInfo.trim() !== '';
-    console.log("Form submission from tab:", isPasteTab ? "paste" : "manual");
+    // console.log("Form submission from tab:", isPasteTab ? "paste" : "manual");
     
     // Always send the data regardless of which tab
     await sendInvites(checkedIds, values);

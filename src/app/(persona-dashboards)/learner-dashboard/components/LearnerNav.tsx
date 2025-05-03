@@ -5,17 +5,22 @@ import React, { useEffect, useRef, useState } from "react";
 import Notifications from "../../../components/dashboard/Notifications";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
+import { Menu, X, Bell, HelpCircle, LogOut } from "lucide-react";
 
 const LearnerNav = () => {
   const [notifications, setNotifications] = useState(false);
   const [profileOptions, setProfileOptions] = useState(false);
-  const [userEmailFirstLetter, setuserEmailFirstLetter] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userEmailFirstLetter, setUserEmailFirstLetter] = useState("");
   const menuRef = useRef(null);
+  const notificationRef = useRef(null);
   const router = useRouter();
 
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       setProfileOptions(false);
+    }
+    if (notificationRef.current && !notificationRef.current.contains(event.target)) {
       setNotifications(false);
     }
   };
@@ -29,10 +34,16 @@ const LearnerNav = () => {
 
   const toggleNotifications = () => {
     setNotifications((prevState) => !prevState);
+    if (profileOptions) setProfileOptions(false);
   };
 
-  const toggleVisibility = () => {
+  const toggleProfileOptions = () => {
     setProfileOptions((prevState) => !prevState);
+    if (notifications) setNotifications(false);
+  };
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen((prevState) => !prevState);
   };
 
   const logout = async () => {
@@ -50,92 +61,183 @@ const LearnerNav = () => {
   const userEmail = useAppSelector(
     (state) => state.authReducer.value.userEmail
   );
+  
   useEffect(() => {
     if (userEmail) {
       const firstLetter = userEmail.charAt(0).toUpperCase();
-      setuserEmailFirstLetter(firstLetter);
+      setUserEmailFirstLetter(firstLetter);
     }
   }, [userEmail]);
 
   return (
-    <nav className="flex flex-row w-full">
-      {/* Logo */}
-      <div className="flex flex-row items-center justify-center border-r-[1px] border-tgrey2 lg:w-[15%] p-4">
-        <Image
-          src="/audease_logo.png"
-          width={112}
-          height={30}
-          alt="Audease logo"
-        />
-      </div>
-      {/* Navigation and Options */}
-      <div className="flex flex-row justify-between items-center  lg:w-[85%] py-2 px-20">
-        <div className="">
-          <h3 className="font-medium text-base text-tgrey3">Eden College</h3>
-        </div>
-        {/* Profile and Notifications */}
-        <div className="relative flex flex-col ">
-          <div className="flex flex-row space-x-4 py-1">
+    <nav className="w-full shadow-sm bg-white">
+      <div className="max-w-screen-2xl mx-auto">
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex w-full">
+          {/* Logo */}
+          <div className="flex items-center justify-center border-r border-tgrey2 w-[13rem] p-4">
             <Image
-              src="/notification.png"
-              width={32}
-              height={32}
-              alt="Notification button"
-              onClick={toggleNotifications}
-              aria-expanded={notifications}
+              src="/audease_logo.png"
+              width={112}
+              height={30}
+              alt="Audease logo"
+              className="object-contain"
             />
-            <div
-              className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center p-2 cursor-pointer"
-              onClick={toggleVisibility}
-              aria-expanded={profileOptions}
-              aria-haspopup="true"
-            >
-              <p className="text-tgrey3 text-h5 font-semibold">
-                {userEmailFirstLetter}
-              </p>
+          </div>
+          
+          {/* Navigation and Options */}
+          <div className="flex justify-between items-center flex-grow px-6 py-3">
+            <div className="flex items-center">
+              <h3 className="font-medium text-tgrey3 transition-colors">Eden College</h3>
+            </div>
+            
+            {/* Profile and Notifications */}
+            <div className="flex items-center space-x-4">
+              <div className="relative" ref={notificationRef}>
+                <button
+                  className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                  onClick={toggleNotifications}
+                  aria-expanded={notifications}
+                  aria-label="Notifications"
+                >
+                  <Bell size={20} className="text-gray-600" />
+                </button>
+                {notifications && (
+                  <div className="absolute right-0 mt-2 z-10">
+                    <Notifications />
+                  </div>
+                )}
+              </div>
+              
+              <div className="relative" ref={menuRef}>
+                <button
+                  className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
+                  onClick={toggleProfileOptions}
+                  aria-expanded={profileOptions}
+                  aria-haspopup="true"
+                  aria-label="User profile"
+                >
+                  <p className="text-tgrey3 font-semibold">
+                    {userEmailFirstLetter}
+                  </p>
+                </button>
+                
+                {profileOptions && (
+                  <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg py-2 w-48 z-10">
+                    <button 
+                      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                    >
+                      <HelpCircle size={16} className="mr-2" />
+                      <span>Help and Support</span>
+                    </button>
+                    <button 
+                      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                      onClick={logout}
+                    >
+                      <LogOut size={16} className="mr-2" />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          {profileOptions && (
-            <div className="absolute top-14 bg-white shadow-lg rounded-lg p-4 font-medium w-48 right-[0rem] space-y-4">
-              {/* Help and support  */}
-              <div className="flex flex-row">
-                <div>
-                  <Image
-                    src={"/help.png"}
-                    width={20}
-                    height={20}
-                    alt="Help and Support"
-                  />
-                </div>
-                <div>
-                  <p className="px-3 hover:text-dashboardButtons text-sm cursor-pointer">
-                    Help and Support
-                  </p>
-                </div>
+        </div>
+        
+        {/* Mobile Navigation */}
+        <div className="md:hidden">
+          <div className="flex items-center justify-between p-4">
+            <Image
+              src="/audease_logo.png"
+              width={100}
+              height={28}
+              alt="Audease logo"
+              className="object-contain"
+            />
+            
+            <div className="flex items-center space-x-2">
+              <button
+                className="p-2 rounded-full hover:bg-gray-100 transition-colors relative"
+                onClick={toggleNotifications}
+                aria-expanded={notifications}
+                aria-label="Notifications"
+              >
+                <Bell size={20} className="text-gray-600" />
+              </button>
+              
+              <button
+                className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center"
+                aria-expanded={profileOptions}
+                aria-haspopup="true"
+                aria-label="User profile"
+              >
+                <p className="text-tgrey3 font-semibold">
+                  {userEmailFirstLetter}
+                </p>
+              </button>
+              
+              <button
+                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                onClick={toggleMobileMenu}
+                aria-expanded={mobileMenuOpen}
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? (
+                  <X size={20} className="text-gray-600" />
+                ) : (
+                  <Menu size={20} className="text-gray-600" />
+                )}
+              </button>
+            </div>
+          </div>
+          
+          {/* Mobile menu dropdown */}
+          {mobileMenuOpen && (
+            <div className="bg-white border-t border-gray-200 py-2">
+              <div className="px-4 py-3 border-b border-gray-200">
+                <h3 className="font-medium text-tgrey3">Eden College</h3>
               </div>
-              {/* Logout */}
-              <div className="flex flex-row">
-                <div>
-                  <Image
-                    src={"/logout.png"}
-                    width={20}
-                    height={20}
-                    alt="Help and Support"
-                  />
-                </div>
-                <div>
-                  <p
-                    className="px-3 hover:text-dashboardButtons text-sm cursor-pointer"
-                    onClick={logout}
-                  >
-                    Logout
-                  </p>
-                </div>
+              <div className="px-4 py-2">
+                <button className="flex items-center w-full py-2 text-sm text-gray-700">
+                  <HelpCircle size={16} className="mr-2" />
+                  <span>Help and Support</span>
+                </button>
+                <button 
+                  className="flex items-center w-full py-2 text-sm text-gray-700"
+                  onClick={logout}
+                >
+                  <LogOut size={16} className="mr-2" />
+                  <span>Logout</span>
+                </button>
               </div>
             </div>
           )}
-
-          {notifications && <Notifications />}
+          
+          {/* Mobile notifications dropdown */}
+          {notifications && (
+            <div className="fixed inset-x-0 top-[72px] bg-white shadow-lg z-10 max-h-[70vh] overflow-y-auto">
+              <Notifications />
+            </div>
+          )}
+          
+          {/* Mobile profile options dropdown */}
+          {profileOptions && !mobileMenuOpen && (
+            <div className="fixed inset-x-0 top-[72px] bg-white shadow-lg z-10">
+              <div className="py-2">
+                <button className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">
+                  <HelpCircle size={16} className="mr-2" />
+                  <span>Help and Support</span>
+                </button>
+                <button 
+                  className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-100"
+                  onClick={logout}
+                >
+                  <LogOut size={16} className="mr-2" />
+                  <span>Logout</span>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </nav>

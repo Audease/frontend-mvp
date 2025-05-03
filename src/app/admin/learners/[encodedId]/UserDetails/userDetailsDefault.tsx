@@ -131,8 +131,8 @@ export default function UserDetailsDefault({
   const userRole = useUserRole();
 
   return (
-    <div className="space-y-4 border-t-[1px] border-tgrey2 border-l-[1px] p-8">
-      <div className="pb-8">
+    <div className="space-y-4 border-t-[1px] border-tgrey2 border-l-[1px] p-4 md:p-8">
+      <div className="md:pb-8 pb-2">
         <p className="font-normal text-sm text-tgrey3">
           Your Application Status
         </p>
@@ -166,7 +166,7 @@ export default function UserDetailsDefault({
         </div>
 
         <div className="space-y-6">
-          <div className="flex flex-row space-x-6">
+          <div className="flex md:flex-row flex-col md:space-x-6 md:space-y-0 space-y-4">
             <div className="flex flex-col space-y-2">
               <label htmlFor="learnerName" className="text-sm text-tgrey3">
                 Name
@@ -177,7 +177,7 @@ export default function UserDetailsDefault({
                 name="learnerName"
                 value={formData.learnerName}
                 onChange={handleInputChange}
-                className="rounded-lg py-2 px-3 border border-gray-400 w-60 focus:ring focus:ring-dashboardButtons focus:border-transparent"
+                className="rounded-lg py-2 px-3 border border-gray-400 md:w-60 focus:ring focus:ring-dashboardButtons focus:border-transparent"
                 disabled={userRole !== "admin" || isLoading}
               />
             </div>
@@ -193,17 +193,17 @@ export default function UserDetailsDefault({
                   name="learnerUserName"
                   value={formData.learnerUserName}
                   onChange={handleInputChange}
-                  className="rounded-l-lg py-2 px-3 border border-gray-400 w-52 focus:ring focus:ring-dashboardButtons focus:border-transparent"
+                  className="rounded-l-lg py-2 px-3 border border-gray-400 w-[9rem] md:w-52 focus:ring focus:ring-dashboardButtons focus:border-transparent"
                   disabled={userRole !== "admin" || isLoading}
                 />
-                <span className="rounded-r-lg py-2 px-3 border border-l-0 border-gray-400 bg-tgrey4 w-24">
+                <span className="rounded-r-lg py-2 px-3 border border-l-0 border-gray-400 bg-tgrey4 md:w-24">
                   .learner
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="bg-tgrey4 p-3 rounded-lg w-[35.5rem]">
+          <div className="bg-tgrey4 p-3 rounded-lg md:w-[35.5rem]">
             <p className="text-xs text-tgrey3">
               Note : You can only change username by reaching out to your
               school.
@@ -256,7 +256,7 @@ export default function UserDetailsDefault({
                 </button>
               )}
             </div>
-            <div className="bg-tgrey4 p-3 rounded-lg w-[30rem]">
+            <div className="bg-tgrey4 p-3 rounded-lg md:w-[30rem]">
               <p className="text-xs text-tgrey3">
                 Note : You can only change email by reaching out to your school.
               </p>
@@ -274,7 +274,7 @@ export default function UserDetailsDefault({
                 name="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
-                className="rounded-lg py-2 px-3 border border-gray-400 w-60 focus:ring focus:ring-dashboardButtons focus:border-transparent"
+                className="rounded-lg py-2 px-3 border border-gray-400 md:w-60 focus:ring focus:ring-dashboardButtons focus:border-transparent"
                 disabled={userRole !== "admin" || isLoading}
               />
               {userRole === "admin" && (
@@ -287,7 +287,7 @@ export default function UserDetailsDefault({
                 </button>
               )}
             </div>
-            <div className="bg-tgrey4 p-3 rounded-lg w-[30rem]">
+            <div className="bg-tgrey4 p-3 rounded-lg md:w-[30rem]">
               <p className="text-xs text-tgrey3">
                 Note : You can only change phone number by reaching out to your
                 school.

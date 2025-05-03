@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { TokenManager } from '../utils/checkAndRefreshToken';
+import { NextRequest, NextResponse } from "next/server";
+import { TokenManager } from "../utils/checkAndRefreshToken";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function GET(req: NextRequest) {
- const accessToken = await TokenManager();
+  const accessToken = await TokenManager();
 
   if (!accessToken) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
@@ -17,10 +17,16 @@ export async function GET(req: NextRequest) {
   const search = searchParams.get('search') || '';
   const status = searchParams.get('status') || ''; 
 
-  let url;
-    if (!search && !status) {
-      url = `/v1/admin/new-staff?page=${page}&limit=${10}`;
-    }
+  // Build the URL based on parameters
+  let url = `/v1/admin/new-staff?page=${page}&limit=${limit}`;
+  
+  if (search) {
+    url += `&search=${search}`;
+  }
+  
+  if (status) {
+    url += `&status=${status}`;
+  }
 
   try {
     // Pass the page and limit in the request URL
@@ -30,9 +36,11 @@ export async function GET(req: NextRequest) {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "Pragma": "no-cache",
         },
-        cache: 'force-cache',
-        next: { tags: ['stafflist'] }, 
+        cache: 'no-store', // Use no-store to prevent caching issues with filters
+        next: { revalidate: 0 } // Disable caching
       }
     );
 

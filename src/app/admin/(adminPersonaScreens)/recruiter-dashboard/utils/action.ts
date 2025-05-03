@@ -15,7 +15,7 @@ const DeleteStudent = async (studentId) => {
     if (!response.ok) {
       throw new Error("Failed to delete student");
     }
-    console.log("Student deleted successfully");
+    // console.log("Student deleted successfully");
   } catch (error) {
     console.error("Error deleting student:", error);
   }

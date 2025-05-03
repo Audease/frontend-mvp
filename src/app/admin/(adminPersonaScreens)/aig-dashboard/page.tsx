@@ -34,7 +34,7 @@ export default function Page() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    // console.log(values);
   }
 
   function onError(errors: any) {

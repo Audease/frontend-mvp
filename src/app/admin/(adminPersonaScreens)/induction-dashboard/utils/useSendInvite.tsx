@@ -9,7 +9,7 @@ const useSendInvite = () => {
   const [showFailureToast, setShowFailureToast] = useState(false);
 
   const sendInvites = async (learnerIds, payload) => {
-    console.log("sendInvites called with payload:", payload);
+    // console.log("sendInvites called with payload:", payload);
     
     setloadingProgress(true);
     const successfulIds = [];
@@ -17,12 +17,12 @@ const useSendInvite = () => {
   
     // Determine if this is from the paste tab by checking for meetingInfo
     const isPasteTab = payload.meetingInfo && payload.meetingInfo.trim() !== '';
-    console.log("Detected submission from tab:", isPasteTab ? "paste" : "manual");
+    // console.log("Detected submission from tab:", isPasteTab ? "paste" : "manual");
   
     // Process each learner
     for (const id of learnerIds) {
       try {
-        console.log(`Sending invite to learner ${id}`);
+        // console.log(`Sending invite to learner ${id}`);
         
         const response = await fetch(`/api/induction/sendInductionInvite?studentId=${id}`, {
           method: 'POST',
@@ -35,7 +35,7 @@ const useSendInvite = () => {
   
         // Log the response for debugging
         const responseText = await response.text();
-        console.log(`Response for learner ${id}:`, response.status, responseText);
+        // console.log(`Response for learner ${id}:`, response.status, responseText);
         
         // Try to parse the response if possible
         let responseData;
@@ -46,7 +46,7 @@ const useSendInvite = () => {
         }
   
         if (response.ok) {
-          console.log(`Successfully sent invite to learner ${id}`);
+          // console.log(`Successfully sent invite to learner ${id}`);
           successfulIds.push(id);
         } else {
           console.error(`Failed to send invite to learner ${id}:`, responseData);

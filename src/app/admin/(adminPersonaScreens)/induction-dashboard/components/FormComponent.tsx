@@ -124,11 +124,11 @@ const FormComponent = ({ closeModal, onSubmit, loading }) => {
   }, [meetingInfo, activeTab]);
 
   const handleSubmit = (values) => {
-    console.log("Form submission started", {
-      activeTab,
-      values,
-      errors: form.formState.errors,
-    });
+    // console.log("Form submission started", {
+    //   activeTab,
+    //   values,
+    //   errors: form.formState.errors,
+    // });
 
     setDebugMessage("Form submitted with tab: " + activeTab);
 
@@ -150,7 +150,7 @@ const FormComponent = ({ closeModal, onSubmit, loading }) => {
       };
     }
 
-    console.log("Submitting formatted data:", formattedData);
+    // console.log("Submitting formatted data:", formattedData);
 
     // Call the parent component's onSubmit
     onSubmit(formattedData);
@@ -175,7 +175,7 @@ const FormComponent = ({ closeModal, onSubmit, loading }) => {
           className="w-full"
           onValueChange={(value) => {
             setActiveTab(value);
-            console.log("Tab changed to:", value);
+            // console.log("Tab changed to:", value);
           }}
         >
           <TabsList className="grid w-full grid-cols-2 mb-6">
@@ -288,7 +288,7 @@ Time: May 1, 2024 2:00 PM - 3:00 PM`}
                       {...field}
                       onChange={(e) => {
                         field.onChange(e);
-                        console.log("Textarea value changed:", e.target.value);
+                        // console.log("Textarea value changed:", e.target.value);
                       }}
                     />
                   </FormControl>
@@ -310,7 +310,7 @@ Time: May 1, 2024 2:00 PM - 3:00 PM`}
                 onClick={() => {
                   const meetingInfo = form.getValues("meetingInfo");
                   if (meetingInfo) {
-                    console.log("Manual submit with meetingInfo:", meetingInfo);
+                    // console.log("Manual submit with meetingInfo:", meetingInfo);
                     onSubmit({ meetingInfo });
                     setDebugMessage("Manually submitted with meetingInfo");
                   } else {

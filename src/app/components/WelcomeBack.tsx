@@ -7,7 +7,7 @@ export default function WelcomeBack({boldText, smallText}) {
       <div className="m-10 lg:max-h-80 lg:max-w-80 lg:m-10">
         {/* audease logo */}
         <div className="flex flex-row justify-center pt-4 md:py-8 lg:justify-start">
-          <Link href="/">
+          <Link href="/signIn">
             <Image
               src="/audease_logo.png"
               width={132}

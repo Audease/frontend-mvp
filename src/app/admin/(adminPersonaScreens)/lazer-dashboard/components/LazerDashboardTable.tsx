@@ -148,8 +148,8 @@ export default function LazerDashboardTable({
                     <input
                       type="checkbox"
                       className="staff-checkbox h-3 w-3 text-tableText2 rounded-sm focus:ring-tgrey2"
-                      onChange={() => handleCheckboxChange(row.id)}
-                      checked={!!checkedItems[row.id]}
+                      onChange={() => row.lazer_status !== "Approved" && handleCheckboxChange(row.id)}
+                      checked={row.lazer_status !== "Approved" && !!checkedItems[row.id]}
                     />
                   </span>
 
@@ -204,7 +204,7 @@ export default function LazerDashboardTable({
                   >
                     ...
                   </p>
-                  {editOptionsVisible === index && (
+                  {row.lazer_status !== "Approved" && editOptionsVisible === index && (
                     <div
                       ref={menuRef}
                       className="bg-white shadow-lg rounded-lg p-2 font-medium w-32 absolute left-[-80px]  border-2 right-0 text-tblack3 space-y-4 z-10 top-10"

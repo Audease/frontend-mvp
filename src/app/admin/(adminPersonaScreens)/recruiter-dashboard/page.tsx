@@ -30,7 +30,7 @@ export default function AdminRecruiterdashboard({
   const [apiError, setApiError] = useState(false);
   const [apiSuccess, setApiSuccess] = useState(false);
 
-  const tabs = useMemo(() => ["All", "Recent", "Archive"], []);
+  const tabs = useMemo(() => ["All", "Recent"], []);
 
   // Fetch learners data hook
   const {
@@ -53,7 +53,7 @@ export default function AdminRecruiterdashboard({
     const tabWidth = 7 / tabs.length;
     setActiveBarStyle({
       width: `${tabWidth}%`,
-      transform: `translateX(${activeIndex * 180}%)`,
+      transform: `translateX(${activeIndex * 100}%)`,
     });
   }, [activeTab, tabs]);
 
@@ -120,19 +120,23 @@ export default function AdminRecruiterdashboard({
 
   // Handle filtering
   const onFilterClick = (funding, course) => {
-    handleFetchLearnersData(1, 10, funding, course, "", "");
+    handleFetchLearnersData(1, 10, funding, course, "", "asc");
   };
 
   // Handle search input
   const searchValue = (searchValue) => {
     setSearchQuery(searchValue);
-    handleFetchLearnersData(1, 10, "", "", searchValue, "");
+    handleFetchLearnersData(1, 10, "", "", searchValue, "asc");
   };
 
   // Handle tab switching
   const onTabClick = (tab) => {
     setActiveTab(tab);
-    if (tab === "All") handleFetchLearnersData(1, 10, "", "", "", "");
+    if (tab === "All") {handleFetchLearnersData(1, 10, "", "", "", "asc")
+
+    } else if (tab === "Recent") {
+      handleFetchLearnersData(1, 10, "", "", "", "desc");
+    } 
   };
 
   // Handle edit modal close
@@ -199,7 +203,7 @@ export default function AdminRecruiterdashboard({
       {/* Tabs and Actions */}
       <section className="mt-4">
         <div className="flex flex-col md:flex-row justify-between">
-          <div className="flex space-x-6">
+          <div className="flex space-x-6 items-center">
             {tabs.map((tab) => (
               <h2
                 key={tab}

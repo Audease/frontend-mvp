@@ -43,7 +43,7 @@ export function InputFieldWithDropdown() {
 
   const handleChange = (e) => {
     setNoOfEmployee(e.target.value);
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   return (

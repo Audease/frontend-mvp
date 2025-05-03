@@ -33,7 +33,7 @@ export default function Staff() {
 
   const { assignStaffRole, fetchStaffData } = useStaff();
 
-  const tabs = useMemo(() => ["All", "Recent", "Deleted"], []);
+  const tabs = useMemo(() => ["All", /* "Recent", "Deleted" **/], []);
 
   const handleRoleSelect = (index, role) => {
     setSelectedRole((prev) => ({
@@ -48,7 +48,7 @@ export default function Staff() {
 
       // Assign staff role
       const newStaffData = await assignStaffRole(checkedItems, selectedRole);
-
+      
       // Revalidate and fetch updated staff data
       staffRevalidation();
       handleFetchStaffData({page: currentPage});
@@ -159,7 +159,7 @@ export default function Staff() {
       {/* Selection and active bar */}
       <div className="flex flex-col mt-3">
         <div className="flex flex-col xl:flex-row justify-between font-medium text-sm text-tgrey3">
-          <div className="flex flex-row space-x-6">
+          <div className="flex flex-row space-x-6 items-center">
             {tabs.map((tab) => (
               <h2
                 key={tab}
@@ -206,7 +206,7 @@ export default function Staff() {
               </button>
             </div>
             <FilterButton
-              options={["Assigned", "Unassigned"]}
+              options={["assigned", "unassigned"]}
               onSelect={handleFilter}
               label={"Filter"}
             />

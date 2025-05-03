@@ -22,7 +22,7 @@ export const GetPersonaStaff = async ({personaPermission}) => {
       if (!response.ok) {
         return false;
       }
-      console.log("Staff retrieval succesful");
+      // console.log("Staff retrieval succesful");
     } catch (error) {
       console.error("Error retrieving staff:", error);
     }
@@ -46,7 +46,7 @@ export const GetPersonaStaff = async ({personaPermission}) => {
       if (!response.ok) {
         throw new Error("Failed to delete student");
       }
-      console.log("Student deleted successfully");
+      // console.log("Student deleted successfully");
     } catch (error) {
       console.error("Error deleting student:", error);
     }

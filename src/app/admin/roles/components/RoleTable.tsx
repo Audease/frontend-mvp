@@ -368,9 +368,9 @@ export default function RoleTable({ activeTab = "All" }) {
                           : { top: "0" }),
                       }}
                     >
-                      {activeTab !== "Archive" && (
+                      {/* {activeTab !== "Archive" && (
                         <p className="hover:text-gold1 cursor-pointer">Edit</p>
-                      )}
+                      )} */}
                       <hr />
                       {activeTab === "Archive" ? (
                         <p
@@ -384,7 +384,7 @@ export default function RoleTable({ activeTab = "All" }) {
                           className="text-tred1 hover:text-gold1 cursor-pointer"
                           onClick={() => openArchiveModal(row.id, row.role)}
                         >
-                          Move to Trash
+                          Archive
                         </p>
                       )}
                     </div>

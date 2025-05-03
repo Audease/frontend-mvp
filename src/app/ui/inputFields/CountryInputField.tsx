@@ -28,7 +28,7 @@ export default function CountryInputField() {
   const handleChange = (e) => {
     const userSelectedCountry = e.target.value;
     setSelectedCountry(userSelectedCountry);
-    console.log(userSelectedCountry);
+    // console.log(userSelectedCountry);
   };
 
   return (

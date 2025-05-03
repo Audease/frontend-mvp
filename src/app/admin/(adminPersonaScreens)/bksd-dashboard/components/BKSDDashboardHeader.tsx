@@ -12,9 +12,9 @@ export default function BKSDDashboardHeader({ roleName }) {
       </div>
 
       {/* Pencil  */}
-      <div className="py-1 hidden xl:flex">
+      {/* <div className="py-1 hidden xl:flex">
         <LuPencil className="text-dashboardButtons w-10 h-5 " />
-      </div>
+      </div> */}
     </div>
   );
 }

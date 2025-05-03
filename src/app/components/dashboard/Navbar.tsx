@@ -101,7 +101,7 @@ export default function Nav() {
     <nav className="bg-white shadow-sm px-4 py-3">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
-        <Link href="/" className="flex items-center">
+        <Link href="/sign-In" className="flex items-center">
           <Image
             src="/audease_logo.png"
             width={100}

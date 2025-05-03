@@ -14,20 +14,30 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const page = searchParams.get("page") || "1";
   const limit = searchParams.get("limit") || "10";
+  const certificateStatus = searchParams.get("certificate_status");
+  const searchValue = searchParams.get("search") || "";
+
+  const params = new URLSearchParams({
+    page: page.toString(),
+    limit: limit.toString(),
+  });
+  if (searchValue) {
+    params.append("search", searchValue);
+  }
+  if (certificateStatus) {
+    params.append("certificate_status", certificateStatus);
+  }
+  const url = `${apiUrl}/v1/certificate/students/filter?${params.toString()}`;
 
   try {
-    // Pass the page and limit in the request URL
-    const response = await fetch(
-      apiUrl + `/v1/certificate/students?page=${page}&limit=${limit}`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        cache: "force-cache",
-        next: { tags: ["certificateLearnersList"] },
-      }
-    );
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      cache: "force-cache",
+      next: { tags: ["certificateLearnersList"] },
+    });
 
     if (response.ok) {
       const data = await response.json();

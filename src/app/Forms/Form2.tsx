@@ -3,6 +3,7 @@ import { BackButton } from "../components/button";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import counties from "../data/counties .json";
+import { useState, useRef, useEffect } from "react";
 
 export default function Form2({
   formData,
@@ -19,6 +20,26 @@ export default function Form2({
     phoneNumber,
   } = formData;
 
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const suggestionRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        suggestionRef.current &&
+        !suggestionRef.current.contains(event.target)
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -34,12 +55,105 @@ export default function Form2({
     }));
   };
 
+  const fetchAddressDetails = async (postcode) => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch(
+        `https://api.postcodes.io/postcodes/${postcode}`
+      );
+      const data = await response.json();
+
+      if (data.status === 200) {
+        setFormData((prev) => ({
+          ...prev,
+          postCode: postcode,
+          streetAddress: data.result.thoroughfare || "",
+          city: data.result.nhs_ha || "",
+          selectedCounty: data.result.primary_care_trust || "",
+        }));
+        setError("");
+      } else {
+        setError("Invalid postcode. Please try again.");
+      }
+    } catch (err) {
+      setError("Error fetching address. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePostcodeChange = async (e) => {
+    const value = e.target.value;
+    handleChange(e);
+
+    if (value.length >= 2) {
+      try {
+        const response = await fetch(
+          `https://api.postcodes.io/postcodes/${value}/autocomplete`
+        );
+        const data = await response.json();
+
+        if (data.status === 200 && data.result) {
+          setSuggestions(data.result);
+          setShowSuggestions(true);
+        } else {
+          setSuggestions([]);
+        }
+      } catch (err) {
+        console.error("Error fetching suggestions:", err);
+      }
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSuggestionClick = async (selectedPostcode) => {
+    await fetchAddressDetails(selectedPostcode);
+    setShowSuggestions(false);
+  };
 
   return (
     <div>
       <div className="text-tblack bg-white rounded-md">
         <form className="p-8" onSubmit={handleSubmit}>
           <div className="mt-4 space-y-6">
+            <div className="relative" ref={suggestionRef}>
+              <input
+                type="text"
+                name="postCode"
+                className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+                  postCode ? "bg-gray-100" : ""
+                }`}
+                value={postCode}
+                placeholder="Post code"
+                onChange={handlePostcodeChange}
+                required
+              />
+
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="absolute z-10 w-full mt-1 bg-white border border-tgrey2 rounded-md shadow-lg max-h-60 overflow-auto">
+                  {suggestions.map((suggestion, index) => (
+                    <div
+                      key={index}
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-tgrey1"
+                      onClick={() => handleSuggestionClick(suggestion)}
+                    >
+                      {suggestion}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {loading && (
+                <p className="text-sm text-tgrey1 mt-1">
+                  Loading address details...
+                </p>
+              )}
+              {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
+            </div>
             <input
               type="text"
               name="streetAddress"
@@ -72,17 +186,7 @@ export default function Form2({
               onChange={handleChange}
               required
             />
-            <input
-              type="text"
-              name="postCode"
-              className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
-                postCode ? "bg-gray-100" : ""
-              }`}
-              value={postCode}
-              placeholder="Post code"
-              onChange={handleChange}
-              required
-            />
+
             <div>
               <select
                 id="county"
@@ -104,7 +208,7 @@ export default function Form2({
             </div>
             <div>
               <div
-                className={`border-tgrey2  rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
+                className={`border-tgrey2 rounded-md p-2 text-h2 text-tgrey1 font-normal w-full focus:border-tgrey2 focus:outline-none focus:ring focus:ring-gold1 ${
                   phoneNumber ? "bg-gray-100" : ""
                 }`}
               >
@@ -135,6 +239,7 @@ export default function Form2({
           </p>
         </div>
       </div>
+
       <BackButton
         buttonText={`Go back`}
         className={`bg-deepGrey mt-4`}

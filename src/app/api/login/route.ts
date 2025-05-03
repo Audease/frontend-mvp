@@ -1,44 +1,63 @@
-// app/api/signup/route.ts
-
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
+import { cookies } from 'next/headers';
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function POST(req: NextRequest) {
   const payload = await req.json();
 
   try {
     const response = await axios.post(
-      "https://audease-dev.onrender.com/v1/auth/login",
+      apiUrl + "/v1/auth/login",
       payload
     );
+
     if (response.status === 200) {
       const {
         token: { access, refresh },
+        permissions, user_id, learner_id, email, name,
       } = response.data;
-      console.log(
-        `"Access token": ${access.token} ${access.expires}, Refresh Token: ${refresh.token}, ${refresh.expires}`
-      );
 
-      const res = new NextResponse(
-        JSON.stringify({ message: "Login Successful" }),
-        {
-          status: 200,
-        }
-      );
+      const responseData = { permissions, user_id, userEmail: email, userName: name };
+      if (learner_id) {
+        responseData['learner_id'] = learner_id;
+      }
 
-      // Set cookies
-      res.cookies.set("accessToken", access.token, {
-        httpOnly: true, // For security, prevent access from JavaScript
-        secure: process.env.NODE_ENV === "production", // Set secure flag on production
-        maxAge: access.expires, // Set expiration time
-        path: "/",
+      const res = new NextResponse(JSON.stringify(responseData), {
+        status: 200,
       });
 
-      res.cookies.set("refreshToken", refresh.token, {
+      // Set accessToken cookie
+      cookies().set({
+        name: 'accessToken',
+        value: access.token,
+        secure: process.env.NODE_ENV === "production" || process.env.NODE_ENV as string === "staging",
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        maxAge: access.expires,
+        path: '/',
+        sameSite: "strict",
+      });
+
+      // Set refreshToken cookie
+      cookies().set({
+        name: 'refreshToken',
+        value: refresh.token,
+        secure: process.env.NODE_ENV === "production" || process.env.NODE_ENV as string === "staging",
+        httpOnly: true,
         maxAge: refresh.expires,
-        path: "/",
+        path: '/',
+        sameSite: "strict",
+      });
+
+      // Set permissions cookie
+      cookies().set({
+        name: 'permissions',
+        value: JSON.stringify(permissions),
+        secure: process.env.NODE_ENV === "production" || process.env.NODE_ENV as string === "staging",
+        httpOnly: true,
+        path: '/',
+        sameSite: "strict",
       });
 
       return res;

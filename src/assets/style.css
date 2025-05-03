@@ -3,6 +3,21 @@
     background-color: linear-gradient(to right, #ff7e5f 0%, #feb47b 100%);
 }
 
+.ArrowGrid-arrow {
+  width: 1rem;
+  height: 1px;
+  background-color: #ff7e5f;
+  position: absolute;
+
+  &.down {
+    transform: rotate(90deg) translateX(75%);
+  }
+
+  &.right {
+    transform: translateX(100%)
+  }
+}
+
 .custom-progress-bar {
     height: .3rem; 
     border-radius: 0.25rem; 

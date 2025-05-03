@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import CertificateDashboardTable from "./components/CertificateDashboardTable";
 import CertificateDashboardHeader from "./components/CertificateDashboardHeader";
 import StaffButton from "./components/StaffButton";
-import FilterCertificate from "./components/FilterCertificate";
 import SendBtn from "./components/SendBtn";
 import { certificateApproveLearner } from "./utils/action";
 import { certificateLearnerRevalidation } from "@/app/action";
@@ -47,10 +46,10 @@ export default function AdminCertificateDashboard({
   };
 
   // Function to fetch learner data
-  const handleFetchLearnersData = async (page) => {
+  const handleFetchLearnersData = async (page: number, searchValue: string, certificateStatus: string) => {
     setLoading(true);
     const { totalPages, totalItems, allLearners } =
-      await fetchCertificateLearnersData(page);
+      await fetchCertificateLearnersData(page,searchValue,certificateStatus);
     setTotalPages(totalPages);
     setTotalItems(totalItems);
     setAllLearners(allLearners);
@@ -59,7 +58,7 @@ export default function AdminCertificateDashboard({
 
   useEffect(
     () => {
-      handleFetchLearnersData(1);
+      handleFetchLearnersData(1,"", "");
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -87,7 +86,7 @@ export default function AdminCertificateDashboard({
       .map((result) => result.id);
 
     certificateLearnerRevalidation();
-    handleFetchLearnersData(1);
+    handleFetchLearnersData(1,"", "");
     setCheckedItems({});
     setKey((prev) => prev + 1);
     setCheckedIds([]);
@@ -126,7 +125,7 @@ export default function AdminCertificateDashboard({
         setShowFailureToast(true);
         setTimeout(() => setShowFailureToast(false), 5000);
       }
-      handleFetchLearnersData(1);
+      handleFetchLearnersData(1, "", "");
       await certificateLearnerRevalidation();
       setKey((prev) => prev + 1);
     } catch (error) {
@@ -151,18 +150,18 @@ export default function AdminCertificateDashboard({
   };
 
   // Function to handle search input
-  const handleSearch = (searchValue) => {
-    console.log("Search Value:", searchValue);
+  const handleSearch = (searchValue: string) => {
+    handleFetchLearnersData(1, searchValue, "");
   };
 
   // Function to reset the page
   const handlePageReset = () => {
-    setKey((prev) => prev + 1);
+    handleFetchLearnersData(1, "", "");
   };
 
   // Function to handle filter selection
   const handleFilter = (selectedOption) => {
-    console.log("Selected Filter Option:", selectedOption);
+    handleFetchLearnersData(1,"", selectedOption);
   }
 
   return (

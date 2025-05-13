@@ -149,7 +149,7 @@ export default function RoleTable({ activeTab = "All" }) {
     },
     {
       label: "Send Application",
-      title: "BKSD dashboard",
+      title: "Initial Assessment Dashboard",
       route: "/admin/bksd-dashboard",
     },
     {

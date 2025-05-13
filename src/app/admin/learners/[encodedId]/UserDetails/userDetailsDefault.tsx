@@ -38,7 +38,7 @@ export default function UserDetailsDefault({
 
   const progressData = [
     { id: 1, label: 'Application', status: 'completed' },
-    { id: 2, label: 'Entrance Exam', status: initialFormData?.application_mail === 'Sent' ? 'completed' : 'current' },
+    { id: 2, label: 'Initial Assessment', status: initialFormData?.application_mail === 'Sent' ? 'completed' : 'current' },
     { id: 3, label: 'Accessor', status: initialFormData?.application_mail !== 'Sent' ? 'pending' : 
       initialFormData?.application_status === 'Approved' ? 'completed' : 'current' },
     { id: 4, label: 'Induction', status: initialFormData?.application_status !== 'Approved' ? 'pending' :

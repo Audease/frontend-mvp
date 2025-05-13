@@ -165,15 +165,14 @@ export default function SignIn() {
             {/* Footer copyright */}
             <div className="font-inter">
               <h6 className="font-normal text-tgrey1 text-h6">
-                Protected by reCAPTCHA and subject to the Rhombus{" "}
-                <Link href="/privacy" className="text-link1">
-                  Privacy Policy
+              Your use of this site is governed by our {""}
+                <Link href="/privacy-policy" className="text-link1">
+                  Privacy Policy.
                 </Link>{" "}
-                and{" "}
+                {/* and{" "}
                 <Link href="/terms" className="text-link1">
                   Terms of Service
-                </Link>
-                .
+                </Link> */}
               </h6>
             </div>
           </form>

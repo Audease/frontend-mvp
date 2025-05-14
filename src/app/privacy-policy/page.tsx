@@ -35,7 +35,7 @@ const PrivacyPolicy = () => {
         <Image width={132} height={37} src="/audease_logo.png" alt="Audease logo" className="mx-auto mb-4" onClick={() => router.push("./signIn")}/>
         {/* Header */}
         <div className="mb-10 text-center">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Website Privacy Policy</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Privacy Policy</h1>
           <p className="text-gray-600">Audease Ltd</p>
           <p className="text-gray-600">9 May 2025</p>
         </div>

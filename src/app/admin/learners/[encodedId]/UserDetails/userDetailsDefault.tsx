@@ -146,7 +146,7 @@ export default function UserDetailsDefault({
           <hr className="w-1/2" />
         </div>
 
-        <div className="flex flex-row items-center space-x-4">
+        {/* <div className="flex flex-row items-center space-x-4">
           <div className="relative w-[70px] h-[70px]">
             <Image
               src={"/Profile_Image_Default.png"}
@@ -163,7 +163,7 @@ export default function UserDetailsDefault({
             <IoCloudUploadOutline className="w-5 h-5" />
             <span>Upload Profile Image</span>
           </button>
-        </div>
+        </div> */}
 
         <div className="space-y-6">
           <div className="flex md:flex-row flex-col md:space-x-6 md:space-y-0 space-y-4">

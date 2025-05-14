@@ -11,21 +11,28 @@ import {
 } from "@/components/ui/card";
 import { XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { logOut } from "@/redux/features/login/auth-slice";
+import { useDispatch } from "react-redux";
 
 const NoAccess = () => {
   const router = useRouter();
-
+  const dispatch = useDispatch();
   const handleLoginClick = async () => {
-    const response = await fetch("/api/logout", {
-      method: "POST",
-    });
-    if (response.ok) {
-      router.push("/signIn");
-    } else {
-      console.error("Failed to log out");
-    }
+    try {
+      const response = await fetch("/api/logout", {
+        method: "POST",
+      });
 
-    router.push("/signIn");
+      if (response.status === 200) {
+        localStorage.removeItem("persist:root");
+        dispatch(logOut());
+        router.push("/signIn");
+      } else {
+        console.error("Failed to log out");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
   };
 
   return (

@@ -101,7 +101,7 @@ export default function Nav() {
     <nav className="bg-white shadow-sm px-4 py-3">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
-        <Link href="/sign-In" className="flex items-center">
+        <Link href="/admin" className="flex items-center">
           <Image
             src="/audease_logo.png"
             width={100}
@@ -156,7 +156,12 @@ export default function Nav() {
               </div>
 
               {/* Help and support  */}
-              <div className="flex items-center hover:bg-gray-50 p-2 rounded-lg cursor-pointer">
+              <Link
+                href="/help-and-support"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center hover:bg-gray-50 p-2 rounded-lg cursor-pointer"
+              >
                 <Image
                   src={"/help.png"}
                   width={20}
@@ -164,7 +169,7 @@ export default function Nav() {
                   alt="Help and Support"
                 />
                 <p className="px-3 text-sm">Help and Support</p>
-              </div>
+              </Link>
 
               {/* Logout */}
               <div

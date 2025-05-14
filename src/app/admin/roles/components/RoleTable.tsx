@@ -164,7 +164,7 @@ export default function RoleTable({ activeTab = "All" }) {
     },
     {
       label: "Learning Platform",
-      title: "Lazer dashboard",
+      title: "Learning Platform",
       route: "/admin/lazer-dashboard",
     },
     {

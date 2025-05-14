@@ -30,7 +30,7 @@ export default function SignIn() {
         <div className="lg:max-h-80 lg:max-w-80 lg:m-10">
           {/* Audease logo */}
           <div className="flex flex-row justify-center pt-4 md:py-8 lg:justify-start">
-            <Link href="/signIn">
+            <Link href="https://www.audease.co.uk/">
               <Image
                 src="/audease_logo.png"
                 width={132}

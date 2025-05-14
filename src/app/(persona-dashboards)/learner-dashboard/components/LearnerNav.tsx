@@ -6,6 +6,7 @@ import Notifications from "../../../components/dashboard/Notifications";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
 import { Menu, X, Bell, HelpCircle, LogOut } from "lucide-react";
+import Link from "next/link";
 
 const LearnerNav = () => {
   const [notifications, setNotifications] = useState(false);
@@ -20,7 +21,10 @@ const LearnerNav = () => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       setProfileOptions(false);
     }
-    if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+    if (
+      notificationRef.current &&
+      !notificationRef.current.contains(event.target)
+    ) {
       setNotifications(false);
     }
   };
@@ -61,7 +65,7 @@ const LearnerNav = () => {
   const userEmail = useAppSelector(
     (state) => state.authReducer.value.userEmail
   );
-  
+
   useEffect(() => {
     if (userEmail) {
       const firstLetter = userEmail.charAt(0).toUpperCase();
@@ -84,13 +88,15 @@ const LearnerNav = () => {
               className="object-contain"
             />
           </div>
-          
+
           {/* Navigation and Options */}
           <div className="flex justify-between items-center flex-grow px-6 py-3">
             <div className="flex items-center">
-              <h3 className="font-medium text-tgrey3 transition-colors">Eden College</h3>
+              <h3 className="font-medium text-tgrey3 transition-colors">
+                Eden College
+              </h3>
             </div>
-            
+
             {/* Profile and Notifications */}
             <div className="flex items-center space-x-4">
               <div className="relative" ref={notificationRef}>
@@ -108,7 +114,7 @@ const LearnerNav = () => {
                   </div>
                 )}
               </div>
-              
+
               <div className="relative" ref={menuRef}>
                 <button
                   className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
@@ -121,16 +127,21 @@ const LearnerNav = () => {
                     {userEmailFirstLetter}
                   </p>
                 </button>
-                
+
                 {profileOptions && (
                   <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg py-2 w-48 z-10">
-                    <button 
-                      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                    >
+                    <button className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
                       <HelpCircle size={16} className="mr-2" />
-                      <span>Help and Support</span>
+                      <Link
+                        href="/help-and-support"
+                        className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span>Help and Support</span>
+                      </Link>
                     </button>
-                    <button 
+                    <button
                       className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
                       onClick={logout}
                     >
@@ -143,7 +154,7 @@ const LearnerNav = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Mobile Navigation */}
         <div className="md:hidden">
           <div className="flex items-center justify-between p-4">
@@ -154,7 +165,7 @@ const LearnerNav = () => {
               alt="Audease logo"
               className="object-contain"
             />
-            
+
             <div className="flex items-center space-x-2">
               <button
                 className="p-2 rounded-full hover:bg-gray-100 transition-colors relative"
@@ -164,7 +175,7 @@ const LearnerNav = () => {
               >
                 <Bell size={20} className="text-gray-600" />
               </button>
-              
+
               <button
                 className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center"
                 aria-expanded={profileOptions}
@@ -175,7 +186,7 @@ const LearnerNav = () => {
                   {userEmailFirstLetter}
                 </p>
               </button>
-              
+
               <button
                 className="p-2 rounded-full hover:bg-gray-100 transition-colors"
                 onClick={toggleMobileMenu}
@@ -190,7 +201,7 @@ const LearnerNav = () => {
               </button>
             </div>
           </div>
-          
+
           {/* Mobile menu dropdown */}
           {mobileMenuOpen && (
             <div className="bg-white border-t border-gray-200 py-2">
@@ -200,9 +211,16 @@ const LearnerNav = () => {
               <div className="px-4 py-2">
                 <button className="flex items-center w-full py-2 text-sm text-gray-700">
                   <HelpCircle size={16} className="mr-2" />
-                  <span>Help and Support</span>
+                  <Link
+                        href="/help-and-support"
+                        className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span>Help and Support</span>
+                      </Link>
                 </button>
-                <button 
+                <button
                   className="flex items-center w-full py-2 text-sm text-gray-700"
                   onClick={logout}
                 >
@@ -212,14 +230,14 @@ const LearnerNav = () => {
               </div>
             </div>
           )}
-          
+
           {/* Mobile notifications dropdown */}
           {notifications && (
             <div className="fixed inset-x-0 top-[72px] bg-white shadow-lg z-10 max-h-[70vh] overflow-y-auto">
               <Notifications />
             </div>
           )}
-          
+
           {/* Mobile profile options dropdown */}
           {profileOptions && !mobileMenuOpen && (
             <div className="fixed inset-x-0 top-[72px] bg-white shadow-lg z-10">
@@ -228,7 +246,7 @@ const LearnerNav = () => {
                   <HelpCircle size={16} className="mr-2" />
                   <span>Help and Support</span>
                 </button>
-                <button 
+                <button
                   className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-100"
                   onClick={logout}
                 >

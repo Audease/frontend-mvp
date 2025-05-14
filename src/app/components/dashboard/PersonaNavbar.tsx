@@ -86,7 +86,7 @@ export default function PersonaNavbar() {
     }
   };
 
-  const ProfileOption = ({ icon, text, onClick }) => (
+  const ProfileOption = ({ icon, text, onClick }: { icon: string; text: string; onClick?: () => void }) => (
     <div
       className="flex items-center py-2 px-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors duration-200"
       onClick={onClick}
@@ -117,7 +117,10 @@ export default function PersonaNavbar() {
       <div className="block md:hidden mt-4">
         <h3 className="font-medium text-sm text-gray-500 mb-2">NAVIGATION</h3>
         <div className="space-y-1">
-          <PersonaNavLinks mobile={true} onItemClick={() => setIsSheetOpen(false)} />
+          <PersonaNavLinks
+            mobile={true}
+            onItemClick={() => setIsSheetOpen(false)}
+          />
         </div>
       </div>
 
@@ -134,9 +137,10 @@ export default function PersonaNavbar() {
           </div>
 
           <Link
-            href="/help"
+            href="/help-and-support"
             className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50"
-            onClick={() => setIsSheetOpen(false)}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <Image
               src="/help.png"
@@ -181,7 +185,10 @@ export default function PersonaNavbar() {
 
           {/* Desktop Navigation Links - Centered */}
           <div className="hidden md:flex items-center justify-center flex-1">
-          <PersonaNavLinks mobile={true} onItemClick={() => setIsSheetOpen(false)} />
+            <PersonaNavLinks
+              mobile={true}
+              onItemClick={() => setIsSheetOpen(false)}
+            />
           </div>
 
           {/* Desktop Right Menu: Profile, Notifications */}
@@ -190,7 +197,9 @@ export default function PersonaNavbar() {
               className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-200 transition-colors duration-200"
               onClick={toggleVisibility}
             >
-              <p className="text-tgrey3 text-lg font-medium">{userEmailFirstLetter}</p>
+              <p className="text-tgrey3 text-lg font-medium">
+                {userEmailFirstLetter}
+              </p>
             </div>
 
             {/* Profile Dropdown */}
@@ -207,11 +216,17 @@ export default function PersonaNavbar() {
                   </div>
                 </div>
 
-                <ProfileOption
+                <Link
+                  href="/help-and-support"
+                  className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <ProfileOption
                   icon="/help.png"
                   text="Help and Support"
-                  onClick={() => router.push("/help")}
                 />
+                </Link>
 
                 <ProfileOption
                   icon="/logout.png"
@@ -233,7 +248,10 @@ export default function PersonaNavbar() {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[350px] py-8">
+              <SheetContent
+                side="right"
+                className="w-[300px] sm:w-[350px] py-8"
+              >
                 <MobileMenu />
               </SheetContent>
             </Sheet>

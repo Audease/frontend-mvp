@@ -4,7 +4,7 @@ import FilterLazer from "@/app/admin/(adminPersonaScreens)/lazer-dashboard/compo
 import AdminLazerDashboard from "@/app/admin/(adminPersonaScreens)/lazer-dashboard/page";
 
 export default function LazerDashboard() {
-  const [roleName, setRoleName] = useState("Lazer");
+  const [roleName, setRoleName] = useState("Learning Platform");
   return (
     <div>
       <div className="flex justify-between">

@@ -3,7 +3,7 @@ import PersonaBackButton from "../../components/PersonaBackButton";
 import { useState } from "react";
 
 export default function AccessorDashboardHeader() {
-  const [AccessorName, setAccessorName] = useState("Accessor");
+  const [AccessorName, setAccessorName] = useState("Application Review");
   return (
     <div className="flex flex-row space-x-3">
       {/* Back Button */}

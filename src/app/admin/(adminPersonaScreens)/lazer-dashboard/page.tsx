@@ -17,7 +17,7 @@ export default function AdminLazerDashboard({
   showStaffButton = true,
 }) {
   // State management
-  const [roleName, setRoleName] = useState("Lazer");
+  const [roleName, setRoleName] = useState("Learning Platform");
   const [showInductionStaffModal, setShowInductionStaffModal] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [checkedIds, setCheckedIds] = useState([]);

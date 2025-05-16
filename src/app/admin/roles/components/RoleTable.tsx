@@ -154,7 +154,7 @@ export default function RoleTable({ activeTab = "All" }) {
     },
     {
       label: "Approve/reject application",
-      title: "Accessor dashboard",
+      title: "Application Review Dashboard",
       route: "/admin/accessor-dashboard",
     },
     {

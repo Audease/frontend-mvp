@@ -75,7 +75,8 @@ export const config = {
     "/signup",
     "/forgotPassword",
     "/reset-password",
-    "/"
+    "/",
+    "/api/:path*"
   ],
 };
 

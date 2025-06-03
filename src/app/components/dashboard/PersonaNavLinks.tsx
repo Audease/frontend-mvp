@@ -30,7 +30,7 @@ export default function PersonaNavLinks({ mobile, onItemClick }) {
     Certificate: { name: "Certificate", href: "/certificate-dashboard" },
     "Learning Platform": { name: "Lazer", href: "/lazer-dashboard" },
     "Approve/reject application": {
-      name: "Accessor",
+      name: "Application Review",
       href: "/accessor-dashboard",
     },
     "Send Application": { name: "BKSD", href: "/bksd-dashboard" },

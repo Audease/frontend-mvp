@@ -5,7 +5,7 @@ import AdminRecruiterdashboard from "../../admin/(adminPersonaScreens)/recruiter
 
 
 export default function RecruiterDashboard() {
-    const [roleName, setRoleName] = useState("Onny");
+    const [roleName, setRoleName] = useState("Recruiter");
   return (
     <div >
       <div>

@@ -33,7 +33,7 @@ export default function PersonaNavLinks({ mobile, onItemClick }) {
       name: "Application Review",
       href: "/accessor-dashboard",
     },
-    "Send Application": { name: "BKSD", href: "/bksd-dashboard" },
+    "Send Application": { name: "Initial Assessment", href: "/bksd-dashboard" },
   };
 
   const links = permissions

@@ -28,7 +28,7 @@ export default function PersonaNavLinks({ mobile, onItemClick }) {
     // "Audit": { name: "Audit", href: "/auditor-dashboard" },
     Induction: { name: "Induction", href: "/induction-dashboard" },
     Certificate: { name: "Certificate", href: "/certificate-dashboard" },
-    "Learning Platform": { name: "Lazer", href: "/lazer-dashboard" },
+    "Learning Platform": { name: "Learning Platform", href: "/lazer-dashboard" },
     "Approve/reject application": {
       name: "Application Review",
       href: "/accessor-dashboard",

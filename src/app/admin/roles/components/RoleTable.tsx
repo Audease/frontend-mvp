@@ -7,7 +7,6 @@ import LoadingSpinner, {
   LoadingSpinner2,
 } from "../../../components/dashboard/Spinner";
 import { Tooltip, Modal } from "flowbite-react";
-import NextTopLoader from "nextjs-toploader";
 import { useCreateRole } from "../hooks/useRoleCreate";
 import { IoClose } from "react-icons/io5";
 
@@ -257,7 +256,7 @@ export default function RoleTable({ activeTab = "All" }) {
                   </p>
 
                   {/* Refresh button for Archive tab */}
-                  {activeTab === "Archive" && (
+                  {(activeTab === "Archive" || activeTab === "All") && roles.length > 0 && (
                     <button
                       onClick={() => fetchRolesData(true)}
                       className="mt-4 text-sm text-dashboardButtons hover:text-gold1 flex items-center"
@@ -397,7 +396,7 @@ export default function RoleTable({ activeTab = "All" }) {
       </table>
 
       {/* Archive tab header with refresh button */}
-      {activeTab === "Archive" && roles.length > 0 && (
+     {(activeTab === "Archive" || activeTab === "All") && (
         <div className="flex justify-end mt-2">
           <button
             onClick={() => fetchRolesData(true)}

@@ -8,7 +8,7 @@ const ApproveBtn = ({ onSendClick, disabled }) => {
         onClick={onSendClick}
         disabled={disabled}
       >
-        Lazer
+        Learning Platform
       </button>
     </div>
   );

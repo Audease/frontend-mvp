@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useCreateRole } from "../../../../hooks/useRoleCreate";
 import { rolesRevalidation } from "../../../../../../action";
 import LoadingSpinner from "../../../../../../components/dashboard/Spinner";
+import { fetchRoles } from "@/app/admin/utils/fetchRoles";
 
 export default function CreateRoleModal({
   isRoleModalOpen,

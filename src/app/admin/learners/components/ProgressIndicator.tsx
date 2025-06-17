@@ -1,11 +1,12 @@
 import React from 'react';
 import { FaCheck } from 'react-icons/fa';
 
+
 const ProgressStepper = ({data}) => {
 
   // Calculate progress percentage
-  const completedSteps = data.filter(step => step.status === 'completed').length + 1;
-  const progressPercentage = (completedSteps / (data.length - 1)) * 80;
+  const completedSteps = data.filter(step => step.status === 'completed').length;
+  const progressPercentage = (completedSteps / (data.length - 1)) * 78;
 
   return (
     <div className="w-3/4 mx-3 py-4">

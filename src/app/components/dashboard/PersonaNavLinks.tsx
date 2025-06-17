@@ -28,12 +28,12 @@ export default function PersonaNavLinks({ mobile, onItemClick }) {
     // "Audit": { name: "Audit", href: "/auditor-dashboard" },
     Induction: { name: "Induction", href: "/induction-dashboard" },
     Certificate: { name: "Certificate", href: "/certificate-dashboard" },
-    "Learning Platform": { name: "Lazer", href: "/lazer-dashboard" },
+    "Learning Platform": { name: "Learning Platform", href: "/lazer-dashboard" },
     "Approve/reject application": {
-      name: "Accessor",
+      name: "Application Review",
       href: "/accessor-dashboard",
     },
-    "Send Application": { name: "BKSD", href: "/bksd-dashboard" },
+    "Send Application": { name: "Initial Assessment", href: "/bksd-dashboard" },
   };
 
   const links = permissions

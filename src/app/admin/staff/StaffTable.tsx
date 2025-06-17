@@ -147,7 +147,7 @@ export default function StaffTable({
                   </span>
                   {staff.email}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
+                <td className="px-4 py-4 whitespace-wrap text-sm text-tableText2 font-medium">
                   <DropdownButton
                     options={options}
                     onSelect={(option) => handleSelect(staff.id, option)}

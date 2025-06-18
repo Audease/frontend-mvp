@@ -115,7 +115,8 @@ export default function AdminRecruiterdashboard({
   // Handle new learner creation
   const handleLearnerCreated = async () => {
     await learnerRevalidation();
-    handleFetchLearnersData(1, 10, "", "", "", "");
+    await handleFetchLearnersData(currentPage, 10, "", "", "", "asc");
+    setTableKey((prev) => prev + 1);
   };
 
   // Handle filtering
@@ -132,11 +133,11 @@ export default function AdminRecruiterdashboard({
   // Handle tab switching
   const onTabClick = (tab) => {
     setActiveTab(tab);
-    if (tab === "All") {handleFetchLearnersData(1, 10, "", "", "", "asc")
-
+    if (tab === "All") {
+      handleFetchLearnersData(1, 10, "", "", "", "asc");
     } else if (tab === "Recent") {
       handleFetchLearnersData(1, 10, "", "", "", "desc");
-    } 
+    }
   };
 
   // Handle edit modal close
@@ -225,7 +226,7 @@ export default function AdminRecruiterdashboard({
               handleLearnerCreated,
               showStaffButton,
               onFilterClick,
-              callback
+              callback,
             }}
           />
         </div>
@@ -251,7 +252,11 @@ export default function AdminRecruiterdashboard({
             allLearners,
           }}
         />
-        <div className={`z-10 ${onLearnerEditClick ? "fixed inset-0 bg-black bg-opacity-50" : ""}`}>
+        <div
+          className={`z-10 ${
+            onLearnerEditClick ? "fixed inset-0 bg-black bg-opacity-50" : ""
+          }`}
+        >
           <LearnerEditForm
             show={onLearnerEditClick}
             onClose={onEditModalClose}

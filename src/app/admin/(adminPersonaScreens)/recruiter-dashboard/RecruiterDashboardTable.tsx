@@ -1,5 +1,6 @@
 "use client";
 import LoadingSpinner from "../../../components/dashboard/Spinner";
+import { formatReadableDate } from "../utils/formatDate";
 
 export default function RecruiterDashboardTable({
   checkedItems,
@@ -108,7 +109,7 @@ export default function RecruiterDashboardTable({
                       className="p-0 border-none  whitespace-nowrap text-[10px] text-tblack3 font-medium  focus:ring-tgrey1 rounded-sm px-1 w-20"
                     />
                   ) : (
-                    row.date_of_birth
+                    formatReadableDate(row.date_of_birth)
                   )}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-[10px] text-tableText2 font-medium">

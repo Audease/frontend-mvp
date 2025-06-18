@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const whitelist = [
   "/",
@@ -14,7 +14,13 @@ const whitelist = [
 export default function ActivityTracker() {
   const route = usePathname();
   const router = useRouter();
+  const [showModal, setShowModal] = useState(false);
   let timeout = null;
+
+  const handleLogin = () => {
+    setShowModal(false);
+    router.push("/signIn");
+  };
 
   const restartAutoReset = () => {
     if (timeout) {
@@ -25,7 +31,8 @@ export default function ActivityTracker() {
         await fetch("/api/logout", {
           method: "POST",
         });
-        router.push("/signIn");
+        // router.push("/signIn");
+        setShowModal(true);
         // if (response.ok) {
         //   router.push("/signIn");
         // } else {
@@ -68,5 +75,26 @@ export default function ActivityTracker() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route]);
 
-  return <div></div>;
+  return (
+    <>
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <h2 className="text-xl font-semibold mb-4">Session Expired</h2>
+            <p className="mb-6">
+              Your session has expired due to inactivity. Please log in again to continue.
+            </p>
+            <div className="flex justify-end">
+              <button
+                onClick={handleLogin}
+                className="px-4 py-2 bg-dashboardButtons text-white rounded hover:bg-gold1 transition-colors"
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );;
 }

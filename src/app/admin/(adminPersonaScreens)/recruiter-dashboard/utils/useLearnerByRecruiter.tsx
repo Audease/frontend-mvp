@@ -41,7 +41,7 @@ export const useLearnerByRecruiter = () => {
   };
 
   useEffect(() => {
-    handleFetchLearnersData(currentPage, 10, '', '', '', 'asc'); 
+    handleFetchLearnersData(currentPage, 10, '', '', '', 'desc'); 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 

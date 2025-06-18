@@ -14,7 +14,7 @@ const whitelist = [
 export default function ActivityTracker() {
   const route = usePathname();
   const router = useRouter();
-  let timeout = null; 
+  let timeout = null;
 
   const restartAutoReset = () => {
     if (timeout) {
@@ -22,15 +22,15 @@ export default function ActivityTracker() {
     }
     timeout = setTimeout(() => {
       const logout = async () => {
-        const response = await fetch("/api/logout", {
+        await fetch("/api/logout", {
           method: "POST",
         });
-
-        if (response.ok) {
-          router.push("/signIn");
-        } else {
-          console.error("Failed to log out");
-        }
+        router.push("/signIn");
+        // if (response.ok) {
+        //   router.push("/signIn");
+        // } else {
+        //   console.error("Failed to log out");
+        // }
       };
       logout();
     }, 1000 * 60 * 10); // 10 minutes
@@ -65,7 +65,7 @@ export default function ActivityTracker() {
         window.removeEventListener("mousemove", onMouseMove);
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route]);
 
   return <div></div>;

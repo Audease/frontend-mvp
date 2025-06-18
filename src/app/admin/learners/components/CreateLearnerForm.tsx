@@ -26,22 +26,26 @@ import FundingField from "./FundingField";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
-  date_of_birth: z.string().refine((date) => {
-    const parsedDate = new Date(date);
-    const today = new Date();
-    return (
-      !isNaN(parsedDate.getTime()) && parsedDate.getTime() < today.getTime()
-    );
-  }, "Please enter a valid date in the past"),
+  date_of_birth: z
+    .string()
+    .optional()
+    .refine((date) => {
+      if (!date) return true;
+      const parsedDate = new Date(date);
+      const today = new Date();
+      return (
+        !isNaN(parsedDate.getTime()) && parsedDate.getTime() < today.getTime()
+      );
+    }, "Please enter a valid date in the past"),
   mobile_number: z.string().min(10, "Mobile number must be valid"),
   email: z.string().email("Invalid email address"),
-  NI_number: z.string().min(1, "NI Number is required"),
-  passport_number: z.string().min(1, "Passport Number is required"),
-  home_address: z.string().min(1, "Home address is required"),
-  funding: z.string().min(1, "Funding is required"),
-  awarding: z.string().min(1, "Awarding is required"),
-  chosen_course: z.string().min(1, "Chosen course is required"),
-  level: z.number().min(0, "Level must be 0 or greater"),
+  NI_number: z.string().optional(),
+  passport_number: z.string().optional(),
+  home_address: z.string().optional(),
+  funding: z.string().optional(),
+  awarding: z.string().optional(),
+  chosen_course: z.string().optional(),
+  level: z.number().optional(),
 });
 
 const RegistrationForm = ({
@@ -70,9 +74,22 @@ const RegistrationForm = ({
   });
 
   const onSubmit = async (data) => {
+    const submittableData = {
+      name: data.name,
+      date_of_birth: data.date_of_birth || "1990-01-01",
+      mobile_number: data.mobile_number,
+      email: data.email,
+      NI_number: data.NI_number || "00000000",
+      passport_number: data.passport_number || "00000000",
+      home_address: data.home_address || "N/A",
+      funding: data.funding || "N/A",
+      awarding: data.awarding || "N/A",
+      chosen_course: data.chosen_course || "N/A",
+      level: data.level || 1,
+    };
     setLoading(true);
     try {
-      const success = await createLearner(data);
+      const success = await createLearner(submittableData);
       if (success) {
         onClose();
         onLearnerCreated();
@@ -99,7 +116,7 @@ const RegistrationForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  Name (First Name, Middle Name and Surname)
+                  Name (First Name, Middle Name and Surname)*
                 </FormLabel>
                 <FormControl>
                   <Input placeholder="Enter your name" {...field} />
@@ -142,7 +159,7 @@ const RegistrationForm = ({
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Email*</FormLabel>
                 <FormControl>
                   <Input type="email" placeholder="Enter Email" {...field} />
                 </FormControl>

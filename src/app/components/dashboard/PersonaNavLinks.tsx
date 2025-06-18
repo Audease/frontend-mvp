@@ -72,15 +72,15 @@ export default function PersonaNavLinks({ mobile, onItemClick }) {
           key={link.name}
           href={link.href}
           className={clsx(
-            "font-inter font-medium text-h2 text-tgrey3 hover:text-gray-900 relative transition-colors duration-200 px-1",
+            "font-inter font-medium text-h2 text-tgrey3 hover:text-gray-900 relative transition-colors duration-200 py-1 px-2 rounded-lg",
             {
-              "text-blue-600": pathname === link.href,
+              "bg-gray-100": pathname === link.href,
             }
           )}
         >
           {link.name}
           {pathname === link.href && (
-            <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 rounded-full" />
+            <span className="absolute bottom-0 left-0 w-full h-0.5 rounded-full" />
           )}
         </Link>
       ))}

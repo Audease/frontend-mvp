@@ -41,7 +41,7 @@ export default function Learners() {
 
   const handleLearnerCreated = async () => {
     await learnerRevalidation();
-    handleFetchLearnersData(currentPage, 10, "", "", "", "asc");
+    handleFetchLearnersData(currentPage, 10, "", "", "", "desc");
     setTableKey((prev) => prev + 1);
   };
 
@@ -52,7 +52,7 @@ export default function Learners() {
 
   // Call this after archive/restore operations
   const refreshAllData = async () => {
-    await handleFetchLearnersData(currentPage, 10, "", "", "", "asc");
+    await handleFetchLearnersData(currentPage, 10, "", "", "", "desc");
     await getArchivedLearners(1, 10, "");
     await learnerRevalidation();
     await archivedLearnersRevalidation();
@@ -64,16 +64,16 @@ export default function Learners() {
   const searchValue = (searchValue: string) => {
     setSearchQuery(searchValue);
     if (renderTable === "learnerTable") {
-      handleFetchLearnersData(1, 10, "", "", searchValue, "asc");
+      handleFetchLearnersData(1, 10, "", "", searchValue, "desc");
     } else if (renderTable === "archivedTable") {
       getArchivedLearners(1, 10, searchValue);
     } else {
-      handleFetchLearnersData(1, 10, "", "", searchValue, "asc");
+      handleFetchLearnersData(1, 10, "", "", searchValue, "desc");
     }
   };
 
   const onFilterClick = (funding, course) => {
-    handleFetchLearnersData(1, 10, funding, course, "", "asc");
+    handleFetchLearnersData(1, 10, funding, course, "", "desc");
   };
 
   const [renderTable, setRenderTable] = useState("learnersTable");
@@ -83,7 +83,7 @@ export default function Learners() {
 
     if (tab === "Active") {
       setRenderTable("learnerTable");
-      handleFetchLearnersData(1, 10, "", "", "", "asc");
+      handleFetchLearnersData(1, 10, "", "", "", "desc");
       setTableKey((prev) => prev + 1);
     } else if (tab === "Recent") {
       setRenderTable("learnerTable");
@@ -158,7 +158,7 @@ export default function Learners() {
   const handlePageReset = () => {
     if (activeTab === "Active") {
       setRenderTable("learnerTable");
-      handleFetchLearnersData(1, 10, "", "", "", "asc");
+      handleFetchLearnersData(1, 10, "", "", "", "desc");
       setTableKey((prev) => prev + 1);
     } else if (activeTab === "Recent") {
       setRenderTable("learnerTable");

@@ -40,7 +40,7 @@ export default function ActivityTracker() {
         // }
       };
       logout();
-    }, 1000 * 60 * 10); // 10 minutes
+    }, 1000 * 60 * 1); // 10 minutes
   };
 
   const onMouseMove = () => {

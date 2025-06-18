@@ -22,7 +22,7 @@ const FundingField = ({ form }) => {
     } else if (value === "private") {
       form.setValue("funding", "private");
     } else if (value === "others") {
-      form.setValue("funding", "");
+      form.setValue("funding", "N/A");
     }
   };
 
@@ -58,7 +58,7 @@ const FundingField = ({ form }) => {
               {fundingType === "others" && (
                 <Input 
                   placeholder="Enter funding source" 
-                  value={field.value !== "others" ? field.value : ""}
+                  value={field.value !== "others" ? field.value : "N/A"}
                   onChange={(e) => {
                     form.setValue("funding", e.target.value);
                   }}

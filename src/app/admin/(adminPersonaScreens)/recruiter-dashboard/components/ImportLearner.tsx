@@ -17,7 +17,7 @@ const ImportLearner = ({callback}) => {
 
 
   const closeLearnerImportSuccessModal = async() => {
-    await handleFetchLearnersData(1, 10, '', '', '', 'asc');
+    await handleFetchLearnersData(1, 10, '', '', '', 'desc');
     learnerRevalidation();
     setLearnerImportModalState(false);
     setLearnerImportSuccessModal(false);
@@ -33,7 +33,7 @@ const ImportLearner = ({callback}) => {
   const randomFunction = (callback: () => void) => {
     setLearnerImportModalState(false);
     setLearnerImportSuccessModal(true);
-    handleFetchLearnersData(1, 10, '', '', '', 'asc');
+    handleFetchLearnersData(1, 10, '', '', '', 'desc');
     
   };
 

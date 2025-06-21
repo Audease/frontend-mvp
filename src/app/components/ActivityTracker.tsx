@@ -11,7 +11,7 @@ const whitelist = [
   "/reset-password",
 ];
 
-const INACTIVITY_TIMEOUT = 1000 * 60 * 1; // 10 minutes
+const INACTIVITY_TIMEOUT = 1000 * 60 * 10; // 10 minutes
 
 export default function ActivityTracker() {
   const route = usePathname();
@@ -27,6 +27,7 @@ export default function ActivityTracker() {
   const logout = useCallback(async () => {
     await fetch("/api/logout", { method: "POST" });
     localStorage.removeItem("lastActiveAt");
+    localStorage.removeItem("pageHiddenAt");
     setShowModal(true);
   }, []);
 
@@ -34,7 +35,7 @@ export default function ActivityTracker() {
     const lastActiveAt = localStorage.getItem("lastActiveAt");
     if (lastActiveAt) {
       const now = Date.now();
-      const diff = now - parseInt(lastActiveAt, 1);
+      const diff = now - parseInt(lastActiveAt, 10);
 
       if (diff > INACTIVITY_TIMEOUT) {
         logout();
@@ -63,21 +64,48 @@ export default function ActivityTracker() {
 
   // Handle visibility change (tab focus, window focus, system wake)
   const handleVisibilityChange = useCallback(() => {
-    if (!document.hidden) {
-      // Page became visible - check if user was inactive while away
+    if (document.hidden) {
+      // Page became hidden - mark the time when user left
+      localStorage.setItem("pageHiddenAt", Date.now().toString());
+    } else {
+      // Page became visible - check if this might be a system wake
+      const pageHiddenAt = localStorage.getItem("pageHiddenAt");
+      if (pageHiddenAt) {
+        const hiddenTime = Date.now() - parseInt(pageHiddenAt, 10);
+        
+        // If page was hidden for more than 10 minutes, treat as potential sleep/suspend
+        if (hiddenTime > 600000) { // 10 minutes
+          logout();
+          return;
+        }
+      }
+      
+      // Otherwise, do normal inactivity check
       if (!checkInactivity()) {
-        // User is still active, restart the timer
         restartAutoReset();
       }
     }
-  }, [checkInactivity, restartAutoReset]);
+  }, [checkInactivity, restartAutoReset, logout]);
 
   // Handle window focus (additional layer for system wake detection)
   const handleWindowFocus = useCallback(() => {
+    // Always check for potential sleep when window regains focus
+    const pageHiddenAt = localStorage.getItem("pageHiddenAt");
+    if (pageHiddenAt) {
+      const hiddenTime = Date.now() - parseInt(pageHiddenAt, 10);
+      
+      // If focus was lost for more than 10 minutes, log out
+      if (hiddenTime > 600000) {
+        logout();
+        return;
+      }
+    }
+    
+    // Normal inactivity check
     if (!checkInactivity()) {
       restartAutoReset();
     }
-  }, [checkInactivity, restartAutoReset]);
+  }, [checkInactivity, restartAutoReset, logout]);
 
   useEffect(() => {
     let preventReset = whitelist.includes(route);

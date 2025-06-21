@@ -15,64 +15,69 @@ export default function ActivityTracker() {
   const route = usePathname();
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-  let timeout = null;
+  let timeout: NodeJS.Timeout | null = null;
 
   const handleLogin = () => {
     setShowModal(false);
     router.push("/signIn");
   };
 
+  const logout = async () => {
+    await fetch("/api/logout", { method: "POST" });
+    localStorage.removeItem("lastActiveAt");
+    setShowModal(true);
+  };
+
   const restartAutoReset = () => {
+    // Save current timestamp as last active time
+    localStorage.setItem("lastActiveAt", Date.now().toString());
+
     if (timeout) {
       clearTimeout(timeout);
     }
+
     timeout = setTimeout(() => {
-      const logout = async () => {
-        await fetch("/api/logout", {
-          method: "POST",
-        });
-        // router.push("/signIn");
-        setShowModal(true);
-        // if (response.ok) {
-        //   router.push("/signIn");
-        // } else {
-        //   console.error("Failed to log out");
-        // }
-      };
       logout();
-    }, 1000 * 60 * 10); // 10 minutes
+    }, 1000 * 60 *  10); // 10 minutes
   };
 
-  const onMouseMove = () => {
+  const onUserActivity = () => {
     restartAutoReset();
   };
 
   useEffect(() => {
-    let preventReset = false;
-    for (const path of whitelist) {
-      if (path === route) {
-        preventReset = true;
+    let preventReset = whitelist.includes(route);
+
+    if (preventReset) return;
+
+    // Check if user has been inactive even before page load
+    const lastActiveAt = localStorage.getItem("lastActiveAt");
+    if (lastActiveAt) {
+      const now = Date.now();
+      const diff = now - parseInt(lastActiveAt, 10);
+
+      if (diff > 1000 * 60 *  10) {
+        // User was inactive for more than 10 minutes (even across browser close)
+        logout();
+        setShowModal(true);
+        return;
       }
     }
 
-    if (preventReset) {
-      return;
-    }
-
-    // initiate timeout
+    // Start/reset the inactivity timer
     restartAutoReset();
 
-    // listen for mouse events
-    window.addEventListener("mousemove", onMouseMove);
+    // Listen for user activity
+    window.addEventListener("mousemove", onUserActivity);
+    window.addEventListener("keydown", onUserActivity);
+    window.addEventListener("click", onUserActivity);
 
-    // cleanup
     return () => {
-      if (timeout) {
-        clearTimeout(timeout);
-        window.removeEventListener("mousemove", onMouseMove);
-      }
+      if (timeout) clearTimeout(timeout);
+      window.removeEventListener("mousemove", onUserActivity);
+      window.removeEventListener("keydown", onUserActivity);
+      window.removeEventListener("click", onUserActivity);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route]);
 
   return (
@@ -96,5 +101,5 @@ export default function ActivityTracker() {
         </div>
       )}
     </>
-  );;
+  );
 }

@@ -52,6 +52,7 @@ export default function RecruiterNavbar() {
   
     if (response.ok) {
       // Redirect to the login page
+      localStorage.removeItem("lastActiveAt");
       router.push("/signIn");
     } else {
       console.error('Failed to log out');

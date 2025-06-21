@@ -184,9 +184,9 @@ export default function PersonaNavbar() {
           </div>
 
           {/* Desktop Navigation Links - Centered */}
-          <div className="hidden md:flex items-center justify-center flex-1">
+          <div className="hidden md:flex md:flex-row items-center justify-center flex-1">
             <PersonaNavLinks
-              mobile={true}
+              mobile={false}
               onItemClick={() => setIsSheetOpen(false)}
             />
           </div>

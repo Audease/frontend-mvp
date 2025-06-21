@@ -9,7 +9,7 @@ export const TokenManager = async () => {
 
   const refreshAccessToken = async (refreshToken: string) => {
     try {
-      const response = await fetch(`${baseUrl}/api/refresh-token`, {
+      const response = await fetch(`${baseUrl}/v1/auth/refresh-token`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ refreshToken }),

@@ -56,6 +56,7 @@ const LearnerNav = () => {
     });
 
     if (response.ok) {
+      localStorage.removeItem("lastActiveAt");
       router.push("/signIn");
     } else {
       console.error("Failed to log out");

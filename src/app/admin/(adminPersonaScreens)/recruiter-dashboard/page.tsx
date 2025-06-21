@@ -79,7 +79,7 @@ export default function AdminRecruiterdashboard({
       setLoading2(true);
       await DeleteStudent(checkedIds);
       await learnerRevalidation();
-      handleFetchLearnersData(1, 10, "", "", "", "");
+      await handleFetchLearnersData(1, 10, "", "", "", "desc");
       setTableKey((prev) => prev + 1);
       setCheckedItems({});
     } catch (error) {
@@ -115,28 +115,29 @@ export default function AdminRecruiterdashboard({
   // Handle new learner creation
   const handleLearnerCreated = async () => {
     await learnerRevalidation();
-    handleFetchLearnersData(1, 10, "", "", "", "");
+    await handleFetchLearnersData(currentPage, 10, "", "", "", "desc");
+    setTableKey((prev) => prev + 1);
   };
 
   // Handle filtering
   const onFilterClick = (funding, course) => {
-    handleFetchLearnersData(1, 10, funding, course, "", "asc");
+    handleFetchLearnersData(1, 10, funding, course, "", "desc");
   };
 
   // Handle search input
   const searchValue = (searchValue) => {
     setSearchQuery(searchValue);
-    handleFetchLearnersData(1, 10, "", "", searchValue, "asc");
+    handleFetchLearnersData(1, 10, "", "", searchValue, "desc");
   };
 
   // Handle tab switching
   const onTabClick = (tab) => {
     setActiveTab(tab);
-    if (tab === "All") {handleFetchLearnersData(1, 10, "", "", "", "asc")
-
+    if (tab === "All") {
+      handleFetchLearnersData(1, 10, "", "", "", "desc");
     } else if (tab === "Recent") {
       handleFetchLearnersData(1, 10, "", "", "", "desc");
-    } 
+    }
   };
 
   // Handle edit modal close
@@ -180,7 +181,7 @@ export default function AdminRecruiterdashboard({
         }, 3000);
       }
       await learnerRevalidation();
-      handleFetchLearnersData(currentPage, 10, "", "", searchQuery, "");
+      await handleFetchLearnersData(currentPage, 10, "", "", searchQuery, "desc");
       setTableKey((prev) => prev + 1);
     } catch (error) {
       console.error("Error updating learner:", error);
@@ -190,7 +191,7 @@ export default function AdminRecruiterdashboard({
   };
 
   const callback = async () => {
-    await handleFetchLearnersData(currentPage, 10, "", "", searchQuery, "");
+    await handleFetchLearnersData(currentPage, 10, "", "", searchQuery, "desc");
     await learnerRevalidation();
     setTableKey((prev) => prev + 1);
   };
@@ -225,7 +226,7 @@ export default function AdminRecruiterdashboard({
               handleLearnerCreated,
               showStaffButton,
               onFilterClick,
-              callback
+              callback,
             }}
           />
         </div>
@@ -251,7 +252,11 @@ export default function AdminRecruiterdashboard({
             allLearners,
           }}
         />
-        <div className={`z-10 ${onLearnerEditClick ? "fixed inset-0 bg-black bg-opacity-50" : ""}`}>
+        <div
+          className={`z-10 ${
+            onLearnerEditClick ? "fixed inset-0 bg-black bg-opacity-50" : ""
+          }`}
+        >
           <LearnerEditForm
             show={onLearnerEditClick}
             onClose={onEditModalClose}

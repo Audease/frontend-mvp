@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 const whitelist = [
   "/",
@@ -11,57 +11,82 @@ const whitelist = [
   "/reset-password",
 ];
 
+const INACTIVITY_TIMEOUT = 1000 * 60 * 1; // 10 minutes
+
 export default function ActivityTracker() {
   const route = usePathname();
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-  let timeout: NodeJS.Timeout | null = null;
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleLogin = () => {
     setShowModal(false);
     router.push("/signIn");
   };
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     await fetch("/api/logout", { method: "POST" });
     localStorage.removeItem("lastActiveAt");
     setShowModal(true);
-  };
+  }, []);
 
-  const restartAutoReset = () => {
+  const checkInactivity = useCallback(() => {
+    const lastActiveAt = localStorage.getItem("lastActiveAt");
+    if (lastActiveAt) {
+      const now = Date.now();
+      const diff = now - parseInt(lastActiveAt, 1);
+
+      if (diff > INACTIVITY_TIMEOUT) {
+        logout();
+        return true; // User was inactive
+      }
+    }
+    return false; // User is still active
+  }, [logout]);
+
+  const restartAutoReset = useCallback(() => {
     // Save current timestamp as last active time
     localStorage.setItem("lastActiveAt", Date.now().toString());
 
-    if (timeout) {
-      clearTimeout(timeout);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
 
-    timeout = setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       logout();
-    }, 1000 * 60 *  10); // 10 minutes
-  };
+    }, INACTIVITY_TIMEOUT);
+  }, [logout]);
 
-  const onUserActivity = () => {
+  const onUserActivity = useCallback(() => {
     restartAutoReset();
-  };
+  }, [restartAutoReset]);
+
+  // Handle visibility change (tab focus, window focus, system wake)
+  const handleVisibilityChange = useCallback(() => {
+    if (!document.hidden) {
+      // Page became visible - check if user was inactive while away
+      if (!checkInactivity()) {
+        // User is still active, restart the timer
+        restartAutoReset();
+      }
+    }
+  }, [checkInactivity, restartAutoReset]);
+
+  // Handle window focus (additional layer for system wake detection)
+  const handleWindowFocus = useCallback(() => {
+    if (!checkInactivity()) {
+      restartAutoReset();
+    }
+  }, [checkInactivity, restartAutoReset]);
 
   useEffect(() => {
     let preventReset = whitelist.includes(route);
 
     if (preventReset) return;
 
-    // Check if user has been inactive even before page load
-    const lastActiveAt = localStorage.getItem("lastActiveAt");
-    if (lastActiveAt) {
-      const now = Date.now();
-      const diff = now - parseInt(lastActiveAt, 10);
-
-      if (diff > 1000 * 60 *  10) {
-        // User was inactive for more than 10 minutes (even across browser close)
-        logout();
-        setShowModal(true);
-        return;
-      }
+    // Initial inactivity check
+    if (checkInactivity()) {
+      return; // User was already logged out
     }
 
     // Start/reset the inactivity timer
@@ -71,14 +96,24 @@ export default function ActivityTracker() {
     window.addEventListener("mousemove", onUserActivity);
     window.addEventListener("keydown", onUserActivity);
     window.addEventListener("click", onUserActivity);
+    window.addEventListener("scroll", onUserActivity);
+    window.addEventListener("touchstart", onUserActivity);
+
+    // Listen for visibility/focus changes (handles sleep/wake)
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("focus", handleWindowFocus);
 
     return () => {
-      if (timeout) clearTimeout(timeout);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
       window.removeEventListener("mousemove", onUserActivity);
       window.removeEventListener("keydown", onUserActivity);
       window.removeEventListener("click", onUserActivity);
+      window.removeEventListener("scroll", onUserActivity);
+      window.removeEventListener("touchstart", onUserActivity);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("focus", handleWindowFocus);
     };
-  }, [route]);
+  }, [route, checkInactivity, restartAutoReset, onUserActivity, handleVisibilityChange, handleWindowFocus]);
 
   return (
     <>

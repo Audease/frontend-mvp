@@ -11,7 +11,7 @@ const whitelist = [
   "/reset-password",
 ];
 
-const INACTIVITY_TIMEOUT = 1000 * 60 * 10; // 10 minutes
+const INACTIVITY_TIMEOUT = 1000 * 60 * 1; // 10 minutes
 
 export default function ActivityTracker() {
   const route = usePathname();
@@ -25,10 +25,37 @@ export default function ActivityTracker() {
   };
 
   const logout = useCallback(async () => {
-    await fetch("/api/logout", { method: "POST" });
-    localStorage.removeItem("lastActiveAt");
-    localStorage.removeItem("pageHiddenAt");
-    setShowModal(true);
+    try {
+      // Add timeout and retry logic for network issues after sleep
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+      const response = await fetch("/api/logout", { 
+        method: "POST",
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        console.error('Logout failed:', response.status);
+        // Still proceed with client cleanup even if server request fails
+      }
+    } catch (error) {
+      console.error('Logout request failed:', error);
+      // Network might be unavailable after sleep - still do client cleanup
+    } finally {
+      // Always clean up client-side and show modal regardless of server response
+      localStorage.removeItem("lastActiveAt");
+      localStorage.removeItem("pageHiddenAt");
+      setShowModal(true);
+      
+      // Force a page reload to clear any cached authenticated state
+      // This ensures cookies are re-evaluated by the browser
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 1000);
+    }
   }, []);
 
   const checkInactivity = useCallback(() => {

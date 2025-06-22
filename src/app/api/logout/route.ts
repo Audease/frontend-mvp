@@ -8,6 +8,11 @@ export async function POST(req: NextRequest) {
     }
   );
 
+  // Method 1: Delete cookies explicitly
+  res.cookies.delete("accessToken");
+  res.cookies.delete("refreshToken"); 
+  res.cookies.delete("permissions");
+
   
 
   res.cookies.set("accessToken", "", {

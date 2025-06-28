@@ -11,7 +11,7 @@ const whitelist = [
   "/reset-password",
 ];
 
-const INACTIVITY_TIMEOUT = 1000 * 60 * 1; // 10 minutes
+const INACTIVITY_TIMEOUT = 1000 * 60 * 10; // 10 minutes
 
 export default function ActivityTracker() {
   const route = usePathname();
@@ -66,10 +66,10 @@ export default function ActivityTracker() {
 
       if (diff > INACTIVITY_TIMEOUT) {
         logout();
-        return true; // User was inactive
+        return true; 
       }
     }
-    return false; // User is still active
+    return false; 
   }, [logout]);
 
   const restartAutoReset = useCallback(() => {
@@ -101,7 +101,7 @@ export default function ActivityTracker() {
         const hiddenTime = Date.now() - parseInt(pageHiddenAt, 10);
         
         // If page was hidden for more than 10 minutes, treat as potential sleep/suspend
-        if (hiddenTime > 600000) { // 10 minutes
+        if (hiddenTime > 600000) { 
           logout();
           return;
         }

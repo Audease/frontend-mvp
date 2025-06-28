@@ -7,7 +7,8 @@ import {
   setUserId,
   setUserPackage,
   setUserPermissions,
-  setUserName
+  setUserName,
+  setpasswordChangeStatus
 } from "../../redux/features/login/auth-slice";
 import { AppDispatch } from "../../redux/store";
 import { encodeId } from "../admin/learners/utils/id-encoded";
@@ -24,6 +25,7 @@ type LoginResponse = {
   userName: string;
   permissions: string[];
   message?: string;
+  requires_password_change: boolean;
 };
 
 export function useLogin() {
@@ -60,7 +62,7 @@ export function useLogin() {
         { headers: { "Content-Type": "application/json" }}
       );
 
-      const {  permissions, learner_id, user_id, userEmail, userName } = response.data;
+      const {  permissions, learner_id, user_id, userEmail, userName, requires_password_change } = response.data;
 
 
       dispatch(setUserEmail(userEmail));
@@ -68,6 +70,7 @@ export function useLogin() {
       dispatch(setUserId(learner_id));
       dispatch(setUserPackage("Free"));
       dispatch(setUserPermissions(permissions));
+      dispatch(setpasswordChangeStatus(requires_password_change))
 
       router.push(getRedirectRoute(permissions,learner_id ));
     } catch (err) {

@@ -129,7 +129,7 @@ export default function BKSDDashboardTable({
                   >
                     ...
                   </p>
-                  {row.application_mail !== "Sent" && editOptionsVisible === index && (
+                  {editOptionsVisible === index && (
                     <div
                       ref={menuRef}
                       className="bg-white shadow-lg rounded-lg p-2 font-medium w-32 absolute left-[-80px] border-2 right-0 text-tblack3 space-y-4 z-10 top-10"
@@ -141,7 +141,7 @@ export default function BKSDDashboardTable({
                           setEditOptionsVisible(null);
                         }}
                       >
-                        Send Application
+                        {row.application_mail === "Sent" ? "Resend Application" : "Send Application"}
                       </p>
                     </div>
                   )}

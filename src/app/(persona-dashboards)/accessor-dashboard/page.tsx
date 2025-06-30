@@ -1,18 +1,40 @@
-'use client'
+"use client";
 
 import { useState } from "react";
 import AccessorDashboard from "../../admin/(adminPersonaScreens)/accessor-dashboard/page";
 import AccessorFilterButton from "../../admin/(adminPersonaScreens)/accessor-dashboard/components/AccessorFilterButton";
+import ResetPasswordModal from "@/app/components/ResetDefaultPassword";
+import { useDispatch } from "react-redux";
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import { setpasswordChangeStatus } from "@/redux/features/login/auth-slice";
 
 export default function AccessorPersona() {
   const [roleName, setRoleName] = useState("Application Review");
+  const [changePasswordModal, setChangePasswordModal] = useState(true);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const userDefaultPasswordStatus = useAppSelector(
+    (state) => state.authReducer.value.passwordChangeStatus
+  );
+
+  const handleDefaultPasswordReset = () => {
+    setChangePasswordModal(false);
+    dispatch(setpasswordChangeStatus(false));
+  };
+
   return (
     <div className="">
-     <div className="flex justify-between">
+      <div className="flex justify-between">
         <h3 className="font-medium text-2xl">{roleName} Dashboard</h3>
         <AccessorFilterButton />
       </div>
-      <AccessorDashboard showHeader={false}/>
+      <AccessorDashboard showHeader={false} />
+      {userDefaultPasswordStatus && (
+        <ResetPasswordModal
+          show={changePasswordModal}
+          onClose={handleDefaultPasswordReset}
+        />
+      )}
     </div>
   );
 }

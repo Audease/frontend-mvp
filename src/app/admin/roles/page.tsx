@@ -3,18 +3,22 @@
 import { useState } from "react";
 
 import DefaultLeft from "./components/DefaultLeft";
-import Staff from "./components/Staff";
 import SetUpAccount from "./components/SetUpAccount";
 import Workflow from "../workflows/Workflow";
 import CreateWorkflow, { WorkflowCreated } from "../workflows/CreateWorkflow";
 import Rightside from "./components/Rightside/Rightside";
 import { useCreateRole } from "./hooks/useRoleCreate";
 import { learnerRevalidation } from "@/app/action";
-import AddLearnerModal, { LearnerCreated } from "../learners/components/learnerModal";
+import AddLearnerModal, {
+  LearnerCreated,
+} from "../learners/components/learnerModal";
 import { AddAuditLearnerModal } from "./components/Rightside/components/CreateRole/AddAuditModal";
 import { useRouter } from "next/navigation";
 import AddStaffScreen from "./components/Staff";
-
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import ResetPasswordModal from "@/app/components/ResetDefaultPassword";
+import { setpasswordChangeStatus } from "@/redux/features/login/auth-slice";
+import { useDispatch } from "react-redux";
 
 export default function Role() {
   const [currentComponent, setCurrentComponent] = useState("Default");
@@ -23,11 +27,17 @@ export default function Role() {
   const [learnerCreateModalState, setLearnerCreateModalState] = useState(false);
   const [learnerSuccessModal, setLearnerSuccessModal] = useState(false);
   const [addAuditLearnerModal, setAddAuditLearnerModal] = useState(false);
+  const [changePasswordModal, setChangePasswordModal] = useState(true);
   const route = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const onCreateClick = () => {
-    setLearnerCreateModalState(false);
-    setLearnerSuccessModal(true);
+  const userDefaultPasswordStatus = useAppSelector(
+    (state) => state.authReducer.value.passwordChangeStatus
+  );
+
+  const handleDefaultPasswordReset = () => {
+    setChangePasswordModal(false)
+    dispatch(setpasswordChangeStatus(false));
   };
 
   const closeLearnerSuccessModal = () => {
@@ -54,17 +64,9 @@ export default function Role() {
     showComponent("Staff");
   };
 
-  // const onRoleClick = () => {
-  //   openModal();
-  // };
-
   const onLearnerClick = () => {
     setLearnerCreateModalState(true);
   };
-
-  // const onWorkflowClick = () => {
-  //   setIsWorkflowModalOpen(true);
-  // };
 
   const closeWorkflowModal = () => {
     setIsWorkflowModalOpen(false);
@@ -96,16 +98,7 @@ export default function Role() {
     setAddAuditLearnerModal(false);
   };
 
-  const {
-    isModalOpen,
-    isRoleSuccessModal,
-    roleFormData,
-    setRoleFormData,
-    openModal,
-    closeModal,
-    closeRoleSuccessModal,
-    roleCreate,
-  } = useCreateRole();
+  const { roleFormData, setRoleFormData } = useCreateRole();
 
   const renderComponent = () => {
     switch (currentComponent) {
@@ -166,6 +159,13 @@ export default function Role() {
             show={addAuditLearnerModal}
             onClose={closeAuditLearnerModal}
           />
+
+          {userDefaultPasswordStatus && (
+            <ResetPasswordModal
+              show={changePasswordModal}
+              onClose={handleDefaultPasswordReset}
+            />
+          )}
         </div>
 
         {/* Right side */}

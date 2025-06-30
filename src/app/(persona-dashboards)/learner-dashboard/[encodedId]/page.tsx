@@ -31,7 +31,7 @@ const Learner = () => {
       {!userDefaultPasswordStatus && (
         <WelcomeModal {...{ openModal, closeModal }} />
       )}
-      {!userDefaultPasswordStatus && (
+      {userDefaultPasswordStatus && (
         <ResetPasswordModal
           show={changePasswordModal}
           onClose={handleDefaultPasswordReset}

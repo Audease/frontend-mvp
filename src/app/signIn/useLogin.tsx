@@ -64,7 +64,6 @@ export function useLogin() {
 
       const {  permissions, learner_id, user_id, userEmail, userName, requires_password_change } = response.data;
 
-
       dispatch(setUserEmail(userEmail));
       dispatch(setUserName(userName));
       dispatch(setUserId(learner_id));

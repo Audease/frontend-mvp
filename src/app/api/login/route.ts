@@ -16,10 +16,10 @@ export async function POST(req: NextRequest) {
     if (response.status === 200) {
       const {
         token: { access, refresh },
-        permissions, user_id, learner_id, email, name,
+        permissions, user_id, learner_id, email, name,requires_password_change
       } = response.data;
 
-      const responseData = { permissions, user_id, userEmail: email, userName: name };
+      const responseData = { permissions, user_id, userEmail: email, userName: name, requires_password_change };
       if (learner_id) {
         responseData['learner_id'] = learner_id;
       }

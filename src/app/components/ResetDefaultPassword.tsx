@@ -1,146 +1,168 @@
 "use client";
 
+import { Modal } from "flowbite-react";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface ResetPasswordModalProps {
   show?: boolean;
-  onReset?: (oldPassword: string, newPassword: string) => void;
   onClose?: () => void;
 }
 
+const passwordSchema = z
+  .string()
+  .min(8, "Must be at least 8 characters")
+  .regex(/[A-Z]/, "Must contain an uppercase letter")
+  .regex(/[0-9]/, "Must contain a number")
+  .regex(/[^a-zA-Z0-9]/, "Must contain a symbol");
+
+const formSchema = z
+  .object({
+    oldPassword: z.string().min(1, "Old password is required"),
+    newPassword: passwordSchema,
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match",
+  });
+
+type FormValues = z.infer<typeof formSchema>;
+
 export default function ResetPasswordModal({
-  show = true,
-  onReset,
+  show = false,
   onClose,
 }: ResetPasswordModalProps) {
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+  });
 
   const [showOld, setShowOld] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-
-  if (!show) return null;
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!newPassword || !confirmPassword) {
-      setError("Please fill out both fields.");
-      return;
-    }
-
-    if (newPassword !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
-    setError("");
-    onReset?.(oldPassword, newPassword);
-  };
-
-  const EyeToggle = ({
-    visible,
-    toggle,
-  }: {
-    visible: boolean;
-    toggle: () => void;
-  }) => (
-    <button
-      type="button"
-      onClick={toggle}
-      className="absolute right-6 bottom-[1px] -translate-y-1/2 text-sm text-gray-600"
-      tabIndex={-1}
-    >
-        {visible ? <EyeOff size={12} /> : <Eye size={12} />}
-    </button>
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState<{ type: string; text: string } | null>(
+    null
   );
 
-  const PasswordInput = ({
-    label,
-    value,
-    onChange,
-    visible,
-    toggleVisible,
-  }: {
-    label: string;
-    value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    visible: boolean;
-    toggleVisible: () => void;
-  }) => (
+  const onSubmit = async (data: FormValues) => {
+    setIsLoading(true);
+    setMessage(null);
+
+    try {
+      const response = await fetch("/api/auth/change-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          currentPassword: data.oldPassword,
+          newPassword: data.newPassword,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setMessage({ type: "success", text: "Password changed successfully!" });
+        setTimeout(() => {
+          onClose?.();
+        }, 5000);
+        reset();
+      } else {
+        setMessage({
+          type: "error",
+          text:
+            result.message || "Failed to change password. Please try again.",
+        });
+      }
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text: "An error occurred. Please try again later.",
+      });
+    } finally {
+      setIsLoading(false);
+      reset();
+    }
+  };
+
+  const renderInput = (
+    label: string,
+    name: keyof FormValues,
+    typeVisible: boolean,
+    toggleVisible: () => void
+  ) => (
     <div className="relative">
-      <label className="block text-sm font-medium text-gray-700 mb-1">
+      <label className="block text-sm font-medium font-switzer text-gray-700 mb-1">
         {label}
       </label>
       <input
-        type={visible ? "text" : "password"}
-        value={value}
-        onChange={onChange}
-        className="block w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-dashboardButtons"
+        type={typeVisible ? "text" : "password"}
+        {...register(name)}
+        className="w-full border border-gray-300 rounded-lg px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-dashboardButtons"
       />
-      <EyeToggle visible={visible} toggle={toggleVisible} />
+      <button
+        type="button"
+        onClick={toggleVisible}
+        className="absolute right-3 top-9 text-gray-500"
+        tabIndex={-1}
+      >
+        {typeVisible ? <EyeOff size={18} /> : <Eye size={18} />}
+      </button>
+      {errors[name] && (
+        <p className="text-red-600 text-sm mt-1">
+          {errors[name]?.message?.toString()}
+        </p>
+      )}
     </div>
   );
 
   return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center px-4">
-      <div className="bg-white w-full max-w-md rounded-2xl p-6 shadow-xl">
-        <h2 className="text-xl font-semibold mb-4 text-center">
-          Reset Your Password
-        </h2>
-        <p className="text-sm text-gray-600 mb-6 text-center">
-          You need to set a new password before continuing.
-        </p>
+    <Modal show={show} size="sm" onClose={onClose}>
+      <Modal.Header className="font-switzer">Reset Your Password</Modal.Header>
+      <Modal.Body>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {renderInput("Default Password", "oldPassword", showOld, () =>
+            setShowOld(!showOld)
+          )}
+          {renderInput("New Password", "newPassword", showNew, () =>
+            setShowNew(!showNew)
+          )}
+          {renderInput("Confirm Password", "confirmPassword", showConfirm, () =>
+            setShowConfirm(!showConfirm)
+          )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <PasswordInput
-            label="Old Password"
-            value={oldPassword}
-            onChange={(e) => setOldPassword(e.target.value)}
-            visible={showOld}
-            toggleVisible={() => setShowOld(!showOld)}
-          />
-
-          <PasswordInput
-            label="New Password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            visible={showNew}
-            toggleVisible={() => setShowNew(!showNew)}
-          />
-
-          <PasswordInput
-            label="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            visible={showConfirm}
-            toggleVisible={() => setShowConfirm(!showConfirm)}
-          />
-
-          {error && <p className="text-red-600 text-sm text-center">{error}</p>}
+          {message?.type === "success" && (
+            <p className="text-sm text-center text-green1">{message.text}</p>
+          )}
+          {message?.type === "error" && (
+            <p className="text-sm text-center text-red-700">{message.text}</p>
+          )}
 
           <button
             type="submit"
             className="w-full bg-dashboardButtons text-white py-2 px-4 rounded-lg hover:bg-gold1 transition"
           >
-            Reset Password
+            {isLoading ? "Updating your password..." : "Reset Password"}
           </button>
-
-         
-            <button
-              type="button"
-              onClick={onClose}
-              className="w-full text-sm text-gray-500 hover:underline mt-2"
-            >
-              Cancel
-            </button>
-        
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-full text-sm text-gray-500 hover:underline mt-2"
+          >
+            Later...
+          </button>
         </form>
-      </div>
-    </div>
+      </Modal.Body>
+    </Modal>
   );
 }

@@ -6,7 +6,7 @@ import BKSDStaffModal from "./components/bksdStaffModal";
 import BKSDDashboardHeader from "./components/BKSDDashboardHeader";
 import StaffButton from "./components/StaffButton";
 import SendBtn from "./components/SendBtn";
-import { SendEmail } from "./utils/action";
+import { ReSendEmail, SendEmail } from "./utils/action";
 import { bksdLearnerRevalidation } from "@/app/action";
 import { useBKSDLearners } from "./utils/useBKSDLearners";
 import { SearchComponent } from "@/app/components/dashboard/SearchBox";
@@ -139,6 +139,35 @@ export default function AdminBKSDDashboard({
     }
   };
 
+  const handleResendEmail = async (rowId) => {
+    if (!rowId) return;
+    
+    setLoading2(true);
+    let successCount = 0;
+    let failCount = 0;
+    
+    try {
+      const success = await ReSendEmail(rowId);
+      if (success) {
+        successCount = 1;
+        handleFetchLearnersData(currentPage, "", "");
+        await bksdLearnerRevalidation();
+      } else {
+        failCount = 1;
+      }
+      
+      processEmailResults(successCount, failCount);
+    } catch (error) {
+      console.error(`Error sending email for ID ${rowId}:`, error);
+      setShowFailureToast(true);
+      setTimeout(() => setShowFailureToast(false), 5000);
+      setFailedEmail(1);
+      setSuccessfulEmail(0);
+    } finally {
+      setLoading2(false);
+    }
+  }
+
   // Function to handle checkbox changes
   const handleCheckboxChange = (id) => {
     setCheckedItems((prev) => {
@@ -173,6 +202,7 @@ export default function AdminBKSDDashboard({
       setTotalPages(totalPages);
       setTotalItems(totalItems);
       setAllLearners(allLearners);
+      bksdLearnerRevalidation();
     } catch (error) {
       console.error("Error fetching learner data:", error);
     } finally {
@@ -237,6 +267,7 @@ export default function AdminBKSDDashboard({
         <BKSDDashboardTable
           {...{
             key: key,
+            handleResendEmail,
             handleSingleRowEmail,
             successfulEmail,
             failedEmail,

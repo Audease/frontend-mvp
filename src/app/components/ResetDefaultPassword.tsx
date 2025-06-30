@@ -128,7 +128,11 @@ export default function ResetPasswordModal({
 
   return (
     <Modal show={show} size="sm" onClose={onClose}>
-      <Modal.Header className="font-switzer">Reset Your Password</Modal.Header>
+      <div className="border-b-2">
+        <h3 className="pt-6 text-center text-lg font-bold font-switzer">
+          Reset Your Password
+        </h3>
+      </div>
       <Modal.Body>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {renderInput("Default Password", "oldPassword", showOld, () =>
@@ -154,13 +158,13 @@ export default function ResetPasswordModal({
           >
             {isLoading ? "Updating your password..." : "Reset Password"}
           </button>
-          <button
+          {/* <button
             type="button"
             onClick={onClose}
             className="w-full text-sm text-gray-500 hover:underline mt-2"
           >
             Later...
-          </button>
+          </button> */}
         </form>
       </Modal.Body>
     </Modal>

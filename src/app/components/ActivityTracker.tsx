@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 const whitelist = [
   "/",
@@ -11,69 +11,164 @@ const whitelist = [
   "/reset-password",
 ];
 
+const INACTIVITY_TIMEOUT = 1000 * 60 * 10; // 10 minutes
+
 export default function ActivityTracker() {
   const route = usePathname();
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-  let timeout = null;
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleLogin = () => {
     setShowModal(false);
     router.push("/signIn");
   };
 
-  const restartAutoReset = () => {
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-    timeout = setTimeout(() => {
-      const logout = async () => {
-        await fetch("/api/logout", {
-          method: "POST",
-        });
-        // router.push("/signIn");
-        setShowModal(true);
-        // if (response.ok) {
-        //   router.push("/signIn");
-        // } else {
-        //   console.error("Failed to log out");
-        // }
-      };
-      logout();
-    }, 1000 * 60 * 10); // 10 minutes
-  };
+  const logout = useCallback(async () => {
+    try {
+      // Add timeout and retry logic for network issues after sleep
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-  const onMouseMove = () => {
+      const response = await fetch("/api/logout", { 
+        method: "POST",
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        console.error('Logout failed:', response.status);
+        // Still proceed with client cleanup even if server request fails
+      }
+    } catch (error) {
+      console.error('Logout request failed:', error);
+      // Network might be unavailable after sleep - still do client cleanup
+    } finally {
+      // Always clean up client-side and show modal regardless of server response
+      localStorage.removeItem("lastActiveAt");
+      localStorage.removeItem("pageHiddenAt");
+      setShowModal(true);
+      
+      // Force a page reload to clear any cached authenticated state
+      // This ensures cookies are re-evaluated by the browser
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 1000);
+    }
+  }, []);
+
+  const checkInactivity = useCallback(() => {
+    const lastActiveAt = localStorage.getItem("lastActiveAt");
+    if (lastActiveAt) {
+      const now = Date.now();
+      const diff = now - parseInt(lastActiveAt, 10);
+
+      if (diff > INACTIVITY_TIMEOUT) {
+        logout();
+        return true; 
+      }
+    }
+    return false; 
+  }, [logout]);
+
+  const restartAutoReset = useCallback(() => {
+    // Save current timestamp as last active time
+    localStorage.setItem("lastActiveAt", Date.now().toString());
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      logout();
+    }, INACTIVITY_TIMEOUT);
+  }, [logout]);
+
+  const onUserActivity = useCallback(() => {
     restartAutoReset();
-  };
+  }, [restartAutoReset]);
+
+  // Handle visibility change (tab focus, window focus, system wake)
+  const handleVisibilityChange = useCallback(() => {
+    if (document.hidden) {
+      // Page became hidden - mark the time when user left
+      localStorage.setItem("pageHiddenAt", Date.now().toString());
+    } else {
+      // Page became visible - check if this might be a system wake
+      const pageHiddenAt = localStorage.getItem("pageHiddenAt");
+      if (pageHiddenAt) {
+        const hiddenTime = Date.now() - parseInt(pageHiddenAt, 10);
+        
+        // If page was hidden for more than 10 minutes, treat as potential sleep/suspend
+        if (hiddenTime > 600000) { 
+          logout();
+          return;
+        }
+      }
+      
+      // Otherwise, do normal inactivity check
+      if (!checkInactivity()) {
+        restartAutoReset();
+      }
+    }
+  }, [checkInactivity, restartAutoReset, logout]);
+
+  // Handle window focus (additional layer for system wake detection)
+  const handleWindowFocus = useCallback(() => {
+    // Always check for potential sleep when window regains focus
+    const pageHiddenAt = localStorage.getItem("pageHiddenAt");
+    if (pageHiddenAt) {
+      const hiddenTime = Date.now() - parseInt(pageHiddenAt, 10);
+      
+      // If focus was lost for more than 10 minutes, log out
+      if (hiddenTime > 600000) {
+        logout();
+        return;
+      }
+    }
+    
+    // Normal inactivity check
+    if (!checkInactivity()) {
+      restartAutoReset();
+    }
+  }, [checkInactivity, restartAutoReset, logout]);
 
   useEffect(() => {
-    let preventReset = false;
-    for (const path of whitelist) {
-      if (path === route) {
-        preventReset = true;
-      }
+    let preventReset = whitelist.includes(route);
+
+    if (preventReset) return;
+
+    // Initial inactivity check
+    if (checkInactivity()) {
+      return; // User was already logged out
     }
 
-    if (preventReset) {
-      return;
-    }
-
-    // initiate timeout
+    // Start/reset the inactivity timer
     restartAutoReset();
 
-    // listen for mouse events
-    window.addEventListener("mousemove", onMouseMove);
+    // Listen for user activity
+    window.addEventListener("mousemove", onUserActivity);
+    window.addEventListener("keydown", onUserActivity);
+    window.addEventListener("click", onUserActivity);
+    window.addEventListener("scroll", onUserActivity);
+    window.addEventListener("touchstart", onUserActivity);
 
-    // cleanup
+    // Listen for visibility/focus changes (handles sleep/wake)
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("focus", handleWindowFocus);
+
     return () => {
-      if (timeout) {
-        clearTimeout(timeout);
-        window.removeEventListener("mousemove", onMouseMove);
-      }
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      window.removeEventListener("mousemove", onUserActivity);
+      window.removeEventListener("keydown", onUserActivity);
+      window.removeEventListener("click", onUserActivity);
+      window.removeEventListener("scroll", onUserActivity);
+      window.removeEventListener("touchstart", onUserActivity);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("focus", handleWindowFocus);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [route]);
+  }, [route, checkInactivity, restartAutoReset, onUserActivity, handleVisibilityChange, handleWindowFocus]);
 
   return (
     <>
@@ -96,5 +191,5 @@ export default function ActivityTracker() {
         </div>
       )}
     </>
-  );;
+  );
 }

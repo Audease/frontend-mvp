@@ -10,6 +10,7 @@ type authState = {
   userPackage: string;
   userId: string;
   userName: string;
+  passwordChangeStatus: boolean;
 };
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
     userPackage: "",
     userId: "",
     userName: "",
+    passwordChangeStatus: false,
   } as authState,
 } as InitialState;
 
@@ -41,9 +43,12 @@ export const auth = createSlice({
     setUserName: (state, action: PayloadAction<string>) => {
       state.value.userName = action.payload;
     },
+    setpasswordChangeStatus: (state, action: PayloadAction<boolean>) => {
+      state.value.passwordChangeStatus = action.payload;
+    },
     logOut: () => initialState,
   },
 });
 
-export const { setUserEmail, setUserPackage, setUserPermissions,setUserId, setUserName, logOut } = auth.actions;
+export const { setUserEmail, setUserPackage, setUserPermissions, setUserId, setUserName, setpasswordChangeStatus, logOut } = auth.actions;
 export default auth.reducer;

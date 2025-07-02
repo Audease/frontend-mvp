@@ -21,6 +21,7 @@ export default function SignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    localStorage.setItem("lastActiveAt", Date.now().toString());
     handleLogin(email, password);
   };
 

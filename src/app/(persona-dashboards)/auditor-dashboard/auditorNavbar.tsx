@@ -51,6 +51,7 @@ export default function AuditorNavbar() {
     });
   
     if (response.ok) {
+      localStorage.removeItem("lastActiveAt");
       // Redirect to the login page
       router.push("/signIn");
     } else {

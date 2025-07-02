@@ -6,6 +6,7 @@ import LoadingSpinner, { LoadingSpinner2 } from "../../../../components/dashboar
 import SuccessToast, { FailureToast } from "../../../../components/NotificationToast";
 
 export default function BKSDDashboardTable({
+  handleResendEmail,
   handleSingleRowEmail, 
   loading2,
   successfulEmail,
@@ -129,22 +130,26 @@ export default function BKSDDashboardTable({
                   >
                     ...
                   </p>
-                  {row.application_mail !== "Sent" && editOptionsVisible === index && (
+                    {editOptionsVisible === index && (
                     <div
                       ref={menuRef}
                       className="bg-white shadow-lg rounded-lg p-2 font-medium w-32 absolute left-[-80px] border-2 right-0 text-tblack3 space-y-4 z-10 top-10"
                     >
                       <p
-                        className="hover:text-gold1 cursor-pointer"
-                        onClick={() => {
-                          handleSingleRowEmail(row.id);
-                          setEditOptionsVisible(null);
-                        }}
+                      className="hover:text-gold1 cursor-pointer"
+                      onClick={() => {
+                        if (row.application_mail === "Sent") {
+                        handleResendEmail?.(row.id);
+                        } else {
+                        handleSingleRowEmail(row.id);
+                        }
+                        setEditOptionsVisible(null);
+                      }}
                       >
-                        Send Application
+                      {row.application_mail === "Sent" ? "Resend Application" : "Send Application"}
                       </p>
                     </div>
-                  )}
+                    )}
                 </td>
               </tr>
             ))

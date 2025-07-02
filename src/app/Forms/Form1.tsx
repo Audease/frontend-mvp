@@ -24,42 +24,45 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
     selectedCountry,
   } = formData;
 
-  const [countries, setCountries] = useState([]);
+  const [countries] = useState([
+    { name: { common: "United Kingdom" } },
+    { name: { common: "Nigeria" } },
+  ]);
 
-  useEffect(() => {
-    /**
-     * Fetches country data
-     */
-    //   const fetchCountries = async () => {
-    //     try {
-    //       const response = await axios.get("https://restcountries.com/v3.1/all");
-    //       const sortedCountries = response.data.sort((a, b) =>
-    //         a.name.common.localeCompare(b.name.common)
-    //       );
-    //       setCountries(sortedCountries);
-    //     } catch (error) {
-    //       console.error("Error fetching countries:", error);
-    //     }
-    //   };
-    //   fetchCountries();
-    // }, []);
+  // useEffect(() => {
+  /**
+   * Fetches country data
+   */
+  //   const fetchCountries = async () => {
+  //     try {
+  //       const response = await axios.get("https://restcountries.com/v3.1/all");
+  //       const sortedCountries = response.data.sort((a, b) =>
+  //         a.name.common.localeCompare(b.name.common)
+  //       );
+  //       setCountries(sortedCountries);
+  //     } catch (error) {
+  //       console.error("Error fetching countries:", error);
+  //     }
+  //   };
+  //   fetchCountries();
+  // }, []);
 
-    /**
-     * Fetches country data and filters for United Kingdom
-     */
-    const fetchCountries = async () => {
-      try {
-        const response = await axios.get("https://restcountries.com/v3.1/all");
-        const unitedKingdom = response.data.find(
-          (country) => country.name.common === "United Kingdom"
-        );
-        setCountries(unitedKingdom ? [unitedKingdom] : []);
-      } catch (error) {
-        // console.error("Error fetching countries:", error);
-      }
-    };
-    fetchCountries();
-  }, []);
+  /**
+   * Fetches country data and filters for United Kingdom
+   */
+  //   const fetchCountries = async () => {
+  //     try {
+  //       const response = await axios.get("https://restcountries.com/v3.1/all");
+  //       const unitedKingdom = response.data.find(
+  //         (country) => country.name.common === "United Kingdom"
+  //       );
+  //       setCountries(unitedKingdom ? [unitedKingdom] : []);
+  //     } catch (error) {
+  //       // console.error("Error fetching countries:", error);
+  //     }
+  //   };
+  //   fetchCountries();
+  // }, []);
 
   /**
    * Handles input change and updates formData state
@@ -124,10 +127,10 @@ export default function Form1({ formData, setFormData, handleSubmit }) {
                 }`}
                 required
               >
-                <option value="Country">Country</option>
+                <option value="">Select Country</option>
                 {countries.map((country) => (
-                  <option key={country} value={country.name.common}>
-                    {country.name.common || "United Kingdom"}
+                  <option key={country.name.common} value={country.name.common}>
+                    {country.name.common}
                   </option>
                 ))}
               </select>

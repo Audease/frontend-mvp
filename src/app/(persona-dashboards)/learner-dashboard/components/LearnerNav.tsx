@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
 import { Menu, X, Bell, HelpCircle, LogOut } from "lucide-react";
 import Link from "next/link";
+import { useLogout } from "@/app/lib/logout";
 
 const LearnerNav = () => {
   const [notifications, setNotifications] = useState(false);
@@ -50,18 +51,7 @@ const LearnerNav = () => {
     setMobileMenuOpen((prevState) => !prevState);
   };
 
-  const logout = async () => {
-    const response = await fetch("/api/logout", {
-      method: "POST",
-    });
-
-    if (response.ok) {
-      localStorage.removeItem("lastActiveAt");
-      router.push("/signIn");
-    } else {
-      console.error("Failed to log out");
-    }
-  };
+  const logout = useLogout();
 
   const userEmail = useAppSelector(
     (state) => state.authReducer.value.userEmail
@@ -213,13 +203,13 @@ const LearnerNav = () => {
                 <button className="flex items-center w-full py-2 text-sm text-gray-700">
                   <HelpCircle size={16} className="mr-2" />
                   <Link
-                        href="/help-and-support"
-                        className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <span>Help and Support</span>
-                      </Link>
+                    href="/help-and-support"
+                    className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span>Help and Support</span>
+                  </Link>
                 </button>
                 <button
                   className="flex items-center w-full py-2 text-sm text-gray-700"

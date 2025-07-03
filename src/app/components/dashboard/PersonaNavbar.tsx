@@ -6,13 +6,13 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/redux/store";
-import { logOut } from "@/redux/features/login/auth-slice";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Search } from "lucide-react";
 import PersonaNavLinks from "./PersonaNavLinks";
 import Notifications from "./Notifications";
 import NavbarPlusButton from "./NavbarPlusButton";
+import { useLogout } from "@/app/lib/logout";
 
 export default function PersonaNavbar() {
   const [profileOptions, setProfileOptions] = useState(false);
@@ -21,8 +21,7 @@ export default function PersonaNavbar() {
   const [userEmailFirstLetter, setUserEmailFirstLetter] = useState("");
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const menuRef = useRef(null);
-  const router = useRouter();
-  const dispatch = useDispatch();
+
 
   const userEmail = useAppSelector(
     (state) => state.authReducer.value.userEmail
@@ -68,25 +67,17 @@ export default function PersonaNavbar() {
     setNotifications(false);
   };
 
-  const logout = async () => {
-    try {
-      const response = await fetch("/api/logout", {
-        method: "POST",
-      });
+  const logout = useLogout();
 
-      if (response.ok) {
-        localStorage.removeItem("persist:root");
-        dispatch(logOut());
-        router.push("/signIn");
-      } else {
-        console.error("Failed to log out");
-      }
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
-
-  const ProfileOption = ({ icon, text, onClick }: { icon: string; text: string; onClick?: () => void }) => (
+  const ProfileOption = ({
+    icon,
+    text,
+    onClick,
+  }: {
+    icon: string;
+    text: string;
+    onClick?: () => void;
+  }) => (
     <div
       className="flex items-center py-2 px-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors duration-200"
       onClick={onClick}
@@ -222,10 +213,7 @@ export default function PersonaNavbar() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <ProfileOption
-                  icon="/help.png"
-                  text="Help and Support"
-                />
+                  <ProfileOption icon="/help.png" text="Help and Support" />
                 </Link>
 
                 <ProfileOption

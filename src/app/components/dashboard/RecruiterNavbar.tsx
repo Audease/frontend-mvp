@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from "react";
 import Notifications from "./Notifications";
 import NavbarPlusButton from "./NavbarPlusButton";
 import { useRouter } from "next/navigation";
+import { useLogout } from "@/app/lib/logout";
 
 export default function RecruiterNavbar() {
   const [profileOptions, setProfileOptions] = useState(false);
@@ -42,22 +43,7 @@ export default function RecruiterNavbar() {
     };
   }, []);
 
-  const logout = async () => {
-    // console.log("logout");
-  
-    // Call the server-side logout route to clear cookies on the server side
-    const response = await fetch('/api/logout', {
-      method: 'POST',
-    });
-  
-    if (response.ok) {
-      // Redirect to the login page
-      localStorage.removeItem("lastActiveAt");
-      router.push("/signIn");
-    } else {
-      console.error('Failed to log out');
-    }
-  };
+  const logout = useLogout();
 
   const links = [
     { name: "Learners", href: "/recruiter-dashboard" },
@@ -78,9 +64,9 @@ export default function RecruiterNavbar() {
         </Link>
 
         <div>
-        {/* Links */}
-        <NavLinks links={links} />
-      </div>
+          {/* Links */}
+          <NavLinks links={links} />
+        </div>
       </div>
       {/* Navigation and Options */}
       <div className="flex flex-row space-x-8">

@@ -1,14 +1,13 @@
-import { logOut } from "@/redux/features/login/auth-slice";
-import { persistor } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
+import { logOut } from "@/redux/features/login/auth-slice";
+import { persistor } from "@/redux/store";
 
-const Logout = () => {
+export const useLogout = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
-    // console.log("Logging out...");
     try {
       const response = await fetch("/api/logout", {
         method: "POST",
@@ -17,9 +16,10 @@ const Logout = () => {
       if (response.ok) {
         await persistor.purge();
         localStorage.removeItem("persist:root");
+        localStorage.removeItem("lastActiveAt");
+        localStorage.removeItem("pageHiddenAt");
 
         dispatch(logOut());
-
         router.push("/signIn");
       } else {
         console.error("Failed to log out");
@@ -29,7 +29,5 @@ const Logout = () => {
     }
   };
 
-  return handleLogout();
+  return handleLogout;
 };
-
-export default Logout;

@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from "react";
 import Notifications from "../../components/dashboard/Notifications";
 import NavbarPlusButton from "../../components/dashboard/NavbarPlusButton";
 import { useRouter } from "next/navigation";
+import { useLogout } from "@/app/lib/logout";
 
 export default function AuditorNavbar() {
   const [profileOptions, setProfileOptions] = useState(false);
@@ -42,27 +43,12 @@ export default function AuditorNavbar() {
     };
   }, []);
 
-  const logout = async () => {
-    // console.log("logout");
-  
-    // Call the server-side logout route to clear cookies on the server side
-    const response = await fetch('/api/logout', {
-      method: 'POST',
-    });
-  
-    if (response.ok) {
-      localStorage.removeItem("lastActiveAt");
-      // Redirect to the login page
-      router.push("/signIn");
-    } else {
-      console.error('Failed to log out');
-    }
-  };
+  const logout = useLogout();
 
   const links = [
     { name: "Learners", href: "/auditor-dashboard" },
     { name: "Messenger", href: "#" },
-    { name: "Analytics", href: "/auditor-dashboard/analytics"},
+    { name: "Analytics", href: "/auditor-dashboard/analytics" },
   ];
 
   return (
@@ -79,9 +65,9 @@ export default function AuditorNavbar() {
         </Link>
 
         <div>
-        {/* Links */}
-        <NavLinks links={links} />
-      </div>
+          {/* Links */}
+          <NavLinks links={links} />
+        </div>
       </div>
       {/* Navigation and Options */}
       <div className="flex flex-row space-x-8">

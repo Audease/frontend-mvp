@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { logOut } from "@/redux/features/login/auth-slice";
 import { Navbar } from "flowbite-react";
 import clsx from "clsx";
+import { useLogout } from "@/app/lib/logout";
 
 const links = [
   { name: "Apps", href: "/admin" },
@@ -54,19 +55,7 @@ export default function Nav() {
     if (plusButton) setPlusButton(false);
   };
 
-  const logout = async () => {
-    const response = await fetch("/api/logout", {
-      method: "POST",
-    });
-
-    if (response.ok) {
-      localStorage.removeItem("persist:root");
-      dispatch(logOut());
-      router.push("/signIn");
-    } else {
-      console.error("Failed to log out");
-    }
-  };
+  const logout = useLogout();
 
   const userEmail = useAppSelector(
     (state) => state.authReducer.value.userEmail

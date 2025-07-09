@@ -19,7 +19,7 @@ export default function ForgotPassword() {
 
     try {
       const response = await axios.post(
-        "https://audease-dev.onrender.com/v1/auth/initiate-reset",
+        "https://backend-mvp-dev-535547563935.europe-west4.run.app/v1/auth/initiate-reset",
         { email: forgotPasswordEmail }
       );
 
@@ -34,9 +34,6 @@ export default function ForgotPassword() {
     } finally {
       setLoading(false);
     }
-
-    // localStorage.setItem("email", JSON.stringify(email));
-    // console.log(forgotPasswordEmail);
   };
 
   let passwordFormComponent;

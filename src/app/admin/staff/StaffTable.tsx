@@ -113,12 +113,15 @@ export default function StaffTable({
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {loading2 ? (
-          <tr>
-            <td colSpan={5} className="px-4 py-4 text-center text-sm text-tableText2 font-medium">
-              Loading...
-            </td>
-          </tr>
-        ) : staffData.length === 0 ? (
+            <tr>
+              <td
+                colSpan={5}
+                className="px-4 py-4 text-center text-sm text-tableText2 font-medium"
+              >
+                Loading...
+              </td>
+            </tr>
+          ) : staffData.length === 0 ? (
             <tr className="border-b">
               <td
                 colSpan={4}
@@ -166,7 +169,7 @@ export default function StaffTable({
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
                   {staff.username}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-col justify-end relative">
+                {/* <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-col justify-end relative">
                   <p
                     onClick={() => toggleVisibility(staff.id)}
                     aria-expanded={editOptions[staff.id] || false}
@@ -182,13 +185,13 @@ export default function StaffTable({
                       className="bg-white shadow-lg rounded-lg p-4 font-medium w-32 absolute top-full border-2 right-20 text-tblack3 space-y-4 "
                     >
                       {/* <p className="hover:text-gold1 cursor-pointer">Edit</p>
-                      <hr /> */}
+                      <hr /> 
                       <p className="text-tred1 hover:text-gold1 cursor-pointer">
                         Archive
                       </p>
                     </div>
                   )}
-                </td>
+                </td> */}
               </tr>
             ))
           )}

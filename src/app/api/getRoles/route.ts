@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   // Extract any query parameters
   const { searchParams } = new URL(req.url);
   const sort = searchParams.get("sort") || "";
-  
+
   let endpoint = "/v1/admin/roles";
   if (sort) {
     endpoint += `?sort=${sort}`;
@@ -25,8 +25,8 @@ export async function GET(req: NextRequest) {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
-      cache: "force-cache",
-      next: { tags: ["roles"] },
+      cache: "no-store", // Use no-store to prevent caching issues with filters
+      next: { revalidate: 0 }, // Disable caching
     });
 
     if (response.ok) {

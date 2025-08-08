@@ -163,7 +163,7 @@ export default function StaffTable({
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
                   {staff.status}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
+                {/* <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
                   {staff.username}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-col justify-end relative">
@@ -182,13 +182,13 @@ export default function StaffTable({
                       className="bg-white shadow-lg rounded-lg p-4 font-medium w-32 absolute top-full border-2 right-20 text-tblack3 space-y-4 "
                     >
                       {/* <p className="hover:text-gold1 cursor-pointer">Edit</p>
-                      <hr /> */}
+                      <hr /> 
                       <p className="text-tred1 hover:text-gold1 cursor-pointer">
                         Archive
                       </p>
                     </div>
                   )}
-                </td>
+                </td> */}
               </tr>
             ))
           )}

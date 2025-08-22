@@ -79,7 +79,7 @@ export default function AdminRecruiterdashboard({
       setLoading2(true);
       await DeleteStudent(checkedIds);
       await learnerRevalidation();
-      await handleFetchLearnersData(1, 10, "", "", "", "desc");
+      await handleFetchLearnersData(1, 10, "", "", "", "asc");
       setTableKey((prev) => prev + 1);
       setCheckedItems({});
     } catch (error) {
@@ -115,28 +115,28 @@ export default function AdminRecruiterdashboard({
   // Handle new learner creation
   const handleLearnerCreated = async () => {
     await learnerRevalidation();
-    await handleFetchLearnersData(currentPage, 10, "", "", "", "desc");
+    await handleFetchLearnersData(currentPage, 10, "", "", "", "asc");
     setTableKey((prev) => prev + 1);
   };
 
   // Handle filtering
   const onFilterClick = (funding, course) => {
-    handleFetchLearnersData(1, 10, funding, course, "", "desc");
+    handleFetchLearnersData(1, 10, funding, course, "", "asc");
   };
 
   // Handle search input
   const searchValue = (searchValue) => {
     setSearchQuery(searchValue);
-    handleFetchLearnersData(1, 10, "", "", searchValue, "desc");
+    handleFetchLearnersData(1, 10, "", "", searchValue, "asc");
   };
 
   // Handle tab switching
   const onTabClick = (tab) => {
     setActiveTab(tab);
     if (tab === "All") {
-      handleFetchLearnersData(1, 10, "", "", "", "desc");
+      handleFetchLearnersData(1, 10, "", "", "", "asc");
     } else if (tab === "Recent") {
-      handleFetchLearnersData(1, 10, "", "", "", "desc");
+      handleFetchLearnersData(1, 10, "", "", "", "asc");
     }
   };
 
@@ -181,7 +181,7 @@ export default function AdminRecruiterdashboard({
         }, 3000);
       }
       await learnerRevalidation();
-      await handleFetchLearnersData(currentPage, 10, "", "", searchQuery, "desc");
+      await handleFetchLearnersData(currentPage, 10, "", "", searchQuery, "asc");
       setTableKey((prev) => prev + 1);
     } catch (error) {
       console.error("Error updating learner:", error);
@@ -191,7 +191,7 @@ export default function AdminRecruiterdashboard({
   };
 
   const callback = async () => {
-    await handleFetchLearnersData(currentPage, 10, "", "", searchQuery, "desc");
+    await handleFetchLearnersData(currentPage, 10, "", "", searchQuery, "asc");
     await learnerRevalidation();
     setTableKey((prev) => prev + 1);
   };

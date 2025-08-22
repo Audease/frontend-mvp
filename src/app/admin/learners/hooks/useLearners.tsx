@@ -1,12 +1,12 @@
 export const useLearners = () => {
-  const fetchLearnersData = async (page: number, limit: number = 10, funding = '', chosen_course = '', search = '', sort = '') => {
+  const fetchLearnersData = async (page: number, limit: number = 10, funding = '', chosen_course = '', search = '', sort = 'asc') => {
     try {
       // Add cache-busting timestamp
       const timestamp = new Date().getTime();
       
       // Add sort parameter to the URL
       const response = await fetch(
-        `/api/getLearnersB?funding=${funding}&chosen_course=${chosen_course}&search=${search}&page=${page}&limit=${limit}&sort=${sort}&t=${timestamp}`,
+        `/api/getLearnersB?funding=${funding}&chosen_course=${chosen_course}&search=${search}&page=${page}&limit=${limit}&sort=${sort}`,
         {
           cache: "no-store",
           headers: {

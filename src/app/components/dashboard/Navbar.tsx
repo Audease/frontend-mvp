@@ -2,17 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import NavLinks from "./NavLinks";
 import { useState, useEffect, useRef } from "react";
 import Notifications from "./Notifications";
 import NavbarPlusButton from "./NavbarPlusButton";
-import { useRouter, usePathname } from "next/navigation";
-import { useAppSelector, persistor } from "../../../redux/store";
-import { useDispatch } from "react-redux";
-import { logOut } from "@/redux/features/login/auth-slice";
-import { Navbar } from "flowbite-react";
+import { usePathname } from "next/navigation";
+import { useAppSelector } from "../../../redux/store";
 import clsx from "clsx";
 import { useLogout } from "@/app/lib/logout";
+import { getInitials } from "@/app/lib/getInitials";
 
 const links = [
   { name: "Apps", href: "/admin" },
@@ -27,11 +24,10 @@ export default function Nav() {
   const [profileOptions, setProfileOptions] = useState(false);
   const [notifications, setNotifications] = useState(false);
   const [plusButton, setPlusButton] = useState(false);
-  const [userEmailFirstLetter, setuserEmailFirstLetter] = useState("");
+  const [userInitials, setUserInitials] = useState("AA");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const menuRef = useRef(null);
-  const router = useRouter();
-  const dispatch = useDispatch();
+
 
   const toggleVisibility = () => {
     setProfileOptions((prevState) => !prevState);
@@ -61,12 +57,16 @@ export default function Nav() {
     (state) => state.authReducer.value.userEmail
   );
 
+  const userName = useAppSelector(
+    (state) => state.authReducer.value.userName
+  );
+
   useEffect(() => {
-    if (userEmail) {
-      const firstLetter = userEmail.charAt(0).toUpperCase();
-      setuserEmailFirstLetter(firstLetter);
+    if (userName) {
+      const initials = getInitials(userName);
+      setUserInitials(initials);
     }
-  }, [userEmail]);
+  }, [userName]);
 
   // Click outside to close menus
   useEffect(() => {
@@ -128,7 +128,7 @@ export default function Nav() {
             aria-expanded={profileOptions}
             aria-haspopup="true"
           >
-            <p className="text-tgrey3 text-lg">{userEmailFirstLetter}</p>
+            <p className="text-tgrey3 text-lg">{userInitials}</p>
           </div>
 
           {/* Profile Dropdown */}
@@ -138,7 +138,7 @@ export default function Nav() {
               <div className="flex items-center hover:bg-gray-50 p-2 rounded-lg cursor-pointer">
                 <div className="w-6 h-6 bg-profilebg rounded-full flex items-center justify-center">
                   <p className="text-tgrey3 text-h5 font-semibold">
-                    {userEmailFirstLetter}
+                    {userInitials}
                   </p>
                 </div>
                 <p className="px-2 text-sm">My Profile</p>
@@ -242,7 +242,7 @@ export default function Nav() {
           <div className="pt-4 pb-3">
             <div className="flex items-center px-2 py-3">
               <div className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center">
-                <p className="text-tgrey3 text-lg">{userEmailFirstLetter}</p>
+                <p className="text-tgrey3 text-lg">{userInitials}</p>
               </div>
               <div className="ml-3">
                 <div className="text-sm font-medium text-gray-700">
@@ -270,206 +270,5 @@ export default function Nav() {
         </div>
       </div>
     </nav>
-  );
-}
-
-// Old NAVBAR
-
-// "use client";
-
-// import Image from "next/image";
-// import Link from "next/link";
-// import NavLinks from "./NavLinks";
-// import { useState, useEffect, useRef } from "react";
-// import Notifications from "./Notifications";
-// import NavbarPlusButton from "./NavbarPlusButton";
-// import { useRouter } from "next/navigation";
-// import { useAppSelector, persistor } from "../../../redux/store";
-// import { Navbar } from "flowbite-react";
-// import { useDispatch } from "react-redux";
-// import { logOut } from "@/redux/features/login/auth-slice";
-
-// const links = [
-//   { name: "Apps", href: "/admin" },
-//   { name: "Resources", href: "/admin/resources" },
-//   { name: "Messenger", href: "/admin/messenger" },
-//   { name: "Learners", href: "/admin/learners" },
-//   { name: "Staff", href: "/admin/staff" },
-//   { name: "Worflows", href: "/admin/workflows" },
-// ];
-
-export function OldNav() {
-  const [profileOptions, setProfileOptions] = useState(false);
-  const [notifications, setNotifications] = useState(false);
-  const [plusButton, setPlusButton] = useState(false);
-  const [userEmailFirstLetter, setuserEmailFirstLetter] = useState("");
-  const menuRef = useRef(null);
-  const router = useRouter();
-  const dispatch = useDispatch();
-
-  const toggleVisibility = () => {
-    setProfileOptions((prevState) => !prevState);
-  };
-
-  const toggleNotifications = () => {
-    setNotifications((prevState) => !prevState);
-  };
-
-  const togglePlusButton = () => {
-    setPlusButton((prevState) => !prevState);
-  };
-
-  const logout = async () => {
-    const response = await fetch("/api/logout", {
-      method: "POST",
-    });
-
-    if (response.ok) {
-      localStorage.removeItem("persist:root");
-      dispatch(logOut());
-      router.push("/signIn");
-    } else {
-      console.error("Failed to log out");
-    }
-  };
-
-  const userEmail = useAppSelector(
-    (state) => state.authReducer.value.userEmail
-  );
-
-  useEffect(() => {
-    if (userEmail) {
-      const firstLetter = userEmail.charAt(0).toUpperCase();
-      setuserEmailFirstLetter(firstLetter);
-    }
-  }, [userEmail]);
-
-  return (
-    <Navbar className="mx-6">
-      <Navbar.Brand as={Link} href="/">
-        <Image
-          src="/audease_logo.png"
-          width={100}
-          height={30}
-          alt="Audease logo"
-        />
-      </Navbar.Brand>
-      <Navbar.Toggle />
-      <Navbar.Collapse>
-        <NavLinks links={links} />
-        <div className="lg:hidden items-center flex">
-          <p
-            className="px-2 flex py-2 text-h2 text-tgrey3 hover:text-dashboardButtons  cursor-pointer"
-            onClick={logout}
-          >
-            Logout
-          </p>
-        </div>
-
-        <div className="hidden xl:block lg:w-32"></div>
-
-        {/* Profile and Notifications */}
-        <div className="hidden relative lg:flex flex-col" ref={menuRef}>
-          <div className="flex flex-row space-x-4 py-1">
-            {/* <Image
-              src="/createbutton.png"
-              width={30}
-              height={30}
-              alt="Create button"
-              onClick={togglePlusButton}
-              aria-expanded={plusButton}
-            /> */}
-            {/* <Image
-              src="/notification.png"
-              width={32}
-              height={32}
-              alt="Notification button"
-              onClick={toggleNotifications}
-              aria-expanded={notifications}
-            /> */}
-            <div
-              className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center p-2 cursor-pointer"
-              onClick={toggleVisibility}
-              aria-expanded={profileOptions}
-              aria-haspopup="true"
-            >
-              <p className="text-tgrey3 text-lg">{userEmailFirstLetter}</p>
-            </div>
-          </div>
-          {profileOptions && (
-            <div className="absolute top-14 bg-white shadow-lg rounded-lg p-4 font-medium w-48 right-[0rem] space-y-4">
-              {/* My profile  */}
-              <div className="flex flex-row">
-                <div className="w-6 h-6 bg-profilebg rounded-full flex items-center justify-center p-2">
-                  <p className="text-tgrey3 text-h5 font-semibold">
-                    {userEmailFirstLetter}
-                  </p>
-                </div>
-                <div>
-                  <p className="px-2 hover:text-dashboardButtons text-sm cursor-pointer">
-                    My Profile
-                  </p>
-                </div>
-              </div>
-              {/* Help and support  */}
-              <div className="flex flex-row">
-                <div>
-                  <Image
-                    src={"/help.png"}
-                    width={20}
-                    height={20}
-                    alt="Help and Support"
-                  />
-                </div>
-                <div>
-                  <p className="px-3 hover:text-dashboardButtons text-sm cursor-pointer">
-                    Help and Support
-                  </p>
-                </div>
-              </div>
-              {/* Invite Friends  */}
-              {/* <div className="flex flex-row">
-                <div>
-                  <Image
-                    src={"/friends.png"}
-                    width={20}
-                    height={20}
-                    alt="Help and Support"
-                  />
-                </div>
-                <div>
-                  <p className="px-3 hover:text-dashboardButtons text-sm cursor-pointer">
-                    Invite Friends
-                  </p>
-                </div>
-              </div> */}
-              {/* Logout */}
-              <div className="flex flex-row">
-                <div>
-                  <Image
-                    src={"/logout.png"}
-                    width={20}
-                    height={20}
-                    alt="Help and Support"
-                  />
-                </div>
-                <div>
-                  <p
-                    className="px-3 hover:text-dashboardButtons text-sm cursor-pointer"
-                    onClick={logout}
-                  >
-                    Logout
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {notifications && <Notifications />}
-
-          {plusButton && <NavbarPlusButton />}
-        </div>
-      </Navbar.Collapse>
-    </Navbar>
   );
 }

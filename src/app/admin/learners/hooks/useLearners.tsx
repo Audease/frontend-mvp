@@ -6,7 +6,7 @@ export const useLearners = () => {
       
       // Add sort parameter to the URL
       const response = await fetch(
-        `/api/getLearnersB?funding=${funding}&chosen_course=${chosen_course}&search=${search}&page=${page}&limit=${limit}&sort=${sort}&t=${timestamp}`,
+        `/api/getAdminLearners?page=${page}&limit=${limit}&search=${search}&timestamp=${timestamp}`,
         {
           cache: "no-store",
           headers: {
@@ -21,7 +21,7 @@ export const useLearners = () => {
       if (response.ok) {
         const totalPages = data.totalPages || 10;
         const totalItems = data.total;
-        const allLearners = data.data;
+        const allLearners = data.result;
   
         return { totalPages, totalItems, allLearners };
       } else {

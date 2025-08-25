@@ -44,16 +44,16 @@ export default function LearnersTable({
   const handleViewLearner = (learnerId) => {
     router.push(`/admin/learners/${encodeId(learnerId)}`);
   };
-  
+
   // Format date to a more human-readable form
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
-    
+
     try {
       const date = parseISO(dateString);
-      
+
       if (!isValid(date)) return "Invalid date";
-      
+
       return format(date, "MMM d, yyyy h:mm a");
     } catch (error) {
       console.error("Error formatting date:", error);
@@ -77,6 +77,9 @@ export default function LearnersTable({
                 Email
               </th>
               <th className="px-4 py-3 text-left text-sm font-normal text-tableText tracking-wider">
+                Recruiter
+              </th>
+              <th className="px-4 py-3 text-left text-sm font-normal text-tableText tracking-wider">
                 Last Login
               </th>
               <th className="px-4 py-3 text-left text-sm font-normal text-tableText tracking-wider">
@@ -85,6 +88,7 @@ export default function LearnersTable({
               <th className="px-4 py-3 text-left text-sm font-normal text-tableText tracking-wider">
                 Course
               </th>
+
               <th className="px-4 py-3 text-left text-sm font-normal text-tableText tracking-wider"></th>
             </tr>
           </thead>
@@ -120,7 +124,12 @@ export default function LearnersTable({
                     {row.email}
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium ">
-                    {row.user?.last_login_at ? formatDate(row.user.last_login_at) : "Never logged in"}
+                    {row.created_by.name}
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium ">
+                    {row.user?.last_login_at
+                      ? formatDate(row.user.last_login_at)
+                      : "Never logged in"}
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium ">
                     {row.funding}
@@ -128,6 +137,7 @@ export default function LearnersTable({
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium ">
                     {row.chosen_course}
                   </td>
+
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-col justify-end relative ">
                     <p
                       onClick={() => toggleVisibility(row.id)}
@@ -148,8 +158,11 @@ export default function LearnersTable({
                         >
                           View
                         </p>
-                        <p className="text-tred1 hover:text-gold1 cursor-pointer" onClick={() => handleArchiveLearner(row.id)}>
-                          Archive 
+                        <p
+                          className="text-tred1 hover:text-gold1 cursor-pointer"
+                          onClick={() => handleArchiveLearner(row.id)}
+                        >
+                          Archive
                         </p>
                       </div>
                     )}

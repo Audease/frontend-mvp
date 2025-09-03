@@ -2,7 +2,6 @@
 import { useEffect, useState, useRef } from "react";
 import DropdownButton from "../../components/dashboard/DropdownButton";
 import { fetchRoles } from "../utils/fetchRoles";
-import LoadingSpinner from "../../components/dashboard/Spinner";
 
 export default function StaffTable({
   staffData,
@@ -113,12 +112,15 @@ export default function StaffTable({
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {loading2 ? (
-          <tr>
-            <td colSpan={5} className="px-4 py-4 text-center text-sm text-tableText2 font-medium">
-              Loading...
-            </td>
-          </tr>
-        ) : staffData.length === 0 ? (
+            <tr>
+              <td
+                colSpan={5}
+                className="px-4 py-4 text-center text-sm text-tableText2 font-medium"
+              >
+                Loading...
+              </td>
+            </tr>
+          ) : staffData.length === 0 ? (
             <tr className="border-b">
               <td
                 colSpan={4}

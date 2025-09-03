@@ -26,7 +26,7 @@ export default function ActionButtons({
   return (
     <div className="flex flex-row space-x-4">
       {Object.values(checkedItems).some((isChecked) => isChecked) && (
-        <div className="flex space-x-2 my-3 xl:my-0 xl:space-x-4">
+        <div className="flex space-x-2 my-3 xl:my-0 md:space-x-4">
           <DeleteLearnerButton {...{ onDeleteClick }} />
           <EditLearnerButton {...{ onEditClick }} />
           {/* <ConfirmEditButton {...{ onConfirmEditButtonClick }} />
@@ -38,11 +38,14 @@ export default function ActionButtons({
         <SearchComponent searchValue={searchValue}/>
       )}
 
-      <div className="xl:flex flex-row space-x-4 hidden items-center justify-center">
+      {/* On tablet (sm/md), hide FilterLearner, show other buttons. On desktop (lg/xl), show all. */}
+      <div className="md:flex flex-row space-x-4 hidden items-center justify-center">
         <CreateLearner onLearnerCreated={handleLearnerCreated} />
         <ImportLearner callback={callback}/>
         {showStaffButton && <RecruiterStaff />}
-        <FilterLearner onFilterClick={onFilterClick} />
+        <span className="hidden lg:inline">
+          <FilterLearner onFilterClick={onFilterClick} />
+        </span>
       </div>
     </div>
   );

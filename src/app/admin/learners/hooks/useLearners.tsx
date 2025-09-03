@@ -1,5 +1,5 @@
 export const useLearners = () => {
-  const fetchLearnersData = async (page: number, limit: number = 10, funding = '', chosen_course = '', search = '', sort = '') => {
+  const fetchLearnersData = async (page: number, limit: number = 10, funding = '', chosen_course = '', search = '', sort = 'asc') => {
     try {
       // Add cache-busting timestamp
       const timestamp = new Date().getTime();

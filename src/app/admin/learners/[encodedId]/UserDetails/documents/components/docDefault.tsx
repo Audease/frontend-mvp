@@ -87,7 +87,7 @@ const DocDefault = ({ onViewClick, userId }: DocDefaultProps) => {
             ))
           : !loading && (
               <p className="font-normal text-sm text-tgrey3 mt-10">
-                You have no documents assigned.
+                You have no other documents assigned.
               </p>
             )}
       </div>

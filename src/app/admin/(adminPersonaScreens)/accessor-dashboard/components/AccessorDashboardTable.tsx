@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import clsx from "clsx";
 import LoadingSpinner from "../../../../components/dashboard/Spinner";
+import { formatToReadableDate } from "@/app/lib/formatDate";
 
 export default function AccessorDashboardTable({ onViewChange, allLearners, loading }) {
 
@@ -97,7 +98,7 @@ export default function AccessorDashboardTable({ onViewChange, allLearners, load
                   {row.name}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
-                  {row.date_of_birth}
+                  {formatToReadableDate(row.date_of_birth)}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   {row.mobile_number}
@@ -135,6 +136,10 @@ export default function AccessorDashboardTable({ onViewChange, allLearners, load
                         row.application_status === "Pending",
                       "bg-red-200 text-red-600":
                         row.application_status === "Rejected",
+                      "bg-yellow-300 text-yellow-600":
+                        row.application_status === "Submitted",
+                      "bg-black text-white":
+                        row.application_status === "Not Started"
                     })}
                   >
                     {row.application_status}

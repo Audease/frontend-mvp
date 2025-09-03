@@ -78,7 +78,7 @@ export default function Accessor({ onViewChange, showHeader }) {
           {showHeader && <AccessorStaffButton />}
           {showHeader && (
             <FilterButton
-              options={["Pending", "Approved", "Rejected"]}
+              options={["Pending", "Approved", "Rejected", "Submitted"]}
               onSelect={handleFilter}
               label={"Filter"}
             />

@@ -2,9 +2,13 @@
 import { useEffect, useState, useRef } from "react";
 import clsx from "clsx";
 import LoadingSpinner from "../../../../components/dashboard/Spinner";
+import { formatToReadableDate } from "@/app/lib/formatDate";
 
-export default function AccessorDashboardTable({ onViewChange, allLearners, loading }) {
-
+export default function AccessorDashboardTable({
+  onViewChange,
+  allLearners,
+  loading,
+}) {
   const [editOptionsVisible, setEditOptionsVisible] = useState(null);
   const menuRef = useRef(null);
 
@@ -64,7 +68,10 @@ export default function AccessorDashboardTable({ onViewChange, allLearners, load
               Chosen course
             </th>
             <th className="px-2 py-2 text-left text-[10px] font-normal text-tableText tracking-wider">
-              Application
+              Submission Status
+            </th>
+            <th className="px-2 py-2 text-left text-[10px] font-normal text-tableText tracking-wider">
+              Approval Status
             </th>
             <th className="px-2 py-2 text-left text-[10px] font-normal text-tableText tracking-wider">
               Action
@@ -97,7 +104,7 @@ export default function AccessorDashboardTable({ onViewChange, allLearners, load
                   {row.name}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
-                  {row.date_of_birth}
+                  {formatToReadableDate(row.date_of_birth)}
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   {row.mobile_number}
@@ -126,6 +133,22 @@ export default function AccessorDashboardTable({ onViewChange, allLearners, load
                 <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   {row.chosen_course}
                 </td>
+                <td className="px-2 py-4 whitespace-nowrap text-[9px] text-tableText2 font-medium">
+                  <p
+                    className={clsx("text-center p-1 rounded-lg", {
+                      "bg-green4 text-green3":
+                        row.form_submission_status === "submitted",
+                      "bg-red-200 text-red-600":
+                        row.form_submission_status === "not_started",
+                      "bg-black text-white":
+                        row.form_submission_status === "pending",
+                    })}
+                  >
+                    {row.form_submission_status === "submitted" && "Submitted"}
+                    {row.form_submission_status === "not_started" && "Not Started"}
+                    {row.form_submission_status === "pending" && "Pending"}
+                  </p>
+                </td>
                 <td className="px-2 py-2 whitespace-nowrap text-[9px] text-tableText2 font-medium">
                   <p
                     className={clsx("text-center p-1 rounded-lg", {
@@ -134,7 +157,7 @@ export default function AccessorDashboardTable({ onViewChange, allLearners, load
                       "bg-tgrey8 text-tblack4":
                         row.application_status === "Pending",
                       "bg-red-200 text-red-600":
-                        row.application_status === "Rejected",
+                        row.application_status === "Rejected"
                     })}
                   >
                     {row.application_status}
@@ -170,7 +193,6 @@ export default function AccessorDashboardTable({ onViewChange, allLearners, load
           )}
         </tbody>
       </table>
-      
     </div>
   );
 }

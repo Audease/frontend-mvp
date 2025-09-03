@@ -2,7 +2,6 @@
 import { useEffect, useState, useRef } from "react";
 import DropdownButton from "../../components/dashboard/DropdownButton";
 import { fetchRoles } from "../utils/fetchRoles";
-import LoadingSpinner from "../../components/dashboard/Spinner";
 
 export default function StaffTable({
   staffData,
@@ -166,10 +165,10 @@ export default function StaffTable({
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
                   {staff.status}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
+               <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium">
                   {staff.username}
                 </td>
-                {/* <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-col justify-end relative">
+                 {/* <td className="px-4 py-4 whitespace-nowrap text-sm text-tableText2 font-medium flex flex-col justify-end relative">
                   <p
                     onClick={() => toggleVisibility(staff.id)}
                     aria-expanded={editOptions[staff.id] || false}

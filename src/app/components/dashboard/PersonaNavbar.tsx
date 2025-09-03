@@ -3,35 +3,35 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/redux/store";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Search } from "lucide-react";
+import { Menu } from "lucide-react";
 import PersonaNavLinks from "./PersonaNavLinks";
 import Notifications from "./Notifications";
 import NavbarPlusButton from "./NavbarPlusButton";
 import { useLogout } from "@/app/lib/logout";
+import { getInitials } from "@/app/lib/getInitials";
 
 export default function PersonaNavbar() {
   const [profileOptions, setProfileOptions] = useState(false);
   const [notifications, setNotifications] = useState(false);
   const [plusButton, setPlusButton] = useState(false);
-  const [userEmailFirstLetter, setUserEmailFirstLetter] = useState("");
+  const [userInitials, setUserInitials] = useState("AA");
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const menuRef = useRef(null);
 
 
-  const userEmail = useAppSelector(
-    (state) => state.authReducer.value.userEmail
+  const userName = useAppSelector(
+    (state) => state.authReducer.value.userName
   );
 
   useEffect(() => {
-    if (userEmail) {
-      setUserEmailFirstLetter(userEmail.charAt(0).toUpperCase());
-    }
-  }, [userEmail]);
+      if (userName) {
+        const initials = getInitials(userName);
+        setUserInitials(initials);
+      }
+    }, [userName]);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -121,7 +121,7 @@ export default function PersonaNavbar() {
           <div className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50">
             <div className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center">
               <p className="text-tgrey3 text-base font-semibold">
-                {userEmailFirstLetter}
+                {userInitials}
               </p>
             </div>
             <p className="text-sm font-medium">My Profile</p>
@@ -189,7 +189,7 @@ export default function PersonaNavbar() {
               onClick={toggleVisibility}
             >
               <p className="text-tgrey3 text-lg font-medium">
-                {userEmailFirstLetter}
+                {userInitials}
               </p>
             </div>
 
@@ -199,7 +199,7 @@ export default function PersonaNavbar() {
                 <div className="flex items-center py-2 px-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors duration-200">
                   <div className="w-6 h-6 bg-profilebg rounded-full flex items-center justify-center">
                     <p className="text-tgrey3 text-sm font-semibold">
-                      {userEmailFirstLetter}
+                      {userInitials}
                     </p>
                   </div>
                   <div>

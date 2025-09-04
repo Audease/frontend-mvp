@@ -10,6 +10,7 @@ import { useAppSelector } from "../../../redux/store";
 import clsx from "clsx";
 import { useLogout } from "@/app/lib/logout";
 import { getInitials } from "@/app/lib/getInitials";
+import { useRouter } from "next/navigation";
 
 const links = [
   { name: "Apps", href: "/admin" },
@@ -27,6 +28,7 @@ export default function Nav() {
   const [userInitials, setUserInitials] = useState("AA");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const router = useRouter();
 
 
   const toggleVisibility = () => {
@@ -87,7 +89,7 @@ export default function Nav() {
   const pathname = usePathname();
 
   return (
-    <nav className="bg-white shadow-sm px-4 py-3">
+    <nav className="bg-white shadow-sm px-6 py-3">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link href="/admin" className="flex items-center">
@@ -141,7 +143,7 @@ export default function Nav() {
                     {userInitials}
                   </p>
                 </div>
-                <p className="px-2 text-sm">My Profile</p>
+                <p className="px-2 text-sm" onClick={() => router.push("/admin/profile")}>My Profile</p>
               </div>
 
               {/* Help and support  */}

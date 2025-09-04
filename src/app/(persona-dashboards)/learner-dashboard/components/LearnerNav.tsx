@@ -70,7 +70,7 @@ const LearnerNav = () => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex w-full">
           {/* Logo */}
-          <div className="flex items-center justify-center border-r border-tgrey2 w-[13rem] p-4">
+          <div className="flex items-center justify-center border-r border-tgrey2 w-[15%] p-4">
             <Image
               src="/audease_logo.png"
               width={112}

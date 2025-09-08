@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
         <NextTopLoader color="#FAA32C" />
         <ReduxProvider>
           <ResetPasswordModal  />
-          <ActivityTracker />
+          {/* <ActivityTracker /> */}
           {children}
         </ReduxProvider>
       </body>

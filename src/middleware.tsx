@@ -43,9 +43,9 @@ const middleware = async (request: NextRequest) => {
     }
 
     
-    if ((pathname === "/admin" || pathname.startsWith("/admin/")) && userPermissions.length <= 4) {
-      return NextResponse.redirect(new URL("/no-access", request.url));
-    }
+    // if ((pathname === "/admin" || pathname.startsWith("/admin/")) && userPermissions.length <= 4) {
+    //   return NextResponse.redirect(new URL("/no-access", request.url));
+    // }
 
     const matchingDashboard = Object.entries(DASHBOARD_PERMISSIONS).find(([path]) => 
       pathname.startsWith(path));

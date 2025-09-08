@@ -2,7 +2,7 @@ import { inter } from "./ui/fonts";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { ReduxProvider } from "../redux/provider";
-import ActivityTracker from "./components/ActivityTracker";
+// import ActivityTracker from "./components/ActivityTracker";
 import ResetPasswordModal from "./components/ResetDefaultPassword";
 
 export const metadata = {
@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
         <NextTopLoader color="#FAA32C" />
         <ReduxProvider>
           <ResetPasswordModal  />
-          <ActivityTracker />
+          {/* <ActivityTracker /> */}
           {children}
         </ReduxProvider>
       </body>

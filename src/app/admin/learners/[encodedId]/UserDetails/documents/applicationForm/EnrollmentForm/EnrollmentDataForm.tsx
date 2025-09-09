@@ -139,7 +139,7 @@ export default function EnrolmentForm({
             </div>
             {field.fields.map((innerField, index) => {
               const isEditable =
-              !isSubmitted && innerField.editableBy.includes(userRole);
+              isSubmitted && innerField.editableBy.includes(userRole);
               switch (innerField.type) {
                 case "text":
                   return (

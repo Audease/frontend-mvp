@@ -90,7 +90,7 @@ const LearnerNav = () => {
 
             {/* Profile and Notifications */}
             <div className="flex items-center space-x-4">
-              <div className="relative" ref={notificationRef}>
+              {/* <div className="relative" ref={notificationRef}>
                 <button
                   className="p-2 rounded-full hover:bg-gray-100 transition-colors"
                   onClick={toggleNotifications}
@@ -104,7 +104,7 @@ const LearnerNav = () => {
                     <Notifications />
                   </div>
                 )}
-              </div>
+              </div> */}
 
               <div className="relative" ref={menuRef}>
                 <button

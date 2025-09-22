@@ -91,17 +91,17 @@ export default function Accessor({ onViewChange, showHeader }) {
                   {
                     key: "approval",
                     title: "Approval Status",
-                    label: "All Submissions",
+                    label: "Aproval Status",
                     options: ["Approved", "Pending", "Rejected"],
                     onSelect: (v) => console.log("submission", v),
                   },
-                  {
-                    key: "submission",
-                    title: "Submission",
-                    label: "Submissions Status",
-                    options: ["Submitted", "Not Started", "pending"],
-                    onSelect: (v) => console.log("submission", v),
-                  },
+                  // {
+                  //   key: "submission",
+                  //   title: "Submission",
+                  //   label: "Submissions Status",
+                  //   options: ["Submitted", "Not Started", "pending"],
+                  //   onSelect: (v) => console.log("submission", v),
+                  // },
                 ]}
                 onFilterClick={(selections) =>
                   handleFilter(selections.approval, selections.submission)

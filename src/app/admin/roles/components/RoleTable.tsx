@@ -176,6 +176,11 @@ export default function RoleTable({ activeTab = "All" }) {
       title: "Certificate dashboard",
       route: "/admin/certificate-dashboard",
     },
+    {
+      label: "View all roles and permissions",
+      title: "Admin dashboard",
+      route: "/admin",
+    }
   ];
 
   const handleRoleClick = (permissions) => {
@@ -288,6 +293,9 @@ export default function RoleTable({ activeTab = "All" }) {
                   content={
                     <div>
                       {row.permissions.map((permission, index) => {
+                        // Do not render a label for the special 'View all roles and permissions' entry
+                        if (permission === "View all roles and permissions") return null;
+
                         const matchedPermission = permissionsMap.find(
                           (permissionMap) => permission === permissionMap.label
                         );
@@ -298,9 +306,7 @@ export default function RoleTable({ activeTab = "All" }) {
                             onClick={() => handleRoleClick(permission)}
                             className="block py-1 text-black hover:text-tgrey1 cursor-pointer"
                           >
-                            {matchedPermission
-                              ? matchedPermission.title
-                              : permission}
+                            {matchedPermission ? matchedPermission.title : permission}
                           </div>
                         );
                       })}

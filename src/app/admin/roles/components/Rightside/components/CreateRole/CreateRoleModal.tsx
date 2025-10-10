@@ -122,7 +122,7 @@ export default function CreateRoleModal({
                 className="block text-tgrey3 text-sm font-normal mb-2"
                 htmlFor="permission"
               >
-                Permission (You can only select one permission)
+                Permissions (Select all that apply)
               </label>
               {/* Tag Input Field */}
               <div className="flex flex-wrap items-center border p-2 border-1 rounded-lg border-tgrey2 py-1 text-h2 min-h-16 gap-2">

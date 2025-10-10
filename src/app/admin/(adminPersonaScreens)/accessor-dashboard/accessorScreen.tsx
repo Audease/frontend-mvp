@@ -6,7 +6,7 @@ import { useAccessorLearners } from "./utils/useAccessorLearners";
 import { useEffect, useState } from "react";
 import { accessorLearnerRevalidation } from "@/app/action";
 import Pagination from "@/app/components/dashboard/Pagination";
-import FilterButton from "@/app/components/dashboard/FilterButton";
+import { MultiFilterButton } from "@/app/components/dashboard/MultiFilterButton";
 
 export default function Accessor({ onViewChange, showHeader }) {
   const { fetchAccessorLearnersData } = useAccessorLearners();
@@ -19,12 +19,13 @@ export default function Accessor({ onViewChange, showHeader }) {
 
   const handleFetchAccessorLearnersData = async (
     application_status,
+    submission_status,
     page,
     searchQuery
   ) => {
     setLoading(true);
     const { totalPages, totalItems, allLearners } =
-      await fetchAccessorLearnersData(application_status, page, searchQuery);
+      await fetchAccessorLearnersData(application_status, submission_status, page, searchQuery);
     setTotalpages(totalPages);
     setTotalItems(totalItems);
     setallLearners(allLearners);
@@ -33,29 +34,29 @@ export default function Accessor({ onViewChange, showHeader }) {
 
   const handleSearch = (query) => {
     setSearchQuery(query);
-    handleFetchAccessorLearnersData("", currentPage, query);
+    handleFetchAccessorLearnersData("","", currentPage, query);
   };
 
   useEffect(() => {
-    handleFetchAccessorLearnersData("", currentPage, "");
+    handleFetchAccessorLearnersData("", "", currentPage, "");
     accessorLearnerRevalidation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handlePageChange = async (page) => {
     setCurrentPage(page);
-    handleFetchAccessorLearnersData("", page, "");
+    handleFetchAccessorLearnersData("","", page, "");
   };
 
-  const handleFilter = (filter) => {
+  const handleFilter = (approval_status, submission_status) => {
     setCurrentPage(1);
-    handleFetchAccessorLearnersData(filter, 1, "");
+    handleFetchAccessorLearnersData(approval_status, submission_status, 1, "");
   };
 
   const handlePageReset = async () => {
     setCurrentPage(1);
     setSearchQuery("");
-    handleFetchAccessorLearnersData("", 1, "");
+    handleFetchAccessorLearnersData("", "", 1, "");
   };
 
   return (
@@ -77,11 +78,36 @@ export default function Accessor({ onViewChange, showHeader }) {
           </div>
           {showHeader && <AccessorStaffButton />}
           {showHeader && (
-            <FilterButton
-              options={["Pending", "Approved", "Rejected", "Submitted"]}
-              onSelect={handleFilter}
-              label={"Filter"}
-            />
+            <div>
+              {/* <FilterButton
+                options={["Pending", "Approved", "Rejected"]}
+                onSelect={handleFilter}
+                label={"Filter"}
+              /> */}
+
+              <MultiFilterButton
+                label="Filter"
+                sections={[
+                  {
+                    key: "approval",
+                    title: "Approval Status",
+                    label: "Aproval Status",
+                    options: ["Approved", "Pending", "Rejected"],
+                    onSelect: (v) => console.log("submission", v),
+                  },
+                  // {
+                  //   key: "submission",
+                  //   title: "Submission",
+                  //   label: "Submissions Status",
+                  //   options: ["Submitted", "Not Started", "pending"],
+                  //   onSelect: (v) => console.log("submission", v),
+                  // },
+                ]}
+                onFilterClick={(selections) =>
+                  handleFilter(selections.approval, selections.submission)
+                }
+              />
+            </div>
           )}
         </div>
       </div>

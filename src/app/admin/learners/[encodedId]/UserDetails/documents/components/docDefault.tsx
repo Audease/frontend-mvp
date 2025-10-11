@@ -35,11 +35,11 @@ const DocDefault = ({ onViewClick, userId }: DocDefaultProps) => {
         <div className="flex flex-row justify-between items-center md:w-[70%]">
           <h3 className="font-semibold text-base pb-2">Documents</h3>
           {/* <Button className="bg-gold1 mb-2"> Upload Document</Button> */}
-          <div className="mb-2">
+          {/* <div className="mb-2">
             <UploadFileBtn
               onUploadClick={() => setisUploadModalOpen(!isUploadModalOpen)}
             />
-          </div>
+          </div> */}
         </div>
         <hr className="w-3/4" />
       </div>
@@ -109,7 +109,7 @@ const DocDefault = ({ onViewClick, userId }: DocDefaultProps) => {
             )}
       </div>
 
-      <div>
+      {/* <div>
         <hr className="w-3/4" />
         <div className="my-6">
           <div className="flex flex-row justify-between items-center md:w-[70%]">
@@ -123,7 +123,7 @@ const DocDefault = ({ onViewClick, userId }: DocDefaultProps) => {
                 You have no uploaded documents.
               </p>
         </div>
-      </div>
+      </div> */}
 
       {isUploadModalOpen && (
         <div className="modal-backdrop flex text-center justify-center my-2 md:w-[70%]">

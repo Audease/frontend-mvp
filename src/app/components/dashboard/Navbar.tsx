@@ -92,14 +92,14 @@ export default function Nav() {
     <nav className="bg-white shadow-sm px-6 py-3">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
-        <Link href="/admin" className="flex items-center">
+        {/* <Link href="/" className="flex items-center"> */}
           <Image
             src="/audease_logo.png"
             width={100}
             height={30}
             alt="Audease logo"
           />
-        </Link>
+        {/* </Link> */}
 
         {/* Desktop Navigation Links - Centered */}
         <div className="hidden lg:flex items-center justify-center flex-1">
@@ -255,7 +255,7 @@ export default function Nav() {
 
             {/* Mobile Profile Options */}
             <div className="mt-3 space-y-2">
-              <button className="block w-full text-left px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900">
+              <button className="block w-full text-left px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900" onClick={() => router.push("/admin/profile")}>
                 My Profile
               </button>
               <button className="block w-full text-left px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900">

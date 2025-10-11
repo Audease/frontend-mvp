@@ -82,24 +82,26 @@ export default function AdminBKSDDashboard({
     let failCount = 0;
     
     try {
-      // Process each checked ID
-      for (const id of checkedIds) {
-        try {
-          const success = await SendEmail(id);
-          if (success) {
-            successCount++;
-            handleFetchLearnersData(currentPage, "", "");
-            await bksdLearnerRevalidation();
-          } else {
-            failCount++;
-          }
-        } catch (error) {
-          console.error(`Error sending email for ID ${id}:`, error);
-          failCount++;
-        }
-      }
+      const response = await fetch("/api/sendBulkBKSBMail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ learnerIds: checkedIds }),
+      });
       
-      processEmailResults(successCount, failCount);
+      if (response.ok) {
+        const data = await response.json();
+        successCount = data.summary.successful || 0;
+        failCount = data.summary.failed || 0;
+        
+        processEmailResults(successCount, failCount);
+        setKey(prevKey => prevKey + 1); // Force table re-render
+      } else {
+        console.error("Failed to send bulk applications:", response.statusText);
+        setShowFailureToast(true);
+        setTimeout(() => setShowFailureToast(false), 5000);
+      }
     } catch (error) {
       console.error("General error in sendBulkApplications:", error);
       setShowFailureToast(true);

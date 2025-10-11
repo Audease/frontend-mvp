@@ -70,7 +70,7 @@ const LearnerNav = () => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex w-full">
           {/* Logo */}
-          <div className="flex items-center justify-center border-r border-tgrey2 w-[13rem] p-4">
+          <div className="flex items-center justify-center border-r border-tgrey2 w-[15%] p-4">
             <Image
               src="/audease_logo.png"
               width={112}
@@ -90,7 +90,7 @@ const LearnerNav = () => {
 
             {/* Profile and Notifications */}
             <div className="flex items-center space-x-4">
-              <div className="relative" ref={notificationRef}>
+              {/* <div className="relative" ref={notificationRef}>
                 <button
                   className="p-2 rounded-full hover:bg-gray-100 transition-colors"
                   onClick={toggleNotifications}
@@ -104,7 +104,7 @@ const LearnerNav = () => {
                     <Notifications />
                   </div>
                 )}
-              </div>
+              </div> */}
 
               <div className="relative" ref={menuRef}>
                 <button

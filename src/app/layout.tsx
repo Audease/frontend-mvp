@@ -2,8 +2,9 @@ import { inter } from "./ui/fonts";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { ReduxProvider } from "../redux/provider";
-import ActivityTracker from "./components/ActivityTracker";
+// import ActivityTracker from "./components/ActivityTracker";
 import ResetPasswordModal from "./components/ResetDefaultPassword";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata = {
   title: "Audease",
@@ -17,8 +18,9 @@ export default function RootLayout({ children }) {
         <NextTopLoader color="#FAA32C" />
         <ReduxProvider>
           <ResetPasswordModal  />
-          <ActivityTracker />
+          {/* <ActivityTracker /> */}
           {children}
+          <Toaster position="bottom-right" theme="light" richColors />
         </ReduxProvider>
       </body>
     </html>

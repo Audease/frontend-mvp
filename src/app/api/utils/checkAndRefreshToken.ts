@@ -28,14 +28,18 @@ export const TokenManager = async () => {
           path: "/",
           sameSite: "strict",
         });
-        return data.token;
+        return { success: true, token: data.token };
       } else {
         console.error("Error refreshing token:", response.statusText);
-        return null;
+        cookies().delete("accessToken");
+        cookies().delete("refreshToken");
+        return { success: false, token: null };
       }
     } catch (error) {
       console.error("Error refreshing token:", error);
-      return null;
+      cookies().delete("accessToken");
+      cookies().delete("refreshToken");
+      return { success: false, token: null };
     }
   };
 
@@ -45,8 +49,8 @@ export const TokenManager = async () => {
     const remainingTimeSeconds = decoded.exp - currentTime;
 
     if (remainingTimeSeconds < 300) {
-      const response = await refreshAccessToken(refreshToken);
-      return response;
+      const result = await refreshAccessToken(refreshToken);
+      return result.token;
     }
     return accessToken;
   }

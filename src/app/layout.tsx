@@ -5,6 +5,7 @@ import { ReduxProvider } from "../redux/provider";
 // import ActivityTracker from "./components/ActivityTracker";
 import ResetPasswordModal from "./components/ResetDefaultPassword";
 import { Toaster } from "@/components/ui/sonner";
+import SessionMonitor from "./components/SessionMonitor";
 
 export const metadata = {
   title: "Audease",
@@ -16,10 +17,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.className} antialiased bg-bgDefault`}>
         <NextTopLoader color="#FAA32C" />
+
         <ReduxProvider>
-          <ResetPasswordModal  />
+          <ResetPasswordModal />
           {/* <ActivityTracker /> */}
-          {children}
+          <SessionMonitor>{children}</SessionMonitor>
           <Toaster position="bottom-right" theme="light" richColors />
         </ReduxProvider>
       </body>

@@ -227,7 +227,7 @@ export default function Staff() {
             {successToast && (
               <SuccessToast text={"Role assigned successfully"} />
             )}
-            {errorToast && <FailureToast text={"Failed to assign role"} />}
+            {errorToast && <FailureToast text={"Failed to assign role, please verify your selection"} />}
           </div>
         </div>
         <div>{renderComponent()}</div>

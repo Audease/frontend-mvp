@@ -12,6 +12,7 @@ import Notifications from "./Notifications";
 import NavbarPlusButton from "./NavbarPlusButton";
 import { useLogout } from "@/app/lib/logout";
 import { getInitials } from "@/app/lib/getInitials";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function PersonaNavbar() {
   const [profileOptions, setProfileOptions] = useState(false);
@@ -20,18 +21,17 @@ export default function PersonaNavbar() {
   const [userInitials, setUserInitials] = useState("AA");
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const menuRef = useRef(null);
+  const router = useRouter();
+  const pathname = usePathname();
 
-
-  const userName = useAppSelector(
-    (state) => state.authReducer.value.userName
-  );
+  const userName = useAppSelector((state) => state.authReducer.value.userName);
 
   useEffect(() => {
-      if (userName) {
-        const initials = getInitials(userName);
-        setUserInitials(initials);
-      }
-    }, [userName]);
+    if (userName) {
+      const initials = getInitials(userName);
+      setUserInitials(initials);
+    }
+  }, [userName]);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -69,6 +69,15 @@ export default function PersonaNavbar() {
 
   const logout = useLogout();
 
+  // Get the profile URL based on current pathname
+  const getProfileUrl = () => {
+    const dashboardMatch = pathname.match(/^\/([\w-]+)-dashboard/);
+    if (dashboardMatch) {
+      return `/${dashboardMatch[1]}-dashboard/profile`;
+    }
+    return "/profile";
+  };
+
   const ProfileOption = ({
     icon,
     text,
@@ -93,18 +102,6 @@ export default function PersonaNavbar() {
 
   const MobileMenu = () => (
     <div className="flex flex-col space-y-6 p-2 pt-6">
-      {/* <div className="relative w-full">
-        <input
-          type="text"
-          placeholder="Search..."
-          className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 bg-gray-50"
-          aria-label="Search"
-        />
-        <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-          <Search className="h-4 w-4 text-gray-500" />
-        </span>
-      </div> */}
-
       <div className="block md:hidden mt-4">
         <h3 className="font-medium text-sm text-gray-500 mb-2">NAVIGATION</h3>
         <div className="space-y-1">
@@ -118,7 +115,13 @@ export default function PersonaNavbar() {
       <div className="border-t border-gray-200 pt-4">
         <h3 className="font-medium text-sm text-gray-500 mb-2">ACCOUNT</h3>
         <div className="space-y-3">
-          <div className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50">
+          <div
+            className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer"
+            onClick={() => {
+              setIsSheetOpen(false);
+              router.push(getProfileUrl());
+            }}
+          >
             <div className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center">
               <p className="text-tgrey3 text-base font-semibold">
                 {userInitials}
@@ -163,15 +166,15 @@ export default function PersonaNavbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="flex-shrink-0">
-              <Image
-                src="/audease_logo.png"
-                width={112}
-                height={30}
-                alt="Audease logo"
-                className="h-8 w-auto"
-              />
-            </Link>
+            {/* <Link href="/" className="flex-shrink-0"> */}
+            <Image
+              src="/audease_logo.png"
+              width={112}
+              height={30}
+              alt="Audease logo"
+              className="h-8 w-auto"
+            />
+            {/* </Link> */}
           </div>
 
           {/* Desktop Navigation Links - Centered */}
@@ -188,9 +191,7 @@ export default function PersonaNavbar() {
               className="w-8 h-8 bg-profilebg rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-200 transition-colors duration-200"
               onClick={toggleVisibility}
             >
-              <p className="text-tgrey3 text-lg font-medium">
-                {userInitials}
-              </p>
+              <p className="text-tgrey3 text-lg font-medium">{userInitials}</p>
             </div>
 
             {/* Profile Dropdown */}
@@ -203,7 +204,12 @@ export default function PersonaNavbar() {
                     </p>
                   </div>
                   <div>
-                    <p className="px-3 text-sm">My Profile</p>
+                    <p
+                      className="px-3 text-sm"
+                      onClick={() => router.push(getProfileUrl())}
+                    >
+                      My Profile
+                    </p>
                   </div>
                 </div>
 

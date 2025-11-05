@@ -52,31 +52,6 @@ export function useLogin() {
     return matchedPermission?.route ?? "/";
   }, []);
 
-  const extractCollegeFromEmail = (email: string): string | null => {
-    // Extract college name from username format: fredajacobs.eden.admin
-    const parts = email.split('.');
-    if (parts.length >= 2) {
-      // Return the second part (college name) - e.g., "eden" from "fredajacobs.eden.admin"
-      return parts[1];
-    }
-    return null;
-  };
-
-  const redirectToCollegeSubdomain = (collegeName: string, route: string) => {
-    // Check if we're in a browser environment
-    if (typeof window !== 'undefined') {
-      const currentHostname = window.location.hostname;
-      
-      // Only redirect if not already on the correct subdomain
-      if (!currentHostname.includes(collegeName)) {
-        const newUrl = `https://${collegeName}.audease.co.uk${route}`;
-        window.location.href = newUrl;
-        return true;
-      }
-    }
-    return false;
-  };
-
   const handleLogin = async (email: string, password: string) => {
     try {
       setLoading(true);
@@ -96,20 +71,7 @@ export function useLogin() {
       dispatch(setUserPermissions(permissions));
       dispatch(setpasswordChangeStatus(requires_password_change))
 
-      const redirectRoute = getRedirectRoute(permissions, learner_id);
-      
-      // Extract college name from username (email parameter) and redirect to subdomain
-      const collegeName = extractCollegeFromEmail(email);
-      if (collegeName) {
-        const didRedirect = redirectToCollegeSubdomain(collegeName, redirectRoute);
-        if (didRedirect) {
-          // External redirect is happening, no need to use router.push
-          return;
-        }
-      }
-      
-      // Fallback to normal routing if no college name or already on correct subdomain
-      router.push(redirectRoute);
+      router.push(getRedirectRoute(permissions,learner_id ));
     } catch (err) {
       const error = err as AxiosError<LoginResponse>;
       setError(error.response?.data?.message ?? "Invalid email or password");

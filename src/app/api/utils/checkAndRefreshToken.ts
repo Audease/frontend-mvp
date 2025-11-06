@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 
 export const TokenManager = async () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken")?.value;
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
@@ -17,16 +17,21 @@ export const TokenManager = async () => {
 
       if (response.ok) {
         const data = await response.json();
-        cookies().set({
+        const isProduction =
+          process.env.NODE_ENV === "production" ||
+          process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ||
+          process.env.NEXT_PUBLIC_VERCEL_ENV === "staging";
+
+        const cookieStore = await cookies();
+        cookieStore.set({
           name: "accessToken",
           value: data.token,
-          secure:
-            process.env.NODE_ENV === "production" ||
-            (process.env.NODE_ENV as string) === "staging",
+          domain: isProduction ? ".audease.co.uk" : undefined, // Added domain
+          secure: isProduction,
           httpOnly: true,
           maxAge: data.expires,
           path: "/",
-          sameSite: "strict",
+          sameSite: "lax", // Changed from "strict" to "lax"
         });
         return data.token;
       } else {
@@ -40,15 +45,20 @@ export const TokenManager = async () => {
   };
 
   if (accessToken) {
-    const decoded = jwtDecode(accessToken);
-    const currentTime = Math.floor(Date.now() / 1000);
-    const remainingTimeSeconds = decoded.exp - currentTime;
+    try {
+      const decoded = jwtDecode(accessToken);
+      const currentTime = Math.floor(Date.now() / 1000);
+      const remainingTimeSeconds = decoded.exp - currentTime;
 
-    if (remainingTimeSeconds < 300) {
-      const response = await refreshAccessToken(refreshToken);
-      return response;
+      if (remainingTimeSeconds < 300) {
+        const response = await refreshAccessToken(refreshToken);
+        return response;
+      }
+      return accessToken;
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return null;
     }
-    return accessToken;
   }
   return null;
 };
